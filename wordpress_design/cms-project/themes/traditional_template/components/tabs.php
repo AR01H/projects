@@ -23,7 +23,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $nt_src  = ( isset( $source ) && $source ) ? (string) $source : 'tabs';
-$nt_data = App_Helpers::data( $nt_src );
+$nt_data = App_Data_Provider::get( $nt_src );
 
 $nt_tabs = array();
 foreach ( (array) ( $nt_data['tabs'] ?? array() ) as $nt_i => $nt_tab ) {

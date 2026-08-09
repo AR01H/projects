@@ -17,7 +17,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $ct_source = ( isset( $source ) && $source ) ? (string) $source : 'compare_table';
-$data      = App_Helpers::data( $ct_source );
+$data      = App_Data_Provider::get( $ct_source );
 $plans     = ( is_array( $data ) && ! empty( $data['plans'] ) ) ? array_values( (array) $data['plans'] ) : array();
 $rows      = ( is_array( $data ) && ! empty( $data['rows'] ) ) ? (array) $data['rows'] : array();
 if ( empty( $plans ) || empty( $rows ) ) {

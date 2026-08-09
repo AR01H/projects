@@ -1,5 +1,5 @@
 <?php
-$spotlights = NT_Data_Provider::get('spotlights');
+$spotlights = App_Data_Provider::get('spotlights');
 if (empty($spotlights)) return;
 ?>
 <section class="app-spotlights">

@@ -1,45 +1,65 @@
 <?php
 /**
  * Main Footer – Vintage green footer matching reference design.
+ * Entirely driven by CMS Plugin (ah_site_settings and ah_cms_footer)
  */
 defined( 'ABSPATH' ) || exit;
 
-$footer_data   = NT_Data_Provider::get('footer');
-$footer_links  = $footer_data['quick_links'] ?? [];
-$products      = $footer_data['products'] ?? [];
-$bottom_links  = $footer_data['bottom_links'] ?? [];
+global $wpdb;
+$settings_table = $wpdb->prefix . 'ah_site_settings';
+$db_settings = $wpdb->get_results("SELECT setting_key, setting_val FROM {$settings_table}");
+$plugin_settings = [];
+if ($db_settings) {
+    foreach ($db_settings as $row) {
+        $plugin_settings[$row->setting_key] = $row->setting_val;
+    }
+}
 
-// Column headings + small chrome strings - edit in admin/data/footer.json ("labels").
-$labels        = $footer_data['labels'] ?? [];
-$lbl_quick     = $labels['quick_links_heading'] ?? 'Quick Links';
-$lbl_products  = $labels['products_heading']    ?? 'Our Products';
-$lbl_contact   = $labels['contact_heading']     ?? 'Contact Us';
-$lbl_connect   = $labels['connect_label']       ?? 'Connect:';
-$lbl_rights    = $labels['rights_text']         ?? 'All Rights Reserved.';
-$aria_top      = App_Helpers::data('ui')['aria']['scroll_to_top'] ?? 'Scroll to top';
+// Extract settings
+$phone = $plugin_settings['phone'] ?? '';
+$email = $plugin_settings['email'] ?? '';
+$address = $plugin_settings['address'] ?? '';
+$brand_tagline = $plugin_settings['footer_tagline'] ?? '';
+$brand_name = NT_BRAND_NAME; // Fallback, could be dynamically fetched if in settings
+$year = gmdate('Y');
+$has_logo = has_custom_logo();
+$brand_logo = $plugin_settings['footer_logo'] ?? $plugin_settings['logo_image'] ?? '';
 
-$brand_data    = $footer_data['brand'] ?? [];
-$brand_logo    = $brand_data['logo_image'] ?? '';
-$brand_name    = $brand_data['name'] ?? NT_BRAND_NAME;
-$brand_est     = $brand_data['established'] ?? '';
-$brand_tagline = $brand_data['tagline'] ?? (defined('NT_BRAND_TAGLINE') ? NT_BRAND_TAGLINE : '');
+// Socials
+$social_keys = ['facebook', 'twitter', 'instagram', 'linkedin', 'youtube'];
+$nt_socials = [];
+foreach ($social_keys as $key) {
+    $val = $plugin_settings[$key . '_url'] ?? '';
+    if (!empty($val)) {
+        $nt_socials[$key] = $val;
+    }
+}
 
-$phone         = App_Helpers::option('general', 'phone', NT_BRAND_PHONE);
-$email         = App_Helpers::option('general', 'email', NT_BRAND_EMAIL);
-$address       = App_Helpers::option('general', 'address');
-$has_logo      = has_custom_logo();
-$year          = gmdate('Y');
-$nt_socials    = array_filter( (array) ($footer_data['socials'] ?? []) );
+// Navigation & Columns
+$plugin_columns = [];
+$bottom_links = [];
+$lbl_quick = 'Quick Links';
+$lbl_products = 'Our Products';
+$lbl_contact = $plugin_settings['contact_heading'] ?? 'Contact Us';
+$lbl_connect = $plugin_settings['connect_label'] ?? 'Connect:';
+$lbl_rights = $plugin_settings['rights_text'] ?? 'All Rights Reserved.';
 
-$footer_bg     = $footer_data['background']['image'] ?? '';
+if ( class_exists( '\Ah\Cms\Feature\Navigation\Controller\NavigationAdminController' ) ) {
+    $plugin_footer = \Ah\Cms\Feature\Navigation\Controller\NavigationAdminController::get_footer_data();
+    if (!empty($plugin_footer['columns'])) {
+        $plugin_columns = $plugin_footer['columns'];
+    }
+    if (!empty($plugin_footer['legal_links'])) {
+        $bottom_links = $plugin_footer['legal_links'];
+    }
+}
+
 $footer_classes = 'app-footer';
 if ( is_front_page() || is_home() ) {
 	$footer_classes .= ' app-footer--home';
 }
+// Removed hardcoded background image logic as it belongs to old json
 $footer_style = '';
-if ( $footer_bg ) {
-	$footer_style = ' style="background-image: url(' . esc_url(get_template_directory_uri() . '/' . $footer_bg) . '); background-size: 450px auto; background-repeat: no-repeat; background-position: bottom right; background-blend-mode: soft-light;"';
-}
 ?>
 
 <footer class="<?php echo esc_attr( $footer_classes ); ?>" role="contentinfo"<?php echo $footer_style; ?>>
@@ -62,9 +82,6 @@ if ( $footer_bg ) {
 						<div class="app-footer__brand-fallback">
 							<img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/icons/brand-star.svg' ); ?>" class="app-footer__brand-icon" alt="" aria-hidden="true" />
 							<div class="app-footer__brand-name"><?php echo esc_html( $brand_name ); ?></div>
-							<?php if ( $brand_est ) : ?>
-								<div class="app-footer__brand-est"><?php echo esc_html( $brand_est ); ?></div>
-							<?php endif; ?>
 						</div>
 					<?php endif; ?>
 				</a>
@@ -75,33 +92,22 @@ if ( $footer_bg ) {
 				<?php endif; ?>
 			</div>
 
-			<!-- Quick Links -->
-			<div class="app-footer__col">
-				<h4 class="app-footer__heading"><?php echo esc_html( $lbl_quick ); ?></h4>
-				<ul class="app-footer__links">
-					<?php foreach ( $footer_links as $link ) : ?>
-						<li>
-							<a href="<?php echo esc_url( App_Helpers::link($link['url'] ?? '#') ); ?>">
-								<?php echo esc_html($link['label'] ?? ''); ?>
-							</a>
-						</li>
-					<?php endforeach; ?>
-				</ul>
-			</div>
-
-			<!-- Our Products -->
-			<div class="app-footer__col">
-				<h4 class="app-footer__heading"><?php echo esc_html( $lbl_products ); ?></h4>
-				<ul class="app-footer__links">
-					<?php foreach ( $products as $p ) : ?>
-						<li>
-							<a href="<?php echo esc_url( home_url($p['url']) ); ?>">
-								<?php echo esc_html($p['label']); ?>
-							</a>
-						</li>
-					<?php endforeach; ?>
-				</ul>
-			</div>
+			<?php if ( !empty($plugin_columns) ) : ?>
+				<?php foreach ( $plugin_columns as $col ) : ?>
+					<div class="app-footer__col">
+						<h4 class="app-footer__heading"><?php echo esc_html( $col['title'] ); ?></h4>
+						<ul class="app-footer__links">
+							<?php foreach ( $col['items'] as $link ) : ?>
+								<li>
+									<a href="<?php echo esc_url( App_Helpers::link($link['url'] ?? '#') ); ?>">
+										<?php echo esc_html($link['label'] ?? ''); ?>
+									</a>
+								</li>
+							<?php endforeach; ?>
+						</ul>
+					</div>
+				<?php endforeach; ?>
+			<?php endif; ?>
 
 			<!-- Contact -->
 			<div class="app-footer__col">
@@ -118,7 +124,7 @@ if ( $footer_bg ) {
 					<p style="margin:0 0 8px; font-size:0.9rem;">
 						<a href="mailto:<?php echo esc_attr($email); ?>"
 						   style="color:var(--trad-cream); word-break:break-all;">
-							✉ <?php echo esc_html($email); ?>
+							✉️ <?php echo esc_html($email); ?>
 						</a>
 					</p>
 				<?php endif; ?>
@@ -132,7 +138,7 @@ if ( $footer_bg ) {
 					<div style="display:flex; gap:16px; margin-top:24px; flex-wrap:wrap; align-items:center;">
 						<span style="font-size:0.8rem; text-transform:uppercase; color:var(--trad-gold); letter-spacing:0.1em; margin-right:4px;"><?php echo esc_html( $lbl_connect ); ?></span>
 						<?php foreach ( $nt_socials as $net => $url ) : 
-							$icon_file = in_array($net, ['instagram', 'youtube', 'facebook', 'whatsapp']) ? 'social-' . $net . '.svg' : 'default-social.svg';
+							$icon_file = in_array($net, ['instagram', 'youtube', 'facebook', 'whatsapp', 'linkedin']) ? 'social-' . $net . '.svg' : 'default-social.svg';
 							$icon_svg = '<img src="' . esc_url( get_template_directory_uri() . '/assets/images/icons/' . $icon_file ) . '" alt="' . esc_attr( ucfirst( $net ) ) . '" width="22" height="22" />';
 						?>
 							<a href="<?php echo esc_url($url); ?>" target="_blank" rel="noopener" aria-label="<?php echo esc_attr(ucfirst($net)); ?>"
@@ -164,7 +170,7 @@ if ( $footer_bg ) {
 </footer>
 
 <!-- Scroll to Top -->
-<button id="app-scroll-to-top" class="app-scroll-to-top" aria-label="<?php echo esc_attr( $aria_top ); ?>">
+<button id="app-scroll-to-top" class="app-scroll-to-top" aria-label="Scroll to top">
 	<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
 		 stroke-linecap="round" aria-hidden="true" class="app-scroll-arrow">
 		<path d="M7 14.5l5-5 5 5"/>

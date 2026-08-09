@@ -27,7 +27,7 @@ defined( 'ABSPATH' ) || exit;
 function app_section_visible( $key, $default = true ) {
 	static $map = null;
 	if ( null === $map ) {
-		$data = App_Helpers::data( 'sections' );
+		$data = App_Data_Provider::get( 'sections' );
 		$map  = is_array( $data ) ? $data : array();
 	}
 	if ( ! array_key_exists( $key, $map ) ) {

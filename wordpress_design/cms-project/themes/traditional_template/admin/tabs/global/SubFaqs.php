@@ -1,0 +1,1 @@
+<?php defined('ABSPATH')||exit; require dirname(__DIR__) . '/content/SubFaqs.php';

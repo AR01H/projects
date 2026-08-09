@@ -108,7 +108,7 @@ class NT_Alert {
 	 * @return array<int,array>
 	 */
 	public static function notices( string $page_key = '' ): array {
-		$raw = is_callable( array( 'App_Helpers', 'data' ) ) ? App_Helpers::data( self::DATA_KEY ) : array();
+		$raw = is_callable( array( 'App_Helpers', 'data' ) ) ? App_Data_Provider::get( self::DATA_KEY ) : array();
 		if ( ! is_array( $raw ) ) {
 			return array();
 		}

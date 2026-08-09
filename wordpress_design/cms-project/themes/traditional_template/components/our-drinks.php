@@ -5,7 +5,7 @@
  */
 defined( 'ABSPATH' ) || exit;
 
-$data     = NT_Data_Provider::get('flavours') ?: [];
+$data     = App_Data_Provider::get('flavours') ?: [];
 $flavours = $data['flavours'] ?? [];
 $drinks   = array_slice( $flavours, 0, 6 );
 

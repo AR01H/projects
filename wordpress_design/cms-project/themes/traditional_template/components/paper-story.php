@@ -31,7 +31,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $nt_src  = ( isset( $source ) && $source ) ? (string) $source : 'paper_story';
-$nt_data = App_Helpers::data( $nt_src );
+$nt_data = App_Data_Provider::get( $nt_src );
 
 $nt_sheets = array();
 foreach ( (array) ( $nt_data['sheets'] ?? array() ) as $nt_sheet ) {

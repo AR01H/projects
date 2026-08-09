@@ -1,0 +1,1 @@
+<?php defined('ABSPATH')||exit; $_GET['tt_faq_filter']='events'; require dirname(__DIR__) . '/content/SubFaqs.php';

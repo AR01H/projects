@@ -5,7 +5,7 @@
  */
 defined( 'ABSPATH' ) || exit;
 
-$banners = NT_Data_Provider::get('home_banner');
+$banners = App_Data_Provider::get('home_banner');
 if ( empty($banners) ) return;
 $b = (object) $banners[0];
 
@@ -70,7 +70,7 @@ $bg_image    = $b->image       ?? '';
 			</div>
 			
 			<div class="app-hero-vintage__checks" style="margin-top: 32px; display: flex; gap: 16px; flex-wrap: wrap; font-size: 0.85rem; font-weight: 600; color: var(--trad-green);">
-				<?php foreach ( App_Helpers::data('hero_checks', []) as $check ) : ?>
+				<?php foreach ( App_Data_Provider::get('hero_checks', []) as $check ) : ?>
 					<span>&#10003; <?php echo esc_html( $check ); ?></span>
 				<?php endforeach; ?>
 			</div>

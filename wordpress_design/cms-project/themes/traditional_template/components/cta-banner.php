@@ -13,7 +13,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $cta_source = ( isset( $source ) && $source ) ? (string) $source : 'cta_default';
-$data       = App_Helpers::data( $cta_source );
+$data       = App_Data_Provider::get( $cta_source );
 $title      = ( is_array( $data ) && ! empty( $data['title'] ) ) ? $data['title'] : '';
 if ( '' === $title ) {
 	return;

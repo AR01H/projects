@@ -12,7 +12,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $nl_source = ( isset( $source ) && $source ) ? (string) $source : 'newsletter';
-$data      = App_Helpers::data( $nl_source );
+$data      = App_Data_Provider::get( $nl_source );
 $title     = ( is_array( $data ) && ! empty( $data['title'] ) ) ? $data['title'] : '';
 if ( '' === $title ) {
 	return;

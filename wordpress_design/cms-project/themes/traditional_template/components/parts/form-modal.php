@@ -12,7 +12,7 @@
  *                    data-nt-open="{id}". Required.
  *   title   (string) Heading inside the modal.
  *   sub     (string) Sub-heading line.
- *   config  (array)  The form config (steps/fields) - usually App_Helpers::data('form_x').
+ *   config  (array)  The form config (steps/fields) - usually App_Data_Provider::get('form_x').
  *                    Its 'action' should be a registered ajax action (e.g.
  *                    'lead_submit'); 'form_label' names the form in the inbox.
  */

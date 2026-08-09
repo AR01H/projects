@@ -76,7 +76,7 @@ class NT_Dialog {
 		if ( null !== $registry ) {
 			return $registry;
 		}
-		$data = is_callable( array( 'App_Helpers', 'data' ) ) ? App_Helpers::data( self::DATA_KEY ) : array();
+		$data = is_callable( array( 'App_Helpers', 'data' ) ) ? App_Data_Provider::get( self::DATA_KEY ) : array();
 		$data = is_array( $data ) ? $data : array();
 		unset( $data['_doc'] );
 
@@ -260,7 +260,7 @@ class NT_Dialog {
 		if ( '' === $name || ! is_callable( array( 'App_Helpers', 'data' ) ) ) {
 			return array();
 		}
-		$form = App_Helpers::data( $name );
+		$form = App_Data_Provider::get( $name );
 		if ( empty( $form ) || ! is_array( $form ) ) {
 			return array();
 		}

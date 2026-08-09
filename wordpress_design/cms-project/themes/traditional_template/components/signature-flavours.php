@@ -13,7 +13,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $sf_source = ( isset( $source ) && $source ) ? (string) $source : 'signature_flavours';
-$data      = App_Helpers::data( $sf_source );
+$data      = App_Data_Provider::get( $sf_source );
 $bottles   = $data['bottles'] ?? array();
 if ( empty( $bottles ) ) {
 	return;

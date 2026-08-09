@@ -18,7 +18,7 @@ $nt_news     = new WP_Query( array(
 	'posts_per_page'      => $nt_per_page,
 	'ignore_sticky_posts' => true,
 ) );
-$nt_hdr = App_Helpers::data( 'page_headers' )['news'] ?? array();
+$nt_hdr = App_Data_Provider::get( 'page_headers' )['news'] ?? array();
 ?>
 <div class="app-container app-section">
 

@@ -5,7 +5,7 @@
  */
 defined( 'ABSPATH' ) || exit;
 
-$_d     = App_Helpers::data( 'history' ) ?: [];
+$_d     = App_Data_Provider::get( 'history' ) ?: [];
 $tag    = $args['tag']   ?? $_d['tag']   ?? 'OUR STORY';
 $title  = $args['title'] ?? $_d['title'] ?? 'The Journey';
 $body   = $args['body']  ?? $_d['body']  ?? '';

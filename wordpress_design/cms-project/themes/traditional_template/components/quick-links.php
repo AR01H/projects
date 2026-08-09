@@ -26,7 +26,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $nt_src  = ( isset( $source ) && $source ) ? (string) $source : 'quick_links';
-$nt_data = App_Helpers::data( $nt_src );
+$nt_data = App_Data_Provider::get( $nt_src );
 
 // Inline items first, then anything pulled from the shared block library.
 $nt_tiles = array();

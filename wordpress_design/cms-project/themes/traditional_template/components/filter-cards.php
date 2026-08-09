@@ -15,7 +15,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $fc_source = ( isset( $source ) && $source ) ? (string) $source : 'filter_cards';
-$data      = App_Helpers::data( $fc_source );
+$data      = App_Data_Provider::get( $fc_source );
 $items     = ( is_array( $data ) && ! empty( $data['items'] ) ) ? (array) $data['items'] : array();
 if ( empty( $items ) ) {
 	return;

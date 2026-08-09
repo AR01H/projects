@@ -23,7 +23,7 @@ defined( 'ABSPATH' ) || exit;
 
 get_header();
 
-$nt_hdr = App_Helpers::data( 'page_headers' )['blog_post'] ?? array();
+$nt_hdr = App_Data_Provider::get( 'page_headers' )['blog_post'] ?? array();
 
 while ( have_posts() ) :
 	the_post();

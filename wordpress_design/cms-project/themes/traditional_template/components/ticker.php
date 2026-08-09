@@ -16,7 +16,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $tk_source = ( isset( $source ) && $source ) ? (string) $source : 'ticker';
-$data      = App_Helpers::data( $tk_source );
+$data      = App_Data_Provider::get( $tk_source );
 $items     = ( is_array( $data ) && ! empty( $data['items'] ) ) ? (array) $data['items'] : array();
 $items     = array_values( array_filter( array_map( 'strval', $items ), 'strlen' ) );
 if ( empty( $items ) ) {

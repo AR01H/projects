@@ -3,7 +3,7 @@ defined( 'ABSPATH' ) || exit;
 
 /* ── Data ───────────────────────────────────────────────────────────────────── */
 
-$content = App_Helpers::data( 'content' )['certifications'] ?? [];
+$content = App_Data_Provider::get( 'content' )['certifications'] ?? [];
 
 $cards = array_map( static function ( $cert ): array {
 	$cert = (array) $cert;
@@ -13,7 +13,7 @@ $cards = array_map( static function ( $cert ): array {
 		'desc'  => $cert['desc']  ?? '',
 		'badge' => $cert['badge'] ?? '',
 	];
-}, App_Helpers::data( 'certifications' ) ?: [] );
+}, App_Data_Provider::get( 'certifications' ) ?: [] );
 
 /* ── Render ─────────────────────────────────────────────────────────────────── */
 

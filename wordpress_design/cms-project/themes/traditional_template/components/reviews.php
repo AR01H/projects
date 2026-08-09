@@ -12,7 +12,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $review_source = ( isset( $source ) && $source ) ? (string) $source : 'reviews';
-$data          = App_Helpers::data( $review_source );
+$data          = App_Data_Provider::get( $review_source );
 $items         = $data['items'] ?? array();
 if ( empty( $items ) ) {
 	return;

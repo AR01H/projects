@@ -1,0 +1,1 @@
+<?php defined('ABSPATH')||exit; $_GET['tt_review_filter']='franchise'; require dirname(__DIR__) . '/content/SubReviews.php';

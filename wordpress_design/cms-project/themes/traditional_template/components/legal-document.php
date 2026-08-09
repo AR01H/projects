@@ -29,7 +29,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $nt_src  = ( isset( $source ) && $source ) ? (string) $source : 'legal_privacy';
-$nt_doc  = App_Helpers::data( $nt_src );
+$nt_doc  = App_Data_Provider::get( $nt_src );
 $nt_secs = ( is_array( $nt_doc ) && ! empty( $nt_doc['sections'] ) ) ? (array) $nt_doc['sections'] : array();
 if ( empty( $nt_secs ) ) {
 	return;

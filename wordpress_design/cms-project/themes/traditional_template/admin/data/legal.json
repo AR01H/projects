@@ -1,9 +1,0 @@
-{
-  "_doc": "Maps a page key (from config/pages.php) to the JSON file holding that policy's text. All of them share ONE template, pages/page-legal.php, so adding another policy is: an entry in config/pages.php pointing at that template, a line here, and a new admin/data/legal_<name>.json. No new PHP.",
-
-  "documents": {
-    "privacy-policy": "legal_privacy",
-    "cookie-policy": "legal_cookies",
-    "terms": "legal_terms"
-  }
-}

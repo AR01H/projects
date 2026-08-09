@@ -18,8 +18,8 @@
  */
 defined( 'ABSPATH' ) || exit;
 
-$ui      = App_Helpers::data( 'ui' )['floating_toolbar'] ?? array();
-$socials = NT_Data_Provider::get( 'footer' )['socials'] ?? array();
+$ui      = App_Data_Provider::get( 'ui' )['floating_toolbar'] ?? array();
+$socials = App_Data_Provider::get( 'footer' )['socials'] ?? array();
 
 $side = ( 'left' === ( $ui['side'] ?? 'right' ) ) ? 'left' : 'right';
 

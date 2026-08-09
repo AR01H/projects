@@ -5,23 +5,45 @@
  */
 defined( 'ABSPATH' ) || exit;
 
-$nav_data    = App_Helpers::data('nav');
-$nav_items   = $nav_data['header'] ?? [];
-$site_data   = App_Helpers::data('site');
-$logo_path   = $site_data['brand']['logoImage'] ?? 'assets/images/logo.png';
+$nav_items = [];
+$cta_url = '/#contact';
+$cta_line1 = 'BOOK US';
+$cta_line2 = 'YOUR EVENT';
+$cta_mobile = 'Book Us For Your Event';
+
+global $wpdb;
+$settings_table = $wpdb->prefix . 'ah_site_settings';
+$db_settings = $wpdb->get_results("SELECT setting_key, setting_val FROM {$settings_table}");
+$plugin_settings = [];
+if ($db_settings) {
+    foreach ($db_settings as $row) {
+        $plugin_settings[$row->setting_key] = $row->setting_val;
+    }
+}
+
+$logo_path   = $plugin_settings['header_logo'] ?? $plugin_settings['logo_image'] ?? 'assets/images/logo.png';
 $has_logo    = has_custom_logo();
 $current_url = trailingslashit( strtok( $_SERVER['REQUEST_URI'], '?' ) );
 $brand_name  = NT_BRAND_NAME;
 
-// Header CTA button - edit in admin/data/nav.json ("cta").
-$cta          = $nav_data['cta'] ?? [];
-$cta_line1    = $cta['line1']        ?? 'BOOK US';
-$cta_line2    = $cta['line2']        ?? 'YOUR EVENT';
-$cta_mobile   = $cta['mobile_label'] ?? 'Book Us For Your Event';
-$cta_url      = $cta['url']          ?? '/#contact';
+if ( class_exists( '\Ah\Cms\Feature\Navigation\Controller\NavigationAdminController' ) ) {
+	$nav_items = \Ah\Cms\Feature\Navigation\Controller\NavigationAdminController::get_navigation_data();
+	$cta_data = \Ah\Cms\Feature\Navigation\Controller\NavigationAdminController::get_nav_cta_data();
+	$full_label = $cta_data['label'] ?? 'BOOK US YOUR EVENT';
+	$parts = explode(' ', $full_label);
+	$cta_line1 = $parts[0] ?? 'BOOK';
+	if (count($parts) > 1) {
+		$cta_line1 .= ' ' . $parts[1];
+		$cta_line2 = implode(' ', array_slice($parts, 2));
+	} else {
+		$cta_line2 = '';
+	}
+	$cta_mobile = $full_label;
+	$cta_url = $cta_data['url'] ?? '/#contact';
+}
 
 // Accessibility labels - edit in admin/data/ui.json ("aria").
-$aria         = App_Helpers::data('ui')['aria'] ?? [];
+$aria         = App_Data_Provider::get('ui')['aria'] ?? [];
 $aria_home    = $aria['home']       ?? 'Home';
 $aria_menu    = $aria['open_menu']  ?? 'Open menu';
 $aria_mobnav  = $aria['mobile_nav'] ?? 'Mobile Navigation';
@@ -49,7 +71,7 @@ function app_nav_is_active( $url, $current ) {
 			<!-- Desktop Nav Links -->
 			<ul class="app-nav__links" id="app-nav-links" role="list">
 				<?php foreach ( (array) $nav_items as $item ) : ?>
-					<?php $has_children = !empty($item['children']); ?>
+					<?php $has_children = !empty($item['submenu']); ?>
 					<li class="<?php echo $has_children ? 'app-nav__has-sub' : ''; ?>">
 						<a href="<?php echo esc_url( App_Helpers::link( $item['url'] ?? $item['href'] ?? '/' ) ); ?>"
 						   class="app-nav__link<?php echo app_nav_is_active( App_Helpers::link( $item['url'] ?? $item['href'] ?? '/' ), $current_url ); ?>">
@@ -60,7 +82,7 @@ function app_nav_is_active( $url, $current ) {
 						</a>
 						<?php if ( $has_children ) : ?>
 							<ul class="app-nav__submenu">
-								<?php foreach ( (array) $item['children'] as $child ) : ?>
+								<?php foreach ( (array) $item['submenu'] as $child ) : ?>
 									<li>
 										<a href="<?php echo esc_url( App_Helpers::link( $child['url'] ?? $child['href'] ?? '/' ) ); ?>">
 											<?php echo esc_html( $child['label'] ); ?>
@@ -97,7 +119,7 @@ function app_nav_is_active( $url, $current ) {
 <!-- Mobile Nav -->
 <nav class="app-mobile-nav" id="app-mobile-nav" aria-label="<?php echo esc_attr( $aria_mobnav ); ?>">
 	<?php foreach ( (array) $nav_items as $item ) : ?>
-		<?php $has_children = !empty($item['children']); ?>
+		<?php $has_children = !empty($item['submenu']); ?>
 		<div class="app-mobile-nav__item <?php echo $has_children ? 'app-nav__has-sub' : ''; ?>">
 			<a href="<?php echo esc_url( App_Helpers::link( $item['url'] ?? $item['href'] ?? '/' ) ); ?>"
 			   class="app-mobile-nav__link<?php echo app_nav_is_active( App_Helpers::link( $item['url'] ?? $item['href'] ?? '/' ), $current_url ); ?>">
@@ -105,7 +127,7 @@ function app_nav_is_active( $url, $current ) {
 			</a>
 			<?php if ( $has_children ) : ?>
 				<div class="app-mobile-nav__submenu">
-					<?php foreach ( (array) $item['children'] as $child ) : ?>
+					<?php foreach ( (array) $item['submenu'] as $child ) : ?>
 						<a href="<?php echo esc_url( App_Helpers::link( $child['url'] ?? $child['href'] ?? '/' ) ); ?>">
 							<?php echo esc_html( $child['label'] ); ?>
 						</a>

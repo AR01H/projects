@@ -9,7 +9,7 @@
  */
 defined( 'ABSPATH' ) || exit;
 
-$decor = App_Helpers::data( 'decor' );
+$decor = App_Data_Provider::get( 'decor' );
 if ( empty( $decor['enabled'] ) ) {
 	return;
 }

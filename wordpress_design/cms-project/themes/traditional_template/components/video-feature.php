@@ -69,7 +69,7 @@ if ( ! function_exists( 'app_video_embed_url' ) ) {
 }
 
 $vf_source = ( isset( $source ) && $source ) ? (string) $source : 'video_feature';
-$data      = App_Helpers::data( $vf_source );
+$data      = App_Data_Provider::get( $vf_source );
 $title     = ( is_array( $data ) && ! empty( $data['title'] ) ) ? $data['title'] : '';
 if ( '' === $title ) {
 	return;

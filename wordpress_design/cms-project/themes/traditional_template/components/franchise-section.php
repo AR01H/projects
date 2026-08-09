@@ -6,7 +6,7 @@
 defined( 'ABSPATH' ) || exit;
 
 // Pull data from franchise JSON
-$f_data = NT_Data_Provider::get('franchise') ?: [];
+$f_data = App_Data_Provider::get('franchise') ?: [];
 
 $hero_img     = $f_data['hero_img'] ?? '';
 $hero_img_alt = $f_data['hero_img_alt'] ?? '';
@@ -116,6 +116,6 @@ get_template_part( 'components/parts/form-modal', null, array(
 	'id'     => 'app-franchise-modal',
 	'title'  => __( 'Franchise Enquiry 💼', NT_TEXT_DOMAIN ),
 	'sub'    => __( 'Tell us a little about you - we reply within 24 hours.', NT_TEXT_DOMAIN ),
-	'config' => App_Helpers::data( 'form_franchise' ),
+	'config' => App_Data_Provider::get( 'form_franchise' ),
 ) );
 ?>

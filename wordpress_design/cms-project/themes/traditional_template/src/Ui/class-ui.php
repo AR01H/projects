@@ -126,7 +126,7 @@ class NT_Ui {
 		if ( null !== $merged ) {
 			return $merged;
 		}
-		$data   = is_callable( array( 'App_Helpers', 'data' ) ) ? App_Helpers::data( self::DATA_KEY ) : array();
+		$data   = is_callable( array( 'App_Helpers', 'data' ) ) ? App_Data_Provider::get( self::DATA_KEY ) : array();
 		$json   = ( is_array( $data ) && ! empty( $data['labels'] ) && is_array( $data['labels'] ) ) ? $data['labels'] : array();
 		$merged = array_merge( self::LABEL_FALLBACKS, array_map( 'strval', $json ) );
 		return $merged;
@@ -136,7 +136,7 @@ class NT_Ui {
 	 * An accessibility string from admin/data/ui.json -> "aria".
 	 */
 	public static function aria( string $key, string $default = '' ): string {
-		$data = is_callable( array( 'App_Helpers', 'data' ) ) ? App_Helpers::data( self::DATA_KEY ) : array();
+		$data = is_callable( array( 'App_Helpers', 'data' ) ) ? App_Data_Provider::get( self::DATA_KEY ) : array();
 		$map  = ( is_array( $data ) && ! empty( $data['aria'] ) && is_array( $data['aria'] ) ) ? $data['aria'] : array();
 		return ( isset( $map[ $key ] ) && '' !== trim( (string) $map[ $key ] ) ) ? (string) $map[ $key ] : $default;
 	}
@@ -146,7 +146,7 @@ class NT_Ui {
 	 * such as toast duration). Kept out of CSS/JS so timings are editable too.
 	 */
 	public static function setting( string $key, $default = null ) {
-		$data = is_callable( array( 'App_Helpers', 'data' ) ) ? App_Helpers::data( self::DATA_KEY ) : array();
+		$data = is_callable( array( 'App_Helpers', 'data' ) ) ? App_Data_Provider::get( self::DATA_KEY ) : array();
 		$map  = ( is_array( $data ) && ! empty( $data['behaviour'] ) && is_array( $data['behaviour'] ) ) ? $data['behaviour'] : array();
 		return array_key_exists( $key, $map ) ? $map[ $key ] : $default;
 	}

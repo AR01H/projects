@@ -1,0 +1,1 @@
+<?php defined('ABSPATH')||exit; $_GET['tt_faq_filter']='franchise'; require dirname(__DIR__) . '/content/SubFaqs.php';
