@@ -4,6 +4,13 @@
     "kicker": "Since 1974",
     "subtitle": "The Long Way Round",
     "title": "Our Journey",
+    "video_url": "assets/videos/hero_bg.mp4",
+    "floating_icons": [
+      "🌿",
+      "🍋",
+      "🍎",
+      "🌿"
+    ],
     "arc_text": "Field • Press • Counter • Glass",
     "ornament": "botanical",
     "ornament_image": "assets/images/backgrounds/sideedge1.png"
@@ -15,7 +22,14 @@
     "arc_text": "Classic • Fruity • Spiced • Herbal",
     "ornament": "botanical",
     "tag": "Our Range",
-    "ornament_image": "assets/images/backgrounds/sideedge1.png"
+    "ornament_image": "assets/images/backgrounds/sideedge1.png",
+    "video_url": "assets/videos/hero_bg.mp4",
+    "floating_icons": [
+      "🌿",
+      "🍋",
+      "🍎",
+      "🌿"
+    ]
   },
   "gallery": {
     "kicker": "From The Albums",
@@ -23,7 +37,14 @@
     "title": "The Gallery",
     "arc_text": "Harvests • Counters • Weddings • Regulars",
     "ornament": "rope",
-    "ornament_image": "assets/images/backgrounds/sideedge1.png"
+    "ornament_image": "assets/images/backgrounds/sideedge1.png",
+    "video_url": "assets/videos/hero_bg.mp4",
+    "floating_icons": [
+      "🌿",
+      "🍋",
+      "🍎",
+      "🌿"
+    ]
   },
   "events": {
     "kicker": "Book The Counter",
@@ -34,7 +55,14 @@
     "tag": "Events & Catering",
     "icon": "🎪",
     "image": "https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?auto=format&fit=crop&w=1600&q=80",
-    "ornament_image": "assets/images/backgrounds/sideedge1.png"
+    "ornament_image": "assets/images/backgrounds/sideedge1.png",
+    "video_url": "assets/videos/hero_bg.mp4",
+    "floating_icons": [
+      "🌿",
+      "🍋",
+      "🍎",
+      "🌿"
+    ]
   },
   "franchise": {
     "kicker": "Partner With Us",
@@ -51,7 +79,14 @@
       "cracks": 0.62,
       "gloss": 0.1
     },
-    "ornament_image": "assets/images/backgrounds/sideedge1.png"
+    "ornament_image": "assets/images/backgrounds/sideedge1.png",
+    "video_url": "assets/videos/hero_bg.mp4",
+    "floating_icons": [
+      "🌿",
+      "🍋",
+      "🍎",
+      "🌿"
+    ]
   },
   "order": {
     "kicker": "Straight To Your Door",
@@ -59,7 +94,14 @@
     "title": "Order Online",
     "arc_text": "Bottles • Crates • Subscriptions",
     "ornament": "chain",
-    "ornament_image": "assets/images/backgrounds/sideedge1.png"
+    "ornament_image": "assets/images/backgrounds/sideedge1.png",
+    "video_url": "assets/videos/hero_bg.mp4",
+    "floating_icons": [
+      "🌿",
+      "🍋",
+      "🍎",
+      "🌿"
+    ]
   },
   "contact": {
     "kicker": "We Are Listening",
@@ -70,7 +112,14 @@
     "tag": "Get In Touch",
     "icon": "✉️",
     "image": "https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&w=1600&q=80",
-    "ornament_image": "assets/images/backgrounds/sideedge1.png"
+    "ornament_image": "assets/images/backgrounds/sideedge1.png",
+    "video_url": "assets/videos/hero_bg.mp4",
+    "floating_icons": [
+      "🌿",
+      "🍋",
+      "🍎",
+      "🌿"
+    ]
   },
   "services": {
     "kicker": "Three Ways To Drink It",
@@ -78,7 +127,14 @@
     "title": "What We Do",
     "arc_text": "Press • Bottle • Deliver • Pour",
     "ornament": "crossed",
-    "ornament_image": "assets/images/backgrounds/sideedge1.png"
+    "ornament_image": "assets/images/backgrounds/sideedge1.png",
+    "video_url": "assets/videos/hero_bg.mp4",
+    "floating_icons": [
+      "🌿",
+      "🍋",
+      "🍎",
+      "🌿"
+    ]
   },
   "careers": {
     "kicker": "Join The Counter",
@@ -86,7 +142,14 @@
     "title": "Work With Us",
     "arc_text": "Field • Press • Counter • Road",
     "ornament": "rope",
-    "ornament_image": "assets/images/backgrounds/sideedge1.png"
+    "ornament_image": "assets/images/backgrounds/sideedge1.png",
+    "video_url": "assets/videos/hero_bg.mp4",
+    "floating_icons": [
+      "🌿",
+      "🍋",
+      "🍎",
+      "🌿"
+    ]
   },
   "faq": {
     "kicker": "Ask Us Anything",
@@ -94,7 +157,14 @@
     "title": "Help & Answers",
     "arc_text": "Orders • Delivery • Events • Trade",
     "ornament": "chain",
-    "ornament_image": "assets/images/backgrounds/sideedge1.png"
+    "ornament_image": "assets/images/backgrounds/sideedge1.png",
+    "video_url": "assets/videos/hero_bg.mp4",
+    "floating_icons": [
+      "🌿",
+      "🍋",
+      "🍎",
+      "🌿"
+    ]
   },
   "reviews": {
     "kicker": "In Their Words",
@@ -102,7 +172,14 @@
     "title": "What People Say",
     "arc_text": "Regulars • Buyers • Hosts • Partners",
     "ornament": "rope",
-    "ornament_image": "assets/images/backgrounds/sideedge1.png"
+    "ornament_image": "assets/images/backgrounds/sideedge1.png",
+    "video_url": "assets/videos/hero_bg.mp4",
+    "floating_icons": [
+      "🌿",
+      "🍋",
+      "🍎",
+      "🌿"
+    ]
   },
   "blog": {
     "kicker": "From The Field",
@@ -110,18 +187,39 @@
     "title": "The Journal",
     "arc_text": "Harvest • Press • Counter • Season",
     "ornament": "botanical",
-    "ornament_image": "assets/images/backgrounds/sideedge1.png"
+    "ornament_image": "assets/images/backgrounds/sideedge1.png",
+    "video_url": "assets/videos/hero_bg.mp4",
+    "floating_icons": [
+      "🌿",
+      "🍋",
+      "🍎",
+      "🌿"
+    ]
   },
   "news": {
     "tag": "Our Blog",
     "icon": "📰",
     "title": "News & Updates",
     "subtitle": "The latest from our team.",
-    "image": "https://images.unsplash.com/photo-1622597467836-f3285f2131b8?auto=format&fit=crop&w=1600&q=80"
+    "image": "https://images.unsplash.com/photo-1622597467836-f3285f2131b8?auto=format&fit=crop&w=1600&q=80",
+    "video_url": "assets/videos/hero_bg.mp4",
+    "floating_icons": [
+      "🌿",
+      "🍋",
+      "🍎",
+      "🌿"
+    ]
   },
   "blog_post": {
     "tag": "Our Blog",
     "icon": "📰",
-    "fallback_image": "https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&w=1600&q=80"
+    "fallback_image": "https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&w=1600&q=80",
+    "video_url": "assets/videos/hero_bg.mp4",
+    "floating_icons": [
+      "🌿",
+      "🍋",
+      "🍎",
+      "🌿"
+    ]
   }
 }

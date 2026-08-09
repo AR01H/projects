@@ -3511,14 +3511,14 @@ a.mini-card, div.mini-card {
 .social-btn {
   width: 32px; height: 32px;
   background: transparent;
-  border: 1.5px solid rgba(255,255,255,0.22);
+  border: 1.5px solid  var(--color-accent);
   border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  color: rgba(255,255,255,0.6);
   font-size: 0.8rem;
   transition: all 0.2s;
+  color: var(--color-accent);
 }
-.social-btn:hover { border-color: var(--color-accent); color: var(--color-accent); }
+.social-btn:hover { border-color: var(--color-accent); color: var(--color-accent);transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.08); }
 .footer-heart { color: var(--color-heart); }
 .footer-contact-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
 .footer-contact-item { font-size: 0.8rem; color: rgba(255,255,255,0.5); display: flex; align-items: center; gap: 7px; }

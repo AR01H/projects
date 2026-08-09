@@ -75,7 +75,7 @@
 /* ── Scroll to top button ──────────────────────────────────── */
 .scroll-to-top {
     position: fixed;
-    bottom: 28px;
+    bottom: 90px;
     right: 24px;
     z-index: 990;
     width: 44px;

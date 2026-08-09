@@ -45,6 +45,11 @@ $mh_kicker   = isset( $kicker )   ? (string) $kicker   : '';
 $mh_subtitle = isset( $subtitle ) ? (string) $subtitle : '';
 $mh_arc      = isset( $arc_text ) ? (string) $arc_text : '';
 $mh_ribbon   = isset( $ribbon )   ? (string) $ribbon   : '';
+$mh_video    = isset( $video_url ) ? (string) $video_url : '';
+
+if ( ! empty( $mh_video ) && strpos( $mh_video, 'http' ) !== 0 ) {
+	$mh_video = get_template_directory_uri() . '/' . ltrim( $mh_video, '/' );
+}
 
 /*
  * Side ornament. The artwork is an IMAGE from the theme, named in JSON, rather
@@ -196,8 +201,16 @@ $mh_id  = static function ( $suffix ) use ( $mh_uid ) {
 };
 ?>
 <section class="app-mh app-mh--<?php echo esc_attr( $mh_ornament ); ?> app-has-leaves"
-         aria-labelledby="<?php echo esc_attr( $mh_id( 'title' ) ); ?>"
+         aria-label="<?php echo esc_attr( $mh_title ); ?>"
          <?php echo $mh_style_attr ? 'style="' . esc_attr( $mh_style_attr ) . '"' : ''; ?>>
+
+	<?php if ( !empty($mh_video) ) : ?>
+	<div class="app-mh__video-bg" style="position: absolute; inset: 0; z-index: -2; opacity: 0.12; pointer-events: none;">
+		<video autoplay muted loop playsinline style="width: 100%; height: 100%; object-fit: cover;">
+			<source src="<?php echo esc_url($mh_video); ?>" type="video/mp4">
+		</video>
+	</div>
+	<?php endif; ?>
 
 	<?php
 	// The drifting "air" layer: cane leaves lift off the ground and float up
@@ -226,19 +239,6 @@ $mh_id  = static function ( $suffix ) use ( $mh_uid ) {
 			<?php endif; ?>
 
 			<div class="app-mh__board">
-
-				<?php /* Frame and timber are separate masked layers so the banner
-				         silhouette (bowed top AND bottom) can be cut from both,
-				         while the lettering above them stays unmasked. */ ?>
-				<span class="app-mh__frame" aria-hidden="true"></span>
-				<span class="app-mh__panel" aria-hidden="true">
-					<span class="app-mh__grain"></span>
-					<span class="app-mh__relief"></span>
-					<span class="app-mh__shade"></span>
-					<span class="app-mh__gloss"></span>
-					<span class="app-mh__cracks"></span>
-				</span>
-				<span class="app-mh__rivets" aria-hidden="true"></span>
 
 				<h1 class="app-mh__title" id="<?php echo esc_attr( $mh_id( 'title' ) ); ?>" data-nt-mh-fit>
 					<svg class="app-mh__title-svg" viewBox="0 0 1200 330"

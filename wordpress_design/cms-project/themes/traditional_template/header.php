@@ -25,7 +25,7 @@ $nt_is_home = is_front_page() || 'home' === (string) get_query_var( 'app_active_
 <body <?php body_class( $nt_is_home ? 'design-traditional app-hero-top' : 'design-traditional app-inner' ); ?>>
 <?php wp_body_open(); ?>
 
-<a class="skip-link screen-reader-text" href="#app-main"><?php esc_html_e( 'Skip to content', NT_TEXT_DOMAIN ); ?></a>
+
 
 <?php App_Helpers::component( 'parts/main_header' ); ?>
 

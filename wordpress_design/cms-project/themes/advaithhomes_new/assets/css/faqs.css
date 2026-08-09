@@ -167,6 +167,7 @@
     height: 0;
     overflow: hidden;
     transition: height 260ms ease;
+    padding-left: 6px;
 }
 
 .faq-a-body p {

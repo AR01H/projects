@@ -98,23 +98,10 @@
   z-index: -1;
 }
 .app-mh::before {
-  background: radial-gradient(
-      120% 82% at 50% -14%,
-      var(--sunlight) 0%,
-      transparent 62%
-    ),
-    radial-gradient(
-      80% 60% at 50% 18%,
-      rgba(255, 236, 186, 0.1) 0%,
-      transparent 70%
-    );
+  display: none;
 }
 .app-mh::after {
-  background: radial-gradient(
-    120% 110% at 50% 42%,
-    transparent 52%,
-    rgba(24, 13, 5, 0.22) 100%
-  );
+  display: none;
 }
 
 .app-mh__stage {
@@ -220,8 +207,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  filter: drop-shadow(0 16px 26px var(--shadow))
-    drop-shadow(0 34px 52px rgba(24, 13, 5, 0.26));
 }
 
 /* Banner silhouette: bowed up along the top edge, bowed down along the bottom,
@@ -439,11 +424,11 @@
    --title-face: var(--app-font-accent) and --type-cut-width: 17px in its
    page_headers.json style block and gets the old treatment back. */
 .app-mh {
-  --title-face: var(--app-font-display, "Cormorant Garamond", Georgia, serif);
-  --title-weight: 600;
-  --title-tracking: 0.06em;
-  --title-case: uppercase;
-  --type-cut-width: 7px;
+  --title-face: "Jim Nightshade", cursive;
+  --title-weight: 400;
+  --title-tracking: 0;
+  --title-case: none;
+  --type-cut-width: 10px;
 }
 
 .app-mh__type text {
