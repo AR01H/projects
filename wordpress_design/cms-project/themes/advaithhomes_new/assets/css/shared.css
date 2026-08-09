@@ -554,9 +554,10 @@ section{
   font-weight: 600;
   color: var(--client-color);
   line-height: 1.2;
-  max-width: 70px;
+  max-width: 80px;
   background: white;
   border-radius: 3px;
+  padding:2px;
 }
 /* First step's icon gets a soft gold ring, so the journey's starting point
    reads at a glance instead of all nodes looking equally weighted - same
