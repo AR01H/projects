@@ -1,0 +1,28 @@
+{
+  "tag": "Find Us",
+  "title": "Counters <em>Near You</em>",
+  "sub": "Pop in for a glass pressed in front of you.",
+  "items": [
+    {
+      "name": "Cambridge",
+      "address": "12 Market Street, Cambridge CB2 3PA",
+      "hours": "Mon - Sun: 9am - 8pm",
+      "phone": "+44 7770 461939",
+      "map_url": "https://maps.google.com/?q=Market+Street+Cambridge"
+    },
+    {
+      "name": "Ely",
+      "address": "4 High Street Passage, Ely CB7 4NB",
+      "hours": "Mon - Sat: 10am - 7pm",
+      "phone": "+44 7770 461939",
+      "map_url": "https://maps.google.com/?q=High+Street+Passage+Ely"
+    },
+    {
+      "name": "Peterborough",
+      "address": "88 Bridge Street, Peterborough PE1 1DQ",
+      "hours": "Mon - Sun: 9am - 9pm",
+      "phone": "+44 7770 461939",
+      "map_url": "https://maps.google.com/?q=Bridge+Street+Peterborough"
+    }
+  ]
+}

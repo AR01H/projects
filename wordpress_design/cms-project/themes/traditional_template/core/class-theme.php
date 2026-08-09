@@ -15,15 +15,14 @@ class App_Theme {
 		require_once __DIR__ . '/class-helpers.php';
 		require_once __DIR__ . '/class-data-provider.php';
 		require_once __DIR__ . '/class-database.php';
-		require_once __DIR__ . '/class-db-schema.php';
 		require_once __DIR__ . '/class-router.php';
 		require_once __DIR__ . '/class-assets.php';
 		require_once __DIR__ . '/class-ajax.php';
 		require_once __DIR__ . '/class-rest.php';
 
 		if ( is_admin() ) {
-			require_once dirname(__DIR__) . '/admin/class-admin.php';
-			App_Admin::init();
+			require_once __DIR__ . '/class-admin.php';
+			App_Admin::boot();
 		}
 
 		self::include_mapped_files();
@@ -71,7 +70,6 @@ class App_Theme {
 		// Activation tasks
 		add_action( 'after_switch_theme', array( 'App_Router', 'sync_pages' ) );
 		add_action( 'after_switch_theme', array( 'App_Database', 'install_all' ) );
-		add_action( 'after_switch_theme', array( 'App_Db_Schema', 'install' ) );
 		add_action( 'after_switch_theme', 'flush_rewrite_rules' );
 	}
 

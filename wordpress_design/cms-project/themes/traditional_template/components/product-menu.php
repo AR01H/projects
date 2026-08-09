@@ -8,7 +8,7 @@
  */
 defined( 'ABSPATH' ) || exit;
 
-$data     = App_Data_Provider::get( 'flavours' ) ?: array();
+$data     = App_Helpers::data( 'flavours' ) ?: array();
 $flavours = $data['flavours'] ?? array();
 if ( empty( $flavours ) ) {
 	return;

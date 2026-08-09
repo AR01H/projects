@@ -1,0 +1,25 @@
+{
+  "tag": "Franchise Partners",
+  "title": "Voices From Our <em>Partners</em>",
+  "sub": "Owners who took the leap - and what the first year actually looked like.",
+  "items": [
+    {
+      "name": "Dev Patel",
+      "location": "Leicester",
+      "rating": 5,
+      "text": "Opened a kiosk in eight weeks. The training and launch support meant I was never guessing - the model just works."
+    },
+    {
+      "name": "Marta Nowak",
+      "location": "Manchester",
+      "rating": 5,
+      "text": "Footfall doubled in month three. Head office actually answers the phone, which I did not expect from a franchise."
+    },
+    {
+      "name": "Ibrahim Khan",
+      "location": "Birmingham",
+      "rating": 5,
+      "text": "Low entry cost, quick returns, and the brand does a lot of the selling for you. Opening my second site this year."
+    }
+  ]
+}

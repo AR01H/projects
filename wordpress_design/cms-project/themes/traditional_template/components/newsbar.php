@@ -1,5 +1,5 @@
 <?php
-$news_items = App_Data_Provider::get('newsbar');
+$news_items = NT_Data_Provider::get('newsbar');
 if (empty($news_items)) return;
 ?>
 <div class="app-newsbar">

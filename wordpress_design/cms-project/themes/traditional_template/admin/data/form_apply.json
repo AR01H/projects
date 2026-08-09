@@ -1,0 +1,26 @@
+{
+  "_doc": "The job application form shown inside each role's dialog (components/careers.php). It posts to the same generic lead handler as every other form; the job title is added automatically by the dialog it sits in.",
+
+  "id": "nt-form-apply",
+  "action": "lead_submit",
+  "submit": "Send my application",
+  "class": "nt-form--dialog",
+  "fields": [
+    { "type": "text",  "id": "apply-name",  "name": "name",  "label": "Your name", "placeholder": "Full name", "required": true },
+    { "type": "email", "id": "apply-email", "name": "email", "label": "Email",     "placeholder": "you@example.com", "required": true },
+    { "type": "tel",   "id": "apply-phone", "name": "phone", "label": "Phone",     "placeholder": "Best number to reach you" },
+    {
+      "type": "select",
+      "id": "apply-start",
+      "name": "availability",
+      "label": "When could you start?",
+      "options": {
+        "now": "Straight away",
+        "two_weeks": "Within two weeks",
+        "month": "Within a month",
+        "later": "Later than that"
+      }
+    },
+    { "type": "textarea", "id": "apply-note", "name": "message", "label": "Why this job?", "placeholder": "A few lines is plenty", "required": true }
+  ]
+}

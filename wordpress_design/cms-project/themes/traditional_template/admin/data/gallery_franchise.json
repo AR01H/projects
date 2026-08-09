@@ -1,0 +1,16 @@
+{
+  "_doc": "The Franchise page's OWN gallery - the counters themselves, so a prospective partner can see what they would be buying. Rendered by components/gallery-grid.php via args.source.",
+
+  "tag": "The Counters",
+  "title": "What you would be running",
+  "body": "The three formats, photographed in the places they are actually working.",
+  "categories": ["All", "Kiosk", "Premium", "Flagship"],
+  "images": [
+    { "src": "https://images.unsplash.com/photo-1567521464027-f127ff144326?auto=format&fit=crop&w=800&q=80", "category": "Kiosk", "label": "Market Kiosk", "desc": "The smallest format, two staff" },
+    { "src": "https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=800&q=80", "category": "Premium", "label": "Premium Counter", "desc": "Seating and a full board" },
+    { "src": "https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=800&q=80", "category": "Flagship", "label": "Flagship Store", "desc": "Press, kitchen and bottling" },
+    { "src": "https://images.unsplash.com/photo-1521017432531-fbd92d768814?auto=format&fit=crop&w=800&q=80", "category": "Premium", "label": "Fit-Out", "desc": "Timber, brass and parchment throughout" },
+    { "src": "https://images.unsplash.com/photo-1578916171728-46686eac8d58?auto=format&fit=crop&w=800&q=80", "category": "Flagship", "label": "Back Of House", "desc": "Where the crates are made up" },
+    { "src": "https://images.unsplash.com/photo-1493857671505-72967e2e2760?auto=format&fit=crop&w=800&q=80", "category": "Kiosk", "label": "Opening Day", "desc": "A partner's first morning" }
+  ]
+}

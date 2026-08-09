@@ -33,7 +33,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$nt_decor  = App_Data_Provider::get( 'decor' );
+$nt_decor  = App_Helpers::data( 'decor' );
 $nt_leaves = ( isset( $nt_decor['leaves'] ) && is_array( $nt_decor['leaves'] ) ) ? $nt_decor['leaves'] : array();
 
 if ( empty( $nt_leaves['enabled'] ) ) {

@@ -21,7 +21,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $nt_src   = ( isset( $source ) && $source ) ? (string) $source : 'map';
-$nt_data  = App_Data_Provider::get( $nt_src );
+$nt_data  = App_Helpers::data( $nt_src );
 $nt_embed = (string) ( $nt_data['embed_url'] ?? '' );
 $nt_link  = (string) ( $nt_data['link_url'] ?? '' );
 if ( '' === $nt_embed && '' === $nt_link ) {

@@ -9,7 +9,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $tm_source = ( isset( $source ) && $source ) ? (string) $source : 'team';
-$data      = App_Data_Provider::get( $tm_source );
+$data      = App_Helpers::data( $tm_source );
 $items     = ( is_array( $data ) && ! empty( $data['items'] ) ) ? (array) $data['items'] : array();
 if ( empty( $items ) ) {
 	return;

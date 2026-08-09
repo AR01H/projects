@@ -1,0 +1,15 @@
+{
+  "tag": "Come And See Us",
+  "title": "When We Are <em>Open</em>",
+  "sub": "The press runs all day. Last orders are fifteen minutes before we close.",
+  "note": "Bank holidays may differ - give us a ring before you travel.",
+  "days": [
+    { "label": "Monday",    "day": 1, "open": "10:00", "close": "21:00" },
+    { "label": "Tuesday",   "day": 2, "open": "10:00", "close": "21:00" },
+    { "label": "Wednesday", "day": 3, "open": "10:00", "close": "21:00" },
+    { "label": "Thursday",  "day": 4, "open": "10:00", "close": "22:00" },
+    { "label": "Friday",    "day": 5, "open": "10:00", "close": "23:00" },
+    { "label": "Saturday",  "day": 6, "open": "09:00", "close": "23:00" },
+    { "label": "Sunday",    "day": 0, "open": "11:00", "close": "18:00" }
+  ]
+}

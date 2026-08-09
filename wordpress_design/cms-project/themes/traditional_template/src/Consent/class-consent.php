@@ -68,7 +68,7 @@ class NT_Consent {
 		if ( null !== $config ) {
 			return $config;
 		}
-		$data = is_callable( array( 'App_Helpers', 'data' ) ) ? App_Data_Provider::get( self::DATA_KEY ) : array();
+		$data = is_callable( array( 'App_Helpers', 'data' ) ) ? App_Helpers::data( self::DATA_KEY ) : array();
 		$data = is_array( $data ) ? $data : array();
 
 		$config = array(

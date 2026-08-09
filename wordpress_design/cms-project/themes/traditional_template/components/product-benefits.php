@@ -10,12 +10,12 @@
  */
 defined( 'ABSPATH' ) || exit;
 
-$content = App_Data_Provider::get( 'content' )['product_benefits'] ?? [];
+$content = App_Helpers::data( 'content' )['product_benefits'] ?? [];
 $tag   = $args['tag']   ?? $content['tag']   ?? 'WHY US';
 $title = $args['title'] ?? $content['heading'] ?? 'The Benefits';
 $body  = $args['body']  ?? $content['body']  ?? '';
 
-$items   = $args['items'] ?? App_Data_Provider::get( 'benefits_items' ) ?? [];
+$items   = $args['items'] ?? App_Helpers::data( 'benefits_items' ) ?? [];
 $allowed = [ 'span' => [ 'class' => [], 'style' => [] ], 'em' => [] ];
 ?>
 

@@ -9,7 +9,7 @@ defined( 'ABSPATH' ) || exit;
  * All text/images below come from admin/data/about.json (first entry).
  * Edit the copy there - nothing user-facing should be hardcoded in this file.
  */
-$about = App_Data_Provider::get('about');
+$about = NT_Data_Provider::get('about');
 $about = ( is_array($about) && !empty($about) ) ? (array) $about[0] : [];
 
 $photo     = $about['image']         ?? '';

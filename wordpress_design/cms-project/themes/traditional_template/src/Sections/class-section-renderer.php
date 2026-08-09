@@ -47,7 +47,7 @@ class NT_Section_Renderer {
 	 * @return array<int,array>
 	 */
 	public static function sections_for( string $page_key ): array {
-		$map = is_callable( array( 'App_Helpers', 'data' ) ) ? App_Data_Provider::get( self::DATA_KEY ) : array();
+		$map = is_callable( array( 'App_Helpers', 'data' ) ) ? App_Helpers::data( self::DATA_KEY ) : array();
 		if ( ! is_array( $map ) || empty( $map[ $page_key ] ) || ! is_array( $map[ $page_key ] ) ) {
 			return array();
 		}
@@ -141,7 +141,7 @@ class NT_Section_Renderer {
 		$context = ( isset( $section['args'] ) && is_array( $section['args'] ) ) ? $section['args'] : array();
 
 		if ( ! empty( $section['header'] ) && is_callable( array( 'App_Helpers', 'data' ) ) ) {
-			$headers = App_Data_Provider::get( 'page_headers' );
+			$headers = App_Helpers::data( 'page_headers' );
 			$name    = (string) $section['header'];
 			$hdr     = ( is_array( $headers ) && isset( $headers[ $name ] ) && is_array( $headers[ $name ] ) ) ? $headers[ $name ] : array();
 			// Inline args win over the shared header block.

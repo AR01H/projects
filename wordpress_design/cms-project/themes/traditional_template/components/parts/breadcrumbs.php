@@ -24,7 +24,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$nt_cfg   = App_Data_Provider::get( 'breadcrumbs' );
+$nt_cfg   = App_Helpers::data( 'breadcrumbs' );
 $nt_pages = App_Theme::config( 'pages' );
 
 $nt_home_label = (string) ( $nt_cfg['home_label'] ?? '' );

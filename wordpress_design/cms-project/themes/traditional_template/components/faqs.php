@@ -15,7 +15,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $faq_source = ( isset( $source ) && $source ) ? (string) $source : 'faqs';
-$raw        = App_Data_Provider::get( $faq_source );
+$raw        = App_Helpers::data( $faq_source );
 
 if ( is_array( $raw ) && isset( $raw['items'] ) ) {
 	$faqs    = (array) $raw['items'];
@@ -30,7 +30,7 @@ if ( empty( $faqs ) ) {
 }
 
 if ( '' === $heading ) {
-	$content = App_Data_Provider::get( 'content' )['faqs'] ?? array();
+	$content = App_Helpers::data( 'content' )['faqs'] ?? array();
 	$heading = $content['heading'] ?? __( 'Frequently Asked Questions', NT_TEXT_DOMAIN );
 }
 ?>

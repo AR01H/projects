@@ -34,24 +34,12 @@ $class   = $args['class'] ?? '';
 
 			<?php if ( $type === 'textarea' ) : ?>
 				<textarea class="app-form-textarea" id="<?php echo esc_attr( $fid ); ?>" name="<?php echo esc_attr( $fname ); ?>" placeholder="<?php echo esc_attr( $fplace ); ?>" rows="5" <?php echo $freq; ?>></textarea>
-			<?php elseif ( $type === 'select' ) : 
-				$is_multi = !empty($field['multi']) ? 'multiple' : '';
-				$name_attr = $is_multi ? $fname . '[]' : $fname;
-			?>
-				<select class="app-form-select" id="<?php echo esc_attr( $fid ); ?>" name="<?php echo esc_attr( $name_attr ); ?>" <?php echo $is_multi; ?> <?php echo $freq; ?>>
+			<?php elseif ( $type === 'select' ) : ?>
+				<select class="app-form-select" id="<?php echo esc_attr( $fid ); ?>" name="<?php echo esc_attr( $fname ); ?>" <?php echo $freq; ?>>
 					<?php foreach ( $foptions as $opt_val => $opt_label ) : ?>
 						<option value="<?php echo esc_attr( $opt_val ); ?>"><?php echo esc_html( $opt_label ); ?></option>
 					<?php endforeach; ?>
 				</select>
-			<?php elseif ( $type === 'checkbox' && !empty($foptions) ) : ?>
-				<div class="app-form-checkbox-group">
-					<?php foreach ( $foptions as $opt_val => $opt_label ) : ?>
-						<label class="app-form-checkbox-label">
-							<input type="checkbox" name="<?php echo esc_attr( $fname ); ?>[]" value="<?php echo esc_attr( $opt_val ); ?>" <?php echo $freq; ?>>
-							<?php echo esc_html( $opt_label ); ?>
-						</label>
-					<?php endforeach; ?>
-				</div>
 			<?php else : ?>
 				<input class="app-form-input" type="<?php echo esc_attr( $type ); ?>" id="<?php echo esc_attr( $fid ); ?>" name="<?php echo esc_attr( $fname ); ?>" placeholder="<?php echo esc_attr( $fplace ); ?>" <?php echo $freq; ?>>
 			<?php endif; ?>

@@ -1,0 +1,23 @@
+[
+  {
+    "icon": "🏆",
+    "title": "Top Quality",
+    "desc": "Awarded for excellence.",
+    "badge": "2026",
+    "image": "https://placehold.co/600x400/111111/ffffff?text=Quality+Certificate"
+  },
+  {
+    "icon": "✅",
+    "title": "Certified",
+    "desc": "Highest safety standards.",
+    "badge": "Active",
+    "image": "https://placehold.co/600x400/222222/ffffff?text=Safety+Standards"
+  },
+  {
+    "icon": "🌿",
+    "title": "Organic",
+    "desc": "100% natural ingredients.",
+    "badge": "Verified",
+    "image": "https://placehold.co/600x400/333333/ffffff?text=Organic+Verified"
+  }
+]

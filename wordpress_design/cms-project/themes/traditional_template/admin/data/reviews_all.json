@@ -1,0 +1,19 @@
+{
+  "_doc": "The combined testimonial set used on the dedicated Reviews page. The per-page files (reviews.json, reviews_events.json, reviews_franchise.json, reviews_order.json) stay as they are and keep serving their own pages - this one is the full wall, so the Reviews page shows everything in one place.",
+
+  "tag": "In Their Words",
+  "title": "What people say <em>afterwards</em>",
+  "sub": "Counter regulars, event bookers, wholesale buyers and franchise partners.",
+
+  "items": [
+    { "name": "Ramesh P.", "location": "Market Row regular", "rating": 5, "text": "The most refreshing thing I have had all summer, and I have tried every stall on this road. You can taste that it was cut this morning." },
+    { "name": "Anjali S.", "location": "Weekly delivery", "rating": 5, "text": "The standing order has become the best part of Thursday. It turns up cold, every week, without me having to think about it once." },
+    { "name": "Vikram N.", "location": "Wedding, June", "rating": 5, "text": "They set up in the corner of the garden and there was a queue for four hours straight. Half the speeches were about the juice." },
+    { "name": "Priya D.", "location": "Cafe owner, wholesale", "rating": 5, "text": "We have used three suppliers before this one. This is the first where the delivery day has never moved and nothing has ever arrived warm." },
+    { "name": "Tom H.", "location": "Franchise partner, year two", "rating": 5, "text": "The training was three weeks and none of it was padding. I opened knowing how to run the press, cost a crate and read a bad stalk." },
+    { "name": "Sunita R.", "location": "Festival organiser", "rating": 4, "text": "Turned up when they said, set up in two hours, cleared in one, and left the pitch cleaner than they found it. Booked again for next year." },
+    { "name": "Daniel O.", "location": "Corporate booking", "rating": 5, "text": "We wanted something that was not another coffee cart. Everyone remembered it, which is the whole point of doing these things." },
+    { "name": "Meera K.", "location": "Counter regular", "rating": 5, "text": "My grandfather had it from a cart exactly like this. It tastes the same. I did not expect to be quite so pleased about that." },
+    { "name": "James F.", "location": "Restaurant buyer", "rating": 5, "text": "The allergen paperwork arrived before I had to ask for it. That tells you most of what you need to know about how they run things." }
+  ]
+}

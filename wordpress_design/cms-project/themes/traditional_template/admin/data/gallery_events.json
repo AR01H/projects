@@ -1,0 +1,16 @@
+{
+  "_doc": "The Events page's OWN gallery. Same component as the main gallery (components/gallery-grid.php), pointed here with { \"component\": \"gallery-grid\", \"args\": { \"source\": \"gallery_events\" } } - so each page shows its own pictures with no duplicated PHP. Copy this file to give any other page a gallery of its own.",
+
+  "tag": "From The Bookings",
+  "title": "The counter, out in the world",
+  "body": "Weddings, festivals, launches and school fairs - the same press, set up wherever you need it.",
+  "categories": ["All", "Weddings", "Festivals", "Corporate", "Private"],
+  "images": [
+    { "src": "https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?auto=format&fit=crop&w=800&q=80", "category": "Weddings", "label": "Summer Wedding", "desc": "Pressing between the speeches" },
+    { "src": "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&w=800&q=80", "category": "Festivals", "label": "Festival Gate", "desc": "Four thousand glasses in a weekend" },
+    { "src": "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=800&q=80", "category": "Private", "label": "Garden Party", "desc": "Eighty guests, one press" },
+    { "src": "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=800&q=80", "category": "Corporate", "label": "Company Launch", "desc": "A counter in the atrium" },
+    { "src": "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=800&q=80", "category": "Festivals", "label": "Village Fair", "desc": "The queue that did not stop" },
+    { "src": "https://images.unsplash.com/photo-1470229722913-7ea0d7a8b0b8?auto=format&fit=crop&w=800&q=80", "category": "Weddings", "label": "Late Evening", "desc": "Still pouring after dark" }
+  ]
+}

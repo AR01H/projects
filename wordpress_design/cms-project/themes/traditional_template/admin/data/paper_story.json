@@ -1,0 +1,76 @@
+{
+  "_doc": "The 'stack of papers' story (components/paper-story.php). Sheets are read one at a time, top of the pile first. 'text' may be a string or an array of paragraphs. 'autoplay' is milliseconds between automatic turns - 0 keeps it manual. Give another page its own copy with { \"component\": \"paper-story\", \"args\": { \"source\": \"paper_story_process\" } }.",
+
+  "tag": "From The Archive",
+  "title": "The story of a <em>single cane</em>",
+  "sub": "Turn the papers one at a time. Each sheet is a step between the field and the glass in your hand.",
+  "autoplay": 0,
+
+  "sheets": [
+    {
+      "chapter": "Sheet One",
+      "year": "Planting",
+      "title": "It starts in wet ground",
+      "text": [
+        "A cutting goes into the soil flat, not upright, and every joint on it sends up a shoot. One length of last season's cane becomes a whole row of this year's.",
+        "The fields we buy from have been planted this way for four generations. Nobody has yet found a reason to change it."
+      ],
+      "quote": "You do not plant a seed. You plant last season's cane.",
+      "image": "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1200&q=80",
+      "image_alt": "Freshly turned field ready for planting",
+      "stamp": "Field notes"
+    },
+    {
+      "chapter": "Sheet Two",
+      "year": "Growing",
+      "title": "Twelve months of sun and rain",
+      "text": [
+        "Cane takes almost a full year to sweeten. Cut it early and the juice runs thin and grassy; leave it too long and the stalk turns woody and dry.",
+        "The growers read the leaves, not the calendar. When the lower leaves dry back and the stalk rings hard under a knuckle, it is ready."
+      ],
+      "image": "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=1200&q=80",
+      "image_alt": "Tall sugarcane growing in the sun",
+      "stamp": "Season 12"
+    },
+    {
+      "chapter": "Sheet Three",
+      "year": "Harvest",
+      "title": "Cut by hand, at dawn",
+      "text": [
+        "Every stalk is cut low, where the sugar sits heaviest, and stripped by hand. A machine is faster and takes the bitter tops with it.",
+        "From the moment it is cut the clock starts. Cane begins losing sweetness within hours, which is why nothing we press has travelled far."
+      ],
+      "quote": "Cut at first light, pressed before noon.",
+      "image": "https://images.unsplash.com/photo-1574943320219-553eb213f72d?auto=format&fit=crop&w=1200&q=80",
+      "image_alt": "Bundles of freshly cut sugarcane",
+      "stamp": "Same day"
+    },
+    {
+      "chapter": "Sheet Four",
+      "year": "Pressing",
+      "title": "Three passes through the rollers",
+      "text": [
+        "The stalk goes through the mill three times. The first pass gives the clearest juice, the second the sweetest, and the third the deep green note that makes it taste of the field.",
+        "No heat, no water, no sugar added. What comes out of the roller is what goes into the glass."
+      ],
+      "image": "https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=1200&q=80",
+      "image_alt": "Cane juice running from a press",
+      "stamp": "Cold pressed"
+    },
+    {
+      "chapter": "Sheet Five",
+      "year": "Serving",
+      "title": "Poured over ice, with lime",
+      "text": [
+        "A squeeze of lime keeps the colour bright and cuts the sweetness; a slice of ginger warms it. Everything else on our board grew out of those two additions.",
+        "That is the whole method. It has not changed since 1985, and we have no plans to improve it."
+      ],
+      "quote": "Sweetness remembers the hands that grew it.",
+      "image": "https://images.unsplash.com/photo-1621263764928-df1444c5e859?auto=format&fit=crop&w=1200&q=80",
+      "image_alt": "A cold glass of sugarcane juice",
+      "stamp": "Since 1985",
+      "link_label": "See the full range",
+      "link_url": "/products/"
+    }
+  ]
+}

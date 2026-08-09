@@ -51,7 +51,7 @@ function app_term_label( $level, $plural = false ) {
  * )
  */
 function app_terms_tree() {
-	$tree = App_Data_Provider::get( 'terms' );
+	$tree = App_Helpers::data( 'terms' );
 	$tree = isset( $tree['tree'] ) && is_array( $tree['tree'] ) ? $tree['tree'] : array();
 	return apply_filters( 'app_terms_tree', $tree );
 }

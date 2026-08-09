@@ -1,0 +1,16 @@
+{
+  "_doc": "The Order page's OWN gallery - the product as it actually arrives, so someone ordering online can see what lands on the doorstep. Rendered by components/gallery-grid.php via args.source.",
+
+  "tag": "What Arrives",
+  "title": "Packed the morning it leaves us",
+  "body": "Bottles, crates and the cold box they travel in.",
+  "categories": ["All", "Bottles", "Crates", "Delivery"],
+  "images": [
+    { "src": "https://images.unsplash.com/photo-1610970881699-44a5587cabec?auto=format&fit=crop&w=800&q=80", "category": "Bottles", "label": "Single Bottles", "desc": "Pressed and capped by hand" },
+    { "src": "https://images.unsplash.com/photo-1578916171728-46686eac8d58?auto=format&fit=crop&w=800&q=80", "category": "Crates", "label": "The Wooden Crate", "desc": "Twelve bottles, returned on the next run" },
+    { "src": "https://images.unsplash.com/photo-1607349913338-fca6f7fc42d0?auto=format&fit=crop&w=800&q=80", "category": "Delivery", "label": "Cold Box", "desc": "Chilled from the counter to your door" },
+    { "src": "https://images.unsplash.com/photo-1553530666-ba11a7da3888?auto=format&fit=crop&w=800&q=80", "category": "Bottles", "label": "The Full Board", "desc": "Every blend, side by side" },
+    { "src": "https://images.unsplash.com/photo-1586880244406-556ebe35f282?auto=format&fit=crop&w=800&q=80", "category": "Delivery", "label": "On The Round", "desc": "The morning run leaves at five" },
+    { "src": "https://images.unsplash.com/photo-1621263764928-df1444c5e859?auto=format&fit=crop&w=800&q=80", "category": "Bottles", "label": "Poured Out", "desc": "How it should look in the glass" }
+  ]
+}

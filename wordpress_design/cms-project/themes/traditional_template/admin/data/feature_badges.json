@@ -1,0 +1,29 @@
+{
+  "items": [
+    {
+      "icon": "❀",
+      "label": "100% Natural",
+      "note": "Nothing added, nothing hidden"
+    },
+    {
+      "icon": "✦",
+      "label": "No Added Sugar",
+      "note": "Sweet from the cane alone"
+    },
+    {
+      "icon": "❃",
+      "label": "Rich In Minerals",
+      "note": "Naturally nutrient dense"
+    },
+    {
+      "icon": "✿",
+      "label": "Sustainably Sourced",
+      "note": "Fair pay, better soil"
+    },
+    {
+      "icon": "☘",
+      "label": "Farm Fresh",
+      "note": "Pressed the day you get it"
+    }
+  ]
+}

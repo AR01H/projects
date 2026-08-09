@@ -15,7 +15,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $ps_source = ( isset( $source ) && $source ) ? (string) $source : 'process_steps';
-$data      = App_Data_Provider::get( $ps_source );
+$data      = App_Helpers::data( $ps_source );
 $steps     = ( is_array( $data ) && ! empty( $data['steps'] ) ) ? (array) $data['steps'] : array();
 if ( empty( $steps ) ) {
 	return;

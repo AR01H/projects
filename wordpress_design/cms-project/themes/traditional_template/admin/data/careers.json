@@ -1,0 +1,77 @@
+{
+  "_doc": "Open roles (components/careers.php). Each role expands as a native <details> - it works with no JS - and 'Apply' opens a dialog built from the shared lead form, with the job title travelling along so the enquiry arrives labelled. When 'items' is empty the 'empty_text' note shows instead, keeping the speculative route open.",
+
+  "tag": "Careers",
+  "title": "Work with <em>us</em>",
+  "sub": "Small team, long hours in season, and nobody who does not care how it is made.",
+  "apply_label": "Apply for this role",
+  "form": "form_apply",
+  "dialog_kicker": "Applying for",
+  "dialog_text": "Tell us a little about yourself and we will come back to you within a week.",
+
+  "labels": {
+    "responsibilities": "What the job is",
+    "requirements": "What we are looking for"
+  },
+
+  "empty_text": "No openings right now - but we always read speculative applications, and most of our team arrived that way.",
+  "empty_link_label": "Write to us anyway",
+  "empty_link_url": "/contact/",
+
+  "items": [
+    {
+      "title": "Counter staff",
+      "location": "London - Market Row",
+      "type": "Full time, shifts",
+      "salary": "Above living wage, plus tips",
+      "summary": "Running the press, serving customers and keeping the counter looking like somewhere people want to stop.",
+      "responsibilities": [
+        "Pressing to order and keeping the mill clean between batches",
+        "Serving, taking payment and handling collection orders",
+        "Opening or closing the counter, including stock checks"
+      ],
+      "requirements": [
+        "Comfortable on your feet through a busy shift",
+        "Happy talking to strangers all day",
+        "Food hygiene certificate, or willing to take ours"
+      ],
+      "closes": "Open until filled"
+    },
+    {
+      "title": "Delivery driver",
+      "location": "Greater London",
+      "type": "Full time, early starts",
+      "salary": "Competitive, van provided",
+      "summary": "Getting the morning's pressing to wholesale customers cold and on time.",
+      "responsibilities": [
+        "Loading the chilled van and running the morning route",
+        "Handling crate returns and signed deliveries",
+        "Being the face of the business at every drop"
+      ],
+      "requirements": [
+        "Clean UK licence held for two years or more",
+        "Early starts - the first run leaves at 5am",
+        "Careful with a load that does not like being shaken"
+      ],
+      "closes": "Closes end of the month"
+    },
+    {
+      "title": "Grower liaison",
+      "location": "Field-based, with travel",
+      "type": "Part time",
+      "salary": "Day rate, negotiable",
+      "summary": "Keeping the relationships with our farms honest, and the cane arriving when it should.",
+      "responsibilities": [
+        "Visiting partner farms through the season",
+        "Agreeing cut dates and volumes with growers",
+        "Checking quality at source rather than on arrival"
+      ],
+      "requirements": [
+        "Agricultural background, or a genuine willingness to learn one",
+        "Able to travel for several days at a time in season",
+        "Patient - this job is mostly listening"
+      ],
+      "closes": "Open until filled"
+    }
+  ]
+}

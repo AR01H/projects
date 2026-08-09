@@ -1,12 +1,12 @@
 <?php
 defined( 'ABSPATH' ) || exit;
 
-$content  = App_Data_Provider::get( 'content' )['product_experience'] ?? [];
+$content  = App_Helpers::data( 'content' )['product_experience'] ?? [];
 $tag      = $args['tag']      ?? $content['tag']      ?? 'THE EXPERIENCE';
 $title    = $args['title']    ?? $content['heading']  ?? 'A Journey of Taste';
 $subtitle = $args['subtitle'] ?? $content['body']     ?? '';
 
-$_d       = App_Data_Provider::get( 'experience_data' ) ?: [];
+$_d       = App_Helpers::data( 'experience_data' ) ?: [];
 $steps    = $args['steps']    ?? $_d['steps']    ?? [];
 $quote    = $args['quote']    ?? $_d['quote']    ?? '';
 $author   = $args['author']   ?? $_d['author']   ?? '';

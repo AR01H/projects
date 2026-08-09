@@ -1,0 +1,127 @@
+{
+  "_doc": "Per-page header content for the movie-title board (components/movie-header/header.php). A section in page_sections.json with \"header\": \"<key>\" gets this block merged in as component args.\n\nTEXT (all optional except title): kicker = line above the board; subtitle = small curved line inside, above the headline; title = the carved headline (required - the board renders nothing without it); arc_text = text set along the lower curve; ribbon = plaque slung under the board; ornament = side motif, one of crossed | rope | chain | botanical.\n\nLOOK: an optional \"style\" object overrides the board's own CSS variables for THAT page only, so a page can carry its own timber and gold without touching CSS. Colours accept #hex, rgb() or rgba() and are rejected otherwise. Keys: wood_darkest, wood_dark, wood_mid, wood_warm, wood_light, gold_1..gold_4, gold_deep, stone, stone_light, stone_shade, stone_deep, ink, sheen, sunlight, shadow. Numbers (clamped): grain, relief, cracks, gloss, shade (0-1 opacities), roughness (0-30, how hand-cut the board edge is - 0 is machine-straight), frame_w and board_h (px), title_lift (px, nudges the headline). Anything omitted falls back to the defaults at the top of header.css.\n\ntag / icon / image are kept for the older flat header part, still used by news and blog posts.",
+  "about": {
+    "kicker": "Since 1974",
+    "subtitle": "The Long Way Round",
+    "title": "Our Journey",
+    "arc_text": "Field • Press • Counter • Glass",
+    "ornament": "botanical",
+    "ornament_image": "assets/images/backgrounds/sideedge1.png"
+  },
+  "products": {
+    "kicker": "Pressed To Order",
+    "subtitle": "The Full Range",
+    "title": "Drinks & Flavours",
+    "arc_text": "Classic • Fruity • Spiced • Herbal",
+    "ornament": "botanical",
+    "tag": "Our Range",
+    "ornament_image": "assets/images/backgrounds/sideedge1.png"
+  },
+  "gallery": {
+    "kicker": "From The Albums",
+    "subtitle": "A Look Back",
+    "title": "The Gallery",
+    "arc_text": "Harvests • Counters • Weddings • Regulars",
+    "ornament": "rope",
+    "ornament_image": "assets/images/backgrounds/sideedge1.png"
+  },
+  "events": {
+    "kicker": "Book The Counter",
+    "subtitle": "Occasions Of Every Size",
+    "title": "Events & Catering",
+    "arc_text": "Weddings • Corporate • Festivals • Private",
+    "ornament": "rope",
+    "tag": "Events & Catering",
+    "icon": "🎪",
+    "image": "https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?auto=format&fit=crop&w=1600&q=80",
+    "ornament_image": "assets/images/backgrounds/sideedge1.png"
+  },
+  "franchise": {
+    "kicker": "Partner With Us",
+    "subtitle": "Own A Counter",
+    "title": "Franchise",
+    "arc_text": "Kiosk • Premium • Flagship",
+    "ornament": "crossed",
+    "style": {
+      "wood_dark": "#33200f",
+      "wood_mid": "#4e2f18",
+      "wood_light": "#7a4a26",
+      "roughness": 14,
+      "grain": 0.7,
+      "cracks": 0.62,
+      "gloss": 0.1
+    },
+    "ornament_image": "assets/images/backgrounds/sideedge1.png"
+  },
+  "order": {
+    "kicker": "Straight To Your Door",
+    "subtitle": "Delivered Cold",
+    "title": "Order Online",
+    "arc_text": "Bottles • Crates • Subscriptions",
+    "ornament": "chain",
+    "ornament_image": "assets/images/backgrounds/sideedge1.png"
+  },
+  "contact": {
+    "kicker": "We Are Listening",
+    "subtitle": "Say Hello",
+    "title": "Contact Us",
+    "arc_text": "Call • Write • Visit",
+    "ornament": "chain",
+    "tag": "Get In Touch",
+    "icon": "✉️",
+    "image": "https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&w=1600&q=80",
+    "ornament_image": "assets/images/backgrounds/sideedge1.png"
+  },
+  "services": {
+    "kicker": "Three Ways To Drink It",
+    "subtitle": "Counter, Crate Or Event",
+    "title": "What We Do",
+    "arc_text": "Press • Bottle • Deliver • Pour",
+    "ornament": "crossed",
+    "ornament_image": "assets/images/backgrounds/sideedge1.png"
+  },
+  "careers": {
+    "kicker": "Join The Counter",
+    "subtitle": "Small Team, Long Season",
+    "title": "Work With Us",
+    "arc_text": "Field • Press • Counter • Road",
+    "ornament": "rope",
+    "ornament_image": "assets/images/backgrounds/sideedge1.png"
+  },
+  "faq": {
+    "kicker": "Ask Us Anything",
+    "subtitle": "The Questions We Get Most",
+    "title": "Help & Answers",
+    "arc_text": "Orders • Delivery • Events • Trade",
+    "ornament": "chain",
+    "ornament_image": "assets/images/backgrounds/sideedge1.png"
+  },
+  "reviews": {
+    "kicker": "In Their Words",
+    "subtitle": "Counters, Crates & Occasions",
+    "title": "What People Say",
+    "arc_text": "Regulars • Buyers • Hosts • Partners",
+    "ornament": "rope",
+    "ornament_image": "assets/images/backgrounds/sideedge1.png"
+  },
+  "blog": {
+    "kicker": "From The Field",
+    "subtitle": "Notes, Seasons & Stories",
+    "title": "The Journal",
+    "arc_text": "Harvest • Press • Counter • Season",
+    "ornament": "botanical",
+    "ornament_image": "assets/images/backgrounds/sideedge1.png"
+  },
+  "news": {
+    "tag": "Our Blog",
+    "icon": "📰",
+    "title": "News & Updates",
+    "subtitle": "The latest from our team.",
+    "image": "https://images.unsplash.com/photo-1622597467836-f3285f2131b8?auto=format&fit=crop&w=1600&q=80"
+  },
+  "blog_post": {
+    "tag": "Our Blog",
+    "icon": "📰",
+    "fallback_image": "https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&w=1600&q=80"
+  }
+}

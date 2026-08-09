@@ -1,0 +1,25 @@
+{
+  "tag": "Delivery Customers",
+  "title": "Straight To Your <em>Door</em>",
+  "sub": "What people say about the bottles that land on the doorstep.",
+  "items": [
+    {
+      "name": "Chloe H.",
+      "location": "Cambridge",
+      "rating": 5,
+      "text": "Arrived properly chilled and tasted like it was pressed that morning - because it was."
+    },
+    {
+      "name": "Aaron D.",
+      "location": "Peterborough",
+      "rating": 5,
+      "text": "Weekly order now. Easy to change flavours and it turns up in the slot I picked."
+    },
+    {
+      "name": "Nisha S.",
+      "location": "Norwich",
+      "rating": 5,
+      "text": "Packaging is lovely and fully recyclable. No plastic guilt, no added sugar."
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+	"hero_img": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=700&q=80",
+	"hero_img_alt": "Traditional cane press machine",
+	"cta_img": "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=1200&q=80",
+	"hero_title": "Bring The Tradition<br>To Your City",
+	"hero_subtitle": "A timeless drink.<br>A growing opportunity.",
+	"stamp_lines": [
+		"Family<br>Business",
+		"Proven Model",
+		"Full Support"
+	],
+	"section_why_title": "Why Partner With The Cane House?",
+	"cards": [
+		{
+			"icon": "⚖️",
+			"title": "Proven Business Model",
+			"desc": "A simple, successful and profitable business model that works."
+		},
+		{
+			"icon": "🏛️",
+			"title": "Authentic Heritage Branding",
+			"desc": "A nostalgic experience people love and remember."
+		},
+		{
+			"icon": "🍹",
+			"title": "Multiple Flavour Options",
+			"desc": "Pure cane, lemon, mint, ginger, pineapple and more."
+		}
+	],
+	"section_how_title": "How It Works",
+	"steps": [
+		{
+			"title": "Enquire",
+			"desc": "Tell us about your interest."
+		},
+		{
+			"title": "Discussion",
+			"desc": "We discuss your goals and our support."
+		},
+		{
+			"title": "Approval",
+			"desc": "We help you find and approve the location."
+		},
+		{
+			"title": "Training",
+			"desc": "Complete training on operations & service."
+		},
+		{
+			"title": "Opening Day",
+			"desc": "We support you for a successful launch."
+		}
+	],
+	"cta_title": "Ready to start your<br>Cane House Journey?",
+	"cta_subtitle": "Let's grow together.",
+	"cta_btn_text": "Start Your Enquiry &rarr;",
+	"cta_btn_link": "/contact/"
+}

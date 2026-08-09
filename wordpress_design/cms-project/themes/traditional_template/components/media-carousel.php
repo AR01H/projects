@@ -10,7 +10,7 @@
  */
 defined( 'ABSPATH' ) || exit;
 
-$data   = App_Data_Provider::get( 'home_media' );
+$data   = App_Helpers::data( 'home_media' );
 $slides = $data['slides'] ?? array();
 if ( empty( $slides ) ) {
 	return;

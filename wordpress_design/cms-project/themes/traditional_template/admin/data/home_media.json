@@ -1,0 +1,31 @@
+{
+  "autoplay": true,
+  "interval": 6000,
+  "tag": "Watch It. Taste It. Love It.",
+  "slides": [
+    {
+      "type": "image",
+      "src": "https://images.unsplash.com/photo-1622597467836-f3285f2131b8?auto=format&fit=crop&w=1600&q=80",
+      "alt": "Freshly pressed sugarcane juice",
+      "heading": "Pressed Fresh, Served Cool",
+      "text": "Live-pressed sugarcane juice, made in front of you.",
+      "cta": { "label": "Order Now", "url": "/order/" }
+    },
+    {
+      "type": "video",
+      "src": "https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/360/Big_Buck_Bunny_360_10s_1MB.mp4",
+      "poster": "https://images.unsplash.com/photo-1560493676-04071c5f467b?auto=format&fit=crop&w=1600&q=80",
+      "heading": "From Our Farm To Your Glass",
+      "text": "See how every drop is naturally extracted.",
+      "cta": { "label": "Our Story", "url": "/about/" }
+    },
+    {
+      "type": "image",
+      "src": "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1600&q=80",
+      "alt": "Live juice counter at an event",
+      "heading": "Book Us For Your Event",
+      "text": "A live juice counter for weddings, parties & more.",
+      "cta": { "label": "Book an Event", "url": "/events/" }
+    }
+  ]
+}

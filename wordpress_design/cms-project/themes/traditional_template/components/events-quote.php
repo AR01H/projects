@@ -15,7 +15,7 @@ defined( 'ABSPATH' ) || exit;
 $settings = [];
 $phone    = defined( 'CONTACT_NUMBER' ) ? CONTACT_NUMBER : '';
 
-$content    = App_Data_Provider::get( 'content' )['events_quote'] ?? [];
+$content    = App_Helpers::data( 'content' )['events_quote'] ?? [];
 $tag        = $args['tag']          ?? $content['tag']        ?? '';
 $title      = $args['title']        ?? $content['heading']    ?? '';
 $body       = $args['body']         ?? $content['body']       ?? '';

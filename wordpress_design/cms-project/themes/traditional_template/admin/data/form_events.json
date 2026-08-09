@@ -1,0 +1,98 @@
+{
+  "id": "nt-ev-form",
+  "action": "lead_submit",
+  "form_label": "Event Booking",
+  "submit": "Request My Quote 🎉",
+  "steps": [
+    {
+      "title": "Your Event",
+      "desc": "Tell us what you're planning.",
+      "fields": [
+        {
+          "type": "select",
+          "id": "ev_type",
+          "name": "ev_type",
+          "label": "Event Type",
+          "required": true,
+          "options": {
+            "": "Select event type…",
+            "Wedding": "Wedding",
+            "Corporate Event": "Corporate Event",
+            "Birthday Party": "Birthday Party",
+            "Festival": "Festival / Fair",
+            "College / School": "College / School Event",
+            "Other": "Other"
+          }
+        },
+        {
+          "type": "date",
+          "id": "ev_date",
+          "name": "ev_date",
+          "label": "Preferred Date",
+          "required": true
+        },
+        {
+          "type": "text",
+          "id": "ev_guests",
+          "name": "ev_guests",
+          "label": "Approx. Guests",
+          "placeholder": "e.g. 150",
+          "required": true
+        }
+      ]
+    },
+    {
+      "title": "Location",
+      "desc": "Where should we set up the live counter?",
+      "fields": [
+        {
+          "type": "text",
+          "id": "ev_venue",
+          "name": "ev_venue",
+          "label": "Venue / Area",
+          "placeholder": "Venue name or area",
+          "required": true
+        },
+        {
+          "type": "textarea",
+          "id": "ev_notes",
+          "name": "ev_notes",
+          "label": "Anything special? (optional)",
+          "placeholder": "Flavours, timings, theme…",
+          "required": false
+        }
+      ]
+    },
+    {
+      "title": "Your Details",
+      "desc": "We'll send your custom quote within 24 hours.",
+      "summary_id": "nt-ev-summary",
+      "fields": [
+        {
+          "type": "text",
+          "id": "ev_name",
+          "name": "ev_name",
+          "label": "Your Name",
+          "placeholder": "Full name",
+          "required": true
+        },
+        {
+          "type": "email",
+          "id": "ev_email",
+          "name": "ev_email",
+          "label": "Email",
+          "placeholder": "you@email.com",
+          "required": true
+        },
+        {
+          "type": "tel",
+          "id": "ev_phone",
+          "name": "ev_phone",
+          "label": "Phone / WhatsApp",
+          "placeholder": "+44 …",
+          "required": true
+        }
+      ]
+    }
+  ]
+}

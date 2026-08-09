@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "title": "Welcome to our new website",
+    "slug": "welcome-to-our-new-website",
+    "excerpt": "This is our very first blog post on the new platform.",
+    "featured_image_id": 0,
+    "author_name": "Admin",
+    "published_at": "2024-01-01 10:00:00",
+    "status": "active"
+  }
+]

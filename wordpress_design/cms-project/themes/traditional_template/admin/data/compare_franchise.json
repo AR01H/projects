@@ -1,0 +1,25 @@
+{
+  "tag": "Side By Side",
+  "title": "Compare The <em>Formats</em>",
+  "sub": "Everything each format includes, on one page, so you can pick the right size before you enquire.",
+  "footnote": "Figures are indicative and confirmed after a site survey.",
+  "plans": [
+    { "name": "Kiosk Outlet", "note": "Compact" },
+    { "name": "Premium Outlet", "note": "Most popular", "featured": true },
+    { "name": "Flagship Outlet", "note": "Full format" }
+  ],
+  "rows": [
+    { "label": "Indicative floor area", "values": ["8 - 15 sqm", "25 - 45 sqm", "60 sqm +"] },
+    { "label": "Typical opening time", "values": ["6 - 8 weeks", "10 - 14 weeks", "16 - 20 weeks"] },
+    { "label": "Press and equipment package", "values": ["yes", "yes", "yes"] },
+    { "label": "Site selection assistance", "values": ["yes", "yes", "yes"] },
+    { "label": "Team training and onboarding", "values": ["2 staff", "5 staff", "Full team"] },
+    { "label": "Launch marketing support", "values": ["no", "yes", "yes"] },
+    { "label": "Seating area", "values": ["no", "yes", "yes"] },
+    { "label": "Extended flavour menu", "values": ["no", "yes", "yes"] },
+    { "label": "Full kitchen and food service", "values": ["no", "no", "yes"] },
+    { "label": "Events and catering licence", "values": ["no", "no", "yes"] },
+    { "label": "Dedicated area manager", "values": ["Shared", "Shared", "yes"] },
+    { "label": "Ongoing operational support", "values": ["yes", "yes", "yes"] }
+  ]
+}

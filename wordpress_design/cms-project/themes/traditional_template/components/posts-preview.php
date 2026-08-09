@@ -12,7 +12,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $pp_source = ( isset( $source ) && $source ) ? (string) $source : 'posts_preview';
-$data      = App_Data_Provider::get( $pp_source );
+$data      = App_Helpers::data( $pp_source );
 $count     = isset( $data['count'] ) ? max( 1, (int) $data['count'] ) : 3;
 
 $nt_pp_query = new WP_Query( array(

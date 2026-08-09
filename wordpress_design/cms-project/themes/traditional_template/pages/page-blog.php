@@ -24,7 +24,7 @@ defined( 'ABSPATH' ) || exit;
 
 get_header();
 
-$nt_blog     = App_Data_Provider::get( 'blog' );
+$nt_blog     = App_Helpers::data( 'blog' );
 $nt_per_page = max( 1, (int) ( $nt_blog['per_page'] ?? 9 ) );
 $nt_paged    = max( 1, (int) get_query_var( 'paged' ), (int) get_query_var( 'page' ) );
 

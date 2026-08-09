@@ -1,0 +1,68 @@
+{
+  "_comment": "Shared chrome / UI text that isn't owned by one page or section - floating toolbar, dialog + alert buttons, accessibility labels, timings. Read via NT_Ui::label() / NT_Ui::aria() / NT_Ui::setting(), and handed to assets/js/ui-kit.js as window.ntUi so NO user-facing word is hard-coded in PHP, JS or CSS. Edit here, never in the code.",
+
+  "_floating_note": "The sticky side shortcut. 'side' is left or right. Each button needs a destination: either 'url' (a page) or 'social' (a key from footer.json -> socials, so the number is not repeated in two files). 'icon' is any NT_Icons name. Add a second button back by adding a second entry - it was two on the right, which covered too much of the reading width on a phone.",
+
+  "floating_toolbar": {
+    "side": "left",
+    "buttons": [
+      {
+        "key": "whatsapp",
+        "label": "WHATSAPP",
+        "aria": "Chat with us on WhatsApp",
+        "social": "whatsapp",
+        "icon": "whatsapp"
+      }
+    ]
+  },
+
+  "labels": {
+    "ok": "Alright",
+    "cancel": "Cancel",
+    "confirm": "Yes, go ahead",
+    "close": "Close",
+    "dismiss": "Dismiss",
+    "submit": "Send",
+    "read_more": "Read more",
+    "read_less": "Show less",
+    "loading": "One moment…",
+    "error_generic": "Something went wrong. Please try again.",
+    "network_error": "No connection. Please check and try again.",
+    "copied": "Copied to your clipboard",
+    "required": "Please complete this field.",
+    "view_all": "View all",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "search": "Search",
+    "no_results": "Nothing found. Try a different word.",
+    "load_more": "Load more",
+    "apply": "Apply",
+    "download": "Download",
+    "share": "Share",
+    "page_of": "Page %1$s of %2$s",
+    "minutes_read": "%s min read"
+  },
+
+  "aria": {
+    "scroll_to_top": "Scroll to top",
+    "open_menu": "Open menu",
+    "home": "Home",
+    "mobile_nav": "Mobile Navigation",
+    "breadcrumb": "You are here",
+    "close_dialog": "Close this window",
+    "notice": "Site notice",
+    "toasts": "Notifications",
+    "tabs": "Section tabs",
+    "story": "Story pages",
+    "next_page": "Next page",
+    "prev_page": "Previous page"
+  },
+
+  "behaviour": {
+    "toast_duration": 5000,
+    "notice_store": "nt_dismissed_notices",
+    "dialog_store": "nt_seen_dialogs",
+    "story_autoplay": 0
+  }
+}

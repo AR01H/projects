@@ -1,6 +1,6 @@
 <?php
-$features = App_Data_Provider::get('features_in');
-$content  = App_Data_Provider::get( 'content' )['features_in'] ?? [];
+$features = NT_Data_Provider::get('features_in');
+$content  = App_Helpers::data( 'content' )['features_in'] ?? [];
 if (empty($features)) return;
 ?>
 <section class="app-features-in">

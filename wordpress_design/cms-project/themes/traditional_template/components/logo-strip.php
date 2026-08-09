@@ -21,7 +21,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $nt_src   = ( isset( $source ) && $source ) ? (string) $source : 'logo_strip';
-$nt_data  = App_Data_Provider::get( $nt_src );
+$nt_data  = App_Helpers::data( $nt_src );
 $nt_items = ( is_array( $nt_data ) && ! empty( $nt_data['items'] ) ) ? (array) $nt_data['items'] : array();
 if ( empty( $nt_items ) ) {
 	return;

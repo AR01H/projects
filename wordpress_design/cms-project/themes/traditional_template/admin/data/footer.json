@@ -1,0 +1,47 @@
+{
+  "_comment": "Footer content. 'labels' holds the column headings and small bits of chrome text - edit them here instead of in components/parts/main_footer.php.",
+  "labels": {
+    "quick_links_heading": "Quick Links",
+    "products_heading": "Our Products",
+    "contact_heading": "Contact Us",
+    "connect_label": "Connect:",
+    "rights_text": "All Rights Reserved."
+  },
+  "brand": {
+    "logo_image": "assets/images/logotext.png",
+    "tagline": "Bringing you the authentic, traditional taste of freshly pressed sugarcane. We serve nature's finest extracts, crafted with love, hygiene, and a passion for health. Pure Sugarcane. Pure Love."
+  },
+  "background": {
+    "image": "assets/images/backgrounds/minibackground.png"
+  },
+  "products": [
+    { "label": "Sugarcane Juice", "url": "/menu/" },
+    { "label": "Lemon Cane", "url": "/menu/" },
+    { "label": "Ginger Cane", "url": "/menu/" },
+    { "label": "Mint Cane", "url": "/menu/" },
+    { "label": "Masala Cane", "url": "/menu/" },
+    { "label": "All Flavours", "url": "/menu/" }
+  ],
+  "quick_links": [
+    { "label": "Home", "url": "/" },
+    { "label": "Our Story", "url": "/about/" },
+    { "label": "What We Do", "url": "/services/" },
+    { "label": "Flavours", "url": "/products/" },
+    { "label": "The Journal", "url": "/blog/" },
+    { "label": "Franchise", "url": "/franchise/" },
+    { "label": "Work With Us", "url": "/careers/" },
+    { "label": "Help & FAQs", "url": "/faq/" },
+    { "label": "Contact", "url": "/contact/" }
+  ],
+  "bottom_links": [
+    { "label": "Privacy Policy", "url": "/privacy-policy/" },
+    { "label": "Cookie Policy", "url": "/cookie-policy/" },
+    { "label": "Terms & Conditions", "url": "/terms/" }
+  ],
+  "socials": {
+    "instagram": "https://instagram.com/",
+    "youtube": "https://youtube.com/",
+    "facebook": "https://facebook.com/",
+    "whatsapp": "https://wa.me/447770461939"
+  }
+}

@@ -1,0 +1,15 @@
+[
+  {
+    "id": 1,
+    "image": "https://images.unsplash.com/photo-1622597467836-f3285f2131b8?auto=format&fit=crop&w=1920&q=80",
+    "image_mobile": "https://images.unsplash.com/photo-1622597467836-f3285f2131b8?auto=format&fit=crop&w=900&q=80",
+    "subtitle": "Welcome to our tradition",
+    "title": "Pressed Fresh.<br>Served Cool.",
+    "description": "Fresh sugarcane juice pressed live and blended with authentic cold-pressed fruit extracts & natural botanicals. Build your perfect juice — your way.",
+    "btn_text": "Build Your Juice",
+    "btn_url": "#our-drinks",
+    "text_align": "center",
+    "status": "active",
+    "sort_order": 1
+  }
+]

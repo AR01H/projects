@@ -20,7 +20,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $nt_src  = ( isset( $source ) && $source ) ? (string) $source : 'split_feature';
-$nt_data = App_Data_Provider::get( $nt_src );
+$nt_data = App_Helpers::data( $nt_src );
 $nt_rows = ( is_array( $nt_data ) && ! empty( $nt_data['rows'] ) ) ? (array) $nt_data['rows'] : array();
 if ( empty( $nt_rows ) ) {
 	return;

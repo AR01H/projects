@@ -2,7 +2,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $s           = [];
-$_d          = App_Data_Provider::get('content')['franchise_enquiry'] ?? [];
+$_d          = App_Helpers::data('content')['franchise_enquiry'] ?? [];
 $frn_heading = $s['franchise_wiz_heading'] ?? $_d['heading'] ?? '';
 $frn_sub     = $s['franchise_wiz_sub']     ?? $_d['sub']     ?? '';
 $frn_image   = $s['franchise_wiz_image']   ?? 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=900&q=80';

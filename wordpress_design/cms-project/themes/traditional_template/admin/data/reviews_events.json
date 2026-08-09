@@ -1,0 +1,25 @@
+{
+  "tag": "Event Clients",
+  "title": "Loved At Every <em>Occasion</em>",
+  "sub": "Weddings, offices and festivals - here is how the live counter went down.",
+  "items": [
+    {
+      "name": "Sarah & Tom",
+      "location": "Ely Wedding",
+      "rating": 5,
+      "text": "The live counter was the highlight of our day. Guests queued all evening and still talk about it."
+    },
+    {
+      "name": "Priya Raman",
+      "location": "Corporate, London",
+      "rating": 5,
+      "text": "Booked for a 300-person away day. Set up early, ran flawlessly, and the team were genuinely lovely."
+    },
+    {
+      "name": "Jordan Blake",
+      "location": "Summer Festival",
+      "rating": 5,
+      "text": "Fast service even at peak. Fresh pressed in front of everyone - it drew a crowd on its own."
+    }
+  ]
+}

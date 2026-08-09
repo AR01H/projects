@@ -18,7 +18,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $pt_source = ( isset( $source ) && $source ) ? (string) $source : 'pricing_tiers';
-$data      = App_Data_Provider::get( $pt_source );
+$data      = App_Helpers::data( $pt_source );
 $tiers     = ( is_array( $data ) && ! empty( $data['tiers'] ) ) ? (array) $data['tiers'] : array();
 if ( empty( $tiers ) ) {
 	return;

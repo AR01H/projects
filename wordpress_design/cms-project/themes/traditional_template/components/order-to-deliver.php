@@ -10,7 +10,7 @@
  */
 defined( 'ABSPATH' ) || exit;
 
-$content      = App_Data_Provider::get( 'content' )['order_to_deliver'] ?? array();
+$content      = App_Helpers::data( 'content' )['order_to_deliver'] ?? array();
 $otd_tag      = $content['tag'] ?? 'Order & Deliver';
 $otd_heading  = $content['heading'] ?? '';
 $otd_sub      = $content['body'] ?? '';
@@ -19,8 +19,8 @@ $otd_alt      = $content['image_alt'] ?? 'Fresh delivery';
 $otd_features = $content['features'] ?? array();
 
 // Build the wizard config: JSON steps + a product-pick step in front.
-$config   = App_Data_Provider::get( 'form_order' );
-$products = App_Data_Provider::get( 'delivery_products' ) ?: array();
+$config   = App_Helpers::data( 'form_order' );
+$products = App_Helpers::data( 'delivery_products' ) ?: array();
 $options  = array( '' => __( 'Choose a flavour…', NT_TEXT_DOMAIN ) );
 foreach ( $products as $p ) {
 	$p    = (array) $p;

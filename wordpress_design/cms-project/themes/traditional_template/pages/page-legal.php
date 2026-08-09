@@ -21,7 +21,7 @@ defined( 'ABSPATH' ) || exit;
 
 get_header();
 
-$nt_map      = App_Data_Provider::get( 'legal' );
+$nt_map      = App_Helpers::data( 'legal' );
 $nt_page_key = (string) get_query_var( 'app_active_page' );
 
 // Fall back to the first document in the map, so a page registered here but

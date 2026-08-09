@@ -1,0 +1,17 @@
+{
+  "_doc": "The 'find us' map (components/map-embed.php). PRIVACY: nothing is requested from the map provider until the visitor presses the poster, so no third-party cookie is set for anyone who never asks for the map. 'embed_url' is the provider's iframe URL; 'link_url' is the normal page the anchor falls back to when JavaScript is off.",
+
+  "tag": "Find Us",
+  "title": "Where the <em>counter</em> is",
+  "sub": "Two minutes from the station, on the market side of the road.",
+
+  "embed_url": "https://www.google.com/maps?q=Market+Row+London&output=embed",
+  "link_url": "https://maps.google.com/?q=Market+Row+London",
+  "poster": "https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=1600&q=80",
+  "poster_alt": "Street map of the area around the counter",
+  "play_label": "Load the map",
+
+  "address": "123 Market Row, London",
+  "note": "Nearest parking is on the far side of the market square.",
+  "directions_label": "Open in maps"
+}

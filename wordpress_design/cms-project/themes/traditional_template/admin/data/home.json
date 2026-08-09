@@ -1,0 +1,17 @@
+{
+  "_comment": "Fallback content for the Home page, read via nt_data('home'). Admin-saved options and DB data override these values in the template.",
+  "hero": {
+    "kicker": "Welcome",
+    "title": "Build your next site on a registry-driven theme",
+    "subtitle": "Pages, AJAX, REST, redirects and admin screens are all plain arrays. Add an entry, add a file - done.",
+    "cta_label": "Get in touch",
+    "cta_url": "/contact/",
+    "secondary_label": "Latest news",
+    "secondary_url": "/news/"
+  },
+  "features": [
+    { "icon": "fa-map", "title": "Array Routing", "text": "One entry in config/pages.php maps URL, template, CSS and JS together." },
+    { "icon": "fa-bolt", "title": "Instant AJAX", "text": "Register an action in config/ajax.php and call NT.ajax() - nonce handled for you." },
+    { "icon": "fa-shield", "title": "Safe by Default", "text": "Nonce, capability and realpath checks live in the engines, not in each handler." }
+  ]
+}
