@@ -221,12 +221,41 @@ class AskExpertContext {
 		$categories = self::buildCategories( $db_experts, $use_db );
 		$sidebar    = self::sidebarData( $sidebar_builder );
 
+		/*
+		 * "Can't find the right expert?" CTA.
+		 *
+		 * The expert_page.cant_find_* terms do not exist in terms.json, so asking
+		 * for them with an empty default handed the component empty strings - and
+		 * an empty string is still `isset()`, so the component's own fallbacks
+		 * never ran and the block rendered with a blank heading, no description
+		 * and a button reading just "→". The copy lives in ask-expert.json, so
+		 * read it from there: term first (when someone does define one), then the
+		 * JSON, then the site-wide constant.
+		 */
+		$_ae_json = \function_exists( 'adn_service_ask_expert_data' ) ? \adn_service_ask_expert_data() : array();
+		$_ae_cta  = ( isset( $_ae_json['cant_find_cta'] ) && \is_array( $_ae_json['cant_find_cta'] ) )
+			? $_ae_json['cant_find_cta']
+			: array();
+
+		$_ae_pick = static function ( string $term_key, string $json_key, string $fallback ) use ( $_ae_cta ): string {
+			$_term = (string) \adn_term( $term_key, '' );
+			if ( '' !== $_term ) {
+				return $_term;
+			}
+			if ( isset( $_ae_cta[ $json_key ] ) && '' !== (string) $_ae_cta[ $json_key ] ) {
+				return (string) $_ae_cta[ $json_key ];
+			}
+			return $fallback;
+		};
+
 		$cant_find_cta = array(
-			'icon'         => \adn_term( 'icons.search', '🔍' ),
-			'heading'      => \adn_term( 'expert_page.cant_find_heading', '' ),
-			'desc'         => \adn_term( 'expert_page.cant_find_desc', '' ),
-			'button_label' => \adn_term( 'expert_page.cant_find_btn', '' ),
-			'button_url'   => SITE_GUIDANCE_URL,
+			'icon'         => $_ae_pick( 'icons.search', 'icon', '🔍' ),
+			'heading'      => $_ae_pick( 'expert_page.cant_find_heading', 'heading', \defined( 'SITE_SECTION_EXPERT_CANT_FIND' ) ? SITE_SECTION_EXPERT_CANT_FIND : '' ),
+			'desc'         => $_ae_pick( 'expert_page.cant_find_desc', 'desc', '' ),
+			'button_label' => $_ae_pick( 'expert_page.cant_find_btn', 'button_label', \defined( 'SITE_BTN_GET_MATCHED' ) ? SITE_BTN_GET_MATCHED : '' ),
+			'button_url'   => ( \defined( 'SITE_GUIDANCE_URL' ) && '' !== (string) SITE_GUIDANCE_URL )
+				? SITE_GUIDANCE_URL
+				: ( isset( $_ae_cta['button_url'] ) ? (string) $_ae_cta['button_url'] : '#' ),
 		);
 
 		$_has_locked = false;
