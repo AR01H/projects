@@ -171,7 +171,7 @@ class SeoService {
 				. '<h3 class="adn-sitelinks__title">' . esc_html( $title ) . '</h3>' . $list . '</nav>';
 		}
 		// hidden
-		return '<nav class="adn-sitelinks adn-sitelinks--hidden" aria-label="' . esc_attr( $title ) . '">'
+		return '<nav class="adn-sitelinks adn-sitelinks--hidden hidden" aria-label="' . esc_attr( $title ) . '">'
 			. $list . '</nav>';
 	}
 
@@ -266,16 +266,17 @@ class SeoService {
 		$desc = wp_strip_all_tags( $desc );
 
 		$canonical = trim( (string) ( $reg['canonical'] ?? '' ) );
-		if ( '' === $canonical ) {
-			if ( $post instanceof \WP_Post ) {
-				$custom = (string) get_post_meta( $post->ID, \ADN_META_CANONICAL, true );
-				$canonical = '' !== $custom ? $custom : (string) get_permalink( $post->ID );
-			} elseif ( $post instanceof \WP_Term ) {
-				$canonical = (string) get_term_link( $post );
-				if ( is_wp_error( $canonical ) ) { $canonical = ''; }
-			} else {
-				$canonical = (string) home_url( '/' );
-			}
+		// If canonical is explicitly set in SEO registration, use it (includes seo.json values)
+		if ( '' !== $canonical ) {
+			// Already set via adn_seo_register(), use as-is
+		} elseif ( $post instanceof \WP_Post ) {
+			$custom = (string) get_post_meta( $post->ID, \ADN_META_CANONICAL, true );
+			$canonical = '' !== $custom ? $custom : (string) get_permalink( $post->ID );
+		} elseif ( $post instanceof \WP_Term ) {
+			$canonical = (string) get_term_link( $post );
+			if ( is_wp_error( $canonical ) ) { $canonical = ''; }
+		} else {
+			$canonical = (string) home_url( '/' );
 		}
 
 		$image = trim( (string) ( $reg['image'] ?? '' ) );
@@ -284,7 +285,13 @@ class SeoService {
 			if ( '' !== $thumb ) { $image = $thumb; }
 		}
 		if ( '' === $image ) {
-			$image = (string) get_site_icon_url( 512 );
+			// Try to get default image from SEO config
+			$default_image = self::getConfigValue( 'defaults.image', '' );
+			if ( '' !== $default_image ) {
+				$image = (string) $default_image;
+			} else {
+				$image = (string) get_site_icon_url( 512 );
+			}
 		}
 
 		$type = trim( (string) ( $reg['type'] ?? '' ) );
@@ -303,6 +310,16 @@ class SeoService {
 
 		echo '<link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">' . "\n";
 		echo '<link rel="alternate" type="application/rss+xml" title="' . esc_attr( get_bloginfo( 'name' ) . ' &raquo; Feed' ) . '" href="' . esc_url( get_feed_link() ) . '">' . "\n";
+		
+		// Sitemap link for search engines
+		$sitemap_url = self::getConfigValue( 'sitemap.url', '/sitemap_index.xml' );
+		if ( $sitemap_url ) {
+			echo '<link rel="sitemap" type="application/xml" href="' . esc_url( home_url( $sitemap_url ) ) . '">' . "\n";
+		}
+		
+		// Hreflang for UK English
+		echo '<link rel="alternate" hreflang="en-GB" href="' . esc_url( home_url( '/' ) ) . '">' . "\n";
+		echo '<link rel="alternate" hreflang="x-default" href="' . esc_url( home_url( '/' ) ) . '">' . "\n";
 
 		$_is_bare    = isset( $_GET['content'] ) && 'true' === (string) $_GET['content'];
 		$_is_search  = isset( $_GET['search'] )  && '' !== (string) $_GET['search'];
@@ -334,12 +351,18 @@ class SeoService {
 
 		if ( $yoast_on || $rankmath_on ) { return; }
 
+		// Description meta tag
 		if ( '' !== $s['desc'] ) {
 			echo '<meta name="description" content="' . esc_attr( $s['desc'] ) . '">' . "\n";
 		}
+		
+		// Canonical URL
 		if ( '' !== $_canonical ) {
 			echo '<link rel="canonical" href="' . esc_url( $_canonical ) . '">' . "\n";
 		}
+		
+		// OpenSearch description
+		echo '<link rel="search" type="application/opensearchdescription+xml" title="' . esc_attr( ' Search' ) . '" href="' . esc_url( home_url( '/osd.xml' ) ) . '">' . "\n";
 
 		// Page keywords, falling back to the site-wide list so every page carries
 		// them, not just the two that had their own.
@@ -411,6 +434,22 @@ class SeoService {
 		if ( defined( 'SOCIAL_TWITTER' ) && '' !== SOCIAL_TWITTER ) {
 			$tw_handle = '@' . ltrim( basename( rtrim( SOCIAL_TWITTER, '/' ) ), '@' );
 			echo '<meta name="twitter:site"       content="' . esc_attr( $tw_handle ) . '">' . "\n";
+			echo '<meta name="twitter:creator"    content="' . esc_attr( $tw_handle ) . '">' . "\n";
+		}
+		
+		// Additional SEO meta tags
+		echo '<meta name="language"             content="en-GB">' . "\n";
+		echo '<meta name="revisit-after"       content="7 days">' . "\n";
+		echo '<meta name="distribution"        content="global">' . "\n";
+		echo '<meta name="rating"              content="general">' . "\n";
+		echo '<meta name="geo.region"          content="GB">' . "\n";
+		echo '<meta name="geo.placename"       content="United Kingdom">' . "\n";
+		echo '<meta name="geo.position"        content="54.702354;-3.276575">' . "\n"; // UK center coordinates
+		echo '<meta name="ICBM"                content="54.702354, -3.276575">' . "\n";
+		if ( defined( 'COMPANY_NAME' ) && '' !== COMPANY_NAME ) {
+			echo '<meta name="author"            content="' . esc_attr( COMPANY_NAME ) . '">' . "\n";
+			echo '<meta name="copyright"         content="' . esc_attr( COMPANY_NAME ) . '">' . "\n";
+			echo '<meta name="publisher"         content="' . esc_attr( COMPANY_NAME ) . '">' . "\n";
 		}
 
 		$site_url  = esc_url( home_url( '/' ) );
@@ -432,9 +471,12 @@ class SeoService {
 			'name'     => $co_name,
 			'url'      => home_url( '/' ),
 			'logo'     => array( '@type' => 'ImageObject', 'url' => get_template_directory_uri() . '/assets/images/logos/logo_with_text.png' ),
+			'telephone' => $co_phone ? $co_phone : null,
+			'email' => $co_email ? $co_email : null,
 		);
-		if ( '' !== $co_phone ) { $org_schema['telephone'] = $co_phone; }
-		if ( '' !== $co_email ) { $org_schema['email']     = $co_email; }
+		// Remove null values
+		$org_schema = array_filter( $org_schema, function( $v ) { return $v !== null; } );
+		
 		if ( '' !== $co_phone || '' !== $co_email ) {
 			$cp = array( '@type' => 'ContactPoint', 'contactType' => 'customer service', 'areaServed' => 'GB', 'availableLanguage' => 'English' );
 			if ( '' !== $co_phone ) { $cp['telephone'] = $co_phone; }

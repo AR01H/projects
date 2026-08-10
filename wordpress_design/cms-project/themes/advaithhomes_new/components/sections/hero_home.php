@@ -52,16 +52,16 @@ if ( $_is_carousel ) :
 		     aria-hidden="<?php echo 0 === $_si ? 'false' : 'true'; ?>">
 			<div class="hero-carousel__bg">
 				<?php if ( $_is_video ) : ?>
-					<video class="hero-carousel__video" <?php echo 0 === $_si ? 'autoplay' : ''; ?> muted loop playsinline preload="<?php echo 0 === $_si ? 'auto' : 'none'; ?>">
+					<video class="hero-carousel__video" <?php echo 0 === $_si ? 'autoplay' : ''; ?> muted loop playsinline preload="<?php echo 0 === $_si ? 'auto' : 'none'; ?>" aria-label="UK Property Hero Video">
 						<source src="<?php echo esc_url( $_s_img ); ?>" type="<?php echo esc_attr( $_mime ); ?>">
 					</video>
 				<?php elseif ( $_s_mobile_img && ! $_is_gif ) : ?>
 					<picture>
 						<source media="(max-width:640px)" srcset="<?php echo esc_url( $_s_mobile_img ); ?>">
-						<img src="<?php echo esc_url( $_s_img ); ?>" alt="" loading="<?php echo 0 === $_si ? 'eager' : 'lazy'; ?>">
+						<img src="<?php echo esc_url( $_s_img ); ?>" alt="UK Property Hero Image" loading="<?php echo 0 === $_si ? 'eager' : 'lazy'; ?>">
 					</picture>
 				<?php else : ?>
-					<img src="<?php echo esc_url( $_s_img ); ?>" alt="" loading="<?php echo 0 === $_si ? 'eager' : 'lazy'; ?>">
+					<img src="<?php echo esc_url( $_s_img ); ?>" alt="UK Property Hero Image" loading="<?php echo 0 === $_si ? 'eager' : 'lazy'; ?>">
 				<?php endif; ?>
 				<div class="hero-carousel__overlay"></div>
 			</div>

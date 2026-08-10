@@ -11,6 +11,23 @@
  */
 
 defined( 'ABSPATH' ) || exit;
+add_action( 'template_redirect', 'adn_redirect_home_slug' );
+/**
+ * Redirect /home/ to / to avoid duplicate content.
+ */
+function adn_redirect_home_slug() {
+	if ( is_admin() ) {
+		return;
+	}
+	$request_uri = isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
+	$path = trim( (string) parse_url( $request_uri, PHP_URL_PATH ), '/' );
+	
+	// Redirect /home/ to / for SEO (avoid duplicate content)
+	if ( 'home' === $path || 'home' === trailingslashit( $path ) ) {
+		wp_redirect( home_url( '/' ), 301 );
+		exit;
+	}
+}
 
 add_filter( 'template_include', 'adn_route_page_definitions', 98 );
 add_filter( 'template_include', 'adn_route_parent_term_template', 99 );

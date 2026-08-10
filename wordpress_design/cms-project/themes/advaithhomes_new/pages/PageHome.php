@@ -42,6 +42,10 @@ if ( isset( $ctx['hero']['description'] ) && '' !== trim( (string) $ctx['hero'][
 if ( isset( $ctx['hero']['image'] ) && '' !== trim( (string) $ctx['hero']['image'] ) ) {
 	$_home_seo['image'] = (string) $ctx['hero']['image'];
 }
+// Set canonical URL from seo.json if available, otherwise use home URL
+if ( '' === trim( (string) ( $_home_seo['canonical'] ?? '' ) ) ) {
+	$_home_seo['canonical'] = home_url( '/' );
+}
 adn_seo_register( $_home_seo );
 
 get_header(); // Loads wp_head() which triggers wp_enqueue_scripts hook

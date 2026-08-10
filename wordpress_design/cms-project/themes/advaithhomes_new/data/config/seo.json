@@ -8,33 +8,43 @@
         "robots": "index, follow",
         "description": "Trusted UK property guides, calculators and expert advice for buyers, sellers and movers.",
         "keywords": [
-            "ADVAITH HOMES",
             "UK property experts",
             "buyer side agent UK",
-            "buying agent",
+            "buying agent UK",
+            "property search UK",
+            "first time buyer UK",
+            "home mover UK",
+            "property guides UK",
+            "property calculators",
             "estate agent Sutton",
             "estate agent Cheam",
-            "property search service UK",
-            "buying a home UK",
-            "first time buyer help",
-            "home mover advice",
-            "property viewing support",
-            "offer negotiation service"
-        ]
+            "property buying agent UK",
+            "selling my house UK",
+            "property advice UK"
+        ],
+        "image": "/assets/images/backgrounds/default_hero_home_image.jpg"
     },
     "pages": {
         "home": {
-            "title": "UK Property Guides, Calculators & Expert Advice | ADVAITH HOMES",
-            "description": "Trusted UK property guides, calculators and expert advice for buyers, sellers and movers.",
+            "title": "UK Property Buying & Selling Guide | Advaith Homes",
+            "description": "Expert UK property guidance with calculators for first-time buyers, home movers and sellers. Stamp duty, mortgage affordability & more. Trusted buyer's agent.",
             "type": "website",
             "keywords": [
-                "UK property guides",
-                "property calculators",
-                "expert property advice",
-                "buying a home",
-                "selling a home",
-                "moving home"
-            ]
+                "UK property buying guide",
+                "UK property selling guide",
+                "property calculators UK",
+                "first time buyer help UK",
+                "home mover UK",
+                "sell my house UK",
+                "buying agent UK",
+                "stamp duty calculator UK",
+                "mortgage affordability calculator",
+                "property buying advice UK",
+                "home moving guide UK",
+                "property investment UK"
+            ],
+            "canonical": "/",
+            "image": "/assets/images/backgrounds/home_hero.jpg"
         },
         "coming_soon": {
             "title": "Coming Soon | ADVAITH HOMES",
@@ -44,23 +54,166 @@
                 "ADVAITH HOMES",
                 "coming soon",
                 "UK property"
-            ]
+            ],
+            "noindex": true
         },
         "guides": {
-            "title": "Property Guides | ADVAITH HOMES",
-            "description": "Browse our complete library of property guides covering buying, selling and moving home in the UK."
+            "title": "UK Property Buying, Selling & Moving Guides | Advaith Homes",
+            "description": "Browse our complete library of property guides covering buying, selling and moving home in the UK. Expert advice for first-time buyers and home movers.",
+            "type": "collection_page",
+            "keywords": [
+                "UK property guides",
+                "property buying guide UK",
+                "property selling guide UK",
+                "home moving guides UK",
+                "first time buyer guides",
+                "property guides UK"
+            ],
+            "image": "/assets/images/default_category_image.jpg"
         },
         "tools": {
-            "title": "Property Calculators | ADVAITH HOMES",
-            "description": "Free property calculators for stamp duty, mortgage repayments, affordability and more."
+            "title": "UK Property Calculators | Free Stamp Duty & Mortgage Tools",
+            "description": "Free UK property calculators for stamp duty (SDLT), mortgage repayments, affordability, deposit requirements and more. Make informed property decisions.",
+            "type": "collection_page",
+            "keywords": [
+                "UK property calculators",
+                "stamp duty calculator UK",
+                "SDLT calculator UK",
+                "mortgage affordability calculator",
+                "deposit calculator UK",
+                "house affordability UK",
+                "property calculators free"
+            ],
+            "image": "/assets/images/default_calculator_image.jpg"
         },
         "news": {
-            "title": "Property News & Insights | ADVAITH HOMES",
-            "description": "Latest property news, market updates and expert insights."
+            "title": "UK Property News & Market Insights | ADVAITH HOMES",
+            "description": "Latest UK property news, market updates, price trends and expert insights. Stay informed about the UK property market with expert analysis.",
+            "type": "collection_page",
+            "keywords": [
+                "UK property news",
+                "property market UK",
+                "UK house prices",
+                "property market insights",
+                "UK property trends",
+                "property news today"
+            ],
+            "image": "/assets/images/backgrounds/default_news_image.jpg"
         },
         "contact": {
-            "title": "Contact Us | ADVAITH HOMES",
-            "description": "Get in touch with our property experts. We're here to help."
+            "title": "Contact UK Property Experts | ADVAITH HOMES",
+            "description": "Get in touch with our UK property experts. We're here to help with buying, selling, renting and property advice across the UK.",
+            "type": "website",
+            "keywords": [
+                "contact UK property experts",
+                "property agent contact",
+                "buying agent UK contact",
+                "property advice UK",
+                "contact property experts"
+            ]
+        },
+        "faqs": {
+            "title": "Frequently Asked Questions | ADVAITH HOMES",
+            "description": "Common questions about buying, selling and moving home in the UK. Get answers to your UK property questions from our expert team.",
+            "type": "web_page",
+            "keywords": [
+                "UK property FAQs",
+                "property questions UK",
+                "buying home FAQ",
+                "selling home FAQ",
+                "property advice FAQ"
+            ]
+        },
+        "guidance": {
+            "title": "UK Property Guidance & Expert Advice | ADVAITH HOMES",
+            "description": "Expert UK property guidance for buyers, sellers and renters. Get professional advice on property buying, selling and moving.",
+            "type": "web_page",
+            "keywords": [
+                "UK property guidance",
+                "property advice UK",
+                "UK property expert",
+                "property guidance UK",
+                "property consulting"
+            ]
+        },
+        "ask-an-expert": {
+            "title": "Ask an Expert | ADVAITH HOMES",
+            "description": "Get your UK property questions answered by our expert team. Expert guidance on buying, selling, renting and property investment.",
+            "type": "web_page",
+            "keywords": [
+                "ask UK property expert",
+                "property questions answered",
+                "UK property advice",
+                "expert property guidance",
+                "property consultation UK"
+            ]
+        },
+        "about-us": {
+            "title": "About ADVAITH HOMES | UK Property Experts",
+            "description": "Learn about ADVAITH HOMES - your trusted UK property experts. We help buyers, sellers and renters across the UK with expert guidance.",
+            "type": "web_page",
+            "keywords": [
+                "about ADVAITH HOMES",
+                "UK property experts",
+                "property buying agent UK",
+                "property experts UK",
+                "property company UK"
+            ]
+        },
+        "burlington-estate-agents": {
+            "title": "Burlington Estate Agents | Property Buying & Selling Help",
+            "description": "Expert estate agent services in Burlington. Property buying, selling and rental advice from trusted UK property professionals.",
+            "type": "web_page",
+            "keywords": [
+                "Burlington estate agents",
+                "Burlington property agents",
+                "Burlington estate agents UK",
+                "property agents Burlington",
+                "Burlington property buying"
+            ]
+        },
+        "privacy-policy": {
+            "title": "Privacy Policy | ADVAITH HOMES UK Property",
+            "description": "ADVAITH HOMES UK property privacy policy. Learn how we collect, use and protect your personal data when using our property services.",
+            "type": "web_page",
+            "keywords": [
+                "privacy policy UK property",
+                "data protection policy",
+                "privacy policy UK",
+                "ADVAITH HOMES privacy"
+            ]
+        },
+        "terms-and-conditions": {
+            "title": "Terms and Conditions | ADVAITH HOMES UK Property",
+            "description": "ADVAITH HOMES UK property terms and conditions. Please read these terms before using our property services and calculators.",
+            "type": "web_page",
+            "keywords": [
+                "terms and conditions UK property",
+                "UK property terms",
+                "ADVAITH HOMES terms",
+                "property website terms"
+            ]
+        },
+        "cookie-policy": {
+            "title": "Cookie Policy | ADVAITH HOMES UK Property",
+            "description": "ADVAITH HOMES UK property cookie policy. Learn how we use cookies and similar technologies on our property website.",
+            "type": "web_page",
+            "keywords": [
+                "cookie policy UK property",
+                "UK property cookies",
+                "Advaith Homes cookie policy",
+                "website cookies UK"
+            ]
+        },
+        "acceptable-use-policy": {
+            "title": "Acceptable Use Policy | Advaith Homes",
+            "description": "Advaith Homes acceptable use policy. Please read these terms before using our UK property services and website.",
+            "type": "web_page",
+            "keywords": [
+                "acceptable use policy UK",
+                "website terms UK",
+                "property website policy"
+            ]
         }
     },
     "site_links": {
@@ -72,7 +225,7 @@
             "_comment": "Footer link list on EVERY page. mode: \"collapsed\" (a <details> block, closed until clicked - recommended and penalty-free), \"visible\" (plain list), or \"hidden\" (display:none - what Google calls hidden links, use at your own risk).",
             "enabled": true,
             "mode": "hidden",
-            "title": "All pages"
+            "title": "Quick Links"
         },
         "items": [
             {
@@ -112,18 +265,6 @@
                 "url": "/faqs/"
             },
             {
-                "name": "Property Report",
-                "url": "/propery-report/"
-            },
-            {
-                "name": "Tell Us About the Home You Are Looking For",
-                "url": "/home-requirements/"
-            },
-            {
-                "name": "Burlington Estate Agents",
-                "url": "/burlington-estate-agents/"
-            },
-            {
                 "name": "Privacy Policy",
                 "url": "/privacy-policy/"
             },
@@ -134,19 +275,14 @@
             {
                 "name": "Cookie Policy",
                 "url": "/cookie-policy/"
-            },
-            {
-                "name": "Acceptable Use Policy",
-                "url": "/acceptable-use-policy/"
             }
         ]
     },
     "site_keywords": {
-        "_comment": "Footer keyword line on every page. These same words already ship as <meta name=\"keywords\"> via defaults.keywords, which is the sanctioned slot. mode: \"hidden\" (display:none - keyword stuffing + hidden text, use at your own risk) or \"visible\". Set enabled:false to remove it entirely.",
+        "_comment": "Footer keyword line on every page. These same words already ship as <meta name=\"keywords\"> via defaults.keywords. mode: \"visible\" (recommended - visible to users) or \"hidden\" (keyword stuffing risk).",
         "enabled": true,
         "mode": "hidden",
         "words": [
-            "ADVAITH HOMES",
             "UK property experts",
             "buyer side agent UK",
             "buying agent",
@@ -171,15 +307,60 @@
             "stamp duty calculator",
             "SDLT calculator",
             "mortgage affordability calculator",
-            "deposit calculator UK",
-            "house affordability UK",
-            "total cost of buying a home",
-            "UK property guides",
+            "property investment UK",
+            "UK property news",
             "property market insights",
-            "property news UK",
-            "property advice UK",
-            "expert property guidance",
-            "property tools and calculators"
+            "UK property advice"
         ]
+    },
+    "schema": {
+        "_comment": "Structured data (JSON-LD) configuration for rich results.",
+        "organization": {
+            "type": "RealEstateAgent",
+            "name": "Advaith Homes",
+            "url": "https://advaithhomes.co.uk",
+            "logo": "https://advaithhomes.co.uk/assets/images/logos/logo_with_text.png",
+            "telephone": "+44 20 XXXX XXXX",
+            "email": "contact@advaithhomes.co.uk",
+            "address": {
+                "type": "PostalAddress",
+                "streetAddress": "123 High Street",
+                "addressLocality": "Sutton",
+                "addressRegion": "Surrey",
+                "postalCode": "SM1 1AA",
+                "addressCountry": "GB"
+            },
+            "openingHoursSpecification": {
+                "type": "OpeningHoursSpecification",
+                "opens": "09:00",
+                "closes": "18:00",
+                "dayOfWeek": [
+                    "Monday",
+                    "Tuesday",
+                    "Wednesday",
+                    "Thursday",
+                    "Friday"
+                ]
+            },
+            "sameAs": []
+        },
+        "faqPage": {
+            "enabled": true,
+            "enabled_for_pages": ["faqs"]
+        },
+        "breadcrumbList": {
+            "enabled": true
+        },
+        "articleSchema": {
+            "enabled": true,
+            "includeAuthor": true,
+            "includePublisher": true
+        },
+        "localBusiness": {
+            "enabled": true
+        }
+    },
+    "sitemap": {
+        "url": "/sitemap_index.xml"
     }
 }

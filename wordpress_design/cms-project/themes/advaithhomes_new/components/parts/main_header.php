@@ -149,7 +149,7 @@ echo $_sn_ticker_html;
                                 <?php if ( '' !== $_img || '' !== $_nd ) : ?>
                                 <div class="nav-dropdown__media">
                                     <?php if ( '' !== $_img ) : ?>
-                                    <img src="<?php echo esc_url( $_img ); ?>" alt="" class="nav-dropdown__media-img" loading="lazy">
+                                    <img src="<?php echo esc_url( $_img ); ?>" alt="<?php echo esc_attr( $label . ' banner' ); ?>" class="nav-dropdown__media-img" loading="lazy">
                                     <?php endif; ?>
                                     <?php if ( '' !== $_nd ) : ?>
                                     <div class="nav-dropdown__media-body">

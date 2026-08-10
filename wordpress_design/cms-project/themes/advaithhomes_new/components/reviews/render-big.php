@@ -28,7 +28,7 @@ function ah_review_render_big( object $r ): string {
 	<div class="ah-rv-flip-inner">
 		<div class="ah-rv-flip-front<?php echo $cover_url ? '' : ' ah-rv-flip-front--no-photo'; ?>">
 			<?php if ( $cover_url ) : ?>
-				<img class="ah-rv-bb-cover" src="<?php echo esc_url( $cover_url ); ?>" alt="" loading="lazy">
+				<img class="ah-rv-bb-cover" src="<?php echo esc_url( $cover_url ); ?>" alt="<?php echo esc_attr( $r->story_title ? $r->story_title : $r->reviewer_name ); ?>" loading="lazy">
 			<?php else : ?>
 				<div class="ah-rv-name-fallback" aria-hidden="true"><?php echo esc_html( $r->reviewer_name ); ?></div>
 			<?php endif; ?>
