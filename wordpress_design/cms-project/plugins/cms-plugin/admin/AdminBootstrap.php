@@ -23,6 +23,8 @@ class AH_Admin_Bootstrap {
 		add_action( 'admin_post_ah_delete_notice',          array( SiteNoticesAdminController::class, 'handle_delete' ) );
 		add_action( 'admin_post_ah_toggle_notice',          array( SiteNoticesAdminController::class, 'handle_toggle' ) );
 		add_action( 'admin_post_ah_save_banners',           array( BannersAdminController::class, 'handle_save' ) );
+		add_action( 'admin_post_ah_export_subs',            array( 'AH_Form_Builder', 'export_csv' ) );
+		add_action( 'admin_post_ah_form_file',              array( 'AH_Form_Builder', 'download_file' ) );
 		add_action( 'add_meta_boxes',                       array( PostAdminController::class, 'register_metaboxes' ) );
 		add_action( 'save_post',                            array( PostAdminController::class, 'save_metabox' ), 10, 1 );
 

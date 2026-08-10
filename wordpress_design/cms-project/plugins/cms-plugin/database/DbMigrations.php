@@ -41,6 +41,7 @@ class AH_DB_Migrations {
 		self::forms_settings_columns();
 		self::form_fields_description();
 		self::form_fields_widen_type();
+		self::form_fields_settings();
 		self::form_submissions_status_columns();
 
 		// Data migrations
@@ -197,10 +198,23 @@ class AH_DB_Migrations {
 		self::add_column_if_missing( 'ah_forms', 'submit_label',  "VARCHAR(200) NOT NULL DEFAULT '' AFTER `success_message`" );
 		self::add_column_if_missing( 'ah_forms', 'custom_css',    'LONGTEXT DEFAULT NULL AFTER `disable_rules`' );
 		self::add_column_if_missing( 'ah_forms', 'custom_js',     'LONGTEXT DEFAULT NULL AFTER `custom_css`' );
+		// Keep unsubmitted answers in the visitor's browser and refill on return.
+		self::add_column_if_missing( 'ah_forms', 'save_draft',    'TINYINT(1) NOT NULL DEFAULT 0 AFTER `disable_rules`' );
+		// Per-form spam challenge; the keys themselves are a single site-wide option.
+		self::add_column_if_missing( 'ah_forms', 'use_captcha',   'TINYINT(1) NOT NULL DEFAULT 0 AFTER `save_draft`' );
 	}
 
 	public static function form_fields_description(): void {
 		self::add_column_if_missing( 'ah_form_fields', 'description', 'TEXT DEFAULT NULL AFTER `options`' );
+	}
+
+	/**
+	 * Per-field JSON settings bag. Used by the structural field types added for
+	 * multi-step forms: `fieldset` stores its expand/collapse mode here. Kept as a
+	 * free-form bag so future per-field options never need their own column.
+	 */
+	public static function form_fields_settings(): void {
+		self::add_column_if_missing( 'ah_form_fields', 'settings', 'LONGTEXT DEFAULT NULL AFTER `description`' );
 	}
 
 	/**

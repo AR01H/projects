@@ -162,16 +162,16 @@ if ( $show_desc || $show_badge || $show_cta ) :
                     <?php endforeach; ?>
                 </div>
                 <div class="footer-bottom-right">
-                    <?php if ( ! empty( $footer['made_with'] ) ) : ?>
-                        <span class="footer-made-with"><?php echo esc_html( $footer['made_with'] ); ?></span>
-                    <?php endif; ?>
                     <div class="footer-social">
                         <?php foreach ( $social as $item ) : ?>
                             <a href="<?php echo esc_url( adn_link( isset( $item['url'] ) ? $item['url'] : '' ) ); ?>"
-                               class="social-btn"
-                               aria-label="<?php echo esc_attr( isset( $item['label'] ) ? $item['label'] : '' ); ?>"><?php echo adn_icon( isset( $item['icon'] ) ? $item['icon'] : '' ); ?></a>
-                        <?php endforeach; ?>
+                            class="social-btn"
+                            aria-label="<?php echo esc_attr( isset( $item['label'] ) ? $item['label'] : '' ); ?>"><?php echo adn_icon( isset( $item['icon'] ) ? $item['icon'] : '' ); ?></a>
+                            <?php endforeach; ?>
                     </div>
+                    <?php if ( ! empty( $footer['made_with'] ) ) : ?>
+                        <span class="footer-made-with"><?php echo esc_html( $footer['made_with'] ); ?></span>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>

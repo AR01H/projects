@@ -1,0 +1,530 @@
+[
+    {
+        "label": "About You",
+        "field_type": "step",
+        "settings": {
+            "icon": "user"
+        }
+    },
+    {
+        "label": "1. About You",
+        "field_type": "fieldset",
+        "settings": {
+            "icon": "user",
+            "mode": "open"
+        }
+    },
+    {
+        "label": "Full Name",
+        "field_type": "text",
+        "placeholder": "Enter your full name",
+        "is_required": true
+    },
+    {
+        "label": "Email Address",
+        "field_type": "email",
+        "placeholder": "Enter your email",
+        "is_required": true
+    },
+    {
+        "label": "Mobile Number",
+        "field_type": "tel",
+        "placeholder": "Enter your mobile number",
+        "is_required": true,
+        "settings": {
+            "intl": 1,
+            "intl_cc": "+44"
+        }
+    },
+    {
+        "label": "Current Postcode",
+        "field_type": "text",
+        "placeholder": "Enter your postcode",
+        "settings": {
+            "width": "half"
+        }
+    },
+    {
+        "label": "Buying with",
+        "field_type": "select",
+        "placeholder": "Select an option",
+        "options": [
+            "On my own",
+            "With a partner",
+            "With family",
+            "Company purchase"
+        ],
+        "settings": {
+            "width": "half"
+        }
+    },
+    {
+        "label": "2. Your Buying Journey",
+        "field_type": "fieldset",
+        "settings": {
+            "icon": "compass",
+            "mode": "open"
+        }
+    },
+    {
+        "label": "I am a...",
+        "field_type": "select",
+        "placeholder": "Select an option",
+        "options": [
+            "First-time buyer",
+            "Home mover",
+            "Investor / Landlord",
+            "Downsizing",
+            "Relocating",
+            "Overseas buyer"
+        ]
+    },
+    {
+        "label": "Your Search",
+        "field_type": "step",
+        "settings": {
+            "icon": "search"
+        }
+    },
+    {
+        "label": "3. Where Are You Now?",
+        "field_type": "fieldset",
+        "settings": {
+            "icon": "map-pin",
+            "mode": "open"
+        }
+    },
+    {
+        "label": "Select your current stage",
+        "field_type": "select",
+        "placeholder": "Select an option",
+        "options": [
+            "Just starting to look",
+            "Actively viewing",
+            "Offer accepted",
+            "Ready to proceed",
+            "Just researching"
+        ]
+    },
+    {
+        "label": "4. Your Current Property",
+        "field_type": "fieldset",
+        "settings": {
+            "icon": "home",
+            "mode": "open"
+        }
+    },
+    {
+        "label": "Do you need to sell your current property?",
+        "field_type": "select",
+        "placeholder": "Select an option",
+        "options": [
+            "Yes",
+            "No",
+            "Already sold / under offer",
+            "N/A - first-time buyer"
+        ]
+    },
+    {
+        "label": "Is your current property on the market?",
+        "field_type": "select",
+        "placeholder": "Select an option",
+        "options": [
+            "Yes - listed now",
+            "Not yet",
+            "Under offer"
+        ],
+        "settings": {
+            "cond": {
+                "field": "do_you_need_to_sell_your_current_property",
+                "op": "is",
+                "value": "Yes"
+            }
+        }
+    },
+    {
+        "label": "5. Where Do You Want to Buy?",
+        "field_type": "fieldset",
+        "settings": {
+            "icon": "map",
+            "mode": "open"
+        }
+    },
+    {
+        "label": "Preferred Town / Area",
+        "field_type": "text",
+        "placeholder": "Enter preferred town or area",
+        "is_required": true
+    },
+    {
+        "label": "Alternative Areas",
+        "field_type": "text",
+        "placeholder": "Enter alternative areas"
+    },
+    {
+        "label": "Postcode Areas",
+        "field_type": "text",
+        "placeholder": "e.g. SW1, W1, N1",
+        "description": "e.g. SW1, W1, N1",
+        "settings": {
+            "width": "half"
+        }
+    },
+    {
+        "label": "Max Commuting Distance",
+        "field_type": "select",
+        "placeholder": "Select an option",
+        "options": [
+            "Not important",
+            "Up to 15 mins",
+            "Up to 30 mins",
+            "Up to 45 mins",
+            "Up to 1 hour"
+        ],
+        "settings": {
+            "width": "half"
+        }
+    },
+    {
+        "label": "Your Requirements",
+        "field_type": "step",
+        "settings": {
+            "icon": "building"
+        }
+    },
+    {
+        "label": "6. Property Requirements",
+        "field_type": "fieldset",
+        "settings": {
+            "icon": "home",
+            "mode": "open"
+        }
+    },
+    {
+        "label": "Min Bedrooms",
+        "field_type": "select",
+        "placeholder": "Any",
+        "options": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5+"
+        ],
+        "settings": {
+            "width": "third"
+        }
+    },
+    {
+        "label": "Min Bathrooms",
+        "field_type": "select",
+        "placeholder": "Any",
+        "options": [
+            "1",
+            "2",
+            "3",
+            "4+"
+        ],
+        "settings": {
+            "width": "third"
+        }
+    },
+    {
+        "label": "Min Reception Rooms",
+        "field_type": "select",
+        "placeholder": "Any",
+        "options": [
+            "1",
+            "2",
+            "3+"
+        ],
+        "settings": {
+            "width": "third"
+        }
+    },
+    {
+        "label": "Must-have features",
+        "field_type": "checkbox",
+        "options": [
+            "Garden",
+            "Parking",
+            "Garage",
+            "Home Office",
+            "Accessibility Requirements"
+        ],
+        "settings": {
+            "class": "ah-feature-grid"
+        }
+    },
+    {
+        "label": "7. Property Type",
+        "field_type": "fieldset",
+        "description": "Select all that apply",
+        "settings": {
+            "icon": "building",
+            "mode": "open"
+        }
+    },
+    {
+        "label": "Property Type",
+        "field_type": "checkbox",
+        "options": [
+            "detached|Detached|home",
+            "semi-detached|Semi-Detached|home",
+            "terraced|Terraced|building",
+            "bungalow|Bungalow|home",
+            "flat|Flat / Apartment|building",
+            "new-build|New Build|key",
+            "flexible|Flexible / Other|compass"
+        ],
+        "settings": {
+            "layout": "tiles"
+        }
+    },
+    {
+        "label": "8. Budget & Finances",
+        "field_type": "fieldset",
+        "settings": {
+            "icon": "pound",
+            "mode": "open"
+        }
+    },
+    {
+        "label": "Comfortable Price Range - Minimum",
+        "field_type": "number",
+        "placeholder": "Minimum",
+        "settings": {
+            "width": "half",
+            "prefix": "£"
+        }
+    },
+    {
+        "label": "Comfortable Price Range - Maximum",
+        "field_type": "number",
+        "placeholder": "Maximum",
+        "settings": {
+            "width": "half",
+            "prefix": "£"
+        }
+    },
+    {
+        "label": "Absolute Maximum Purchase Price",
+        "field_type": "number",
+        "placeholder": "Enter amount",
+        "is_required": true,
+        "settings": {
+            "prefix": "£"
+        }
+    },
+    {
+        "label": "Deposit Available",
+        "field_type": "number",
+        "placeholder": "Enter amount",
+        "settings": {
+            "width": "half",
+            "prefix": "£"
+        }
+    },
+    {
+        "label": "Funding",
+        "field_type": "select",
+        "placeholder": "Select an option",
+        "options": [
+            "Mortgage",
+            "Cash",
+            "Mortgage + equity",
+            "Other"
+        ],
+        "settings": {
+            "width": "half"
+        }
+    },
+    {
+        "label": "Mortgage Position",
+        "field_type": "select",
+        "placeholder": "Select an option",
+        "options": [
+            "Not started",
+            "Speaking to a broker",
+            "Agreement in principle",
+            "Fully approved",
+            "N/A - cash buyer"
+        ]
+    },
+    {
+        "label": "Have you allowed for purchase costs?",
+        "field_type": "select",
+        "placeholder": "Select an option",
+        "description": "SDLT, legal fees, survey, mortgage, moving costs",
+        "options": [
+            "Yes",
+            "No",
+            "Not sure"
+        ]
+    },
+    {
+        "label": "More Details",
+        "field_type": "step",
+        "settings": {
+            "icon": "file"
+        }
+    },
+    {
+        "label": "9. Your Priorities",
+        "field_type": "fieldset",
+        "settings": {
+            "icon": "star",
+            "mode": "open"
+        }
+    },
+    {
+        "label": "Must-Haves (Top 3 things)",
+        "field_type": "text",
+        "placeholder": "What are the 3 things your new home MUST have?"
+    },
+    {
+        "label": "Nice-to-Haves",
+        "field_type": "text",
+        "placeholder": "What would you love to have, but could compromise on?"
+    },
+    {
+        "label": "Deal Breakers",
+        "field_type": "text",
+        "placeholder": "What would make you immediately reject a property?"
+    },
+    {
+        "label": "Condition",
+        "field_type": "select",
+        "placeholder": "Select an option",
+        "options": [
+            "Ready to move in",
+            "Light updating",
+            "Full renovation",
+            "Open to any"
+        ],
+        "settings": {
+            "width": "half"
+        }
+    },
+    {
+        "label": "Timescale",
+        "field_type": "select",
+        "placeholder": "Select an option",
+        "options": [
+            "ASAP",
+            "1-3 months",
+            "3-6 months",
+            "6-12 months",
+            "Just researching"
+        ],
+        "settings": {
+            "width": "half"
+        }
+    },
+    {
+        "label": "10. The Important Question",
+        "field_type": "fieldset",
+        "settings": {
+            "icon": "help",
+            "mode": "open"
+        }
+    },
+    {
+        "label": "What is making your property search difficult?",
+        "field_type": "textarea",
+        "placeholder": "Tell us more..."
+    },
+    {
+        "label": "11. Why You Need Us",
+        "field_type": "fieldset",
+        "settings": {
+            "icon": "heart",
+            "mode": "collapsed"
+        }
+    },
+    {
+        "label": "What would make our support most valuable to you?",
+        "field_type": "textarea",
+        "placeholder": "Tell us more..."
+    },
+    {
+        "label": "12. Support Required",
+        "field_type": "fieldset",
+        "settings": {
+            "icon": "users",
+            "mode": "collapsed"
+        }
+    },
+    {
+        "label": "What support do you need?",
+        "field_type": "checkbox",
+        "options": [
+            "Finding properties",
+            "Negotiating",
+            "Viewings",
+            "Legal introductions",
+            "Mortgage introductions",
+            "Full buying agent service"
+        ],
+        "settings": {
+            "class": "ah-feature-grid"
+        }
+    },
+    {
+        "label": "13. How You Found Us",
+        "field_type": "fieldset",
+        "settings": {
+            "icon": "search",
+            "mode": "collapsed"
+        }
+    },
+    {
+        "label": "How did you hear about us?",
+        "field_type": "select",
+        "placeholder": "Select an option",
+        "options": [
+            "Google",
+            "Social media",
+            "Referral",
+            "Property portal",
+            "Event",
+            "Other"
+        ]
+    },
+    {
+        "label": "Who referred you?",
+        "field_type": "text",
+        "placeholder": "Name of the person who referred you",
+        "settings": {
+            "cond": {
+                "field": "how_did_you_hear_about_us",
+                "op": "is",
+                "value": "Referral"
+            }
+        }
+    },
+    {
+        "label": "14. Consent",
+        "field_type": "fieldset",
+        "settings": {
+            "icon": "shield",
+            "mode": "collapsed"
+        }
+    },
+    {
+        "label": "Marketing preferences",
+        "field_type": "checkbox",
+        "options": [
+            "Email me relevant property updates",
+            "Contact me by phone or WhatsApp"
+        ]
+    },
+    {
+        "label": "Security note",
+        "field_type": "markup",
+        "description": "Your information is secure and will only be used for your enquiry.",
+        "settings": {
+            "icon": "shield"
+        }
+    }
+]

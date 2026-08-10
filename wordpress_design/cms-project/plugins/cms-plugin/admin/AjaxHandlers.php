@@ -321,12 +321,41 @@ class AH_Ajax_Handlers {
 			wp_send_json_error( array( 'message' => 'This form is not available.' ) );
 		}
 
-		// Collect + validate each configured field
+		// Spam challenge, before any work is done on the payload.
+		$captcha = AH_Form_Builder::verify_captcha( $form );
+		if ( true !== $captcha ) {
+			wp_send_json_error( array( 'message' => $captcha ) );
+		}
+
+		// ── Pass 1: collect and sanitize every posted value ──────────────────
+		// Conditional logic can reference any field on the form, including one that
+		// appears later, so nothing is validated until every value is in hand.
 		$data       = array();
 		$email_rows = array();
+		$inputs     = array();
 
 		foreach ( $fields as $field ) {
+			// Step / group markers only shape the layout - they post no value.
+			if ( AH_Form_Builder::is_structural( $field->field_type ) ) {
+				continue;
+			}
+
 			$key = $field->field_key;
+
+			// File fields carry their value in $_FILES, not $_POST.
+			if ( 'file' === $field->field_type ) {
+				$upload = AH_Form_Builder::handle_upload( $key, $field->settings, $form_id, $field->label );
+				if ( is_wp_error( $upload ) ) {
+					wp_send_json_error( array( 'message' => $upload->get_error_message() ) );
+				}
+				$data[ $key ] = $upload ? $upload['name'] : '';
+				if ( $upload ) {
+					$data[ '_file_' . $key ] = $upload['rel'];
+				}
+				$inputs[] = $field;
+				continue;
+			}
+
 			$raw = isset( $_POST[ $key ] ) ? wp_unslash( $_POST[ $key ] ) : '';
 
 			if ( 'checkbox' === $field->field_type && is_array( $raw ) ) {
@@ -342,17 +371,53 @@ class AH_Ajax_Handlers {
 				$val = sanitize_text_field( $raw );
 			}
 
-			if ( $field->is_required && '' === $val ) {
-				wp_send_json_error( array( 'message' => $field->label . ' is required.' ) );
-			}
-
-			if ( 'email' === $field->field_type && $val && ! is_email( $val ) ) {
-				wp_send_json_error( array( 'message' => 'Please enter a valid email address for ' . $field->label . '.' ) );
+			// A tel field with the country selector posts its dial code separately.
+			if ( 'tel' === $field->field_type && ! empty( $field->settings['intl'] ) && '' !== $val ) {
+				$cc = sanitize_text_field( wp_unslash( $_POST[ $key . '_cc' ] ?? '' ) );
+				// "other" means the visitor's country is not in the list and they typed
+				// their own code, so accept any plausible E.164 prefix instead.
+				if ( 'other' === $cc ) {
+					$typed = sanitize_text_field( wp_unslash( $_POST[ $key . '_cc_custom' ] ?? '' ) );
+					$cc    = preg_match( '/^\+?[0-9]{1,4}$/', $typed ) ? '+' . ltrim( $typed, '+' ) : '';
+				}
+				$known = in_array( $cc, array_values( AH_Form_Builder::dial_codes() ), true );
+				if ( '' !== $cc && ( $known || preg_match( '/^\+[0-9]{1,4}$/', $cc ) ) ) {
+					$val = $cc . ' ' . $val;
+				}
 			}
 
 			$data[ $key ] = $val;
-			if ( $val ) {
-				$email_rows[] = array( 'label' => $field->label, 'value' => $val );
+			$inputs[]     = $field;
+		}
+
+		// ── Pass 2: drop fields their conditions rule out, then validate ─────
+		$conditions = AH_Form_Builder::resolve_conditions( $fields );
+
+		foreach ( $inputs as $field ) {
+			$key     = $field->field_key;
+			$applies = true;
+			foreach ( $conditions[ $key ] ?? array() as $cond ) {
+				if ( ! AH_Form_Builder::condition_met( $cond, $data ) ) {
+					$applies = false;
+					break;
+				}
+			}
+			if ( ! $applies ) {
+				// Not shown to this visitor, so it is neither required nor stored.
+				$data[ $key ] = '';
+				continue;
+			}
+
+			if ( $field->is_required && '' === $data[ $key ] ) {
+				wp_send_json_error( array( 'message' => $field->label . ' is required.' ) );
+			}
+
+			if ( 'email' === $field->field_type && $data[ $key ] && ! is_email( $data[ $key ] ) ) {
+				wp_send_json_error( array( 'message' => 'Please enter a valid email address for ' . $field->label . '.' ) );
+			}
+
+			if ( $data[ $key ] ) {
+				$email_rows[] = array( 'label' => $field->label, 'value' => $data[ $key ] );
 			}
 		}
 
