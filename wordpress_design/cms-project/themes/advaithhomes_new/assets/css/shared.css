@@ -8376,3 +8376,49 @@ a.mini-card:hover .mini-card-title { color: var(--color-primary); }
   .ah-next__aside { border-left: none; border-top: 1px solid rgba(200,164,92,.22); }
   .ah-next__body, .ah-next__aside, .ah-next__note { padding: 26px 22px; }
 }
+
+/* ============================================================
+   Footer site-links list (data/config/seo.json -> site_links.footer)
+   Three modes, chosen in that config:
+     --hidden     display:none. Google classes this as hidden links.
+     --collapsed  <details>, closed until clicked. Safe: real content.
+     --visible    always shown.
+   ============================================================ */
+.adn-sitelinks__list { list-style: none; margin: 0; padding: 0; }
+
+.adn-sitelinks--hidden { display: none; }
+
+.adn-sitelinks--collapsed { padding: 14px 0; border-top: 1px solid rgba(255, 255, 255, .08); }
+.adn-sitelinks--collapsed summary {
+  cursor: pointer; font-size: .82rem; letter-spacing: .04em;
+  text-transform: uppercase; color: rgba(255, 255, 255, .55); list-style: none;
+}
+.adn-sitelinks--collapsed summary::-webkit-details-marker { display: none; }
+.adn-sitelinks--collapsed summary::after { content: " ▾"; }
+.adn-sitelinks--collapsed[open] summary::after { content: " ▴"; }
+.adn-sitelinks--collapsed summary:hover { color: #c8a45c; }
+.adn-sitelinks--collapsed .adn-sitelinks__list,
+.adn-sitelinks--visible .adn-sitelinks__list {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 6px 20px; margin-top: 12px;
+}
+.adn-sitelinks--collapsed a,
+.adn-sitelinks--visible a {
+  color: rgba(255, 255, 255, .62); text-decoration: none; font-size: .82rem; line-height: 1.7;
+}
+.adn-sitelinks--collapsed a:hover,
+.adn-sitelinks--visible a:hover { color: #c8a45c; }
+
+.adn-sitelinks--visible { padding: 18px 0; border-top: 1px solid rgba(255, 255, 255, .08); }
+.adn-sitelinks__title {
+  margin: 0; font-size: .82rem; letter-spacing: .04em;
+  text-transform: uppercase; color: rgba(255, 255, 255, .55); font-weight: 600;
+}
+
+/* Footer keyword line (seo.json -> site_keywords). --hidden is display:none. */
+.adn-keywords { margin: 0; }
+.adn-keywords--hidden { display: none; }
+.adn-keywords--visible {
+  padding: 12px 0; font-size: .72rem; line-height: 1.7;
+  color: rgba(255, 255, 255, .38); border-top: 1px solid rgba(255, 255, 255, .06);
+}

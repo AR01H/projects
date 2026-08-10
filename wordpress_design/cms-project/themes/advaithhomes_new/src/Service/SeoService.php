@@ -54,6 +54,160 @@ class SeoService {
 		return $value;
 	}
 
+	/**
+	 * Internal link graph for search engines, driven by seo.json -> site_links.
+	 *
+	 * Emitted as JSON-LD in <head>, which is the sanctioned way to expose an
+	 * internal link graph: invisible to visitors, read by crawlers. Rendering the
+	 * same links as hidden HTML (display:none, off-screen, zero opacity) is
+	 * classed as hidden-link spam by Google and risks a demotion, so it is
+	 * deliberately not done here. For links that should carry real crawl weight,
+	 * put them somewhere visible - a footer block or an HTML sitemap page.
+	 *
+	 * @return array Empty when disabled or out of scope, so nothing is printed.
+	 */
+	public static function siteLinksSchema(): array {
+		$cfg = self::getConfigValue( 'site_links', array() );
+		if ( ! is_array( $cfg ) || empty( $cfg['enabled'] ) ) {
+			return array();
+		}
+
+		// scope: "front" (default) puts it on the home page only, "all" site-wide.
+		$scope = isset( $cfg['scope'] ) ? (string) $cfg['scope'] : 'front';
+		if ( 'all' !== $scope && ! is_front_page() ) {
+			return array();
+		}
+
+		$items    = array();
+		$position = 0;
+		foreach ( (array) ( $cfg['items'] ?? array() ) as $item ) {
+			$name = isset( $item['name'] ) ? trim( wp_strip_all_tags( (string) $item['name'] ) ) : '';
+			$url  = isset( $item['url'] ) ? trim( (string) $item['url'] ) : '';
+			if ( '' === $name || '' === $url ) {
+				continue;
+			}
+			// An absolute URL is used as authored; only a site-relative path is resolved.
+			$absolute = preg_match( '~^https?://~i', $url ) ? $url : home_url( $url );
+			$items[]  = array(
+				'@type'    => 'SiteNavigationElement',
+				'position' => ++$position,
+				'name'     => $name,
+				'url'      => $absolute,
+			);
+		}
+
+		if ( ! $items ) {
+			return array();
+		}
+
+		return array(
+			'@context'        => 'https://schema.org',
+			'@type'           => 'ItemList',
+			'name'            => isset( $cfg['name'] ) ? (string) $cfg['name'] : 'Site navigation',
+			'itemListElement' => $items,
+		);
+	}
+
+	/**
+	 * The site_links items, normalised to { name, url } with empties dropped.
+	 */
+	public static function siteLinksItems(): array {
+		$cfg  = self::getConfigValue( 'site_links', array() );
+		$out  = array();
+		foreach ( (array) ( is_array( $cfg ) ? ( $cfg['items'] ?? array() ) : array() ) as $item ) {
+			$name = isset( $item['name'] ) ? trim( wp_strip_all_tags( (string) $item['name'] ) ) : '';
+			$url  = isset( $item['url'] ) ? trim( (string) $item['url'] ) : '';
+			if ( '' !== $name && '' !== $url ) {
+				$out[] = array( 'name' => $name, 'url' => $url );
+			}
+		}
+		return $out;
+	}
+
+	/**
+	 * Footer link list for every page, driven by seo.json -> site_links.footer.
+	 *
+	 * mode:
+	 *   "collapsed" - a <details> block, closed until clicked. Recommended: the
+	 *                 links are genuinely reachable by visitors, so search
+	 *                 engines treat them as ordinary content.
+	 *   "visible"   - a plain list, always shown.
+	 *   "hidden"    - display:none. Note this is what Google's spam policies call
+	 *                 hidden links; it can get a site demoted rather than boosted.
+	 *                 Kept because it was explicitly asked for.
+	 */
+	public static function siteLinksFooterHtml(): string {
+		$cfg = self::getConfigValue( 'site_links', array() );
+		if ( ! is_array( $cfg ) ) {
+			return '';
+		}
+		$foot = isset( $cfg['footer'] ) && is_array( $cfg['footer'] ) ? $cfg['footer'] : array();
+		if ( empty( $foot['enabled'] ) ) {
+			return '';
+		}
+
+		$items = self::siteLinksItems();
+		if ( ! $items ) {
+			return '';
+		}
+
+		$mode  = isset( $foot['mode'] ) ? sanitize_key( (string) $foot['mode'] ) : 'collapsed';
+		$mode  = in_array( $mode, array( 'collapsed', 'visible', 'hidden' ), true ) ? $mode : 'collapsed';
+		$title = isset( $foot['title'] ) ? (string) $foot['title'] : 'All pages';
+
+		$links = '';
+		foreach ( $items as $item ) {
+			$links .= '<li><a href="' . esc_url( adn_link( $item['url'] ) ) . '">'
+				. esc_html( $item['name'] ) . '</a></li>';
+		}
+		$list = '<ul class="adn-sitelinks__list">' . $links . '</ul>';
+
+		if ( 'collapsed' === $mode ) {
+			return '<nav class="adn-sitelinks adn-sitelinks--collapsed" aria-label="' . esc_attr( $title ) . '">'
+				. '<details><summary>' . esc_html( $title ) . '</summary>' . $list . '</details></nav>';
+		}
+		if ( 'visible' === $mode ) {
+			return '<nav class="adn-sitelinks adn-sitelinks--visible" aria-label="' . esc_attr( $title ) . '">'
+				. '<h3 class="adn-sitelinks__title">' . esc_html( $title ) . '</h3>' . $list . '</nav>';
+		}
+		// hidden
+		return '<nav class="adn-sitelinks adn-sitelinks--hidden" aria-label="' . esc_attr( $title ) . '">'
+			. $list . '</nav>';
+	}
+
+	/**
+	 * Site-wide keyword block for the footer, from seo.json -> site_keywords.
+	 *
+	 * The same words already go out as <meta name="keywords"> on every page, which
+	 * is the sanctioned slot. Repeating them as hidden on-page text is keyword
+	 * stuffing plus hidden text - the pair automated spam detection is tuned
+	 * hardest for. Set "enabled": false, or "mode": "visible", to step away from
+	 * that. Kept because it was explicitly asked for.
+	 */
+	public static function siteKeywordsHtml(): string {
+		$cfg = self::getConfigValue( 'site_keywords', array() );
+		if ( ! is_array( $cfg ) || empty( $cfg['enabled'] ) ) {
+			return '';
+		}
+
+		$words = array();
+		foreach ( (array) ( $cfg['words'] ?? array() ) as $word ) {
+			$word = trim( wp_strip_all_tags( (string) $word ) );
+			if ( '' !== $word ) {
+				$words[] = $word;
+			}
+		}
+		if ( ! $words ) {
+			return '';
+		}
+
+		$mode = isset( $cfg['mode'] ) ? sanitize_key( (string) $cfg['mode'] ) : 'hidden';
+		$mode = in_array( $mode, array( 'hidden', 'visible' ), true ) ? $mode : 'hidden';
+
+		return '<p class="adn-keywords adn-keywords--' . esc_attr( $mode ) . '">'
+			. esc_html( implode( ', ', $words ) ) . '</p>';
+	}
+
 	public static function pageConfig( string $page, array $default = array() ): array {
 		$pages = self::getConfigValue( 'pages', array() );
 		if ( ! is_array( $pages ) ) {
@@ -187,7 +341,12 @@ class SeoService {
 			echo '<link rel="canonical" href="' . esc_url( $_canonical ) . '">' . "\n";
 		}
 
+		// Page keywords, falling back to the site-wide list so every page carries
+		// them, not just the two that had their own.
 		$_kw = ! empty( $reg['keywords'] ) ? $reg['keywords'] : array();
+		if ( empty( $_kw ) ) {
+			$_kw = self::getConfigValue( 'defaults.keywords', array() );
+		}
 		if ( ! empty( $_kw ) ) {
 			$_kw_str = is_array( $_kw )
 				? implode( ', ', array_map( 'sanitize_text_field', (array) $_kw ) )
@@ -302,6 +461,13 @@ class SeoService {
 			);
 			echo '<script type="application/ld+json">' . "\n";
 			echo wp_json_encode( $website_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT );
+			echo "\n</script>\n";
+		}
+
+		$site_links = self::siteLinksSchema();
+		if ( ! empty( $site_links ) ) {
+			echo '<script type="application/ld+json">' . "\n";
+			echo wp_json_encode( $site_links, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT );
 			echo "\n</script>\n";
 		}
 

@@ -6,7 +6,21 @@
         "og_locale": "en_GB",
         "twitter_card": "summary_large_image",
         "robots": "index, follow",
-        "description": "Trusted UK property guides, calculators and expert advice for buyers, sellers and movers."
+        "description": "Trusted UK property guides, calculators and expert advice for buyers, sellers and movers.",
+        "keywords": [
+            "ADVAITH HOMES",
+            "UK property experts",
+            "buyer side agent UK",
+            "buying agent",
+            "estate agent Sutton",
+            "estate agent Cheam",
+            "property search service UK",
+            "buying a home UK",
+            "first time buyer help",
+            "home mover advice",
+            "property viewing support",
+            "offer negotiation service"
+        ]
     },
     "pages": {
         "home": {
@@ -48,5 +62,124 @@
             "title": "Contact Us | ADVAITH HOMES",
             "description": "Get in touch with our property experts. We're here to help."
         }
+    },
+    "site_links": {
+        "_comment": "Internal link graph exposed to crawlers as JSON-LD (ItemList of SiteNavigationElement) by SeoService::siteLinksSchema(). scope: \"front\" = home page only, \"all\" = every page. Relative paths are resolved against the site URL; absolute URLs are used as-is. Add new pages here as they go live.",
+        "enabled": true,
+        "scope": "front",
+        "name": "ADVAITH HOMES site navigation",
+        "footer": {
+            "_comment": "Footer link list on EVERY page. mode: \"collapsed\" (a <details> block, closed until clicked - recommended and penalty-free), \"visible\" (plain list), or \"hidden\" (display:none - what Google calls hidden links, use at your own risk).",
+            "enabled": true,
+            "mode": "hidden",
+            "title": "All pages"
+        },
+        "items": [
+            {
+                "name": "Home",
+                "url": "/"
+            },
+            {
+                "name": "About Us",
+                "url": "/about-us/"
+            },
+            {
+                "name": "Contact Us",
+                "url": "/contact/"
+            },
+            {
+                "name": "Ask an Expert",
+                "url": "/ask-an-expert/"
+            },
+            {
+                "name": "Get Expert Guidance",
+                "url": "/guidance/"
+            },
+            {
+                "name": "Property Guides",
+                "url": "/guides/"
+            },
+            {
+                "name": "News & Insights",
+                "url": "/news/"
+            },
+            {
+                "name": "Property Tools & Calculators",
+                "url": "/calculators/"
+            },
+            {
+                "name": "Frequently Asked Questions",
+                "url": "/faqs/"
+            },
+            {
+                "name": "Property Report",
+                "url": "/propery-report/"
+            },
+            {
+                "name": "Tell Us About the Home You Are Looking For",
+                "url": "/home-requirements/"
+            },
+            {
+                "name": "Burlington Estate Agents",
+                "url": "/burlington-estate-agents/"
+            },
+            {
+                "name": "Privacy Policy",
+                "url": "/privacy-policy/"
+            },
+            {
+                "name": "Terms and Conditions",
+                "url": "/terms-and-conditions/"
+            },
+            {
+                "name": "Cookie Policy",
+                "url": "/cookie-policy/"
+            },
+            {
+                "name": "Acceptable Use Policy",
+                "url": "/acceptable-use-policy/"
+            }
+        ]
+    },
+    "site_keywords": {
+        "_comment": "Footer keyword line on every page. These same words already ship as <meta name=\"keywords\"> via defaults.keywords, which is the sanctioned slot. mode: \"hidden\" (display:none - keyword stuffing + hidden text, use at your own risk) or \"visible\". Set enabled:false to remove it entirely.",
+        "enabled": true,
+        "mode": "hidden",
+        "words": [
+            "ADVAITH HOMES",
+            "UK property experts",
+            "buyer side agent UK",
+            "buying agent",
+            "estate agent Sutton",
+            "estate agent Cheam",
+            "property search service UK",
+            "buying a home UK",
+            "first time buyer help",
+            "home mover advice",
+            "property viewing support",
+            "offer negotiation service",
+            "property search agent",
+            "help finding a house",
+            "relocation help UK",
+            "overseas buyer UK property",
+            "selling my property",
+            "free property valuation",
+            "sell my house UK",
+            "letting agent UK",
+            "landlord services",
+            "property management UK",
+            "stamp duty calculator",
+            "SDLT calculator",
+            "mortgage affordability calculator",
+            "deposit calculator UK",
+            "house affordability UK",
+            "total cost of buying a home",
+            "UK property guides",
+            "property market insights",
+            "property news UK",
+            "property advice UK",
+            "expert property guidance",
+            "property tools and calculators"
+        ]
     }
 }

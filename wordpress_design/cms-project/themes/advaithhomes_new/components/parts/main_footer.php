@@ -151,6 +151,18 @@ if ( $show_desc || $show_badge || $show_cta ) :
     </div>
 
     <?php /* ── Bottom bar ── */ ?>
+    <?php
+    // Site-wide link list from data/config/seo.json -> site_links.footer.
+    // Renders nothing unless that block sets "enabled": true.
+    if ( class_exists( '\Adn\Theme\Service\SeoService' ) ) {
+        $adn_sitelinks = \Adn\Theme\Service\SeoService::siteLinksFooterHtml()
+                       . \Adn\Theme\Service\SeoService::siteKeywordsHtml();
+        if ( '' !== $adn_sitelinks ) {
+            echo '<div class="container">' . $adn_sitelinks . '</div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in the service.
+        }
+    }
+    ?>
+
     <div class="footer-bottom-bar">
         <div class="container">
             <div class="footer-bottom">
