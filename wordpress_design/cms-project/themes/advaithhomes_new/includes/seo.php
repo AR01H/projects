@@ -37,10 +37,3 @@ function adn_seo_head_output(): void {
 	\Adn\Theme\Service\SeoService::headOutput();
 }
 add_action( 'wp_head', 'adn_seo_head_output', 1 );
-
-add_action( 'template_redirect', function() {
-	if ( '/favicon.png' === wp_parse_url( $_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH ) ) {
-		wp_redirect( get_template_directory_uri() . '/assets/images/logos/logo_with_text.png', 301 );
-		exit;
-	}
-} );
