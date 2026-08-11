@@ -1,7 +1,7 @@
 {
     "_comment": "Default SEO metadata. Pages can override via their own JSON.",
     "defaults": {
-        "title_suffix": " | ADVAITH HOMES",
+        "title_suffix": "| ADVAITH HOMES",
         "og_type": "website",
         "og_locale": "en_GB",
         "twitter_card": "summary_large_image",
@@ -26,8 +26,8 @@
     },
     "pages": {
         "home": {
-            "title": "UK Property Buying & Selling Guide | Advaith Homes",
-            "description": "Expert UK property guidance with calculators for first-time buyers, home movers and sellers. Stamp duty, mortgage affordability & more. Trusted buyer's agent.",
+            "title": "UK Property Guides, Calculators & Buyer Support",
+            "description": "Practical UK property guides, calculators, buyer support and trusted professional connections to help you buy, sell, move or rent with greater confidence.",
             "type": "website",
             "keywords": [
                 "UK property buying guide",
@@ -58,7 +58,7 @@
             "noindex": true
         },
         "guides": {
-            "title": "UK Property Buying, Selling & Moving Guides | Advaith Homes",
+            "title": "UK Property Buying, Selling & Moving Guides",
             "description": "Browse our complete library of property guides covering buying, selling and moving home in the UK. Expert advice for first-time buyers and home movers.",
             "type": "collection_page",
             "keywords": [
@@ -87,7 +87,7 @@
             "image": "/assets/images/default_calculator_image.jpg"
         },
         "news": {
-            "title": "UK Property News & Market Insights | ADVAITH HOMES",
+            "title": "UK Property News & Market Insights",
             "description": "Latest UK property news, market updates, price trends and expert insights. Stay informed about the UK property market with expert analysis.",
             "type": "collection_page",
             "keywords": [
@@ -101,7 +101,7 @@
             "image": "/assets/images/backgrounds/default_news_image.jpg"
         },
         "contact": {
-            "title": "Contact UK Property Experts | ADVAITH HOMES",
+            "title": "Contact UK Property Experts",
             "description": "Get in touch with our UK property experts. We're here to help with buying, selling, renting and property advice across the UK.",
             "type": "website",
             "keywords": [
@@ -113,7 +113,7 @@
             ]
         },
         "faqs": {
-            "title": "Frequently Asked Questions | ADVAITH HOMES",
+            "title": "Frequently Asked Questions",
             "description": "Common questions about buying, selling and moving home in the UK. Get answers to your UK property questions from our expert team.",
             "type": "web_page",
             "keywords": [
@@ -125,7 +125,7 @@
             ]
         },
         "guidance": {
-            "title": "UK Property Guidance & Expert Advice | ADVAITH HOMES",
+            "title": "UK Property Guidance & Expert Advice",
             "description": "Expert UK property guidance for buyers, sellers and renters. Get professional advice on property buying, selling and moving.",
             "type": "web_page",
             "keywords": [
@@ -137,7 +137,7 @@
             ]
         },
         "ask-an-expert": {
-            "title": "Ask an Expert | ADVAITH HOMES",
+            "title": "Ask an Expert",
             "description": "Get your UK property questions answered by our expert team. Expert guidance on buying, selling, renting and property investment.",
             "type": "web_page",
             "keywords": [
@@ -149,7 +149,7 @@
             ]
         },
         "about-us": {
-            "title": "About ADVAITH HOMES | UK Property Experts",
+            "title": "About Us",
             "description": "Learn about ADVAITH HOMES - your trusted UK property experts. We help buyers, sellers and renters across the UK with expert guidance.",
             "type": "web_page",
             "keywords": [
@@ -173,7 +173,7 @@
             ]
         },
         "privacy-policy": {
-            "title": "Privacy Policy | ADVAITH HOMES UK Property",
+            "title": "Privacy Policy",
             "description": "ADVAITH HOMES UK property privacy policy. Learn how we collect, use and protect your personal data when using our property services.",
             "type": "web_page",
             "keywords": [
@@ -184,7 +184,7 @@
             ]
         },
         "terms-and-conditions": {
-            "title": "Terms and Conditions | ADVAITH HOMES UK Property",
+            "title": "Terms and Conditions",
             "description": "ADVAITH HOMES UK property terms and conditions. Please read these terms before using our property services and calculators.",
             "type": "web_page",
             "keywords": [
@@ -195,7 +195,7 @@
             ]
         },
         "cookie-policy": {
-            "title": "Cookie Policy | ADVAITH HOMES UK Property",
+            "title": "Cookie Policy",
             "description": "ADVAITH HOMES UK property cookie policy. Learn how we use cookies and similar technologies on our property website.",
             "type": "web_page",
             "keywords": [
@@ -206,13 +206,25 @@
             ]
         },
         "acceptable-use-policy": {
-            "title": "Acceptable Use Policy | Advaith Homes",
+            "title": "Acceptable Use Policy",
             "description": "Advaith Homes acceptable use policy. Please read these terms before using our UK property services and website.",
             "type": "web_page",
             "keywords": [
                 "acceptable use policy UK",
                 "website terms UK",
                 "property website policy"
+            ]
+        },
+        "buying-a-home": {
+            "title": "Buying a Home in the UK | Expert Property Advice",
+            "description": "Expert guidance for buying a home in the UK. Learn about the property buying process, legal requirements and tips for first-time buyers.",
+            "type": "web_page",
+            "keywords": [
+                "buying a home UK",
+                "UK property buying guide",
+                "first time buyer advice UK",
+                "property purchase UK",
+                "home buying tips UK"
             ]
         }
     },
