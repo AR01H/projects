@@ -8,7 +8,7 @@
         "description": "Independent information hub for buyers, sellers and house movers. Clear guides, smart tools and expert insights to help you make better property decisions.",
         "actions": [
             { "label": "Start Your Journey →", "url": "/buying/", "style": "primary" },
-            { "label": "Ask an Expert", "url": "/ask-expert/", "style": "outline" }
+            { "label": "Ask an Expert", "url": "/ask-expert/", "style": "secondary" }
         ],
         "trust_items": [
         ],

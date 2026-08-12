@@ -173,7 +173,7 @@ echo $_sn_ticker_html;
             <div class="header-actions">
                 <button type="button" class="btn-search" aria-label="Search" aria-expanded="false" aria-controls="headerSearch"><?php echo adn_icon( 'fa-magnifying-glass' ); ?></button>
                 <?php if ( ! empty( $cta['label'] ) ) : ?>
-                    <a href="<?php echo esc_url( adn_link( isset( $cta['url'] ) ? $cta['url'] : '' ) ); ?>" class="btn btn-primary btn-sm header-cta"><?php echo esc_html( $cta['label'] ); ?></a>
+                    <a href="<?php echo esc_url( adn_link( isset( $cta['url'] ) ? $cta['url'] : '' ) ); ?>" class="btn btn-primary btn-secondary btn-sm header-cta"><?php echo esc_html( $cta['label'] ); ?></a>
                 <?php endif; ?>
                 <button type="button" class="mobile-menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">☰</button>
             </div>

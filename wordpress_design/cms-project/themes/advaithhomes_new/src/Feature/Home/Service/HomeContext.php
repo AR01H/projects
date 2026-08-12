@@ -293,7 +293,7 @@ class HomeContext {
 			$actions[] = array( 'label' => $opt['cta1_label'], 'url' => $opt['cta1_url'] ?? '#', 'style' => 'primary' );
 		}
 		if ( ! empty( $opt['cta2_label'] ) ) {
-			$actions[] = array( 'label' => $opt['cta2_label'], 'url' => $opt['cta2_url'] ?? '#', 'style' => 'outline' );
+			$actions[] = array( 'label' => $opt['cta2_label'], 'url' => $opt['cta2_url'] ?? '#', 'style' => 'secondary' );
 		}
 		if ( ! empty( $actions ) ) { $hero['actions'] = $actions; }
 

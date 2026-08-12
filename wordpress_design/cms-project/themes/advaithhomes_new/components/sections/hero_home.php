@@ -165,7 +165,7 @@ if ( $_is_carousel ) :
         <p class="hero-desc"><?php echo isset( $hero['description'] ) ? $hero['description'] : ''; ?></p>
         <div class="hero-actions">
             <?php foreach ( $actions as $action ) :
-                $style = isset( $action['style'] ) && 'outline' === $action['style'] ? 'btn-outline premium-btn-outline' : 'btn-primary premium-btn-dark';
+                $style = isset( $action['style'] ) && 'secondary' === $action['style'] ? 'btn-primary premium-btn-dark btn-secondary' : 'btn-primary premium-btn-dark';
                 ?>
                 <a href="<?php echo esc_url( adn_link( isset( $action['url'] ) ? $action['url'] : '' ) ); ?>"
                    class="btn <?php echo esc_attr( $style ); ?> btn-md"><?php echo esc_html( isset( $action['label'] ) ? $action['label'] : '' ); ?></a>

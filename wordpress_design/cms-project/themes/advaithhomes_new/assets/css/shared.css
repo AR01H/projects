@@ -104,7 +104,7 @@ p { line-height: 1.7; color: var(--color-black); }
   background: var(--color-accent);
   color: var(--color-white);
 }
-.btn-accent:hover { background: var(--color-accent-light); }
+.btn-accent:hover { background: var(--color-accent-light);transform: translateY(-1px); box-shadow: var(--shadow-md); }
 .btn-outline {
   background: transparent;
   color: var(--color-primary);
@@ -832,8 +832,8 @@ section{
   background: var(--color-accent);
 }
 .premium-btn-outline:hover {
-  border: 1px solid var(--client-color-400) !important;
-  background: var(--client-color-600) !important;
+  /* border: 1px solid var(--client-color-400) !important;
+  background: var(--client-color-600) !important; */
 }
 .phb-premium ~ .container .hero-actions {
   display: flex;
@@ -8303,7 +8303,7 @@ a.mini-card:hover .mini-card-title { color: var(--color-primary); }
    Markup lives in the page content; scoped to .ah-next only.
    ============================================================ */
 .ah-next {
-  --ah-next-navy: #11253d;
+  --ah-next-navy: var(--client-color);
   --ah-next-gold: #c8a45c;
   background: var(--ah-next-navy);
   color: #e8eaee;

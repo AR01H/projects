@@ -123,6 +123,13 @@ h1, h2, h3, h4 {
     color: #fff !important;
 }
 .btn-primary:hover { background: var(--client-color-700) !important; }
+.btn.btn-secondary{
+    background: var(--color-accent) !important;
+    border-color: var(--secondary-color) !important;
+}
+.btn.btn-secondary:hover{
+    background: var(--secondary-color-dark) !important;
+}
 
 
 /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
