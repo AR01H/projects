@@ -18,6 +18,13 @@ class FormBuilderController {
 	/** Expand/collapse behaviours a `fieldset` marker can be set to. */
 	const GROUP_MODES = array( 'open', 'expanded', 'collapsed', 'accordion' );
 
+	/**
+	 * How a radio / checkbox field presents its options. Chosen per field in the
+	 * builder's advanced panel, so the same field type can read as a plain list
+	 * on one form and as selectable pills on another.
+	 */
+	const CHOICE_LAYOUTS = array( 'list', 'tiles', 'pills', 'cards', 'checks' );
+
 	/** Field width => how many of the 12 grid columns the wrapper spans. */
 	const WIDTHS = array(
 		'full'       => 12,
@@ -86,6 +93,24 @@ class FormBuilderController {
 	}
 
 	/** Render an icon: a built-in key becomes SVG, anything else prints as text. */
+	/**
+	 * Is this icon value an image to render, rather than an icon name or emoji?
+	 *
+	 * Both halves must hold: it has to LOOK like a URL or site-relative path (so
+	 * a stray word containing a dot stays a literal) and end in an image
+	 * extension (so an arbitrary URL cannot be pulled into an <img> src).
+	 *
+	 * Shared by the renderer and the settings sanitiser - the sanitiser caps
+	 * plain icon literals at a few characters, and without the same test here it
+	 * would cut a pasted image URL down to "/wp-".
+	 */
+	public static function is_image_icon( string $icon ): bool {
+		$icon = trim( $icon );
+		return ( '' !== $icon )
+			&& 1 === preg_match( '~^(?:https?://|//|/)~', $icon )
+			&& 1 === preg_match( '~\.(?:png|jpe?g|gif|webp|svg|avif)(?:\?[^\s]*)?$~i', $icon );
+	}
+
 	public static function icon_svg( string $icon, string $class = 'ahf-ico' ): string {
 		$icon = trim( $icon );
 		if ( '' === $icon ) {
@@ -96,6 +121,18 @@ class FormBuilderController {
 			return '<svg class="' . esc_attr( $class ) . '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
 				. $set[ $icon ] . '</svg>';
 		}
+		/*
+		 * An image URL renders as an <img>. Every icon in the form - field
+		 * labels, tiles, pills, cards, step badges - comes through this one
+		 * function, so pasting a media-library URL where an icon name goes works
+		 * everywhere without a second syntax to remember. Decorative, hence
+		 * alt="".
+		 */
+		if ( self::is_image_icon( $icon ) ) {
+			return '<img class="' . esc_attr( $class ) . ' ' . esc_attr( $class ) . '-img" src="' . esc_url( $icon )
+				. '" alt="" loading="lazy" decoding="async">';
+		}
+
 		// Emoji or short literal - cap the length so a pasted essay can't wreck layout.
 		return '<span class="' . esc_attr( $class ) . ' ' . esc_attr( $class ) . '-txt" aria-hidden="true">'
 			. esc_html( function_exists( 'mb_substr' ) ? mb_substr( $icon, 0, 4 ) : substr( $icon, 0, 4 ) ) . '</span>';
@@ -225,8 +262,10 @@ class FormBuilderController {
 			}
 		}
 
-		// Width applies to input fields; a step/group always spans the full row.
-		if ( ! self::is_structural( $type ) ) {
+		// Width applies to input fields and to groups - two half-width groups sit
+		// side by side in the step's 12-column grid. A step is a page of its own,
+		// so it always spans the full row.
+		if ( 'step' !== $type ) {
 			$width = isset( $raw['width'] ) ? sanitize_key( (string) $raw['width'] ) : 'full';
 			if ( isset( self::WIDTHS[ $width ] ) && 'full' !== $width ) {
 				$out['width'] = $width;
@@ -238,9 +277,32 @@ class FormBuilderController {
 		// beside their label, markup shows it beside the text.
 		$icon = isset( $raw['icon'] ) ? trim( (string) $raw['icon'] ) : '';
 		if ( '' !== $icon ) {
-			$out['icon'] = isset( self::icons()[ $icon ] )
-				? $icon
-				: ( function_exists( 'mb_substr' ) ? mb_substr( $icon, 0, 4 ) : substr( $icon, 0, 4 ) );
+			if ( isset( self::icons()[ $icon ] ) ) {
+				$out['icon'] = $icon;
+			} elseif ( self::is_image_icon( $icon ) ) {
+				$out['icon'] = esc_url_raw( $icon );   // an image URL is kept whole
+			} else {
+				$out['icon'] = function_exists( 'mb_substr' ) ? mb_substr( $icon, 0, 4 ) : substr( $icon, 0, 4 );
+			}
+		}
+
+		// Pre-filled value. Free text for input fields; for a choice field it is
+		// the option value, or a comma-separated list for a multi-select.
+		if ( ! self::is_structural( $type ) && 'markup' !== $type ) {
+			$default = isset( $raw['default'] ) ? sanitize_text_field( (string) $raw['default'] ) : '';
+			$default = function_exists( 'mb_substr' ) ? mb_substr( $default, 0, 300 ) : substr( $default, 0, 300 );
+			if ( '' !== $default ) {
+				$out['default'] = $default;
+			}
+		}
+
+		// Per-step wording for the button that moves to the next step.
+		if ( 'step' === $type ) {
+			$next_label = isset( $raw['next_label'] ) ? sanitize_text_field( (string) $raw['next_label'] ) : '';
+			$next_label = function_exists( 'mb_substr' ) ? mb_substr( $next_label, 0, 60 ) : substr( $next_label, 0, 60 );
+			if ( '' !== $next_label ) {
+				$out['next_label'] = $next_label;
+			}
 		}
 
 		if ( 'fieldset' === $type ) {
@@ -248,11 +310,11 @@ class FormBuilderController {
 			$out['mode'] = in_array( $mode, self::GROUP_MODES, true ) ? $mode : 'open';
 		}
 
-		// Tile layout for choice fields.
+		// Presentation for choice fields: list (default) / tiles / pills / cards.
 		if ( in_array( $type, array( 'radio', 'checkbox' ), true ) ) {
 			$layout = isset( $raw['layout'] ) ? sanitize_key( (string) $raw['layout'] ) : 'list';
-			if ( 'tiles' === $layout ) {
-				$out['layout'] = 'tiles';
+			if ( in_array( $layout, self::CHOICE_LAYOUTS, true ) ) {
+				$out['layout'] = $layout;
 			}
 		}
 
@@ -407,7 +469,7 @@ class FormBuilderController {
 	 */
 	public static function build_structure( array $fields ): array {
 		$steps = array();
-		$step  = array( 'title' => '', 'desc' => '', 'class' => '', 'icon' => '', 'blocks' => array() );
+		$step  = array( 'title' => '', 'desc' => '', 'class' => '', 'icon' => '', 'next' => '', 'blocks' => array() );
 		$group = null; // Index into $step['blocks'] of the open group, if any.
 
 		foreach ( $fields as $f ) {
@@ -418,6 +480,9 @@ class FormBuilderController {
 					'desc'   => (string) ( $f->description ?? '' ),
 					'class'  => self::css_class( $f->settings ?? array() ),
 					'icon'   => isset( $f->settings['icon'] ) ? (string) $f->settings['icon'] : '',
+					// Wording for the button that leaves THIS step ("Continue to
+					// Your Home Search"). Blank keeps the generic "Next".
+					'next'   => isset( $f->settings['next_label'] ) ? (string) $f->settings['next_label'] : '',
 					'blocks' => array(),
 				);
 				$group   = null;
@@ -989,6 +1054,7 @@ class FormBuilderController {
 		$steps = self::build_structure( $fields );
 		$multi = count( $steps ) > 1;
 		$draft = ! empty( $form->save_draft );
+		$head  = self::get_header_style( $form_id );
 		// Conditions may only point at real input fields on this form.
 		$valid_keys = array();
 		foreach ( $fields as $vf ) {
@@ -1072,6 +1138,35 @@ class FormBuilderController {
 .ah-step-chip.is-done .ah-step-name{color:#4b5563}
 .ah-steps-now{display:none;margin:-14px 0 20px;text-align:center;font-size:13px;font-weight:600;color:#1a3c5e;line-height:1.4}
 .ah-steps-now b{display:block;font-size:11px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;color:#9ca3af}
+/* ── Step header styles (per form; see get_header_style) ──
+   'bar' is the original and needs no rules. 'split' puts the current step's
+   name on the left and the chips on the right; 'plain' drops the chips and
+   keeps the name alone. Both reuse .ah-steps-now, which showStep() already
+   fills - so they cost no extra markup and no extra script. */
+.ah-form-head--split{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-bottom:12px}
+/* order, not markup: the chips come first in the DOM so that the progress bar
+   still reads first for a screen reader and for the no-CSS fallback. */
+.ah-form-head--split .ah-steps-bar{order:2;flex:1 1 auto;min-width:0;max-width:60%;margin:0}
+.ah-form-head--split .ah-steps-now{order:1;display:block;flex:0 1 auto;margin:0;text-align:left;font-size:24px;font-weight:700;color:#111827;line-height:1.25}
+.ah-form-head--split .ah-steps-now b{margin-bottom:5px;color:#a8812f}
+/* the in-step <h3> would repeat what the header now says */
+.ah-form-head--split~.ah-step>.ah-step-title,.ah-form-head--plain~.ah-step>.ah-step-title{display:none}
+.ah-form-head--plain .ah-steps-now{display:block;margin:0 0 14px;text-align:left;font-size:22px;font-weight:700;color:#111827;line-height:1.25}
+.ah-form-head--plain .ah-steps-now b{margin-bottom:5px;color:#9ca3af}
+@media(max-width:640px){
+  /* Stacked: the wording leads, the chips become a slim progress strip under it
+     rather than a squeezed copy of the desktop bar. */
+  .ah-form-head--split{flex-direction:column;align-items:stretch;gap:10px;margin-bottom:12px}
+  .ah-form-head--split .ah-steps-bar{order:2;max-width:none;width:100%;padding:0 2px}
+  .ah-form-head--split .ah-steps-now{order:1;font-size:21px}
+  .ah-form-head--split .ah-steps-now b{font-size:10.5px;margin-bottom:3px}
+  .ah-form-head--split .ah-step-num{width:26px;height:26px;font-size:11.5px}
+  .ah-form-head--split .ah-step-ico{width:13px;height:13px}
+  .ah-form-head--split .ah-step-chip{gap:0}
+  .ah-form-head--split .ah-step-chip::before,
+  .ah-form-head--split .ah-step-chip::after{top:12px}
+  .ah-form-head--plain .ah-steps-now{font-size:20px}
+}
 /* Below this width a four-across label row cannot hold a word like
    "Requirements" without breaking it, so keep the markers and name the
    current step underneath instead. */
@@ -1094,6 +1189,9 @@ class FormBuilderController {
 .ah-group.is-open>.ah-group-head .ah-group-chev{transform:rotate(-135deg);margin-top:5px}
 .ah-group-body{padding:14px}
 .ah-group-desc{font-size:13px;color:#6b7280;margin:0 0 12px;line-height:1.6}
+/* collapsible groups: same band as the head, since it cannot live inside the button */
+.ah-group-desc--band{padding:9px 14px 11px;background:#f8fafc;border-bottom:1px solid #e5e7eb}
+.ah-group-desc a{color:#1a3c5e;text-decoration:underline}
 /* Step navigation - buttons size to their text, never stretch to fill */
 .ah-form-nav{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
 .ah-nav-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:12px 20px;border-radius:8px;font-size:14.5px;font-weight:600;font-family:inherit;line-height:1.2;white-space:nowrap;cursor:pointer;border:1.5px solid #1a3c5e;background:#fff;color:#1a3c5e;transition:background .15s}
@@ -1118,6 +1216,17 @@ class FormBuilderController {
 .ah-captcha .g-recaptcha>div,.ah-captcha iframe{max-width:100%}
 /* 12-column layout: fields span 12 unless given a width */
 .ah-step,.ah-group-body{display:grid;grid-template-columns:repeat(12,1fr);column-gap:16px;align-content:start}
+/* A field's width is a share of a FULL row. Inside a group that is itself half
+   a row or less there is no room to subdivide again - a "half" field there ends
+   up a quarter of the page, with the label wrapping over three lines - so those
+   children span their group instead. */
+.ah-group.ah-col-6>.ah-group-body>[class*="ah-col-"],
+.ah-group.ah-col-4>.ah-group-body>[class*="ah-col-"],
+.ah-group.ah-col-3>.ah-group-body>[class*="ah-col-"]{grid-column:1/-1}
+/* Groups sharing a row stay the same height - grid stretches them by default,
+   so they must NOT be align-self:start. */
+.ah-step>.ah-group{align-self:stretch;display:flex;flex-direction:column}
+.ah-step>.ah-group>.ah-group-body{flex:1 1 auto;align-content:start}
 .ah-step>*,.ah-group-body>*{grid-column:1/-1;min-width:0}
 .ah-step>.ah-col-8,.ah-group-body>.ah-col-8{grid-column:span 8}
 .ah-step>.ah-col-6,.ah-group-body>.ah-col-6{grid-column:span 6}
@@ -1130,6 +1239,10 @@ class FormBuilderController {
 .ahf-ico{width:20px;height:20px;display:block;flex-shrink:0}
 .ahf-ico-txt{font-size:17px;line-height:1;display:block}
 .ahf-ico-sm{width:16px;height:16px}
+.ahf-ico-sm.ahf-ico-sm-txt{font-size:14px}
+/* Image icons sit in the same box as the built-in SVGs, whatever the source
+   file's aspect ratio - so mixing artwork and icon names never jolts a row. */
+.ahf-ico-img{object-fit:contain}
 .ahf-ico-inline{display:inline-flex;align-items:center;vertical-align:-3px;margin-right:6px;color:#a8812f}
 .ahf-ico-badge{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;border:1.5px solid #e2c98d;background:#fdf8ee;color:#a8812f;flex-shrink:0}
 .ah-step-title{display:flex;align-items:center;gap:10px}
@@ -1144,6 +1257,33 @@ class FormBuilderController {
 .ah-tile-lbl{font-size:13px;font-weight:600;color:#374151;line-height:1.3}
 .ah-tile input:checked+.ah-tile-in{border-color:#a8812f;background:#fdf8ee;box-shadow:0 0 0 2px rgba(168,129,47,.18)}
 .ah-tile input:focus-visible+.ah-tile-in{box-shadow:0 0 0 3px rgba(26,60,94,.25)}
+/* Pills / cards - the same choice field as selectable buttons instead of dots.
+   Pills wrap inline at their own width; cards fill the row in equal columns. */
+.ah-chips{display:flex;flex-wrap:wrap;gap:8px}
+.ah-chips--cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+.ah-chip{position:relative;display:block;cursor:pointer}
+.ah-chip input{position:absolute;opacity:0;width:1px;height:1px;margin:0;pointer-events:none}
+.ah-chip-in{display:flex;align-items:center;justify-content:center;gap:7px;height:100%;min-width:46px;padding:10px 16px;border:1.5px solid #e5e7eb;border-radius:8px;background:#fff;font-size:13.5px;font-weight:600;color:#374151;line-height:1.3;text-align:center;transition:border-color .15s,background .15s,color .15s,box-shadow .15s}
+.ah-chips--cards .ah-chip-in{padding:12px 14px}
+.ah-chip:hover .ah-chip-in{border-color:#cbd5e1;background:#f8fafc}
+.ah-chip-ico{display:flex;align-items:center;justify-content:center;color:#a8812f}
+/* Selected state follows the site's own colour when the theme defines one
+   (--client-color, else --color-primary); the navy is only the fallback for a
+   site that sets neither. */
+.ah-chip input:checked+.ah-chip-in{border-color:var(--client-color,var(--color-primary,#1a3c5e));background:var(--client-color,var(--color-primary,#1a3c5e));color:#fff}
+.ah-chip input:checked+.ah-chip-in .ah-chip-ico{color:var(--color-accent,#e6c97a)}
+.ah-chip:hover .ah-chip-in{border-color:var(--client-color,var(--color-primary,#cbd5e1))}
+.ah-chip input:focus-visible+.ah-chip-in{box-shadow:0 0 0 3px rgba(26,60,94,.25)}
+/* 'checks': boxes that keep a visible tick/dot, for lists where a visitor wants
+   to see what is ticked at a glance rather than infer it from a filled button. */
+.ah-chips--checks{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr))}
+.ah-chips--checks .ah-chip-in{justify-content:flex-start;text-align:left;gap:10px;padding:11px 13px;font-weight:500}
+.ah-chips--checks .ah-chip-in::before{content:"";flex:0 0 auto;width:18px;height:18px;border:1.5px solid #cbd5e1;border-radius:5px;background:#fff;background-repeat:no-repeat;background-position:center;background-size:12px;transition:background-color .15s,border-color .15s}
+.ah-chips--checks .ah-chip input[type="radio"]+.ah-chip-in::before,
+.ah-chips--checks input[type="radio"]+.ah-chip-in::before{border-radius:50%}
+.ah-chips--checks input:checked+.ah-chip-in{background:#fff;color:#111827;border-color:var(--client-color,var(--color-primary,#1a3c5e))}
+.ah-chips--checks input:checked+.ah-chip-in::before{background-color:var(--client-color,var(--color-primary,#1a3c5e));border-color:var(--client-color,var(--color-primary,#1a3c5e));background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E")}
+.ah-chips--checks input:checked+.ah-chip-in .ah-chip-ico{color:var(--client-color,var(--color-primary,#1a3c5e))}
 /* Prefix / suffix input frame */
 .ah-affix,.ah-tel{display:flex;align-items:stretch;border:1.5px solid #d1d5db;border-radius:8px;background:#fff;overflow:hidden}
 .ah-affix:focus-within,.ah-tel:focus-within{border-color:#1a3c5e;box-shadow:0 0 0 3px rgba(26,60,94,.1)}
@@ -1156,7 +1296,16 @@ class FormBuilderController {
 .ah-tel .ch-form-input{flex:1 1 auto;min-width:0;padding-left:10px}
 .ah-tel-other{flex:0 0 auto;width:64px;border:none;border-right:1.5px solid #e5e7eb;background:#fffdf5;font-family:inherit;font-size:13.5px;padding:0 8px;outline:none;text-align:center}
 @media (max-width:400px){.ah-tel-cc{width:78px;font-size:12.5px;padding-left:6px}}
-.ah-invalid{border-color:#e53935!important;box-shadow:0 0 0 3px rgba(229,57,53,.12)!important}
+/* A field that failed validation: tinted, not just outlined, so a page of
+   inputs shows at a glance which ones still need attention. */
+.ah-invalid{border-color:#e53935!important;background:#fef2f2!important;box-shadow:0 0 0 3px rgba(229,57,53,.12)!important}
+.ah-invalid::placeholder{color:#c98b88}
+/* affix/tel wrappers hold the border, so tint the frame and its input together */
+.ah-affix:has(.ah-invalid),.ah-tel:has(.ah-invalid){border-color:#e53935;background:#fef2f2;box-shadow:0 0 0 3px rgba(229,57,53,.12)}
+.ah-affix:has(.ah-invalid) .ah-invalid,.ah-tel:has(.ah-invalid) .ah-invalid{box-shadow:none!important}
+.ah-affix:has(.ah-invalid) .ah-affix-txt,.ah-tel:has(.ah-invalid) .ah-affix-txt{background:#fee2e2;border-color:#fecaca;color:#b91c1c}
+/* choice fields have no box of their own - tint the options instead */
+.ah-invalid+.ah-chip-in,.ah-invalid+.ah-tile-in{border-color:#e53935;background:#fef2f2}
 </style>
 <?php if ( ! empty( $form->custom_css ) ) : ?>
 <style id="ah-form-<?php echo (int) $form_id; ?>-css">
@@ -1175,6 +1324,8 @@ class FormBuilderController {
     <div style="display:none;visibility:hidden" aria-hidden="true"><input type="text" name="ah_hp" tabindex="-1" autocomplete="off"></div>
 
     <?php if ( $multi ) : ?>
+    <div class="ah-form-head ah-form-head--<?php echo esc_attr( $head ); ?>">
+    <?php if ( 'plain' !== $head ) : ?>
     <ol class="ah-steps-bar" aria-label="Form progress">
       <?php foreach ( $steps as $si => $st ) : ?>
       <li class="ah-step-chip<?php echo 0 === $si ? ' is-on' : ''; ?>" data-i="<?php echo (int) $si; ?>">
@@ -1191,12 +1342,16 @@ class FormBuilderController {
       </li>
       <?php endforeach; ?>
     </ol>
-    <?php // Narrow screens hide the per-step labels; this names the current one instead. ?>
+    <?php endif; ?>
+    <?php /* Narrow screens hide the per-step labels; this names the current one
+             instead - and in the split/plain headers it is the heading itself,
+             on every width. Filled by showStep(). */ ?>
     <p class="ah-steps-now" aria-live="polite"></p>
+    </div>
     <?php endif; ?>
 
     <?php foreach ( $steps as $si => $st ) : ?>
-    <div class="ah-step<?php echo $st['class'] ? ' ' . esc_attr( $st['class'] ) : ''; ?>" data-step="<?php echo (int) $si; ?>"<?php echo $si > 0 ? ' hidden' : ''; ?>>
+    <div class="ah-step<?php echo $st['class'] ? ' ' . esc_attr( $st['class'] ) : ''; ?>" data-step="<?php echo (int) $si; ?>"<?php echo ! empty( $st['next'] ) ? ' data-next="' . esc_attr( $st['next'] ) . '"' : ''; ?><?php echo $si > 0 ? ' hidden' : ''; ?>>
       <?php if ( $multi && '' !== $st['title'] ) : ?>
       <h3 class="ah-step-title">
         <?php if ( $st['icon'] ) : ?><span class="ahf-ico-badge"><?php echo self::icon_svg( $st['icon'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built-in SVG or escaped text. ?></span><?php endif; ?>
@@ -1222,7 +1377,8 @@ class FormBuilderController {
           $g_id = esc_attr( $uid . '_g' . $si . '_' . $bi );
           ?>
           <?php $g_ico = $b['icon'] ? '<span class="ahf-ico-badge">' . self::icon_svg( $b['icon'] ) . '</span>' : ''; ?>
-          <div class="ah-group<?php echo $g_open ? ' is-open' : ''; ?><?php echo $b['class'] ? ' ' . esc_attr( $b['class'] ) : ''; ?>" data-mode="<?php echo esc_attr( $b['mode'] ); ?>"<?php echo self::cond_attrs( $b['settings'], $valid_keys ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built with esc_attr(). ?>>
+          <?php $g_col = self::width_class( $b['settings'] ); ?>
+          <div class="ah-group<?php echo $g_open ? ' is-open' : ''; ?><?php echo $g_col ? ' ' . esc_attr( $g_col ) : ''; ?><?php echo $b['class'] ? ' ' . esc_attr( $b['class'] ) : ''; ?>" data-mode="<?php echo esc_attr( $b['mode'] ); ?>"<?php echo self::cond_attrs( $b['settings'], $valid_keys ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built with esc_attr(). ?>>
             <?php if ( $g_tog ) : ?>
               <button type="button" class="ah-group-head" aria-expanded="<?php echo $g_open ? 'true' : 'false'; ?>" aria-controls="<?php echo $g_id; ?>">
                 <span class="ah-group-title"><?php echo $g_ico; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built-in SVG or escaped text. ?><span><?php echo esc_html( '' !== $b['title'] ? $b['title'] : 'Details' ); ?></span></span>
@@ -1231,8 +1387,15 @@ class FormBuilderController {
             <?php elseif ( '' !== $b['title'] ) : ?>
               <div class="ah-group-head is-static"><span class="ah-group-title"><?php echo $g_ico; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built-in SVG or escaped text. ?><span><?php echo esc_html( $b['title'] ); ?></span></span></div>
             <?php endif; ?>
+            <?php /* A togglable head is a <button>, and flow content cannot be
+                     nested inside one, so for those the line follows the head and
+                     is painted to read as part of the same band. Either way it is
+                     OUTSIDE .ah-group-body, which is hidden while a collapsed
+                     group is shut - and this is the line that tells you whether to
+                     open it. HTML allowed; stored with wp_kses_post() too. */ ?>
+            <?php if ( $g_tog && '' !== $b['desc'] ) : ?><p class="ah-group-desc ah-group-desc--band"><?php echo wp_kses_post( $b['desc'] ); ?></p><?php endif; ?>
             <div class="ah-group-body" id="<?php echo $g_id; ?>"<?php echo $g_open ? '' : ' hidden'; ?>>
-              <?php if ( '' !== $b['desc'] ) : ?><p class="ah-group-desc"><?php echo wp_kses_post( $b['desc'] ); ?></p><?php endif; ?>
+              <?php if ( ! $g_tog && '' !== $b['desc'] ) : ?><p class="ah-group-desc"><?php echo wp_kses_post( $b['desc'] ); ?></p><?php endif; ?>
               <?php foreach ( $b['fields'] as $gf ) : ?>
                 <?php echo self::render_field( $gf, $uid, $valid_keys ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped inside render_field(). ?>
               <?php endforeach; ?>
@@ -1533,7 +1696,13 @@ class FormBuilderController {
       now.appendChild(document.createTextNode(nm ? nm.textContent : ''));
     }
     if (prev) prev.hidden = i === 0;
-    if (next) next.hidden = last;
+    if (next) {
+      next.hidden = last;
+      // Each step may name its own forward button; blank falls back to "Next".
+      // textContent, so an admin-authored label is never parsed as markup.
+      var nlbl = steps[i] ? steps[i].getAttribute('data-next') : '';
+      next.textContent = (nlbl || 'Next') + ' →';
+    }
     if (btn)  btn.hidden  = !last;
     if (fin)  fin.hidden  = !last;
     clearMsg();
@@ -1805,12 +1974,28 @@ if ( $cap_on ) :
 		$fsuf  = isset( $fset['suffix'] ) ? (string) $fset['suffix'] : '';
 		$fintl = ! empty( $fset['intl'] ) && 'tel' === $f->field_type;
 		$fcc   = isset( $fset['intl_cc'] ) ? (string) $fset['intl_cc'] : '+44';
-		$ftile = ( isset( $fset['layout'] ) && 'tiles' === $fset['layout'] );
+		$flayout = ( isset( $fset['layout'] ) && in_array( $fset['layout'], self::CHOICE_LAYOUTS, true ) ) ? (string) $fset['layout'] : 'list';
+		$ftile   = ( 'tiles' === $flayout );
+		// pills and cards share one renderer - they differ only by CSS class.
+		$fchip   = in_array( $flayout, array( 'pills', 'cards', 'checks' ), true );
 		$ficon = isset( $fset['icon'] ) ? (string) $fset['icon'] : '';
 
 		// One input, reused by the plain / affix / phone branches below.
+		/*
+		 * Default value. One string in the settings; for a multi-select checkbox
+		 * it is a comma-separated list, so one field in the builder covers every
+		 * type. Compared against the option VALUE (the part before "|").
+		 */
+		$fdef  = isset( $fset['default'] ) ? (string) $fset['default'] : '';
+		$fdefs = ( '' === $fdef ) ? array() : array_map( 'trim', explode( ',', $fdef ) );
+		$is_def = static function ( $value ) use ( $fdefs ) {
+			return in_array( (string) $value, $fdefs, true ) ? ' checked' : '';
+		};
+
 		$input_html = '<input class="ch-form-input" type="' . esc_attr( $f->field_type ) . '" id="' . $fid
-			. '" name="' . $fname . '" placeholder="' . $fph . '"' . ( $freq ? ' required' : '' ) . '>';
+			. '" name="' . $fname . '" placeholder="' . $fph . '"'
+			. ( '' !== $fdef ? ' value="' . esc_attr( $fdef ) . '"' : '' )
+			. ( $freq ? ' required' : '' ) . '>';
 
 		ob_start();
 		?>
@@ -1820,21 +2005,34 @@ if ( $cap_on ) :
       <?php else : ?>
         <label class="ch-form-label" for="<?php echo $fid; ?>"><?php if ( $ficon ) : ?><span class="ahf-ico-inline"><?php echo self::icon_svg( $ficon, 'ahf-ico-sm' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built-in SVG or escaped text. ?></span><?php endif; ?><?php echo esc_html( $f->label ); ?><?php if ( $freq ) : ?><span class="ah-req">*</span><?php endif; ?></label>
         <?php if ( 'textarea' === $f->field_type ) : ?>
-          <textarea class="ch-form-textarea" id="<?php echo $fid; ?>" name="<?php echo $fname; ?>" placeholder="<?php echo $fph; ?>"<?php echo $freq ? ' required' : ''; ?>></textarea>
+          <textarea class="ch-form-textarea" id="<?php echo $fid; ?>" name="<?php echo $fname; ?>" placeholder="<?php echo $fph; ?>"<?php echo $freq ? ' required' : ''; ?>><?php echo esc_textarea( $fdef ); ?></textarea>
         <?php elseif ( 'select' === $f->field_type && ! empty( $f->options ) ) : ?>
           <select class="ch-form-select" id="<?php echo $fid; ?>" name="<?php echo $fname; ?>"<?php echo $freq ? ' required' : ''; ?>>
             <option value=""><?php echo esc_html( $f->placeholder ?: '- Select an option -' ); ?></option>
-            <?php foreach ( $f->options as $opt ) : $po = self::parse_option( $opt ); ?><option value="<?php echo esc_attr( $po['value'] ); ?>"><?php echo esc_html( $po['label'] ); ?></option><?php endforeach; ?>
+            <?php foreach ( $f->options as $opt ) : $po = self::parse_option( $opt ); ?><option value="<?php echo esc_attr( $po['value'] ); ?>"<?php echo in_array( (string) $po['value'], $fdefs, true ) ? ' selected' : ''; ?>><?php echo esc_html( $po['label'] ); ?></option><?php endforeach; ?>
           </select>
         <?php elseif ( $ftile && in_array( $f->field_type, array( 'radio', 'checkbox' ), true ) && ! empty( $f->options ) ) : ?>
           <?php $t_type = ( 'radio' === $f->field_type ) ? 'radio' : 'checkbox'; ?>
           <div class="ah-tiles">
             <?php foreach ( $f->options as $idx => $opt ) : $po = self::parse_option( $opt, true ); ?>
               <label class="ah-tile">
-                <input type="<?php echo esc_attr( $t_type ); ?>" name="<?php echo $fname; ?><?php echo 'checkbox' === $t_type ? '[]' : ''; ?>" value="<?php echo esc_attr( $po['value'] ); ?>"<?php echo ( $freq && 'radio' === $t_type ) ? ' required' : ''; ?><?php echo ( $freq && 'checkbox' === $t_type && 0 === $idx ) ? ' data-required-group="true"' : ''; ?>>
+                <input type="<?php echo esc_attr( $t_type ); ?>" name="<?php echo $fname; ?><?php echo 'checkbox' === $t_type ? '[]' : ''; ?>" value="<?php echo esc_attr( $po['value'] ); ?>"<?php echo $is_def( $po['value'] ); ?><?php echo ( $freq && 'radio' === $t_type ) ? ' required' : ''; ?><?php echo ( $freq && 'checkbox' === $t_type && 0 === $idx ) ? ' data-required-group="true"' : ''; ?>>
                 <span class="ah-tile-in">
                   <?php if ( $po['icon'] ) : ?><span class="ah-tile-ico"><?php echo self::icon_svg( $po['icon'], 'ahf-ico' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built-in SVG or escaped text. ?></span><?php endif; ?>
                   <span class="ah-tile-lbl"><?php echo esc_html( $po['label'] ); ?></span>
+                </span>
+              </label>
+            <?php endforeach; ?>
+          </div>
+        <?php elseif ( $fchip && in_array( $f->field_type, array( 'radio', 'checkbox' ), true ) && ! empty( $f->options ) ) : ?>
+          <?php $c_type = ( 'radio' === $f->field_type ) ? 'radio' : 'checkbox'; ?>
+          <div class="ah-chips ah-chips--<?php echo esc_attr( $flayout ); ?>">
+            <?php foreach ( $f->options as $idx => $opt ) : $po = self::parse_option( $opt, true ); ?>
+              <label class="ah-chip">
+                <input type="<?php echo esc_attr( $c_type ); ?>" name="<?php echo $fname; ?><?php echo 'checkbox' === $c_type ? '[]' : ''; ?>" value="<?php echo esc_attr( $po['value'] ); ?>"<?php echo $is_def( $po['value'] ); ?><?php echo ( $freq && 'radio' === $c_type ) ? ' required' : ''; ?><?php echo ( $freq && 'checkbox' === $c_type && 0 === $idx ) ? ' data-required-group="true"' : ''; ?>>
+                <span class="ah-chip-in">
+                  <?php if ( $po['icon'] ) : ?><span class="ah-chip-ico"><?php echo self::icon_svg( $po['icon'], 'ahf-ico-sm' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built-in SVG or escaped text. ?></span><?php endif; ?>
+                  <span class="ah-chip-lbl"><?php echo esc_html( $po['label'] ); ?></span>
                 </span>
               </label>
             <?php endforeach; ?>
@@ -1843,7 +2041,7 @@ if ( $cap_on ) :
           <div class="ch-form-radio-group">
             <?php foreach ( $f->options as $opt ) : $po = self::parse_option( $opt ); ?>
               <label>
-                <input type="radio" name="<?php echo $fname; ?>" value="<?php echo esc_attr( $po['value'] ); ?>"<?php echo $freq ? ' required' : ''; ?>>
+                <input type="radio" name="<?php echo $fname; ?>" value="<?php echo esc_attr( $po['value'] ); ?>"<?php echo $is_def( $po['value'] ); ?><?php echo $freq ? ' required' : ''; ?>>
                 <?php echo esc_html( $po['label'] ); ?>
               </label>
             <?php endforeach; ?>
@@ -1852,7 +2050,7 @@ if ( $cap_on ) :
           <div class="ch-form-checkbox-group">
             <?php foreach ( $f->options as $idx => $opt ) : $po = self::parse_option( $opt ); ?>
               <label>
-                <input type="checkbox" name="<?php echo $fname; ?>[]" value="<?php echo esc_attr( $po['value'] ); ?>"<?php echo ( $freq && $idx === 0 ) ? ' data-required-group="true"' : ''; ?>>
+                <input type="checkbox" name="<?php echo $fname; ?>[]" value="<?php echo esc_attr( $po['value'] ); ?>"<?php echo $is_def( $po['value'] ); ?><?php echo ( $freq && $idx === 0 ) ? ' data-required-group="true"' : ''; ?>>
                 <?php echo esc_html( $po['label'] ); ?>
               </label>
             <?php endforeach; ?>
@@ -1923,6 +2121,30 @@ if ( $cap_on ) :
 
 	// ── Agreement config (form-level, stored in wp_option) ──────────────────
 
+	/**
+	 * How the multi-step header is laid out. Stored per form as an option, the
+	 * same way the agreement block is - no schema change, and a form that has
+	 * never been saved since this shipped simply gets the original 'bar'.
+	 *
+	 *   split  step title on the left, chips on the right (DEFAULT)
+	 *   bar    progress chips across the top, step title underneath
+	 *   plain  no chips at all - just "Step n of m" and the title
+	 */
+	const HEADER_STYLES  = array( 'split', 'bar', 'plain' );
+	const HEADER_DEFAULT = 'split';
+
+	public static function get_header_style( int $form_id ): string {
+		$saved = get_option( 'ah_form_head_' . $form_id, self::HEADER_DEFAULT );
+		return in_array( $saved, self::HEADER_STYLES, true ) ? $saved : self::HEADER_DEFAULT;
+	}
+
+	public static function save_header_style( int $form_id, string $style ): void {
+		update_option(
+			'ah_form_head_' . $form_id,
+			in_array( $style, self::HEADER_STYLES, true ) ? $style : self::HEADER_DEFAULT
+		);
+	}
+
 	public static function get_agreement( int $form_id ): array {
 		$defaults = array(
 			'enabled'    => 0,
@@ -1970,8 +2192,9 @@ if ( $cap_on ) :
 		$raw  = trim( $raw );
 		$icon = '';
 
-		// Only tile layouts read a third segment, so list-mode labels containing
-		// "|" keep behaving exactly as they always have.
+		// Only the icon-carrying layouts (tiles / pills / cards) read a third
+		// segment, so list-mode labels containing "|" keep behaving exactly as
+		// they always have.
 		if ( $with_icon && false !== strpos( $raw, '|' ) ) {
 			$bits = explode( '|', $raw, 3 );
 			if ( 3 === count( $bits ) ) {

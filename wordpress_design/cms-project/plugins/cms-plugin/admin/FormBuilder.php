@@ -91,6 +91,7 @@ if ( isset( $_POST['ah_save_form_nonce'] ) ) {
 	if ( is_array( $parsed ) ) {
 		AH_Form_Builder::save_fields( $form_id, $parsed );
 	}
+	AH_Form_Builder::save_header_style( $form_id, sanitize_key( $_POST['header_style'] ?? '' ) );
 	AH_Form_Builder::save_agreement( $form_id, array(
 		'enabled'    => isset( $_POST['agr_enabled'] ) ? 1 : 0,
 		'before'     => wp_unslash( $_POST['agr_before'] ?? '' ),
@@ -176,7 +177,7 @@ $adv_panel = static function ( array $set, string $type ) use ( $width_opts, $co
 
 	ob_start(); ?>
 	<div class="fb-adv-grid">
-		<div class="fb-adv-item fb-adv-width<?php echo esc_attr( $hide( ! $is_struct ) ); ?>">
+		<div class="fb-adv-item fb-adv-width<?php echo esc_attr( $hide( 'step' !== $type ) ); ?>">
 			<label>Width</label>
 			<?php echo $sel( $set['width'] ?? 'full', $width_opts, 'fb-width' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in closure. ?>
 		</div>
@@ -184,9 +185,19 @@ $adv_panel = static function ( array $set, string $type ) use ( $width_opts, $co
 			<label>Icon</label>
 			<input type="text" class="fb-icon" list="fb-icon-list" value="<?php echo esc_attr( $set['icon'] ?? '' ); ?>" placeholder="home, user, star… or an emoji">
 		</div>
+		<div class="fb-adv-item fb-adv-default<?php echo esc_attr( $hide( ! in_array( $type, array( 'step', 'fieldset', 'markup' ), true ) ) ); ?>">
+			<label>Default value</label>
+			<input type="text" class="fb-default" value="<?php echo esc_attr( $set['default'] ?? '' ); ?>" placeholder="Pre-filled value" maxlength="300">
+			<small>Pre-fills the field. For radio/checkbox/dropdown use the option text; for a multi-select checkbox separate several with commas.</small>
+		</div>
+		<div class="fb-adv-item fb-adv-next<?php echo esc_attr( $hide( 'step' === $type ) ); ?>">
+			<label>Next button text</label>
+			<input type="text" class="fb-nextlbl" value="<?php echo esc_attr( $set['next_label'] ?? '' ); ?>" placeholder="Next" maxlength="60">
+			<small>Wording for the button that leaves this step, e.g. "Continue to Your Home Search". Blank = "Next". The last step shows the form's submit button instead.</small>
+		</div>
 		<div class="fb-adv-item fb-adv-layout<?php echo esc_attr( $hide( in_array( $type, array( 'radio', 'checkbox' ), true ) ) ); ?>">
 			<label>Options layout</label>
-			<?php echo $sel( $set['layout'] ?? 'list', array( 'list' => 'List', 'tiles' => 'Tiles (with icons)' ), 'fb-layout' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in closure. ?>
+			<?php echo $sel( $set['layout'] ?? 'list', array( 'list' => 'List (radio dots)', 'pills' => 'Pills (inline buttons)', 'cards' => 'Cards (equal columns)', 'checks' => 'Boxes with a tick', 'tiles' => 'Tiles (with icons)' ), 'fb-layout' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in closure. ?>
 		</div>
 		<div class="fb-adv-item fb-adv-affix<?php echo esc_attr( $hide( in_array( $type, $affix_types, true ) ) ); ?>">
 			<label>Prefix / Suffix</label>
@@ -267,6 +278,33 @@ $admin_nonce = wp_create_nonce( 'ah_admin_nonce' );
 /* ── Advanced settings drawer ── */
 .fb-gear{background:none;border:1px solid var(--ah-border);border-radius:6px;width:30px;height:30px;cursor:pointer;font-size:15px;line-height:1;color:var(--ah-muted);padding:0}
 .fb-gear:hover,.fb-gear.on{background:var(--ah-primary);border-color:var(--ah-primary);color:#fff}
+/* ── Row actions stay reachable ──
+   The columns do not fit the admin content area, so the wrapper scrolls
+   sideways - which used to carry the last column off the right edge, and the
+   remove button with it. All three per-row buttons now live in ONE cell that is
+   pinned to the scrollport: a single pinned column needs no offset arithmetic,
+   so there is no seam to keep in sync with a neighbour's width. A pinned cell
+   needs its own opaque background or the scrolled row shows through - these
+   mirror the row backgrounds set above. */
+#fb-tbl th:last-child,#fb-tbl tr.fb-row>td:last-child{position:sticky;right:0;z-index:2;background:#fff;border-left:1px solid var(--ah-border)}
+/* Insert-below: a new field lands where you are instead of at the very bottom,
+   so a field added late no longer has to be dragged the whole way up. */
+/* Not display:flex - a flex <td> drops out of the table's column sizing. */
+.fb-actions{white-space:nowrap;text-align:center}
+.fb-actions>*{vertical-align:middle}
+.fb-actions>*+*{margin-left:5px}
+.fb-ins{background:none;border:1px solid var(--ah-border);border-radius:6px;width:30px;height:30px;cursor:pointer;font-size:17px;font-weight:700;line-height:1;color:var(--ah-muted);padding:0}
+.fb-ins:hover{background:#16a34a;border-color:#16a34a;color:#fff}
+/* skip the pinned cell: its background is what hides the scrolled row behind it */
+#fb-tbl tr.fb-row-new>td:not(:last-child){animation:fb-flash 1.1s ease-out}
+@keyframes fb-flash{from{background:#fef9c3}to{background:transparent}}
+#fb-tbl th:last-child{background:var(--ah-bg-light);z-index:3}
+#fb-tbl tr.fb-row:hover>td:last-child{background:var(--ah-bg-light)}
+#fb-tbl tr.fb-row-step>td:last-child{background:#eef2ff}
+#fb-tbl tr.fb-row-step:hover>td:last-child{background:#e0e7ff}
+#fb-tbl tr.fb-row-fieldset>td:last-child{background:#f0fdf4}
+#fb-tbl tr.fb-row-fieldset:hover>td:last-child{background:#dcfce7}
+.fb-del{font-weight:700}
 #fb-tbl tr.fb-adv>td{background:#f8fafc;border-bottom:2px solid var(--ah-border);padding:14px 16px}
 .fb-adv-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px}
 .fb-adv-item label{display:block;font-size:11px;font-weight:700;color:var(--ah-muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
@@ -421,6 +459,16 @@ $admin_nonce = wp_create_nonce( 'ah_admin_nonce' );
 							<option value="active" <?php selected( $current->status, 'active' ); ?>>Active</option>
 							<option value="inactive" <?php selected( $current->status, 'inactive' ); ?>>Inactive</option>
 						</select>
+					</div>
+					<?php $head_style = AH_Form_Builder::get_header_style( $form_id ); ?>
+					<div class="ah-form-row" style="margin:0">
+						<label>Step Header Design</label>
+						<select name="header_style">
+							<option value="bar"   <?php selected( $head_style, 'bar' ); ?>>Progress bar on top, title below</option>
+							<option value="split" <?php selected( $head_style, 'split' ); ?>>Title left, progress bar right</option>
+							<option value="plain" <?php selected( $head_style, 'plain' ); ?>>Title only, no progress bar</option>
+						</select>
+						<small style="display:block;margin-top:5px;font-size:11.5px;color:var(--ah-muted)">Only applies to multi-step forms (forms with Step markers).</small>
 					</div>
 				</div>
 				<div class="fb-flag-row">
@@ -580,7 +628,7 @@ $admin_nonce = wp_create_nonce( 'ah_admin_nonce' );
 						<summary>Accepted keys</summary>
 						<p><code>label</code>, <code>field_type</code>, <code>placeholder</code>, <code>description</code>, <code>is_required</code>, <code>options</code> (array), <code>settings</code>.</p>
 						<p><strong>field_type:</strong> text, email, tel, textarea, select, radio, checkbox, number, date, daterange, color, url, hidden, markup, <strong>step</strong>, <strong>fieldset</strong>.</p>
-						<p><strong>settings:</strong> <code>width</code> (full/two-thirds/half/third/quarter), <code>icon</code>, <code>mode</code> (fieldset: open/expanded/collapsed/accordion), <code>layout</code> (list/tiles), <code>prefix</code>, <code>suffix</code>, <code>intl</code>, <code>intl_cc</code>, <code>class</code>, <code>cond</code> (<code>{"field":"other_key","op":"is","value":"Yes"}</code>).</p>
+						<p><strong>settings:</strong> <code>width</code> (full/two-thirds/half/third/quarter), <code>icon</code> (icon name, emoji, or an image URL), <code>mode</code> (fieldset: open/expanded/collapsed/accordion), <code>next_label</code> (step: forward-button wording), <code>layout</code> (list/pills/cards/checks/tiles), <code>default</code>, <code>prefix</code>, <code>suffix</code>, <code>intl</code>, <code>intl_cc</code>, <code>class</code>, <code>cond</code> (<code>{"field":"other_key","op":"is","value":"Yes"}</code>).</p>
 						<p>Tile options take an icon as a third part: <code>"detached|Detached|home"</code>. The top-level value may be an array, or <code>{"fields":[…]}</code>.</p>
 					</details>
 				</div>
@@ -606,8 +654,7 @@ $admin_nonce = wp_create_nonce( 'ah_admin_nonce' );
 								<th style="width:180px">Options <small style="font-weight:400;text-transform:none">(one per line, or <code>value|Label</code>) / Group behaviour</small></th>
 								<th style="min-width:160px">Description <small style="font-weight:400;text-transform:none">(help text)</small></th>
 								<th style="width:70px;text-align:center">Required</th>
-								<th style="width:46px;text-align:center">More</th>
-								<th style="width:46px"></th>
+								<th style="text-align:center">Actions</th>
 							</tr>
 						</thead>
 						<tbody id="fb-body">
@@ -643,11 +690,10 @@ $admin_nonce = wp_create_nonce( 'ah_admin_nonce' );
 								</td>
 								<td><textarea class="fb-desc<?php echo $_fb_is_hidden ? ' fb-hidden' : ''; ?>" rows="2" placeholder="<?php echo esc_attr( $_fb_desc_ph ); ?>"><?php echo esc_textarea( $f->description ?? '' ); ?></textarea></td>
 								<td style="text-align:center"><input type="checkbox" class="fb-req fb-chk"<?php checked( $f->is_required && ! $_fb_no_req ); ?><?php echo $_fb_no_req ? ' disabled style="opacity:.3"' : ''; ?>></td>
-								<td style="text-align:center"><button type="button" class="fb-gear" title="Advanced settings">&#9881;</button></td>
-								<td><button type="button" class="ah-btn ah-btn-danger ah-btn-sm fb-del" title="Remove">&#10005;</button></td>
+																<td class="fb-actions"><button type="button" class="fb-gear" title="Advanced settings">&#9881;</button><button type="button" class="fb-ins" title="Insert a new field directly below this one">&#43;</button><button type="button" class="ah-btn ah-btn-danger ah-btn-sm fb-del" title="Remove">&#10005;</button></td>
 							</tr>
 							<tr class="fb-adv" data-for="<?php echo esc_attr( $_fb_uid ); ?>" hidden>
-								<td colspan="9"><?php echo $adv_panel( $_fb_set, (string) $f->field_type ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in the closure. ?></td>
+								<td colspan="8"><?php echo $adv_panel( $_fb_set, (string) $f->field_type ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in the closure. ?></td>
 							</tr>
 							<?php endforeach; ?>
 							<?php if ( empty( $fields ) ) : ?>
@@ -662,11 +708,10 @@ $admin_nonce = wp_create_nonce( 'ah_admin_nonce' );
 								</td>
 								<td><textarea class="fb-desc" rows="2" placeholder="Optional help text shown below the field"></textarea></td>
 								<td style="text-align:center"><input type="checkbox" class="fb-req fb-chk"></td>
-								<td style="text-align:center"><button type="button" class="fb-gear" title="Advanced settings">&#9881;</button></td>
-								<td><button type="button" class="ah-btn ah-btn-danger ah-btn-sm fb-del" title="Remove">&#10005;</button></td>
+																<td class="fb-actions"><button type="button" class="fb-gear" title="Advanced settings">&#9881;</button><button type="button" class="fb-ins" title="Insert a new field directly below this one">&#43;</button><button type="button" class="ah-btn ah-btn-danger ah-btn-sm fb-del" title="Remove">&#10005;</button></td>
 							</tr>
 							<tr class="fb-adv" data-for="r0" hidden>
-								<td colspan="9"><?php echo $adv_panel( array(), 'text' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in the closure. ?></td>
+								<td colspan="8"><?php echo $adv_panel( array(), 'text' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in the closure. ?></td>
 							</tr>
 							<?php endif; ?>
 						</tbody>
@@ -692,13 +737,12 @@ $admin_nonce = wp_create_nonce( 'ah_admin_nonce' );
 				</td>
 				<td><textarea class="fb-desc" rows="2" placeholder="Optional help text shown below the field"></textarea></td>
 				<td style="text-align:center"><input type="checkbox" class="fb-req fb-chk"></td>
-				<td style="text-align:center"><button type="button" class="fb-gear" title="Advanced settings">&#9881;</button></td>
-				<td><button type="button" class="ah-btn ah-btn-danger ah-btn-sm fb-del" title="Remove">&#10005;</button></td>
+								<td class="fb-actions"><button type="button" class="fb-gear" title="Advanced settings">&#9881;</button><button type="button" class="fb-ins" title="Insert a new field directly below this one">&#43;</button><button type="button" class="ah-btn ah-btn-danger ah-btn-sm fb-del" title="Remove">&#10005;</button></td>
 			</tr>
 		</template>
 		<template id="fb-adv-tpl">
 			<tr class="fb-adv" data-for="" hidden>
-				<td colspan="9"><?php echo $adv_panel( array(), 'text' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in the closure. ?></td>
+				<td colspan="8"><?php echo $adv_panel( array(), 'text' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in the closure. ?></td>
 			</tr>
 		</template>
 		<datalist id="fb-icon-list">
@@ -1188,23 +1232,42 @@ jQuery(function ($) {
 
 	// ── Add row ──
 	var uid = Date.now();
-	// Builds a row + its drawer and appends both; returns the row.
-	function makeRow(type) {
+	// Builds a row + its drawer and returns the row. With $after given the pair
+	// goes straight after that row (and its own drawer, so the two never split);
+	// without it the pair is appended to the end as before.
+	function makeRow(type, $after) {
 		var $row = $(document.getElementById('fb-row-tpl').content.firstElementChild.cloneNode(true));
 		var $adv = $(document.getElementById('fb-adv-tpl').content.firstElementChild.cloneNode(true));
 		var id   = 'n' + (++uid);
 		$row.attr({ 'data-key': 'new_' + id, 'data-uid': id });
 		$adv.attr('data-for', id);
 		if (type) $row.find('.fb-type').val(type);
-		$('#fb-body').append($row).append($adv);
+		if ($after && $after.length) {
+			var $anchor = advOf($after);
+			if (!$anchor.length) { $anchor = $after; }
+			$row.insertAfter($anchor);
+			$adv.insertAfter($row);
+		} else {
+			$('#fb-body').append($row).append($adv);
+		}
 		applyTypeUI($row, $row.find('.fb-type').val());
 		return $row;
 	}
-	function addRow(type) {
-		var $row = makeRow(type);
+	function addRow(type, $after) {
+		var $row = makeRow(type, $after);
 		refreshCondSelects();
+		$row.addClass('fb-row-new');
+		setTimeout(function () { $row.removeClass('fb-row-new'); }, 1200);
 		$row.find('.fb-label').focus();
+		if ($row[0] && $row[0].scrollIntoView) {
+			$row[0].scrollIntoView({ block: 'center', inline: 'nearest' });
+		}
 	}
+
+	// ── Insert a field directly below this one ──
+	$('#fb-body').on('click', '.fb-ins', function () {
+		addRow('text', $(this).closest('tr.fb-row'));
+	});
 
 	// ── Condition target dropdowns, rebuilt from the current rows ──
 	function slugKey(s) {
@@ -1270,9 +1333,11 @@ jQuery(function ($) {
 		var $adv = advOf($r);
 		if ($adv.length) {
 			var affix = ['text','email','tel','url','number','date'].indexOf(type) > -1;
-			$adv.find('.fb-adv-width').toggleClass('fb-hidden', isStep || isFs);
+			$adv.find('.fb-adv-width').toggleClass('fb-hidden', isStep); // groups may be half-width too
 			$adv.find('.fb-adv-icon').removeClass('fb-hidden'); // any field may carry an icon
 			$adv.find('.fb-adv-layout').toggleClass('fb-hidden', type !== 'radio' && type !== 'checkbox');
+			$adv.find('.fb-adv-next').toggleClass('fb-hidden', !isStep);
+			$adv.find('.fb-adv-default').toggleClass('fb-hidden', isStep || isFs || type === 'markup');
 			$adv.find('.fb-adv-affix').toggleClass('fb-hidden', !affix);
 			$adv.find('.fb-adv-intl').toggleClass('fb-hidden', type !== 'tel');
 			$adv.find('.fb-adv-file').toggleClass('fb-hidden', type !== 'file');
@@ -1379,14 +1444,24 @@ jQuery(function ($) {
 			if (cls) settings.class = cls;
 			if (type === 'fieldset') settings.mode = $r.find('.fb-fsmode').val() || 'open';
 
-			if (!struct) {
+			// Fields and groups can take a width (two half groups sit side by
+			// side); a step is a page of its own and always spans the row.
+			if (type !== 'step') {
 				var w = advVal('.fb-width');
 				if (w && w !== 'full') settings.width = w;
 			}
 			var ic = advVal('.fb-icon');
 			if (ic) settings.icon = ic;
+			var dflt = advVal('.fb-default');
+			if (dflt && type !== 'step' && type !== 'fieldset' && type !== 'markup') settings.default = dflt;
+			if (type === 'step') {
+				var nl = advVal('.fb-nextlbl');
+				if (nl) settings.next_label = nl;
+			}
 			if (type === 'radio' || type === 'checkbox') {
-				if (advVal('.fb-layout') === 'tiles') settings.layout = 'tiles';
+				// 'list' is the default, so only a non-default presentation is stored.
+				var lay = advVal('.fb-layout');
+				if (['tiles', 'pills', 'cards', 'checks'].indexOf(lay) > -1) settings.layout = lay;
 			}
 			if (['text','email','tel','url','number','date'].indexOf(type) > -1) {
 				var pre = advVal('.fb-prefix'), suf = advVal('.fb-suffix');
