@@ -176,7 +176,7 @@ tbody td {
   font-size: 14px;
   color: var(--slate-800);
   padding: 6px 16px;
-  border-right: 1px solid rgba(176,141,87,0.2);
+  border: 1px solid rgba(176,141,87,0.2);
   border-bottom: 1px solid rgba(176,141,87,0.15);
 }
  
