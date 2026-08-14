@@ -1,11 +1,11 @@
 <?php
 /**
- * handlers/rest/posts.php - Paged post listing for the News page.
+ * handlers/rest/posts.php - Paged post listing, reusable by any post-listing page.
  *
  * Registered in config/rest.php as route 'posts'. Args (page, per_page,
  * search) are already validated/sanitized by the args schema there.
  *
- * JS side (assets/js/pages/news.js):
+ * JS side, from whichever page consumes it:
  *   NT.rest( 'posts', { page: 2, search: 'x' } )
  */
 

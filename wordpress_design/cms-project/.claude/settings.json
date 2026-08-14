@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(magick -version)",
+      "Bash(convert -version)",
+      "Bash(/c/laragon/bin/php/php-8.3.30-Win32-vs16-x64/php.exe -l components/product-benefits.php)",
+      "Bash(php -l components/product-benefits.php)",
+      "Bash(python3 -c \"import PIL; print\\(PIL.__version__\\)\")",
+      "Bash(python -c \"import PIL; print\\(PIL.__version__\\)\")",
+      "Bash(php -l components/process-steps.php)",
+      "Bash(php -l components/gallery-grid.php)",
+      "Bash(grep -n '\\\\$args' components/product-benefits.php)",
+      "Bash(grep -n '\\\\$args' components/gallery-grid.php)",
+      "Bash(php -r '$d=json_decode\\(file_get_contents\\('\\\\''admin/data/page_sections.json'\\\\''\\),true\\); echo \\(json_last_error\\(\\)===JSON_ERROR_NONE\\)?\"OK - home sections: \".count\\($d['\\\\''home'\\\\'']\\).\"\\\\n\":json_last_error_msg\\(\\).\"\\\\n\";')"
+    ]
+  }
+}

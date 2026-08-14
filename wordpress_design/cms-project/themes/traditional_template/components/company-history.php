@@ -19,7 +19,7 @@ $total = count( $pages );
     <div class="container wrapper">
 
         <?php
-        get_template_part( 'components/parts/section-header', null, [
+        get_template_part( 'components/section-heading/section-header', null, [
             'tag'           => $tag,
             'title'         => $title,
             'body'          => $body,

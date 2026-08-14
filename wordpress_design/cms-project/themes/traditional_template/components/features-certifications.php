@@ -17,7 +17,7 @@ $cards = array_map( static function ( $cert ): array {
 
 /* ── Render ─────────────────────────────────────────────────────────────────── */
 
-get_template_part( 'components/parts/carousel_mini_grid_with_badge_container', null, [
+get_template_part( 'components/cards/carousel_mini_grid_with_badge_container', null, [
 
 	/* Section wrapper */
 	'section_id'    => 'certifications',

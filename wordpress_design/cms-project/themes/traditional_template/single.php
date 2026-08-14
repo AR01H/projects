@@ -38,7 +38,7 @@ while ( have_posts() ) :
 		$nt_poster_img = $nt_hdr['fallback_image'] ?? '';
 	}
 
-	App_Helpers::component( 'parts/page_header', array(
+	App_Helpers::component( 'banners/page_header', array(
 		'tag'   => ( ! empty( $nt_cats ) && ! is_wp_error( $nt_cats ) ) ? $nt_cats[0]->name : ( $nt_hdr['tag'] ?? '' ),
 		'icon'  => $nt_hdr['icon'] ?? '',
 		'title' => get_the_title(),
@@ -50,7 +50,7 @@ while ( have_posts() ) :
 		<div class="container app-entry__wrap">
 
 			<?php
-			App_Helpers::component( 'parts/breadcrumbs', array(
+			App_Helpers::component( 'breadcrumbs/breadcrumbs', array(
 				'items' => array(
 					array( 'label' => app_label( 'read_more', 'Journal' ), 'url' => App_Helpers::page_url( 'blog' ) ),
 					array( 'label' => get_the_title() ),

@@ -1,0 +1,71 @@
+/* ============================================================
+   BREADCRUMBS
+   Relocated from assets/css/ui-kit.css (.app-crumbs*). Rendered
+   by components/breadcrumbs/breadcrumbs.php.
+   ============================================================ */
+
+.app-crumbs {
+  padding: 4px 0 2px;
+}
+.app-crumbs__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 2px;
+}
+.app-crumbs__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-family-secondary);
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+/* ---------- Links (interactive) ---------- */
+.app-crumbs__link {
+  color: color-mix(in srgb, var(--trad-ink) 62%, transparent);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+.app-crumbs__link:hover {
+  color: var(--trad-gold);
+}
+.app-crumbs__link:active {
+  color: var(--client-secondary-hover-color);
+}
+
+/* ---------- Current crumb (not a link, must not look clickable) ---------- */
+.app-crumbs__current {
+  color: var(--trad-green);
+  cursor: default;
+}
+
+.app-crumbs__sep {
+  color: color-mix(in srgb, var(--trad-border) 90%, transparent);
+  font-size: 0.72rem;
+  margin: 0 4px;
+}
+
+/* ---------- Dark-background variant ---------- */
+.app-crumbs--on-dark .app-crumbs__link {
+  color: color-mix(in srgb, var(--trad-cream) 72%, transparent);
+}
+.app-crumbs--on-dark .app-crumbs__current {
+  color: var(--trad-gold);
+}
+.app-crumbs--on-dark .app-crumbs__sep {
+  color: color-mix(in srgb, var(--trad-cream) 45%, transparent);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 480px) {
+  .app-crumbs__item {
+    font-size: 0.64rem;
+    letter-spacing: 0.12em;
+  }
+}

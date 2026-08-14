@@ -73,7 +73,7 @@ Any `key` absent from `sections.json` **defaults to visible**. Add it with
 
 | Component | Reads | source? | Used on |
 |---|---|:--:|---|
-| `parts/page_header` | `page_headers.json[<header>]` | via `header` | products, events, contact |
+| `banners/page_header` | `page_headers.json[<header>]` | via `header` | products, events, contact |
 | `home-banner` | `home_banner.json` | – | home |
 | `media-carousel` | `home_media.json` | – | home |
 | `ticker` | `ticker.json` | ✅ | home, contact |
@@ -153,18 +153,35 @@ Any `key` absent from `sections.json` **defaults to visible**. Add it with
 
 ### Parts
 
+As of the components/ reorg, most single-purpose UI-kit parts moved into their
+own category folder (`components/<category>/<name>.php`) - `parts/` is now
+only for the handful of things that don't fit an existing category:
+
 | Part | Reads | Notes |
 |---|---|---|
-| `parts/alert` | *(args)* | Inline alert box — call it with `nt_alert()`, not directly |
-| `parts/breadcrumbs` | `breadcrumbs.json` | Builds itself from the page registry; JSON only overrides |
-| `parts/stamp` | *(args)* | **The** ink stamp. SVG arcs, so the lower ring is never upside down |
-| `parts/leaf-drift` | `decor.json → leaves` | Drifting cane leaves; skips the front page and reduced-motion |
+| `alerts/alert` | *(args)* | Inline alert box — call it with `nt_alert()`, not directly |
+| `breadcrumbs/breadcrumbs` | `breadcrumbs.json` | Builds itself from the page registry; JSON only overrides |
+| `stamps/stamp` | *(args)* | **The** ink stamp. SVG arcs, so the lower ring is never upside down |
+| `decorative/leaf-drift` | `decor.json → leaves` | Drifting cane leaves; skips the front page and reduced-motion |
 | `parts/blog-sidebar` | `blog.json → sidebar` | Every block switched on individually |
+| `dialogs/generic-dialog`, `dialogs/form-modal` | *(args)* | Native `<dialog>` popup; `.app-modal` wizard shell |
+| `forms/generic-form`, `forms/generic-multistep-form` | *(args)* | Single-step and wizard form renderers |
+| `navigation/main_header`, `navigation/main_footer` | `nav.json`, `footer.json` | Site chrome - called once each, from `header.php`/`footer.php` |
+| `section-heading/section-header`, `section-heading/section-header-dark` | *(args)* | The shared eyebrow+title+body intro, light and dark variants |
+| `banners/page_header`, `banners/home-banner`, `banners/cta-banner` | `page_headers.json`, `home_banner.json`, `cta_*.json` | Page/section hero banners |
+| `cards/post_card`, `cards/carousel_mini_grid_with_badge_container` | — | Article card; the mini-card-carousel-with-visual-panel layout |
+| `decorative/site-decor`, `decorative/svg_defs` | `decor.json` | Global background decor; shared SVG filter defs (footer.php) |
 
 ### Available but not currently placed
 
-`events-quote`, `features-in`, `franchise-enquiry`, `spotlights`, `newsbar`,
-`floating-popup` (the latter two are chrome, rendered by header/footer).
+`features-in`, `spotlights`, `newsbar`, `floating-popup` (the latter two are
+chrome, rendered by header/footer). `spotlights` has its own admin screen and
+DB table (`TT_Spotlights_Model`) even though no page renders it yet.
+
+`events-quote` and `franchise-enquiry` used to be listed here too. Both were
+unused, broken duplicates of the enquiry flow `events-preview.php` /
+`franchise-section.php` already build (same JSON, same `form-modal.php`
+wizard) and have been removed - see those two components instead.
 
 ---
 
@@ -283,7 +300,7 @@ its own script, and every one degrades to working HTML with JS off.
 | Copy to clipboard | `data-nt-copy="text"` | shows a toast on success |
 | Tabs | `data-nt-tabs` scope + `data-nt-tab` / `data-nt-tab-panel` | with JS off every panel renders stacked with its own heading |
 | Paper story | `data-nt-story` + `data-nt-story-sheet` | click, arrows, keyboard or swipe; reads top-to-bottom with JS off |
-| Drifting leaves | `nt_component('parts/leaf-drift')` | randomised per load; removed entirely under `prefers-reduced-motion` |
+| Drifting leaves | `nt_component('decorative/leaf-drift')` | randomised per load; removed entirely under `prefers-reduced-motion` |
 | Native share | `data-nt-share` + `data-nt-share-native` | uses the device share sheet; hidden where there is none. No third-party buttons |
 | Side dock | *(nothing)* | on phones the floating toolbar tucks away while scrolling down |
 

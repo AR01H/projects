@@ -25,6 +25,20 @@ return array(
 		'sections'   => 'assets/css/sections.css',
 		'utilities'  => 'assets/css/utilities.css',
 		'movie-header' => 'components/movie-header/header.css',
+
+		// Component library (assets/css/components/) - one file per reusable
+		// UI component, each with its own complete base/variants/sizes/states.
+		// Loaded last so a component file is always the final word on its own
+		// classes, regardless of what an older rule elsewhere still says.
+		'ui-buttons'         => 'assets/css/components/buttons.css',
+		'ui-alerts'          => 'assets/css/components/alerts.css',
+		'ui-breadcrumbs'     => 'assets/css/components/breadcrumbs.css',
+		'ui-stamps'          => 'assets/css/components/stamps.css',
+		'ui-section-heading' => 'assets/css/components/section-heading.css',
+		'ui-section-placeholder' => 'assets/css/components/section-placeholder.css',
+		'ui-tabs'            => 'assets/css/components/tabs.css',
+		'ui-pagination'      => 'assets/css/components/pagination.css',
+		'ui-accordions'      => 'assets/css/components/accordions.css',
 	),
 
 	// Front-end JS - loaded in footer, in this order. 'common' also receives

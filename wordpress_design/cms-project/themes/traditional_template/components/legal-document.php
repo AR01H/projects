@@ -47,7 +47,7 @@ foreach ( $nt_secs as $nt_i => $nt_sec ) {
 	<div class="container app-legal__wrap">
 
 		<div class="app-legal__head">
-			<?php App_Helpers::component( 'parts/breadcrumbs' ); ?>
+			<?php App_Helpers::component( 'breadcrumbs/breadcrumbs' ); ?>
 
 			<?php if ( ! empty( $nt_doc['title'] ) ) : ?>
 				<h1 class="app-legal__title"><?php echo esc_html( $nt_doc['title'] ); ?></h1>

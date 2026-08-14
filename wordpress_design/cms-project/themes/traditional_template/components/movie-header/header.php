@@ -216,8 +216,8 @@ $mh_id  = static function ( $suffix ) use ( $mh_uid ) {
 	// The drifting "air" layer: cane leaves lift off the ground and float up
 	// behind the board. The part removes itself on the front page and under
 	// prefers-reduced-motion, so this call is safe everywhere.
-	// See components/parts/leaf-drift.php + admin/data/decor.json -> "leaves".
-	App_Helpers::component( 'parts/leaf-drift' );
+	// See components/decorative/leaf-drift.php + admin/data/decor.json -> "leaves".
+	App_Helpers::component( 'decorative/leaf-drift' );
 	?>
 
 	<?php if ( $mh_sprite ) : ?>

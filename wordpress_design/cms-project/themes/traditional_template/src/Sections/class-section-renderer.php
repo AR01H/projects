@@ -61,7 +61,7 @@ class NT_Section_Renderer {
 	 *   component (string)        components/<component>.php to render. Required.
 	 *   key       (string)        visibility toggle via sections.json (app_section_visible).
 	 *   header    (string)        merge page_headers.json[header] into the context
-	 *                             (used with component "parts/page_header").
+	 *                             (used with component "banners/page_header").
 	 *   args      (object)        extra context passed to the component.
 	 *   variant   (string|array)  design variant(s) - wraps the section in
 	 *                             .app-variant.app-variant--<name> so the SAME
@@ -98,7 +98,7 @@ class NT_Section_Renderer {
 		}
 
 		// App_Helpers::component() realpath-guards the path and extracts $context into
-		// variables, so parts/page_header gets $title/$subtitle/etc while a
+		// variables, so banners/page_header gets $title/$subtitle/etc while a
 		// plain section component just reads its own JSON and ignores context.
 		App_Helpers::component( $component, $context );
 

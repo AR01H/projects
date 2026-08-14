@@ -4,7 +4,7 @@
  *
  * Banner content comes from admin/data/content.json -> order_to_deliver.
  * The "Order Now" button opens the reusable multi-step wizard
- * (components/parts/form-modal.php) built from admin/data/form_order.json,
+ * (components/dialogs/form-modal.php) built from admin/data/form_order.json,
  * with a product-pick step prepended from admin/data/delivery_products.json.
  * The wizard submits via the generic 'lead_submit' handler. Nothing hardcoded.
  */
@@ -74,7 +74,7 @@ if ( ! empty( $options ) && ! empty( $config['steps'] ) ) {
 </section>
 
 <?php
-get_template_part( 'components/parts/form-modal', null, array(
+get_template_part( 'components/dialogs/form-modal', null, array(
 	'id'     => 'app-order-modal',
 	'title'  => __( 'Order Fresh Now 🌿', NT_TEXT_DOMAIN ),
 	'sub'    => __( 'A few quick steps and we will bring it to you.', NT_TEXT_DOMAIN ),

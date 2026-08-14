@@ -19,7 +19,7 @@ $rotations = [ '-3deg', '4deg', '-2deg', '5deg', '-4deg', '2deg' ];
 		<?php
 		// Light header: this section sits on parchment, so the dark-background
 		// variant rendered cream-on-cream and was unreadable.
-		get_template_part( 'components/parts/section-header', null, [
+		get_template_part( 'components/section-heading/section-header', null, [
 			'tag'   => $content['tag']     ?? 'Gallery',
 			'title' => 'Photo <em>Gallery</em>',
 			'body'  => $content['body']    ?? '',

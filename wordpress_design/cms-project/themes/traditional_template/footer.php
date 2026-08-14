@@ -6,13 +6,13 @@ defined( 'ABSPATH' ) || exit;
 ?>
 </main>
 
-<?php App_Helpers::component( 'parts/main_footer' ); ?>
+<?php App_Helpers::component( 'navigation/main_footer' ); ?>
 
 <?php get_template_part( 'components/floating-popup' ); ?>
 
-<?php if ( app_section_visible( 'site_decor' ) ) App_Helpers::component( 'parts/site-decor' ); ?>
+<?php if ( app_section_visible( 'site_decor' ) ) App_Helpers::component( 'decorative/site-decor' ); ?>
 
-<?php App_Helpers::component( 'parts/svg_defs' ); ?>
+<?php App_Helpers::component( 'decorative/svg_defs' ); ?>
 
 <?php wp_footer(); ?>
 </body>

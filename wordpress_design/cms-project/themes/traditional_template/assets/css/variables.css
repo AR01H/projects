@@ -1,32 +1,317 @@
 @import url(https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Dancing+Script:wght@400..700&family=Jim+Nightshade&family=Jolly+Lodger&family=Mountains+of+Christmas:wght@400;700&family=Lora:ital,wght@0,400..700;1,400..700&family=Luckiest+Guy&display=swap);
+
+/**
+ * variables.css - THE design-token system. One source of truth.
+ *
+ * Every reusable colour, spacing, radius, typography, shadow, transition,
+ * z-index and layout value the theme uses lives here. Components consume
+ * these tokens with var(--token-name) instead of writing their own hex
+ * colours, pixel values or shadows - see ARCHITECTURE.md, "Colours".
+ *
+ * TWO NAMING LAYERS ON PURPOSE:
+ *   1. The theme's own working names (--trad-*, --app-*, --client-color-N)
+ *      - these are what every component's CSS already calls, so they stay
+ *        exactly as they were: same names, same values, zero visual change.
+ *   2. The semantic design-system names this file's sections are organised
+ *      around (--client-primary-color, --spacing-md, --border-radius-lg,
+ *      --font-size-lg, --shadow-sm, --transition-fast, ...) - these are
+ *      ALIASES that point AT layer 1, so both vocabularies resolve to the
+ *      same single value. New/refactored CSS should reach for the semantic
+ *      name; nothing existing had to be renamed to get one source of truth.
+ *
+ * Section map (search for "§n" to jump):
+ *   §1 Brand colours          §6  Border radius         §11 Layout
+ *   §2 Background colours     §7  Typography             §12 Component tokens
+ *   §3 Text colours           §8  Spacing / padding /    §13 SVG / decoration
+ *   §4 Status colours             margin                 §14 Transitions / easing
+ *   §5 Borders                §9  Shadows & effects       §15 Z-index
+ *                              §10 Custom cursors          §16 Responsive overrides
+ */
+
 :root {
-  --app-inner-accent: color-mix(
+
+  /* ═══════════════════════════════════════════════════════════════════
+     §1 BRAND COLOURS - the vintage/traditional palette, as already
+     established. --trad-* are the working names every component's CSS
+     uses; --client-color-N is the older raw palette legacy.css still
+     reads directly; --client-*-color below is the semantic alias layer.
+     To rebrand the theme, edit ONLY the --trad-* values in this section -
+     everything else in the theme (including the aliases below) inherits
+     from them.
+     ═══════════════════════════════════════════════════════════════════ */
+
+  /* Working vintage palette (used throughout vintage.css/sections.css/ui-kit.css).
+     legacy.css used to redeclare NINE of these names (--trad-bg/-bg-alt/-green/
+     -gold/-cream/-ink/-border, --app-font-display/-body) on `body.design-
+     traditional` - a higher-specificity selector than :root, so IT was the
+     version actually rendering on every page, not whatever was written here.
+     The values below are that winning set (this file's old values are gone,
+     not just renamed) - moving them here changes nothing on screen, it just
+     makes this file tell the truth. See the note where the duplicate used to
+     live in legacy.css. */
+  --trad-bg: #f5e8c4;
+  --trad-bg-alt: #ece0b6;
+  --trad-paper: #f6f0e2;
+  --trad-green: #1e3a0e;
+  --trad-green-dark: #0f1c0b;
+  --trad-green-2: #2d5016; /* secondary green - strong/emphasis text */
+  --trad-gold: #b9923a;
+  --trad-cream: #faf0d8;
+  --trad-ink: #24300f;
+  --trad-ink-soft: #6b5540;
+  --trad-red: #7a1c12; /* accent/em text on the vintage skin */
+  --trad-border: #c8b488;
+  --trad-border-soft: rgba(178, 150, 96, 0.4);
+  --trad-frame-line: rgba(185, 146, 58, 0.55);
+  --trad-card: #fbf4e2; /* card surface, one shade lighter than --trad-bg-alt */
+  --trad-card-edge: #efe2bd;
+
+  /* Older raw palette - legacy.css's own "client palette" block. Kept
+     verbatim (legacy.css reads these by name in ~17,000 lines) rather
+     than migrated, but documented here so it is not a second, hidden
+     source of truth: this IS this theme's other brand palette. */
+  --client-color-1: #1e3a0e; /* deep forest green - legacy headings/accent */
+  --client-color-2: #2d5016; /* forest green - legacy tag/accent text */
+  --client-color-3: #4a7c23; /* mid green - legacy rule lines */
+  --client-color-4: #8cb85a; /* sage green */
+  --client-color-5: #d4e8b4; /* pale sage */
+  --client-color-6: #efe3c0; /* parchment */
+  --client-color-7: #c9a84c; /* gold */
+  --client-color-8: #a88230; /* deep gold */
+  --client-color-9: rgba(201, 168, 76, 0.3); /* gold, translucent */
+  --client-color-10: #d8bd62; /* light gold */
+  --client-color-11: #faf3e0; /* cream */
+  --client-color-12: #f0e4c0; /* light parchment */
+  --client-color-13: #16280a; /* near-black green */
+  --client-color-14: rgba(255, 248, 220, 0.06); /* cream, near-invisible */
+  --client-color-15: #24300f; /* dark olive */
+  --client-color-15-muted: #6a7550; /* muted olive (was declared twice; this is the intended value) */
+  --client-color-16: #6a7550; /* muted olive */
+  --client-color-17: rgba(36, 48, 15, 0.62); /* dark olive, translucent */
+  --client-color-18: rgba(30, 58, 14, 0.12); /* forest green, translucent */
+  --client-color-19: rgba(30, 58, 14, 0.22); /* forest green, translucent */
+  --client-color-20: rgba(178, 150, 96, 0.45); /* tan, translucent */
+
+  /* Semantic brand aliases (§1 template) - point at the vintage palette above. */
+  --client-primary-color: var(--trad-green);
+  --client-secondary-color: var(--trad-gold);
+  --client-secondary-dark-color: var(--client-color-8);
+  --client-third-color: var(--trad-ink);
+  --client-fourth-color: var(--client-color-3);
+  --client-fifth-color: var(--client-color-4);
+  --client-sixth-color: var(--client-color-5);
+  --client-seventh-color: var(--trad-border);
+  --client-eighth-color: var(--trad-ink-soft);
+  --client-ninth-color: var(--client-color-16);
+
+  --client-light-primary-color: var(--client-color-4);
+  --client-dark-primary-color: var(--trad-green-dark);
+
+  /* assets/css/components.css (.app-btn/.app-card/.app-entry/.app-scroll-top -
+     the pre-vintage-reskin generic layer still used by page.php, 404.php and
+     the scroll-to-top button) calls a THIRD naming scheme - --app-primary,
+     --app-ink, --app-bg, --app-success, --app-fs-h1... - that was never
+     defined anywhere. Those elements have been rendering with missing
+     colours/sizes ever since. Aliased onto the vintage palette so they match
+     the rest of the site instead of continuing to render broken. */
+  --app-primary: var(--trad-green);
+  --app-primary-dark: var(--trad-green-dark);
+  --app-bg: var(--trad-card);
+  --app-bg-soft: var(--trad-bg-alt);
+  --app-ink: var(--trad-ink);
+  --app-ink-soft: var(--trad-ink-soft);
+  --app-line: var(--trad-border);
+  --app-shadow: var(--shadow-soft);
+  --app-success: var(--app-tone-success);
+  --app-danger: var(--app-tone-error);
+  --app-fs-sm: var(--font-size-sm);
+  --app-fs-h1: 3.6rem;
+  --app-fs-h2: 2.6rem;
+  --app-fs-h3: 1.5rem;
+
+  /* ═══════════════════════════════════════════════════════════════════
+     §2 BACKGROUND COLOURS
+     ═══════════════════════════════════════════════════════════════════ */
+  --client-main-bg-color: var(--trad-bg);
+  --client-secondary-bg-color: var(--trad-bg-alt);
+  --client-dark-bg-color: var(--trad-green);
+  --client-light-bg-color: var(--trad-cream);
+
+  /* ═══════════════════════════════════════════════════════════════════
+     §3 TEXT COLOURS
+     ═══════════════════════════════════════════════════════════════════ */
+  --client-text-color: var(--trad-ink);
+  --client-heading-color: var(--trad-green);
+  --client-muted-text-color: var(--trad-ink-soft);
+  --client-border-color: var(--trad-border);
+
+  /* ═══════════════════════════════════════════════════════════════════
+     §4 STATUS COLOURS - aliases for the existing --app-tone-* system
+     (src/Dialogs/class-alert.php, dialogs, toasts). Do not introduce a
+     second status palette; these just give it the requested names too.
+     ═══════════════════════════════════════════════════════════════════ */
+  --app-tone-info: var(--trad-green);
+  --app-tone-success: color-mix(in srgb, var(--trad-green) 78%, #2f7d32 22%);
+  --app-tone-warning: color-mix(
     in srgb,
     var(--trad-gold) 82%,
-    var(--trad-green) 18%
+    var(--trad-ink) 18%
   );
-  --app-flourish: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='170' height='16' viewBox='0 0 170 16'><g fill='none' stroke='%23b8962f' stroke-width='1.3' stroke-linecap='round'><path d='M6 8c26 0 34-5 56-1'/><path d='M164 8c-26 0-34-5-56-1'/></g><path d='M85 2.5l5.2 5.5-5.2 5.5-5.2-5.5z' fill='%23b8962f'/></svg>");
-  --client-color-1: #1e3a0e;
-  --client-color-2: #2d5016;
-  --client-color-3: #4a7c23;
-  --client-color-4: #8cb85a;
-  --client-color-5: #d4e8b4;
-  --client-color-6: #efe3c0;
-  --client-color-7: #c9a84c;
-  --client-color-8: #a88230;
-  --client-color-9: rgba(201, 168, 76, 0.3);
-  --client-color-10: #d8bd62;
-  --client-color-11: #faf3e0;
-  --client-color-12: #f0e4c0;
-  --client-color-13: #16280a;
-  --client-color-14: rgba(255, 248, 220, 0.06);
-  --client-color-15: #24300f;
-  --client-color-16: #6a7550;
-  --client-color-17: rgba(36, 48, 15, 0.62);
-  --client-color-18: rgba(30, 58, 14, 0.12);
-  --client-color-19: rgba(30, 58, 14, 0.22);
-  --client-color-20: rgba(178, 150, 96, 0.45);
-  --client-color-15-muted: #6a7550;
+  --app-tone-error: color-mix(in srgb, var(--trad-ink) 55%, #8c2f21 45%);
+  --app-tone-note: var(--trad-border);
+  --app-tone-question: color-mix(
+    in srgb,
+    var(--trad-green) 60%,
+    var(--trad-gold) 40%
+  );
+  --client-success-color: var(--app-tone-success);
+  --client-warning-color: var(--app-tone-warning);
+  --client-error-color: var(--app-tone-error);
+  --client-info-color: var(--app-tone-info);
+
+  /* ═══════════════════════════════════════════════════════════════════
+     §5 BORDERS - widths as tokens; the existing --app-rule/-strong
+     composed shorthands now build FROM the width token below them.
+     ═══════════════════════════════════════════════════════════════════ */
+  --border-width-thin: 1px;
+  --border-width-medium: 2px;
+  --border-width-thick: 3px;
+
+  --app-rule: var(--border-width-thin) solid
+    color-mix(in srgb, var(--trad-border) 62%, transparent);
+  --app-rule-strong: var(--border-width-thin) solid
+    color-mix(in srgb, var(--trad-border) 95%, transparent);
+
+  /* ═══════════════════════════════════════════════════════════════════
+     §6 BORDER RADIUS - the four sizes that already account for most of
+     the theme's border-radius usage (2 / 4 / 8 / 12px), plus the pill/
+     circle shapes. Values close to but not exactly on this scale (3px,
+     6px, 10px, 13-20px) were left as component-specific literals rather
+     than nudged onto the scale, so no corner changes size.
+     ═══════════════════════════════════════════════════════════════════ */
+  --border-radius-xs: 2px;
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 12px;
+  --border-radius-xl: 16px;
+  --border-radius-pill: 999px;
+  --border-radius-circle: 50%;
+
+  /* Existing decorative/component radius tokens, unchanged. */
+  --app-sec-radius: 12px 16px 10px 18px; /* rough-cut card corners (paper-story etc.) */
+  --app-ui-radius: 14px 18px 12px 16px; /* dialog/modal corners */
+
+  /* --app-radius/-sm/-pill: another 61-use token family that only ever
+     existed inside the same duplicate legacy.css block as the palette
+     above - moved here rather than merged into --border-radius-*, since
+     6px/3px/8px don't land exactly on that scale and changing them would
+     resize every corner that uses them. */
+  --app-radius: 6px;
+  --app-radius-sm: 3px;
+  --app-radius-pill: 8px;
+
+  /* ═══════════════════════════════════════════════════════════════════
+     §7 TYPOGRAPHY
+     ═══════════════════════════════════════════════════════════════════ */
+  /* Same "which one actually renders" issue as the palette above: legacy.css's
+     body.design-traditional override led with "Playfair Display"/"Lora", not
+     the Cormorant Garamond/EB Garamond this file used to lead with - so that
+     is the font actually painting every heading and this is now correct. */
+  --app-font-display: "Playfair Display", "Cormorant Garamond", Georgia, serif;
+  --app-font-body: "Lora", "EB Garamond", Georgia, "Times New Roman", serif;
+  --app-font-accent: "Dancing Script", cursive;
+  --app-font-chunky: "Luckiest Guy", sans-serif;
+  --font-family-primary: var(--app-font-display);
+  --font-family-secondary: var(--app-font-body);
+
+  --app-fs-base: 1rem;
+  --font-size-xs: 0.72rem; /* eyebrow tags, meta text - already the most-used small size */
+  --font-size-sm: 0.85rem;
+  --font-size-md: var(--app-fs-base); /* 1rem - body copy */
+  --font-size-lg: 1.25rem;
+  --font-size-xl: 1.75rem;
+  --font-size-xxl: 2.6rem; /* section-heading desktop ceiling, see §12 */
+
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  --line-height-tight: 1.15;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
+
+  --app-tracking-kicker: 0.28em;
+  --app-tracking-nav: 0.18em;
+  --letter-spacing-tight: 0.005em;
+  --letter-spacing-normal: 0.02em;
+  --letter-spacing-wide: var(--app-tracking-kicker);
+
+  /* ═══════════════════════════════════════════════════════════════════
+     §8 SPACING / PADDING / MARGIN - a 4px-based scale matching the
+     theme's most-repeated spacing values (4 / 8 / 12 / 16 / 24 / 40 /
+     80px all already recur 7+ times each across the current CSS layer).
+     ═══════════════════════════════════════════════════════════════════ */
+  --spacing-xxs: 4px;
+  --spacing-xs: 8px;
+  --spacing-sm: 12px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 40px;
+  --spacing-xxl: 80px;
+
+  --padding-xs: var(--spacing-xs);
+  --padding-sm: var(--spacing-sm);
+  --padding-md: var(--spacing-md);
+  --padding-lg: var(--spacing-lg);
+  --padding-xl: var(--spacing-xl);
+
+  --margin-xs: var(--spacing-xs);
+  --margin-sm: var(--spacing-sm);
+  --margin-md: var(--spacing-md);
+  --margin-lg: var(--spacing-lg);
+  --margin-xl: var(--spacing-xl);
+
+  /* Semantic spacing - what a component actually asks for. */
+  --app-section-pad: 80px; /* = --spacing-xxl */
+  --app-section-pad-sm: 40px; /* = --spacing-xl */
+  --section-padding-y: var(--app-section-pad);
+  --section-padding-x: var(--container-padding);
+  --container-padding: var(--spacing-md);
+  --card-padding: var(--spacing-md);
+  --button-padding-x: var(--spacing-lg);
+  --button-padding-y: var(--spacing-sm);
+
+  /* Existing fluid section-gap/pad tokens (paper-story, dialogs, cta
+     bands). Each of these used to be declared 2-3 times in this file
+     with only the LAST declaration ever taking effect - consolidated to
+     the one value that was actually winning, so nothing renders
+     differently, but the file no longer lies about which value is live. */
+  --app-sec-gap: clamp(14px, 1.5vw, 22px);
+  --app-sec-pad: clamp(30px, 3.6vw, 58px);
+  --app-band-pad: clamp(24px, 6vw, 38px);
+
+  /* ═══════════════════════════════════════════════════════════════════
+     §9 SHADOWS & EFFECTS
+     ═══════════════════════════════════════════════════════════════════ */
+  --shadow-soft: 0 4px 15px rgba(26, 54, 20, 0.15); /* the theme's original, still the most-used shadow */
+  --shadow-xs: 0 1px 4px rgba(26, 54, 20, 0.12);
+  --shadow-sm: var(--shadow-soft);
+  --shadow-md: 0 8px 24px rgba(15, 28, 11, 0.22);
+  --shadow-lg: var(--app-ui-shade);
+  --app-ui-shade: 0 22px 60px rgba(15, 28, 11, 0.34); /* dialog/modal shadow */
+
+  --opacity-muted: 0.65;
+  --opacity-disabled: 0.45;
+
+  --app-photo-grade: sepia(0.24) saturate(0.92) contrast(1.06);
+
+  /* ═══════════════════════════════════════════════════════════════════
+     §10 CUSTOM CURSORS - already-centralised inline-SVG cursor art
+     (assets/js/ui-kit.js and legacy.css apply these via cursor: var(...)).
+     Left exactly as authored; this is the pattern §13's small decorations
+     below follow too.
+     ═══════════════════════════════════════════════════════════════════ */
   --cur-default: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g1%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%236abf3a%22%2F%3E%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%232d5a1b%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Cpath%20d%3D%22M5%202%20L5%2024%20L10%2018%20L14%2026%20L17.5%2024.2%20L13.5%2016.5%20L21%2016.5%20Z%22%20fill%3D%22url%28%23g1%29%22%20stroke%3D%22%23a8d96e%22%20stroke-width%3D%221%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpath%20d%3D%22M7%205%20L7%2019%20L10%2016%22%20fill%3D%22none%22%20stroke%3D%22%23c8e830%22%20stroke-width%3D%220.8%22%20stroke-linecap%3D%22round%22%20opacity%3D%220.7%22%2F%3E%3Ccircle%20cx%3D%225%22%20cy%3D%222%22%20r%3D%222%22%20fill%3D%22%23c8e830%22%20stroke%3D%22%232d5a1b%22%20stroke-width%3D%220.5%22%2F%3E%3C%2Fsvg%3E")
       0 0,
     default;
@@ -75,77 +360,151 @@
   --cur-copy: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2236%22%20height%3D%2236%22%20viewBox%3D%220%200%2036%2036%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22gc%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%236abf3a%22%2F%3E%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%232d5a1b%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Cpath%20d%3D%22M4%202%20L4%2022%20L9%2016.5%20L13%2024%20L16.5%2022.2%20L12.5%2014.5%20L18.5%2014.5%20Z%22%20fill%3D%22url%28%23gc%29%22%20stroke%3D%22%23a8d96e%22%20stroke-width%3D%220.8%22%20stroke-linejoin%3D%22round%22%2F%3E%3Crect%20x%3D%2219%22%20y%3D%2217%22%20width%3D%2213%22%20height%3D%2216%22%20rx%3D%222%22%20fill%3D%22%23e4f5cc%22%20stroke%3D%22%234a8c2a%22%20stroke-width%3D%221%22%2F%3E%3Crect%20x%3D%2216%22%20y%3D%2214%22%20width%3D%2213%22%20height%3D%2216%22%20rx%3D%222%22%20fill%3D%22%23fdfff8%22%20stroke%3D%22%232d5a1b%22%20stroke-width%3D%221.2%22%2F%3E%3Cline%20x1%3D%2219%22%20y1%3D%2219%22%20x2%3D%2226%22%20y2%3D%2219%22%20stroke%3D%22%234a8c2a%22%20stroke-width%3D%221.2%22%20stroke-linecap%3D%22round%22%2F%3E%3Cline%20x1%3D%2219%22%20y1%3D%2222%22%20x2%3D%2226%22%20y2%3D%2222%22%20stroke%3D%22%234a8c2a%22%20stroke-width%3D%221.2%22%20stroke-linecap%3D%22round%22%2F%3E%3Cline%20x1%3D%2219%22%20y1%3D%2225%22%20x2%3D%2223%22%20y2%3D%2225%22%20stroke%3D%22%23a8d96e%22%20stroke-width%3D%221.2%22%20stroke-linecap%3D%22round%22%2F%3E%3Cpath%20d%3D%22M25%2014%20L29%2014%20L29%2018%20Z%22%20fill%3D%22%23c8e830%22%20stroke%3D%22%232d5a1b%22%20stroke-width%3D%220.5%22%2F%3E%3C%2Fsvg%3E")
       4 2,
     copy;
-  --app-sec-radius: 12px 16px 10px 18px;
-  --app-sec-gap: clamp(18px, 2.4vw, 30px);
-  --app-sec-pad: clamp(48px, 7vw, 96px);
-  --app-sec-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
-  --app-sec-pad: clamp(34px, 9vw, 56px);
-  --app-band-pad: clamp(30px, 3.6vw, 58px);
-  --app-sec-pad: clamp(30px, 3.6vw, 58px);
-  --app-sec-gap: clamp(14px, 1.5vw, 22px);
-  --app-rule: 1px solid color-mix(in srgb, var(--trad-border) 62%, transparent);
-  --app-rule-strong: 1px solid
-    color-mix(in srgb, var(--trad-border) 95%, transparent);
-  --app-band-pad: clamp(24px, 6vw, 38px);
-  --app-tone-info: var(--trad-green);
-  --app-tone-success: color-mix(in srgb, var(--trad-green) 78%, #2f7d32 22%);
-  --app-tone-warning: color-mix(
+
+  /* ═══════════════════════════════════════════════════════════════════
+     §11 LAYOUT
+     ═══════════════════════════════════════════════════════════════════ */
+  --app-container: 1280px;
+  --container-max-width: var(--app-container);
+  --app-nav-height: 82px;
+  --header-height: var(--app-nav-height);
+  --mobile-header-height: 64px;
+
+  --section-spacing-sm: var(--app-section-pad-sm); /* 40px */
+  --section-spacing-md: var(--spacing-xl); /* 40px */
+  --section-spacing-lg: var(--app-section-pad); /* 80px */
+
+  --grid-gap-sm: var(--spacing-sm); /* 12px */
+  --grid-gap-md: var(--spacing-md); /* 16px */
+  --grid-gap-lg: var(--spacing-lg); /* 24px */
+  --app-gap: var(--grid-gap-md);
+
+  /* ═══════════════════════════════════════════════════════════════════
+     §12 COMPONENT TOKENS
+     ═══════════════════════════════════════════════════════════════════ */
+  /* Buttons (assets/css/vintage.css .btn/.btn-primary/.btn-secondary) */
+  --button-height-sm: 36px;
+  --button-height-md: 48px;
+  --button-height-lg: 56px;
+  --button-radius: var(--border-radius-xs); /* 2px - the vintage button's square-ish corner */
+  --button-border-width: var(--border-width-medium);
+
+  /* Cards */
+  --card-radius: var(--border-radius-md);
+  --card-border-width: var(--border-width-thin);
+  --card-shadow: var(--shadow-sm);
+
+  /* Forms (components/parts/generic-form.php inputs) */
+  --input-height: 44px;
+  --input-radius: var(--border-radius-sm);
+  --input-border-width: var(--border-width-thin);
+
+  /* Section heading (see vintage.css "SECTION HEADING SYSTEM") */
+  --section-heading-size: clamp(1.75rem, 1.4rem + 2.4vw, var(--font-size-xxl));
+  --section-heading-tag-size: clamp(0.62rem, 0.58rem + 0.15vw, var(--font-size-xs));
+  --section-heading-spacing: var(--letter-spacing-tight);
+  --section-heading-line-height: var(--line-height-tight);
+  --section-heading-weight: var(--font-weight-bold);
+
+  /* Header */
+  --header-logo-width: 44px;
+  --header-nav-gap: var(--spacing-lg);
+
+  /* ═══════════════════════════════════════════════════════════════════
+     §13 SVG / DECORATION - small, genuinely reusable inline-SVG values.
+     Bigger decorative artwork (the movie-header sprite, corner ornaments,
+     background textures) stays as real files under assets/images and
+     assets/svg per ARCHITECTURE.md, rather than being forced in here.
+     ═══════════════════════════════════════════════════════════════════ */
+  --app-inner-accent: color-mix(
     in srgb,
     var(--trad-gold) 82%,
-    var(--trad-ink) 18%
+    var(--trad-green) 18%
   );
-  --app-tone-error: color-mix(in srgb, var(--trad-ink) 55%, #8c2f21 45%);
-  --app-tone-note: var(--trad-border);
-  --app-tone-question: color-mix(
-    in srgb,
-    var(--trad-green) 60%,
-    var(--trad-gold) 40%
-  );
-  --app-ui-radius: 14px 18px 12px 16px;
-  --app-ui-shade: 0 22px 60px rgba(15, 28, 11, 0.34);
-  --app-ui-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --app-flourish: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='170' height='16' viewBox='0 0 170 16'><g fill='none' stroke='%23b8962f' stroke-width='1.3' stroke-linecap='round'><path d='M6 8c26 0 34-5 56-1'/><path d='M164 8c-26 0-34-5-56-1'/></g><path d='M85 2.5l5.2 5.5-5.2 5.5-5.2-5.5z' fill='%23b8962f'/></svg>");
+  --section-decoration-svg: var(--app-flourish);
+
+  --texture-paper: url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.6" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noiseFilter)" opacity="0.12"/></svg>');
+  --app-grain: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='180' height='180' filter='url(%23g)' opacity='0.55'/></svg>");
+  --app-bump-neutral: #808080;
+
+  /* Rough-cut card edge masks (dialogs, alerts) - three seeds for variety. */
   --app-cut-1: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 60' preserveAspectRatio='none'><filter id='r'><feTurbulence type='fractalNoise' baseFrequency='0.035 0.09' numOctaves='3' seed='7' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='5' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='4' y='4' width='192' height='52' rx='8' fill='%23fff' filter='url(%23r)'/></svg>");
   --app-cut-2: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 60' preserveAspectRatio='none'><filter id='r'><feTurbulence type='fractalNoise' baseFrequency='0.05 0.07' numOctaves='3' seed='23' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='6' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='4' y='4' width='192' height='52' rx='7' fill='%23fff' filter='url(%23r)'/></svg>");
   --app-cut-3: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 60' preserveAspectRatio='none'><filter id='r'><feTurbulence type='fractalNoise' baseFrequency='0.028 0.11' numOctaves='2' seed='41' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='4.5' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='4' y='4' width='192' height='52' rx='9' fill='%23fff' filter='url(%23r)'/></svg>");
+  --mini-button-svg-1: var(--app-cut-1);
+  --mini-button-svg-2: var(--app-cut-2);
+  --roughness-svg-1: var(--app-cut-1);
+  --roughness-svg-2: var(--app-cut-3);
 
-  --app-photo-grade: sepia(0.24) saturate(0.92) contrast(1.06);
-  --app-grain: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='180' height='180' filter='url(%23g)' opacity='0.55'/></svg>");
+  /* Torn-paper edge masks (paper-story) - four card seeds + top/bottom strips. */
   --app-torn-1: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='220' preserveAspectRatio='none'><filter id='t' x='-20%' y='-20%' width='140%' height='140%' color-interpolation-filters='sRGB'><feTurbulence type='fractalNoise' baseFrequency='0.016' numOctaves='4' seed='11' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='11' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='7' y='7' width='306' height='206' rx='3' fill='white' filter='url(%23t)'/></svg>");
   --app-torn-2: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='220' preserveAspectRatio='none'><filter id='t' x='-20%' y='-20%' width='140%' height='140%' color-interpolation-filters='sRGB'><feTurbulence type='fractalNoise' baseFrequency='0.022' numOctaves='3' seed='29' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='9' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='7' y='7' width='306' height='206' rx='6' fill='white' filter='url(%23t)'/></svg>");
   --app-torn-3: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='220' preserveAspectRatio='none'><filter id='t' x='-20%' y='-20%' width='140%' height='140%' color-interpolation-filters='sRGB'><feTurbulence type='fractalNoise' baseFrequency='0.013' numOctaves='4' seed='47' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='13' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='8' y='8' width='304' height='204' rx='2' fill='white' filter='url(%23t)'/></svg>");
   --app-torn-4: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='220' preserveAspectRatio='none'><filter id='t' x='-20%' y='-20%' width='140%' height='140%' color-interpolation-filters='sRGB'><feTurbulence type='fractalNoise' baseFrequency='0.019' numOctaves='3' seed='63' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='10' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='7' y='7' width='306' height='206' rx='8' fill='white' filter='url(%23t)'/></svg>");
   --app-torn-top: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1200' height='44' preserveAspectRatio='none'><filter id='e' x='-20%' y='-20%' width='140%' height='140%' color-interpolation-filters='sRGB'><feTurbulence type='fractalNoise' baseFrequency='0.011 0.055' numOctaves='3' seed='19' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='21' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='-30' y='22' width='1280' height='90' fill='white' filter='url(%23e)'/></svg>");
   --app-torn-bottom: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1200' height='26' preserveAspectRatio='none'><filter id='b' x='-20%' y='-20%' width='140%' height='140%' color-interpolation-filters='sRGB'><feTurbulence type='fractalNoise' baseFrequency='0.013 0.06' numOctaves='3' seed='41' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='14' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='-30' y='-40' width='1280' height='55' fill='white' filter='url(%23b)'/></svg>");
-  --app-bump-neutral: #808080;
+  --mini-header-line-1: var(--app-torn-top);
+  --mini-header-line-2: var(--app-torn-bottom);
 
-  --app-font-display: "Cormorant Garamond", "Playfair Display", Georgia, serif;
-  --app-font-body: "EB Garamond", "Lora", Georgia, serif;
-  --app-font-accent: "Dancing Script", cursive;
-  --app-font-chunky: "Luckiest Guy", sans-serif;
-  --app-tracking-kicker: 0.28em;
-  --app-tracking-nav: 0.18em;
-  --app-nav-height: 82px;
-  --app-container: 1280px;
-  --app-section-pad: 80px;
-  --app-section-pad-sm: 40px;
-  --trad-bg: #efe6d3;
-  --trad-bg-alt: #e6d9be;
-  --trad-paper: #f6f0e2;
-  --trad-green: #183e16;
-  --trad-green-dark: #0f1c0b;
-  --trad-gold: #c3a135;
-  --trad-cream: #fdfbf7;
-  --trad-ink: #4a3a2a;
-  --trad-ink-soft: #6b5540;
-  --trad-border: #c8b48a;
-  --texture-paper: url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.6" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noiseFilter)" opacity="0.12"/></svg>');
-  --shadow-soft: 0 4px 15px rgba(26, 54, 20, 0.15);
+  /* ═══════════════════════════════════════════════════════════════════
+     §14 TRANSITIONS / EASING / INTERACTION
+     ═══════════════════════════════════════════════════════════════════ */
+  --transition-fast: 0.2s;
+  --transition-normal: 0.3s;
+  --transition-slow: 0.5s;
+  --app-transition: var(--transition-normal); /* pre-existing generic token, unchanged value */
+
+  /* Hover/focus/disabled - one definition each, so no component picks its
+     own hover colour or focus ring. Derived from the vintage palette, not
+     invented: hover colours are the same darker/lighter step every button
+     and link already used ad hoc (.btn:hover already darkens to
+     --trad-green-dark; .btn-gold:hover already lightens to transparent). */
+  --client-primary-hover-color: var(--trad-green-dark);
+  --client-secondary-hover-color: var(--client-color-8); /* deeper gold */
+  --client-dark-hover-color: var(--trad-green);
+  --client-light-hover-color: var(--trad-cream);
+  --client-border-hover-color: var(--trad-gold);
+
+  --button-hover-translate-y: -2px;
+  --card-hover-translate-y: -4px;
+
+  --focus-ring-width: 2px;
+  --focus-ring-offset: 2px;
+  --focus-ring-color: var(--trad-gold);
+  --input-focus-shadow: 0 0 0 3px
+    color-mix(in srgb, var(--trad-gold) 35%, transparent);
+
+  --hover-opacity: 0.85;
+  --disabled-opacity: var(--opacity-disabled);
+
+  /* The two custom eases in this file were the same curve under two
+     different names - kept both names as aliases of one definition. */
+  --ease-standard: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --app-sec-ease: var(--ease-standard);
+  --app-ui-ease: var(--ease-standard);
+
+  /* ═══════════════════════════════════════════════════════════════════
+     §15 Z-INDEX - only the layers that genuinely stack across
+     components (nav over content, dropdowns over nav, modals over
+     everything, toasts over modals). In-component stacking (an icon
+     over its own card background, z-index: 1/2/3) stays local - it is
+     not a cross-cutting design decision and does not belong here.
+     ═══════════════════════════════════════════════════════════════════ */
+  --z-header: 500;
+  --z-dropdown: 600;
+  --z-overlay: 900;
+  --z-modal: 2000;
+  --z-modal-top: 2100;
+  --z-toast: 2400;
+  --z-cursor-layer: 9999;
 }
+
 body.design-traditional {
   font-family: var(--app-font-body);
-  background-color: var(--trad-bg);
+  background-color: var(--client-main-bg-color);
   background-image: var(--texture-paper);
-  color: var(--trad-ink);
+  color: var(--client-text-color);
   -webkit-font-smoothing: antialiased;
 }
 .app-font-display,
@@ -155,7 +514,45 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: var(--app-font-display);
-  color: var(--trad-green);
-  letter-spacing: 0.02em;
+  font-family: var(--font-family-primary);
+  color: var(--client-heading-color);
+  letter-spacing: var(--letter-spacing-normal);
+}
+
+/* ═════════════════════════════════════════════════════════════════════
+   GLOBAL INTERACTION BASELINE
+   ─────────────────────────────────────────────────────────────────────
+   One focus style and one reduced-motion rule for the whole theme, so no
+   individual component file needs to repeat either. Every interactive
+   component in assets/css/components/*.css relies on this instead of
+   defining its own focus ring or its own reduced-motion guard.
+   ═════════════════════════════════════════════════════════════════════ */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ═════════════════════════════════════════════════════════════════════
+   §16 RESPONSIVE OVERRIDES
+   ─────────────────────────────────────────────────────────────────────
+   Most responsive scaling in this theme is fluid (clamp()-based tokens
+   above: --app-sec-pad, --section-heading-size, ...) so it needs no
+   breakpoint override. --container-padding is the one token that
+   genuinely steps at a breakpoint rather than scaling continuously.
+   ═════════════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  :root {
+    --container-padding: var(--spacing-sm);
+  }
 }

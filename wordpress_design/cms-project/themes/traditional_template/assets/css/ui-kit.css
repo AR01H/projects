@@ -61,7 +61,7 @@ dialog.app-dialog--full {
   position: absolute;
   inset: 8px;
   border: 1px solid color-mix(in srgb, var(--trad-border) 60%, transparent);
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   pointer-events: none;
 }
 .app-dialog--info .app-dialog__paper {
@@ -279,7 +279,7 @@ dialog.app-dialog--full {
   letter-spacing: 0.14em;
   text-transform: uppercase;
   padding: 13px 26px;
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   border: 1.5px solid var(--trad-green);
   cursor: pointer;
   text-decoration: none;
@@ -366,106 +366,11 @@ html.app-dialog-open {
     display: none;
   }
 }
-.app-alert {
-  position: relative;
-  display: flex;
-  gap: 14px;
-  align-items: flex-start;
-  padding: 16px 18px;
-  margin: 0 0 20px;
-  background-color: color-mix(
-    in srgb,
-    var(--trad-cream) 92%,
-    var(--trad-bg) 8%
-  );
-  background-image: var(--texture-paper);
-  border: 2px solid var(--trad-border);
-  border-left: 4px solid var(--app-tone-note);
-  border-radius: var(--app-ui-radius);
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--trad-gold) 45%, transparent);
-  overflow: hidden;
-  transition:
-    height 0.3s var(--app-ui-ease),
-    opacity 0.24s,
-    margin 0.3s,
-    padding 0.3s;
-}
-.app-alert--compact {
-  padding: 11px 14px;
-  gap: 10px;
-  font-size: 0.93rem;
-}
-.app-alert.is-closing {
-  opacity: 0;
-  margin-bottom: 0;
-  padding-top: 0;
-  padding-bottom: 0;
-}
-.app-alert--info {
-  border-left-color: var(--app-tone-info);
-}
-.app-alert--success {
-  border-left-color: var(--app-tone-success);
-}
-.app-alert--warning {
-  border-left-color: var(--app-tone-warning);
-}
-.app-alert--error {
-  border-left-color: var(--app-tone-error);
-}
-.app-alert--question {
-  border-left-color: var(--app-tone-question);
-}
-.app-alert__icon {
-  font-size: 1.25rem;
-  line-height: 1;
-  margin-top: 0.12em;
-  color: var(--trad-green);
-}
-.app-alert--warning .app-alert__icon {
-  color: var(--app-tone-warning);
-}
-.app-alert--error .app-alert__icon {
-  color: var(--app-tone-error);
-}
-.app-alert--success .app-alert__icon {
-  color: var(--app-tone-success);
-}
-.app-alert__content {
-  flex: 1 1 auto;
-  min-width: 0;
-}
-.app-alert__title {
-  font-family: var(--app-font-display);
-  color: var(--trad-green);
-  font-size: 1.02rem;
-  margin: 0 0 4px;
-}
-.app-alert__rich p,
-.app-alert__text {
-  font-family: var(--app-font-body);
-  color: color-mix(in srgb, var(--trad-ink) 86%, transparent);
-  font-size: 0.95rem;
-  line-height: 1.62;
-  margin: 0;
-}
-.app-alert__link {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 8px;
-  font-family: var(--app-font-body);
-  font-size: 0.82rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--trad-green);
-  text-decoration: none;
-  border-bottom: 1px solid color-mix(in srgb, var(--trad-gold) 70%, transparent);
-}
-.app-alert__link:hover {
-  color: var(--trad-gold);
-}
-.app-alert__close,
+/* .app-alert* moved to assets/css/components/alerts.css - the alert
+   component's complete base+variants+sizes+states lives together there.
+   .app-noticebar__close keeps its own copy of the shared close-button
+   look below, since the noticebar (announcement strip) is a different
+   component that happened to share this one rule with alerts. */
 .app-noticebar__close {
   flex: 0 0 auto;
   width: 28px;
@@ -473,16 +378,15 @@ html.app-dialog-open {
   display: grid;
   place-items: center;
   border: 0;
-  border-radius: 50%;
+  border-radius: var(--border-radius-circle);
   background: 0 0;
   color: color-mix(in srgb, var(--trad-ink) 60%, transparent);
   cursor: pointer;
   font-size: 15px;
   transition:
-    color 0.2s,
-    background-color 0.2s;
+    color var(--transition-fast),
+    background-color var(--transition-fast);
 }
-.app-alert__close:hover,
 .app-noticebar__close:hover {
   color: var(--trad-green);
   background: color-mix(in srgb, var(--trad-green) 10%, transparent);
@@ -540,7 +444,7 @@ html.app-dialog-open {
   letter-spacing: 0.2em;
   text-transform: uppercase;
   padding: 4px 10px;
-  border-radius: 999px;
+  border-radius: var(--border-radius-pill);
   background: var(--trad-gold);
   color: var(--trad-green-dark);
   white-space: nowrap;
@@ -652,52 +556,7 @@ html.app-dialog-open {
   flex: 1 1 auto;
   line-height: 1.45;
 }
-.app-crumbs {
-  padding: 4px 0 2px;
-}
-.app-crumbs__list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 4px 2px;
-}
-.app-crumbs__item {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-family: var(--app-font-body);
-  font-size: 0.7rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-}
-.app-crumbs__link {
-  color: color-mix(in srgb, var(--trad-ink) 62%, transparent);
-  text-decoration: none;
-  transition: color 0.2s;
-}
-.app-crumbs__link:hover {
-  color: var(--trad-gold);
-}
-.app-crumbs__current {
-  color: var(--trad-green);
-}
-.app-crumbs__sep {
-  color: color-mix(in srgb, var(--trad-border) 90%, transparent);
-  font-size: 0.72rem;
-  margin: 0 4px;
-}
-.app-crumbs--on-dark .app-crumbs__link {
-  color: color-mix(in srgb, var(--trad-cream) 72%, transparent);
-}
-.app-crumbs--on-dark .app-crumbs__current {
-  color: var(--trad-gold);
-}
-.app-crumbs--on-dark .app-crumbs__sep {
-  color: color-mix(in srgb, var(--trad-cream) 45%, transparent);
-}
+/* .app-crumbs* moved to assets/css/components/breadcrumbs.css. */
 .app-leaves {
   position: absolute;
   inset: 0;
@@ -826,14 +685,6 @@ html.app-dialog-open {
     right: 12px;
     bottom: 12px;
     max-width: none;
-  }
-  .app-crumbs__item {
-    font-size: 0.64rem;
-    letter-spacing: 0.12em;
-  }
-  .app-alert {
-    padding: 14px;
-    gap: 11px;
   }
 }
 @keyframes app-sheet-up {
@@ -1258,7 +1109,7 @@ body:has(.app-mobile-nav.open)
   ) {
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.2s;
+  transition: opacity var(--transition-fast);
 }
 body.design-traditional .app-mobile-nav {
   bottom: 0;
@@ -1280,7 +1131,7 @@ body.design-traditional .app-mobile-nav::-webkit-scrollbar-track {
 }
 body.design-traditional .app-mobile-nav::-webkit-scrollbar-thumb {
   background: color-mix(in srgb, var(--trad-gold) 45%, transparent);
-  border-radius: 999px;
+  border-radius: var(--border-radius-pill);
 }
 body:has(.app-mobile-nav.open) {
   overflow: hidden;

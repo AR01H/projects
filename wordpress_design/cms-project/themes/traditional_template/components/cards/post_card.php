@@ -16,8 +16,8 @@
  *   post_id (int)    Defaults to the current post in the loop.
  *   compact (bool)   Tighter card for sidebars and related-post rows.
  *
- * Keep the shape in step with the JS renderer in assets/js/pages/news.js -
- * both produce .app-card items.
+ * If a future page renders cards client-side (e.g. a live-search results
+ * list), keep that JS output producing the same .app-card markup as this file.
  */
 
 defined( 'ABSPATH' ) || exit;

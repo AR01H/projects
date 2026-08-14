@@ -24,7 +24,7 @@ $alt   = $data['alt']   ?? '';
 <section class="app-values" id="values">
 	<div class="container">
 
-		<?php get_template_part( 'components/parts/section-header', null, array(
+		<?php get_template_part( 'components/section-heading/section-header', null, array(
 	'tag'   => $tag ?? '',
 	'title' => $title ?? '',
 	'body'  => $sub ?? ''

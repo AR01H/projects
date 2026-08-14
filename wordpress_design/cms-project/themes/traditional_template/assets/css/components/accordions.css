@@ -1,0 +1,102 @@
+/* ============================================================
+   ACCORDION (FAQ)
+   Relocated from assets/css/vintage.css + assets/css/sections.css.
+   Rendered by components/faqs.php as native <details>/<summary> - no JS
+   needed for open/close, just :not([open]) / [open] and ::-webkit-
+   details-marker. The only live accordion pattern in the theme today;
+   kept as a generic ".app-faq-*" name (not "faqs-only") so a future
+   second use of the same open/close pattern has somewhere to live.
+
+   .app-faq-item's card look (background/border/radius/shadow, plus the
+   decorative inset stitched-frame ::after and the hand-cut border-radius)
+   is NOT redeclared here - it comes from the shared vintage "card frame"
+   system in legacy.css/vintage.css (the big body.design-traditional
+   :is(.app-card, .app-hire-card, .app-faq-item, ...) combined selectors),
+   which many unrelated cards also use. Only the FAQ-exclusive layout
+   (padding, the +/- toggle, answer spacing) and a genuinely new hover/
+   focus state live in this file.
+
+   Three OTHER, unrelated ".app-faq*" blocks existed in legacy.css and were
+   removed rather than moved - confirmed dead by a project-wide search,
+   no template outputs their markup:
+     - #faq / .app-section-faq
+     - .app-faq-header / .app-faq-grid / .app-faq-question / .app-faq-icon /
+       .app-faq-answer (a JS/.active-toggle version, superseded by the
+       current <details>-based one)
+     - .app-faqpage-group / .app-faqpage-topic
+   ============================================================ */
+
+.app-faqs {
+  padding: 80px 0;
+  background: var(--trad-bg);
+}
+.app-faqs .app-section-title {
+  text-align: center;
+  font-family: var(--app-font-display);
+  color: var(--trad-green);
+  font-size: clamp(1.9rem, 4vw, 2.6rem);
+  margin-bottom: 36px;
+}
+/* Kept at this specificity to match how it already had to win against a
+   generic .container padding rule elsewhere in the same cascade. */
+body.design-traditional .app-faqs > .app-container {
+  padding: clamp(22px, 2.6vw, 36px) clamp(16px, 2.4vw, 30px);
+}
+
+.app-faq-list {
+  max-width: 780px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.app-faq-item {
+  padding: 4px 18px;
+}
+/* Was previously an accidental leftover from a dead duplicate block (wrong,
+   pre-vintage palette) - this is the first real, intentional hover state
+   for the FAQ card. */
+.app-faq-item:hover {
+  border-color: var(--trad-gold);
+}
+
+.app-faq-q {
+  font-family: var(--app-font-display);
+  font-weight: 700;
+  color: var(--trad-green);
+  cursor: pointer;
+  padding: 14px 0;
+  list-style: none;
+  position: relative;
+  padding-right: 28px;
+}
+.app-faq-q::-webkit-details-marker {
+  display: none;
+}
+.app-faq-q::after {
+  content: "+";
+  position: absolute;
+  right: 4px;
+  top: 12px;
+  font-size: 1.3rem;
+  color: var(--trad-gold);
+  transition: transform var(--transition-fast);
+}
+.app-faq-item[open] .app-faq-q::after {
+  content: "\2212"; /* − */
+}
+/* <summary> is natively keyboard-focusable and had no visible focus state
+   at all. */
+.app-faq-q:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+  border-radius: var(--border-radius-xs, 4px);
+}
+
+.app-faq-a {
+  font-family: var(--app-font-body);
+  color: var(--trad-ink);
+  line-height: 1.6;
+  padding: 0 0 16px;
+}

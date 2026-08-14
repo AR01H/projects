@@ -22,7 +22,7 @@
   background: var(--app-primary);
   color: #fff;
   border: 1px solid var(--app-primary);
-  border-radius: 999px;
+  border-radius: var(--border-radius-pill);
   padding: 10px 24px;
   font: inherit;
   font-weight: 600;
@@ -125,7 +125,7 @@
   width: 100%;
   padding: 10px 14px;
   border: 1px solid var(--app-line);
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   font: inherit;
 }
 .app-form input:focus,

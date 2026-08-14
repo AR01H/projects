@@ -9,7 +9,7 @@ get_header();
 <div class="app-container app-section">
 
 	<?php
-	App_Helpers::component( 'parts/page_header', array(
+	App_Helpers::component( 'banners/page_header', array(
 		/* translators: %s: search query */
 		'title'    => sprintf( __( 'Search results for "%s"', NT_TEXT_DOMAIN ), get_search_query() ),
 		'subtitle' => sprintf( _n( '%d result found', '%d results found', (int) $GLOBALS['wp_query']->found_posts, NT_TEXT_DOMAIN ), (int) $GLOBALS['wp_query']->found_posts ),

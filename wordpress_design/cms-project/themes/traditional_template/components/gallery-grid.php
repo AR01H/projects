@@ -29,7 +29,7 @@ $next_id      = esc_attr( $id ) . '-next';
 <section class="<?php echo $section_cls; ?>">
 	<div class="container wrapper">
 
-		<?php get_template_part( 'components/parts/section-header', null, [
+		<?php get_template_part( 'components/section-heading/section-header', null, [
 			'tag'          => $tag,
 			'title'        => $title,
 			'body'         => $body,

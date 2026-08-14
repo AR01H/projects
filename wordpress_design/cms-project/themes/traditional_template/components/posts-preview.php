@@ -37,7 +37,7 @@ $button_url = $data['button_url'] ?? '';
 <section class="app-posts" id="latest-posts">
 	<div class="container">
 
-		<?php get_template_part( 'components/parts/section-header', null, array(
+		<?php get_template_part( 'components/section-heading/section-header', null, array(
 	'tag'   => $tag ?? '',
 	'title' => $title ?? '',
 	'body'  => $sub ?? ''

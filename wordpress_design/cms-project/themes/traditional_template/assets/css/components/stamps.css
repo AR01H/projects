@@ -1,0 +1,116 @@
+/* ============================================================
+   STAMP
+   Relocated from assets/css/sections.css (.app-stamp*). Rendered
+   by components/stamps/stamp.php - an SVG ink stamp, purely
+   decorative. --app-stamp-size/-tilt are set per-instance via
+   inline style by the PHP component, not here.
+   ============================================================ */
+
+.app-stamp {
+  --app-stamp-colour: var(--trad-green);
+  display: inline-block;
+  width: var(--app-stamp-size, 168px);
+  height: var(--app-stamp-size, 168px);
+  transform: rotate(var(--app-stamp-tilt, -8deg));
+  -webkit-mask-image: var(--texture-paper);
+  mask-image: var(--texture-paper);
+  -webkit-mask-size: 180px 180px;
+  mask-size: 180px 180px;
+  opacity: 0.92;
+  pointer-events: none;
+}
+
+/* ---------- Tone variants ----------
+   No .app-stamp--ink rule here on purpose: "ink" is stamp.php's default
+   tone AND has no override, so it inherits the base --app-stamp-colour
+   (green) above. That is the existing behaviour, kept as-is. */
+.app-stamp--gold {
+  --app-stamp-colour: var(--trad-gold);
+}
+.app-stamp--red {
+  --app-stamp-colour: color-mix(in srgb, var(--trad-ink) 42%, #8c2f21 58%);
+}
+
+/* ---------- Size variants (the PHP component's own "size" arg maps to a
+   pixel diameter via inline style; these classes are for markup that wants
+   the size fixed by CSS instead). ---------- */
+.app-stamp--small {
+  width: 96px;
+  height: 96px;
+}
+.app-stamp--medium {
+  width: 168px;
+  height: 168px;
+}
+.app-stamp--large {
+  width: 240px;
+  height: 240px;
+}
+
+/* ---------- Shape ---------- */
+.app-stamp--round {
+  mask-size: 180px 180px;
+}
+.app-stamp--square {
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
+.app-stamp__svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
+}
+.app-stamp__ring {
+  fill: none;
+  stroke: var(--app-stamp-colour);
+  stroke-width: 5;
+}
+.app-stamp__ring--thin {
+  stroke-width: 1.6;
+}
+.app-stamp__pip {
+  fill: var(--app-stamp-colour);
+}
+.app-stamp__rule {
+  stroke: var(--app-stamp-colour);
+  stroke-width: 1.6;
+}
+.app-stamp__arc {
+  fill: var(--app-stamp-colour);
+  font-family: var(--font-family-secondary, Georgia, serif);
+  font-size: 17px;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 3.4px;
+  text-transform: uppercase;
+}
+.app-stamp__arc--bottom {
+  dominant-baseline: hanging;
+}
+.app-stamp__mid {
+  fill: var(--app-stamp-colour);
+  font-family: var(--font-family-primary, Georgia, serif);
+  font-size: 25px;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.app-stamp__mid--two {
+  font-size: 20px;
+}
+.app-stamp__small {
+  fill: var(--app-stamp-colour);
+  font-family: var(--font-family-secondary, Georgia, serif);
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+/* ---------- Interaction ----------
+   The stamp is decorative (pointer-events: none above) on every current
+   placement. Kept restrained per the vintage identity - no hover lift or
+   spin - but if a future placement makes it clickable (e.g. a "verified"
+   badge that opens a dialog), wrap it in a button/link and style THAT
+   element's :hover/:focus-visible; do not turn the stamp itself into a
+   button here. */

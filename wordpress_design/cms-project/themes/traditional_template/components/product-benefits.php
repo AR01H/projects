@@ -21,7 +21,7 @@ $allowed = [ 'span' => [ 'class' => [], 'style' => [] ], 'em' => [] ];
 
 <section class="app-benefits-section section">
 	<div class="container wrapper">
-		<?php get_template_part( 'components/parts/section-header', null, [
+		<?php get_template_part( 'components/section-heading/section-header', null, [
 			'tag'   => $tag,
 			'title' => $title,
 			'body'  => $body,

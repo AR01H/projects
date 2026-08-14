@@ -19,7 +19,7 @@ $more_label    = $args['more_label'] ?? $content['more_label'] ?? 'View All Even
 <section class="app-events-preview-section">
 	<div class="container">
 
-		<?php get_template_part( 'components/section-header', null, [
+		<?php get_template_part( 'components/section-heading/section-header', null, [
 			'tag'   => $section_tag,
 			'title' => $section_title,
 			'body'  => $section_body,
@@ -72,7 +72,7 @@ $more_label    = $args['more_label'] ?? $content['more_label'] ?? 'View All Even
 </section>
 
 <?php
-get_template_part( 'components/parts/form-modal', null, array(
+get_template_part( 'components/dialogs/form-modal', null, array(
 	'id'     => 'app-events-modal',
 	'title'  => __( 'Book Your Event 🎉', NT_TEXT_DOMAIN ),
 	'sub'    => __( 'Live juice counter for weddings, parties & corporate events.', NT_TEXT_DOMAIN ),

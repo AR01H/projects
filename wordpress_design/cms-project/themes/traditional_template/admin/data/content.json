@@ -5,13 +5,6 @@
     "body": "Available for weddings, corporate events, and parties.",
     "more_label": "View all packages"
   },
-  "events_quote": {
-    "tag": "Book Us",
-    "heading": "Ready to <span class=\"accent\">Book?</span>",
-    "body": "Fill in the form below and we'll get back to you with a custom quote.",
-    "image": "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600&q=80",
-    "image_alt": "Live juice stall at a wedding celebration"
-  },
   "faqs": {
     "tag": "FAQs",
     "heading": "Got <span class=\"accent\">Questions?</span>",

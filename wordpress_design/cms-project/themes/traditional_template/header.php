@@ -27,6 +27,6 @@ $nt_is_home = is_front_page() || 'home' === (string) get_query_var( 'app_active_
 
 
 
-<?php App_Helpers::component( 'parts/main_header' ); ?>
+<?php App_Helpers::component( 'navigation/main_header' ); ?>
 
 <main id="app-main" class="app-main">

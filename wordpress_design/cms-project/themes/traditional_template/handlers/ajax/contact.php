@@ -4,9 +4,10 @@
  *
  * Registered in config/ajax.php as 'contact_submit'. The dispatcher
  * (core/ajax.php) has ALREADY verified the nonce before this runs, so this
- * file only does: sanitize -> validate -> act -> respond.
+ * file only does: sanitize -> validate -> act -> respond. Used by any
+ * data-nt-ajax-form pointed at this action (see components/forms/generic-form.php).
  *
- * JS side (assets/js/pages/contact.js):
+ * JS side, from whichever form uses it:
  *   NT.ajax( 'contact_submit', { name, email, phone, message } )
  */
 

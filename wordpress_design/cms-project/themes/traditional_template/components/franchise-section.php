@@ -33,7 +33,7 @@ $cta_btn_link      = $f_data['cta_btn_link'] ?? '';
 		<div class="app-vintage-stamp">
 			<?php
 			/*
-			 * The shared stamp (components/parts/stamp.php). This used to be
+			 * The shared stamp (components/stamps/stamp.php). This used to be
 			 * three rotated spans, which came out with the lower ring upside
 			 * down and the middle line running outside the circle. The shared
 			 * component sets both rings on real SVG arcs and fits the struck
@@ -42,7 +42,7 @@ $cta_btn_link      = $f_data['cta_btn_link'] ?? '';
 			 * stamp_lines stays the same three strings in franchise.json:
 			 * upper ring, struck line, lower ring.
 			 */
-			App_Helpers::component( 'parts/stamp', array(
+			App_Helpers::component( 'stamps/stamp', array(
 				'top'    => wp_strip_all_tags( (string) ( $stamp_lines[0] ?? '' ) ),
 				'middle' => (string) ( $stamp_lines[1] ?? '' ),
 				'bottom' => (string) ( $stamp_lines[2] ?? '' ),
@@ -112,7 +112,7 @@ $cta_btn_link      = $f_data['cta_btn_link'] ?? '';
 </section>
 
 <?php
-get_template_part( 'components/parts/form-modal', null, array(
+get_template_part( 'components/dialogs/form-modal', null, array(
 	'id'     => 'app-franchise-modal',
 	'title'  => __( 'Franchise Enquiry 💼', NT_TEXT_DOMAIN ),
 	'sub'    => __( 'Tell us a little about you - we reply within 24 hours.', NT_TEXT_DOMAIN ),

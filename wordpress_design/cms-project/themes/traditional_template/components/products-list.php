@@ -9,7 +9,7 @@ $flavours  = $_d['flavours'] ?? [];
 
 <section id="build" class="app-build-section section">
 	<div class="container wrapper">
-		<?php get_template_part( 'components/parts/section-header', null, [
+		<?php get_template_part( 'components/section-heading/section-header', null, [
 			'tag'           => 'OUR MENU',
 			'title'         => 'Build Your Perfect Drink',
 			'body'          => 'Choose your base, texture, and flavour.',

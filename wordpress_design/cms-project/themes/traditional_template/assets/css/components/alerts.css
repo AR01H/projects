@@ -1,0 +1,167 @@
+/* ============================================================
+   ALERT
+   Relocated from assets/css/ui-kit.css (.app-alert*). Rendered
+   by components/alerts/alert.php (server-side) and NTAlerts in
+   the alerts JS module (client-built, same markup shape) - one
+   set of classes, two renderers, kept in step on purpose.
+   ============================================================ */
+
+.app-alert {
+  position: relative;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 16px 18px;
+  margin: 0 0 20px;
+  background-color: color-mix(in srgb, var(--trad-cream) 92%, var(--trad-bg) 8%);
+  background-image: var(--texture-paper);
+  border: var(--border-width-medium) solid var(--trad-border);
+  border-left: 4px solid var(--app-tone-note);
+  border-radius: var(--app-ui-radius);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--trad-gold) 45%, transparent);
+  overflow: hidden;
+  transition:
+    height var(--transition-normal) var(--ease-standard),
+    opacity 0.24s,
+    margin var(--transition-normal),
+    padding var(--transition-normal);
+}
+
+/* ---------- Sizes ---------- */
+.app-alert--mini,
+.app-alert--compact {
+  padding: 11px 14px;
+  gap: 10px;
+  font-size: 0.93rem;
+}
+.app-alert--small {
+  padding: 13px 16px;
+  font-size: 0.95rem;
+}
+.app-alert--large {
+  padding: 20px 22px;
+  gap: 16px;
+}
+
+/* ---------- Tone variants ---------- */
+.app-alert--info {
+  border-left-color: var(--app-tone-info);
+}
+.app-alert--success {
+  border-left-color: var(--app-tone-success);
+}
+.app-alert--warning {
+  border-left-color: var(--app-tone-warning);
+}
+.app-alert--error {
+  border-left-color: var(--app-tone-error);
+}
+.app-alert--question {
+  border-left-color: var(--app-tone-question);
+}
+
+/* ---------- Layout variants ---------- */
+.app-alert--inline {
+  margin: 0 0 var(--spacing-md);
+}
+.app-alert--banner {
+  border-radius: 0;
+  border-left-width: 0;
+  border-top: 4px solid var(--app-tone-note);
+}
+
+.app-alert__icon {
+  font-size: 1.25rem;
+  line-height: 1;
+  margin-top: 0.12em;
+  color: var(--trad-green);
+}
+.app-alert--warning .app-alert__icon {
+  color: var(--app-tone-warning);
+}
+.app-alert--error .app-alert__icon {
+  color: var(--app-tone-error);
+}
+.app-alert--success .app-alert__icon {
+  color: var(--app-tone-success);
+}
+.app-alert__content {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.app-alert__title {
+  font-family: var(--font-family-primary);
+  color: var(--trad-green);
+  font-size: 1.02rem;
+  margin: 0 0 4px;
+}
+.app-alert__rich p,
+.app-alert__text {
+  font-family: var(--font-family-secondary);
+  color: color-mix(in srgb, var(--trad-ink) 86%, transparent);
+  font-size: 0.95rem;
+  line-height: var(--line-height-relaxed);
+  margin: 0;
+}
+.app-alert__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  font-family: var(--font-family-secondary);
+  font-size: 0.82rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--trad-green);
+  text-decoration: none;
+  border-bottom: var(--border-width-thin) solid color-mix(in srgb, var(--trad-gold) 70%, transparent);
+}
+
+/* ---------- Interaction: the dismiss button ---------- */
+.app-alert__link:hover,
+.app-alert__link:focus-visible {
+  color: var(--trad-gold);
+}
+.app-alert__close {
+  flex: 0 0 auto;
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: var(--border-radius-circle);
+  background: 0 0;
+  color: color-mix(in srgb, var(--trad-ink) 60%, transparent);
+  cursor: pointer;
+  font-size: 15px;
+  transition:
+    color var(--transition-fast),
+    background-color var(--transition-fast);
+}
+.app-alert__close:hover {
+  color: var(--trad-green);
+  background: color-mix(in srgb, var(--trad-green) 10%, transparent);
+}
+.app-alert__close:active {
+  background: color-mix(in srgb, var(--trad-green) 18%, transparent);
+}
+.app-alert__close:disabled {
+  opacity: var(--disabled-opacity);
+  cursor: not-allowed;
+}
+
+/* ---------- Dismiss animation state ---------- */
+.app-alert.is-closing {
+  opacity: 0;
+  margin-bottom: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 480px) {
+  .app-alert {
+    padding: 14px;
+    gap: 11px;
+  }
+}

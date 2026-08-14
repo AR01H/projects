@@ -15,7 +15,7 @@
  *
  * Every string comes from JSON; this class only decides which notices are
  * eligible right now and hands a clean context to the dumb templates
- * components/parts/alert.php and components/notice-bar.php.
+ * components/alerts/alert.php and components/notice-bar.php.
  *
  * A notice entry (admin/data/site_notices.json):
  *
@@ -62,7 +62,7 @@ class NT_Alert {
 	 */
 	public static function render( array $args ): void {
 		if ( is_callable( array( 'App_Helpers', 'component' ) ) ) {
-			App_Helpers::component( 'parts/alert', self::normalise( $args ) );
+			App_Helpers::component( 'alerts/alert', self::normalise( $args ) );
 		}
 	}
 
@@ -76,7 +76,7 @@ class NT_Alert {
 	}
 
 	/**
-	 * Fill in every key parts/alert.php reads, so the template needs no `??`.
+	 * Fill in every key alerts/alert.php reads, so the template needs no `??`.
 	 *
 	 * @return array
 	 */

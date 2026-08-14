@@ -9,7 +9,7 @@ get_header();
 ?>
 <div class="app-container app-section">
 
-	<?php App_Helpers::component( 'parts/page_header', array( 'title' => get_the_archive_title() ?: get_bloginfo( 'name' ) ) ); ?>
+	<?php App_Helpers::component( 'banners/page_header', array( 'title' => get_the_archive_title() ?: get_bloginfo( 'name' ) ) ); ?>
 
 	<?php if ( have_posts() ) : ?>
 		<div class="app-grid app-grid-3">

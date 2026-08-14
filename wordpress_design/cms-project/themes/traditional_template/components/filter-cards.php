@@ -30,7 +30,7 @@ $uid     = 'app-fc-' . wp_rand( 1000, 9999 );
 <section class="app-fcards" id="filter-cards">
 	<div class="container" data-nt-filter>
 
-		<?php get_template_part( 'components/parts/section-header', null, array(
+		<?php get_template_part( 'components/section-heading/section-header', null, array(
 	'tag'   => $tag ?? '',
 	'title' => $title ?? '',
 	'body'  => $sub ?? ''

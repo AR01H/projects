@@ -1,0 +1,161 @@
+/* ============================================================
+   TABS
+   Relocated from assets/css/sections.css (.app-tabs*). Rendered by
+   components/tabs.php - a progressively-enhanced tab strip: with JS off
+   every panel renders stacked with its own heading (.app-tabs__fallback-
+   heading); assets/js/ui-kit.js (NTTabs) adds data-nt-tabs and switches on
+   the real tab strip via .app-tabs__scope.is-enhanced.
+
+   NOT relocated here (left where they already are, on purpose): the shared
+   "read more" link style (.app-split__cta, .app-story__link,
+   .app-tabs__link - one combined rule in sections.css) and the shared
+   bullet-point list style (.app-job__points, .app-split__points,
+   .app-tabs__points - also sections.css) are genuinely cross-component,
+   not tabs-exclusive - moving them here would either duplicate the rule or
+   break the other two components, so both stay put and this file only
+   takes the selectors that belong to tabs alone.
+   ============================================================ */
+
+.app-tabs {
+  padding: var(--app-sec-pad) 0;
+}
+
+/* ---------- Tab strip + tab buttons ---------- */
+.app-tabs__strip {
+  display: none;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 28px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid
+    color-mix(in srgb, var(--trad-border) 70%, transparent);
+}
+.app-tabs__scope.is-enhanced .app-tabs__strip {
+  display: flex;
+}
+.app-tabs__scope.is-enhanced .app-tabs__fallback-heading {
+  display: none;
+}
+.app-tabs__scope.is-enhanced .app-tabs__panel {
+  border: 0;
+  background: 0 0;
+  padding: 0;
+}
+
+.app-tabs__tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 20px;
+  border: 1.5px solid transparent;
+  border-radius: 8px 8px 0 0;
+  background: 0 0;
+  font-family: var(--app-font-body);
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--trad-ink-soft, var(--trad-ink));
+  cursor: pointer;
+  transition:
+    color var(--transition-fast),
+    background-color var(--transition-fast),
+    border-color var(--transition-fast);
+}
+
+/* ---------- States ---------- */
+.app-tabs__tab:hover {
+  color: var(--trad-green);
+}
+.app-tabs__tab:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+}
+.app-tabs__tab.is-active {
+  color: var(--trad-green);
+  border-color: var(--trad-border);
+  border-bottom-color: transparent;
+  background: var(--trad-paper, var(--trad-cream));
+}
+.app-tabs__tab:disabled,
+.app-tabs__tab[aria-disabled="true"] {
+  cursor: not-allowed;
+  opacity: var(--disabled-opacity);
+}
+
+.app-tabs__icon {
+  font-size: 1.05rem;
+  line-height: 1;
+  color: var(--trad-gold);
+}
+
+/* ---------- Panels ---------- */
+.app-tabs__panel {
+  padding: clamp(20px, 2.6vw, 30px);
+}
+.app-tabs__panel + .app-tabs__panel {
+  margin-top: 18px;
+}
+.app-tabs__scope.is-enhanced .app-tabs__panel + .app-tabs__panel {
+  margin-top: 0;
+}
+.app-tabs__panel:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: calc(-1 * var(--focus-ring-width));
+}
+.app-tabs__fallback-heading {
+  font-family: var(--app-font-display);
+  color: var(--trad-green);
+  margin: 0 0 12px;
+}
+
+.app-tabs__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(22px, 4vw, 48px);
+  align-items: center;
+}
+.app-tabs__figure {
+  margin: 0;
+  border-radius: var(--app-sec-radius);
+  overflow: hidden;
+  border: 1px solid var(--trad-border);
+}
+.app-tabs__figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: sepia(0.34) saturate(0.92);
+}
+.app-tabs__heading {
+  font-family: var(--app-font-display);
+  font-size: clamp(1.4rem, 2.6vw, 1.9rem);
+  color: var(--trad-green);
+  margin: 0 0 12px;
+}
+.app-tabs__text {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--trad-ink);
+  margin: 0 0 12px;
+}
+
+/* ---------- Responsive: scrollable strip on narrow screens ---------- */
+@media (max-width: 860px) {
+  .app-tabs__inner {
+    grid-template-columns: 1fr;
+  }
+  .app-tabs__strip {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    justify-content: flex-start;
+    scrollbar-width: none;
+  }
+  .app-tabs__strip::-webkit-scrollbar {
+    display: none;
+  }
+  .app-tabs__tab {
+    white-space: nowrap;
+    flex: 0 0 auto;
+  }
+}

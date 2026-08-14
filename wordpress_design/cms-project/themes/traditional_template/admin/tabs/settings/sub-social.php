@@ -1,7 +1,7 @@
 <?php
 /**
  * Site Settings -> Social Links. Rendered in the footer by
- * components/parts/main_footer.php via App_Helpers::option( 'social' ).
+ * components/navigation/main_footer.php via App_Helpers::option( 'social' ).
  */
 
 defined( 'ABSPATH' ) || exit;

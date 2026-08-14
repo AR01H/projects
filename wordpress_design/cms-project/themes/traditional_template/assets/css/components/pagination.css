@@ -1,0 +1,64 @@
+/* ============================================================
+   PAGINATION
+   Relocated from assets/css/sections.css (.app-pagination). Wraps
+   WordPress's own the_posts_pagination() / paginate_comments_links()
+   output (index.php, search.php, comments.php) - the ".page-numbers"
+   class on every link/span comes from WordPress itself, not a theme
+   component, so this file styles that existing markup rather than
+   defining new classes to render.
+
+   A second, older ".app-pagination__list / __item" version also existed in
+   assets/css/legacy.css, styled with the pre-vintage --client-color-*
+   tokens - no template anywhere outputs that list/item markup (confirmed:
+   only the_posts_pagination()'s native .page-numbers links are ever
+   rendered), so it was dead code and has been removed rather than moved.
+   ============================================================ */
+
+.app-pagination {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 40px;
+}
+
+.app-pagination .page-numbers {
+  min-width: 42px;
+  height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 12px;
+  border: 1.5px solid var(--trad-border);
+  border-radius: var(--border-radius-md);
+  background: var(--trad-paper, var(--trad-cream));
+  color: var(--trad-green);
+  font-family: var(--app-font-body);
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast),
+    border-color var(--transition-fast);
+}
+
+/* ---------- States ---------- */
+.app-pagination .page-numbers:hover {
+  border-color: var(--trad-gold);
+  color: var(--trad-gold);
+}
+.app-pagination a.page-numbers:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+}
+/* "current" is a <span>, not a link - it is the page you're already on,
+   so it has no hover/focus state of its own on purpose. */
+.app-pagination .page-numbers.current {
+  background: var(--trad-green);
+  border-color: var(--trad-green);
+  color: var(--trad-cream);
+}
+.app-pagination .page-numbers.dots {
+  border-color: transparent;
+  background: 0 0;
+}

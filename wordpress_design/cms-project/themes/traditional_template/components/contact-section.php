@@ -91,7 +91,7 @@ $trad_caption = $content['photo_caption'] ?? 'Good Times. Sweet Memories. ♥';
 		<div class="app-form-title"><?php echo esc_html( $form_title ); ?></div>
 
 		<?php
-		get_template_part( 'components/parts/generic-form', null, [
+		get_template_part( 'components/forms/generic-form', null, [
 			'id'     => 'app-home-contact-form',
 			'action' => 'contact_submit',
 			'submit' => 'Send Message 🥤',

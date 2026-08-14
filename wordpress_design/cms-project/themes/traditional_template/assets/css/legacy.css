@@ -1159,17 +1159,9 @@ canvas {
   align-items: center;
   gap: 0.8rem;
 }
-.app-faq__header {
-  text-align: center;
-  margin-bottom: 2.5rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.app-faq__header .app-section-body {
-  margin-inline: auto;
-  text-align: center;
-}
+/* .app-faq__header - dead, no template outputs this markup (a different,
+   never-used naming variant of the live .app-faqs/.app-faq-item system in
+   assets/css/components/accordions.css). */
 .app-build__header {
   text-align: center;
   margin-bottom: 2rem;
@@ -1253,7 +1245,6 @@ canvas {
   background: rgba(45, 90, 27, 0.96);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border-bottom: 2px solid rgba(168, 217, 110, 0.2);
   transition:
     box-shadow 0.3s,
     background 0.3s;
@@ -3670,91 +3661,15 @@ body.nav--collapsed .app-nav__cta-btn {
     transform: translateX(100px) translateZ(-200px) rotateY(-25deg) scale(0.8);
   }
 }
-#faq,
-.app-section-faq {
-  padding: 2rem !important;
-}
-.app-faq-header {
-  text-align: center;
-  margin-bottom: 2.5rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.app-faq-header .app-section-body,
-.app-faq-header .section-body {
-  margin-inline: auto;
-  text-align: center;
-}
-.app-faq-grid {
-  max-width: 850px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-.app-faq-item {
-  background: #fff;
-  border-radius: 16px;
-  border: 1px solid rgba(45, 90, 27, 0.1);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
-  overflow: hidden;
-  transition: 0.4s;
-}
-.app-faq-item:hover {
-  border-color: var(--client-color-7);
-  box-shadow: 0 10px 25px rgba(45, 90, 27, 0.05);
-}
-.app-faq-item.active {
-  border-color: var(--client-color-7);
-}
-.app-faq-question {
-  width: 100%;
-  padding: 1rem;
-  background: 0 0;
-  border: none;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  text-align: left;
-  font-family: var(--app-font-display);
-  font-size: 1.15rem;
-  font-weight: 800;
-  color: var(--client-color-1);
-  cursor: pointer;
-}
-.app-faq-icon {
-  width: 28px;
-  height: 28px;
-  background: var(--client-color-5);
-  color: var(--client-color-1);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2rem;
-  transition: 0.4s;
-  flex-shrink: 0;
-}
-.app-faq-item.active .app-faq-icon {
-  background: var(--client-color-7);
-  transform: rotate(180deg);
-}
-.app-faq-answer {
-  max-height: 0;
-  overflow: hidden;
-  padding: 0 2rem;
-  transition: 0.4s;
-}
-.app-faq-item.active .app-faq-answer {
-  max-height: 300px;
-  padding-bottom: 2rem;
-}
-.app-faq-answer p {
-  color: var(--client-color-15-muted);
-  line-height: 1.7;
-  font-size: 1rem;
-}
+/* #faq / .app-section-faq / .app-faq-header / .app-faq-grid /
+   .app-faq-item(.active) / .app-faq-question / .app-faq-icon /
+   .app-faq-answer - dead, a JS-driven .active-toggle FAQ pattern (pre-
+   vintage --client-color-* palette) that no template outputs; superseded
+   by the live <details>-based one in assets/css/components/accordions.css.
+   .app-faq-item's own plain rule here was ALSO silently losing every
+   property that mattered to a higher-specificity shared card-frame
+   selector elsewhere anyway (see accordions.css's docblock) - only its
+   :hover was actually reaching real markup, and with the wrong palette. */
 #contact,
 .app-contact-section,
 .app-section-contact {
@@ -4914,41 +4829,10 @@ body.nav--collapsed .app-nav__cta-btn {
   margin-bottom: 1.5rem;
   flex: 1;
 }
-.app-pagination {
-  margin: 2rem 0;
-}
-.app-pagination__list {
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-  justify-content: center;
-  list-style: none;
-}
-.app-pagination__item a,
-.app-pagination__item span {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 40px;
-  height: 40px;
-  padding: 0 0.8rem;
-  border-radius: 10px;
-  font-size: 0.88rem;
-  font-weight: 700;
-  border: 2px solid var(--client-color-5);
-  color: var(--client-color-1);
-  text-decoration: none;
-  transition: 0.25s;
-}
-.app-pagination__item a:hover {
-  background: var(--client-color-6);
-  border-color: var(--client-color-3);
-}
-.app-pagination__item .current {
-  background: var(--client-color-1);
-  color: var(--client-color-7);
-  border-color: var(--client-color-1);
-}
+/* .app-pagination__list/__item - dead: no template outputs that markup
+   (confirmed via project-wide search). WordPress's own the_posts_pagination()
+   output is what actually renders, styled by .app-pagination .page-numbers
+   in assets/css/components/pagination.css. */
 .app-single-hero {
   background: linear-gradient(160deg, #1e4010 0, #2d5a1b 50%, #4a8c2a 100%);
   padding: 5rem 2rem;
@@ -7317,6 +7201,12 @@ body.has-ticker .app-nav {
   font-weight: 600;
   color: rgba(255, 255, 255, 0.65);
 }
+
+.app-footer-social-media-icons{
+    display: flex;
+    gap: 8px;
+}
+
 .app-footer__socials {
   display: flex;
   gap: 8px;
@@ -8547,42 +8437,6 @@ body.has-ticker .app-nav {
 .app-events-why-section {
   padding: 2rem;
 }
-.app-events-quote-section {
-  background: var(--client-color-1);
-  padding: 5rem 2rem;
-}
-@media (max-width: 768px) {
-  .app-events-quote-section {
-    padding: 3rem 1.2rem;
-  }
-}
-@media (max-width: 480px) {
-  .app-events-quote-section {
-    padding: 2.5rem 1rem;
-  }
-}
-.app-events-quote-section ::selection {
-  background-color: rgba(200, 232, 48, 0.35);
-  color: var(--client-color-11);
-}
-.app-events-quote-section ::-moz-selection {
-  background-color: rgba(200, 232, 48, 0.35);
-  color: var(--client-color-11);
-}
-.app-quote-layout {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4rem;
-  align-items: start;
-  max-width: 1100px;
-  margin-inline: auto;
-}
-@media (max-width: 800px) {
-  .app-quote-layout {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
-}
 .app-features-ribbon {
   background: var(--client-color-1);
   padding: 0.5rem 1rem;
@@ -8781,12 +8635,7 @@ body.has-ticker .app-nav {
 .app-franchise-why-section {
   padding: 5rem 0;
 }
-.app-franchise-enquiry-section {
-  background: var(--client-color-1);
-  padding: 5rem 0;
-}
 @media (max-width: 768px) {
-  .app-franchise-enquiry-section,
   .app-franchise-steps-section,
   .app-franchise-why-section {
     padding: 3.5rem 0;
@@ -11130,32 +10979,8 @@ body.has-ticker .app-nav {
 .app-section-more .btn-outline {
   cursor: pointer;
 }
-.app-faqpage-group {
-  max-width: 820px;
-  margin: 0 auto 3rem;
-}
-.app-faqpage-group:last-child {
-  margin-bottom: 0;
-}
-.app-faqpage-topic {
-  font-family: var(--app-font-display);
-  font-size: 1.3rem;
-  font-weight: 900;
-  color: var(--client-color-1);
-  margin-bottom: 1.2rem;
-  padding-bottom: 0.6rem;
-  border-bottom: 2px solid var(--client-color-5);
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-}
-.app-faqpage-topic::before {
-  content: "";
-  width: 8px;
-  height: 22px;
-  background: var(--client-color-7);
-  border-radius: 4px;
-}
+/* .app-faqpage-group / .app-faqpage-topic - dead, a third unused FAQ
+   naming variant; no template outputs this markup either. */
 .app-storypage {
   max-width: 1050px;
   margin-inline: auto;
@@ -13420,8 +13245,6 @@ body.design-traditional .app-footer {
   body.design-traditional h1 {
     font-size: 2.8rem;
   }
-  body.design-traditional .app-section-title,
-  body.design-traditional .section-title,
   body.design-traditional h2 {
     font-size: 2.2rem;
   }
@@ -13441,8 +13264,6 @@ body.design-traditional .app-footer {
   body.design-traditional h1 {
     font-size: 2.2rem;
   }
-  body.design-traditional .app-section-title,
-  body.design-traditional .section-title,
   body.design-traditional h2 {
     font-size: 1.9rem;
   }
@@ -14103,24 +13924,12 @@ body.design-traditional .app-footer {
   }
 }
 body.design-traditional {
-  --app-font-body: "Lora", Georgia, "Times New Roman", serif;
-  --app-font-display: "Playfair Display", Georgia, serif;
-  --app-radius: 6px;
-  --app-radius-sm: 3px;
-  --app-radius-pill: 8px;
-  --trad-bg: #f5e8c4;
-  --trad-bg-alt: #ece0b6;
-  --trad-card: #fbf4e2;
-  --trad-card-edge: #efe2bd;
-  --trad-border: #c8b488;
-  --trad-border-soft: rgba(178, 150, 96, 0.4);
-  --trad-frame-line: rgba(185, 146, 58, 0.55);
-  --trad-ink: #24300f;
-  --trad-green: #1e3a0e;
-  --trad-green-2: #2d5016;
-  --trad-red: #7a1c12;
-  --trad-gold: #b9923a;
-  --trad-cream: #faf0d8;
+  /* This rule used to redeclare --app-font-body/-display, --app-radius*,
+     --trad-* and more, right here on body.design-traditional - a HIGHER
+     specificity selector than variables.css's :root, so this was the
+     version that always won regardless of file order. Consolidated into
+     variables.css (see its §1/§6/§7) as the one source of truth; the three
+     actual style declarations below are unchanged. */
   background-color: var(--trad-bg);
   color: var(--client-color-15);
   font-family: var(--app-font-body);
@@ -14157,11 +13966,10 @@ body.design-traditional h4 {
   font-size: 1.25rem;
   font-weight: 600;
 }
-body.design-traditional .app-section-title,
-body.design-traditional .section-title {
-  font-size: 2.6rem;
-  font-weight: 700;
-}
+/* Base .section-title/.app-section-title font-size + weight now live in
+   ONE place - the "SECTION HEADING SYSTEM" block at the end of vintage.css -
+   as a fluid clamp() instead of a fixed 2.6rem repeated here and in two
+   (dead - see the removed media queries above) breakpoint overrides. */
 body.design-traditional .app-section-title .accent,
 body.design-traditional .section-title .accent,
 body.design-traditional .section-title em,
@@ -14185,7 +13993,6 @@ body.design-traditional .section-tag {
   text-transform: uppercase;
   font-size: 0.72rem;
 }
-,
 body.design-traditional .app-section-tag::after,
 body.design-traditional .section-tag::after,
 body.design-traditional .section-tag::before {
@@ -14224,8 +14031,6 @@ body.design-traditional ::-moz-selection {
 }
 body.design-traditional .app-nav {
   background: var(--trad-green);
-  border-bottom: 2px solid rgba(201, 168, 76, 0.3);
-  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.28);
 }
 body.design-traditional .app-nav__link {
   color: var(--trad-cream);
@@ -14603,14 +14408,12 @@ body.design-traditional .app-step-card--highlight {
     rgba(74, 124, 35, 0.05)
   );
 }
-body.design-traditional .app-faq-question,
 body.design-traditional .app-hire-card h3,
 body.design-traditional .app-price-row__title,
 body.design-traditional .app-step-card h3 {
   font-family: var(--app-font-display);
   color: var(--trad-green);
 }
-body.design-traditional .app-faq-icon,
 body.design-traditional .app-h-card-list li::before {
   color: var(--trad-gold);
 }
@@ -15315,8 +15118,6 @@ body.design-traditional .app-story-card::after {
   body.design-traditional h1 {
     font-size: 2.8rem;
   }
-  body.design-traditional .app-section-title,
-  body.design-traditional .section-title,
   body.design-traditional h2 {
     font-size: 2.2rem;
   }
@@ -15325,8 +15126,6 @@ body.design-traditional .app-story-card::after {
   body.design-traditional h1 {
     font-size: 2.2rem;
   }
-  body.design-traditional .app-section-title,
-  body.design-traditional .section-title,
   body.design-traditional h2 {
     font-size: 1.9rem;
   }

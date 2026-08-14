@@ -48,7 +48,7 @@
 .app-promo__figure {
   margin: 0 0 4px;
   width: 100%;
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   overflow: hidden;
 }
 .app-promo__figure img {
@@ -240,7 +240,7 @@ a.app-infocard__value:hover {
   align-items: center;
   text-decoration: none;
   filter: sepia(0.6) saturate(0.5) opacity(0.62);
-  transition: filter 0.3s;
+  transition: filter var(--transition-normal);
 }
 .app-logos__item:hover {
   filter: sepia(0.15) saturate(1) opacity(1);
@@ -364,7 +364,7 @@ a.app-infocard__value:hover {
   gap: 8px;
   padding: 11px 20px;
   border: 1.5px solid var(--trad-green);
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   background: 0 0;
   color: var(--trad-green);
   font-family: var(--app-font-body);
@@ -394,107 +394,12 @@ a.app-infocard__value:hover {
     justify-content: center;
   }
 }
-.app-tabs {
-  padding: var(--app-sec-pad) 0;
-}
-.app-tabs__strip {
-  display: none;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 8px;
-  margin-bottom: 28px;
-  padding-bottom: 14px;
-  border-bottom: 1px solid
-    color-mix(in srgb, var(--trad-border) 70%, transparent);
-}
-.app-tabs__scope.is-enhanced .app-tabs__strip {
-  display: flex;
-}
-.app-tabs__scope.is-enhanced .app-tabs__fallback-heading {
-  display: none;
-}
-.app-tabs__scope.is-enhanced .app-tabs__panel {
-  border: 0;
-  background: 0 0;
-  padding: 0;
-}
-.app-tabs__tab {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 11px 20px;
-  border: 1.5px solid transparent;
-  border-radius: 8px 8px 0 0;
-  background: 0 0;
-  font-family: var(--app-font-body);
-  font-size: 0.78rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--trad-ink-soft, var(--trad-ink));
-  cursor: pointer;
-  transition:
-    color 0.2s,
-    background-color 0.2s,
-    border-color 0.2s;
-}
-.app-tabs__tab:hover {
-  color: var(--trad-green);
-}
-.app-tabs__tab.is-active {
-  color: var(--trad-green);
-  border-color: var(--trad-border);
-  border-bottom-color: transparent;
-  background: var(--trad-paper, var(--trad-cream));
-}
-.app-tabs__icon {
-  font-size: 1.05rem;
-  line-height: 1;
-  color: var(--trad-gold);
-}
-.app-tabs__panel {
-  padding: clamp(20px, 2.6vw, 30px);
-}
-.app-tabs__panel + .app-tabs__panel {
-  margin-top: 18px;
-}
-.app-tabs__scope.is-enhanced .app-tabs__panel + .app-tabs__panel {
-  margin-top: 0;
-}
-.app-tabs__fallback-heading {
-  font-family: var(--app-font-display);
-  color: var(--trad-green);
-  margin: 0 0 12px;
-}
-.app-tabs__inner {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: clamp(22px, 4vw, 48px);
-  align-items: center;
-}
-.app-tabs__figure {
-  margin: 0;
-  border-radius: var(--app-sec-radius);
-  overflow: hidden;
-  border: 1px solid var(--trad-border);
-}
-.app-tabs__figure img {
-  display: block;
-  width: 100%;
-  height: auto;
-  filter: sepia(0.34) saturate(0.92);
-}
-.app-tabs__heading {
-  font-family: var(--app-font-display);
-  font-size: clamp(1.4rem, 2.6vw, 1.9rem);
-  color: var(--trad-green);
-  margin: 0 0 12px;
-}
-.app-tabs__text {
-  font-size: 1rem;
-  line-height: 1.7;
-  color: var(--trad-ink);
-  margin: 0 0 12px;
-}
+/* .app-tabs* (base, states, panels, responsive) relocated to
+   assets/css/components/tabs.css. The combined selectors below
+   (.app-job__points/.app-split__points/.app-tabs__points and their
+   sub-rules) stay here - they are genuinely shared across three unrelated
+   components, not tabs-exclusive, so moving them would break the other
+   two. See tabs.css's own docblock for the full explanation. */
 .app-job__points,
 .app-split__points,
 .app-tabs__points {
@@ -520,24 +425,6 @@ a.app-infocard__value:hover {
   color: var(--trad-gold);
   margin-top: 0.22em;
   font-size: 1rem;
-}
-@media (max-width: 860px) {
-  .app-tabs__inner {
-    grid-template-columns: 1fr;
-  }
-  .app-tabs__strip {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    justify-content: flex-start;
-    scrollbar-width: none;
-  }
-  .app-tabs__strip::-webkit-scrollbar {
-    display: none;
-  }
-  .app-tabs__tab {
-    white-space: nowrap;
-    flex: 0 0 auto;
-  }
 }
 .app-careers {
   padding: var(--app-sec-pad) 0;
@@ -589,7 +476,7 @@ a.app-infocard__value:hover {
   gap: 5px;
   padding: 4px 10px;
   border: 1px solid var(--trad-border);
-  border-radius: 999px;
+  border-radius: var(--border-radius-pill);
   font-size: 0.7rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -657,7 +544,7 @@ a.app-infocard__value:hover {
   gap: 8px;
   padding: 12px 22px;
   border: 1.5px solid var(--trad-green);
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   background: var(--trad-green);
   color: var(--trad-cream);
   font-family: var(--app-font-body);
@@ -812,7 +699,7 @@ a.app-infocard__value:hover {
   gap: 12px;
   text-decoration: none;
   background: color-mix(in srgb, var(--trad-green-dark) 34%, transparent);
-  transition: background-color 0.3s;
+  transition: background-color var(--transition-normal);
 }
 .app-map__play:hover {
   background: color-mix(in srgb, var(--trad-green-dark) 18%, transparent);
@@ -836,7 +723,7 @@ a.app-infocard__value:hover {
   color: var(--trad-cream);
   background: color-mix(in srgb, var(--trad-green-dark) 70%, transparent);
   padding: 7px 16px;
-  border-radius: 999px;
+  border-radius: var(--border-radius-pill);
 }
 .app-map__foot {
   display: flex;
@@ -1130,7 +1017,7 @@ a.app-infocard__value:hover {
 }
 @media (prefers-reduced-motion: reduce) {
   .app-story__desk.is-enhanced .app-story__sheet {
-    transition: opacity 0.2s;
+    transition: opacity var(--transition-fast);
   }
   .app-story__desk.is-enhanced .app-story__sheet.is-done,
   .app-story__desk.is-enhanced .app-story__sheet.is-waiting {
@@ -1156,45 +1043,7 @@ a.app-infocard__value:hover {
   grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
   gap: var(--app-sec-gap);
 }
-.app-pagination {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 8px;
-  margin-top: 40px;
-}
-.app-pagination .page-numbers {
-  min-width: 42px;
-  height: 42px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 12px;
-  border: 1.5px solid var(--trad-border);
-  border-radius: 8px;
-  background: var(--trad-paper, var(--trad-cream));
-  color: var(--trad-green);
-  font-family: var(--app-font-body);
-  font-size: 0.9rem;
-  text-decoration: none;
-  transition:
-    background-color 0.2s,
-    color 0.2s,
-    border-color 0.2s;
-}
-.app-pagination .page-numbers:hover {
-  border-color: var(--trad-gold);
-  color: var(--trad-gold);
-}
-.app-pagination .page-numbers.current {
-  background: var(--trad-green);
-  border-color: var(--trad-green);
-  color: var(--trad-cream);
-}
-.app-pagination .page-numbers.dots {
-  border-color: transparent;
-  background: 0 0;
-}
+/* .app-pagination relocated to assets/css/components/pagination.css. */
 .app-blog__side {
   display: grid;
   gap: 18px;
@@ -1257,7 +1106,7 @@ a.app-infocard__value:hover {
   text-decoration: none;
   border-bottom: 1px dashed
     color-mix(in srgb, var(--trad-border) 45%, transparent);
-  transition: color 0.2s;
+  transition: color var(--transition-fast);
 }
 .app-side-list a:hover {
   color: var(--trad-gold);
@@ -1322,7 +1171,7 @@ a.app-infocard__value:hover {
 .app-side-tag {
   padding: 5px 11px;
   border: 1px solid var(--trad-border);
-  border-radius: 999px;
+  border-radius: var(--border-radius-pill);
   font-size: 0.74rem;
   color: var(--trad-ink);
   text-decoration: none;
@@ -1357,7 +1206,7 @@ a.app-infocard__value:hover {
   display: inline-block;
   padding: 10px 18px;
   border: 1.5px solid var(--trad-green);
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   background: 0 0;
   color: var(--trad-green);
   font-family: var(--app-font-body);
@@ -1452,7 +1301,7 @@ a.app-infocard__value:hover {
   line-height: 1.4;
   color: var(--trad-ink);
   text-decoration: none;
-  transition: color 0.2s;
+  transition: color var(--transition-fast);
 }
 .app-legal__toc-list a:hover {
   color: var(--trad-gold);
@@ -1592,7 +1441,7 @@ a.app-infocard__value:hover {
 }
 .app-consent__btn {
   padding: 11px 20px;
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   border: 1.5px solid var(--trad-green);
   font-family: var(--app-font-body);
   font-size: 0.72rem;
@@ -1688,7 +1537,7 @@ a.app-infocard__value:hover {
 .app-consent__slider {
   width: 50px;
   height: 27px;
-  border-radius: 999px;
+  border-radius: var(--border-radius-pill);
   border: 1.5px solid var(--trad-border);
   background: color-mix(in srgb, var(--trad-bg-alt) 80%, transparent);
   position: relative;
@@ -1784,75 +1633,7 @@ a.app-infocard__value:hover {
     transform: none;
   }
 }
-.app-stamp {
-  --app-stamp-colour: var(--trad-green);
-  display: inline-block;
-  width: var(--app-stamp-size, 168px);
-  height: var(--app-stamp-size, 168px);
-  transform: rotate(var(--app-stamp-tilt, -8deg));
-  -webkit-mask-image: var(--texture-paper);
-  mask-image: var(--texture-paper);
-  -webkit-mask-size: 180px 180px;
-  mask-size: 180px 180px;
-  opacity: 0.92;
-  pointer-events: none;
-}
-.app-stamp--gold {
-  --app-stamp-colour: var(--trad-gold);
-}
-.app-stamp--red {
-  --app-stamp-colour: color-mix(in srgb, var(--trad-ink) 42%, #8c2f21 58%);
-}
-.app-stamp__svg {
-  width: 100%;
-  height: 100%;
-  display: block;
-  overflow: visible;
-}
-.app-stamp__ring {
-  fill: none;
-  stroke: var(--app-stamp-colour);
-  stroke-width: 5;
-}
-.app-stamp__ring--thin {
-  stroke-width: 1.6;
-}
-.app-stamp__pip {
-  fill: var(--app-stamp-colour);
-}
-.app-stamp__rule {
-  stroke: var(--app-stamp-colour);
-  stroke-width: 1.6;
-}
-.app-stamp__arc {
-  fill: var(--app-stamp-colour);
-  font-family: var(--app-font-body, Georgia, serif);
-  font-size: 17px;
-  font-weight: 700;
-  letter-spacing: 3.4px;
-  text-transform: uppercase;
-}
-.app-stamp__arc--bottom {
-  dominant-baseline: hanging;
-}
-.app-stamp__mid {
-  fill: var(--app-stamp-colour);
-  font-family: var(--app-font-display, Georgia, serif);
-  font-size: 25px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-}
-.app-stamp__mid--two {
-  font-size: 20px;
-}
-.app-stamp__small {
-  fill: var(--app-stamp-colour);
-  font-family: var(--app-font-body, Georgia, serif);
-  font-size: 11px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-}
+/* .app-stamp* moved to assets/css/components/stamps.css. */
 .app-vintage-stamp {
   background: 0 0 !important;
   width: auto !important;
@@ -1938,7 +1719,7 @@ a.app-infocard__value:hover {
   top: 10px;
   left: 10px;
   padding: 5px 11px;
-  border-radius: 999px;
+  border-radius: var(--border-radius-pill);
   background: color-mix(in srgb, var(--trad-green-dark) 82%, transparent);
   border: 1px solid color-mix(in srgb, var(--trad-gold) 55%, transparent);
   color: var(--trad-cream);
@@ -2165,7 +1946,7 @@ a.app-entry__meta-item:hover {
   gap: 7px;
   padding: 9px 16px;
   border: 1.5px solid var(--trad-border);
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   background: 0 0;
   color: var(--trad-green);
   font-family: var(--app-font-body);
@@ -2508,7 +2289,7 @@ body.design-traditional .app-split__points {
 }
 body.design-traditional
   :is(.app-split__figure, .app-tabs__figure, .app-story__photo) {
-  border-radius: 2px;
+  border-radius: var(--border-radius-xs);
   box-shadow:
     0 0 0 6px var(--trad-paper, var(--trad-cream)),
     0 0 0 7px var(--trad-border),
@@ -2544,9 +2325,8 @@ body.design-traditional
   > :is(.container, .app-container) {
   padding: clamp(22px, 2.6vw, 36px) clamp(16px, 2.4vw, 30px);
 }
-body.design-traditional .app-faqs > .app-container {
-  padding: clamp(22px, 2.6vw, 36px) clamp(16px, 2.4vw, 30px);
-}
+/* body.design-traditional .app-faqs > .app-container relocated to
+   assets/css/components/accordions.css. */
 body.design-traditional
   :is(
     .app-promo__tag,

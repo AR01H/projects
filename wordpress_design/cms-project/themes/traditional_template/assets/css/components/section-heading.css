@@ -1,0 +1,87 @@
+/* ============================================================
+   SECTION HEADING
+   Relocated from assets/css/vintage.css ("SECTION HEADING
+   SYSTEM"). One consistent tag + title treatment for every
+   content-section intro in the theme, instead of each component
+   sizing its own heading.
+
+   Canonical markup: components/section-heading/section-header.php,
+   classes .section-tag/.app-section-tag ("eyebrow") +
+   .section-title/.app-section-title ("title"). The other
+   selectors below are component-specific title classes that play
+   the exact same "section intro" role (our-story, events-catering,
+   the flavour/menu components, franchise-section, signature-
+   flavours, order-to-deliver, reviews, newsletter, video-feature,
+   cta-banner) - each used to size itself independently before this
+   file existed. Colour and per-section decoration (the dark
+   variant, a page's accent colour, uppercase treatment) are left
+   where they already are - only the shared type scale lives here.
+
+   Section headings are not interactive - no hover/focus states are
+   defined here on purpose (see §16 of the request this file
+   answers). The generic component/tag/eyebrow/description class
+   names below are aliases of the selectors above for markup that
+   wants the more generic names.
+
+   Why a fluid clamp() instead of breakpoint font-sizes: see
+   --section-heading-size in variables.css §12 - a single fluid
+   value scales continuously with the viewport instead of relying
+   on breakpoint rules that can be shadowed by cascade order.
+   ============================================================ */
+
+/* body.design-traditional prefix is load-bearing, not decorative: a couple
+   of narrow, context-specific overrides elsewhere (e.g. the contact card's
+   own heading size) use 2-3 combined classes, which beats a plain
+   single-class selector regardless of file order. Matching that specificity
+   here is what makes this the one place the shared scale is actually set,
+   instead of silently losing to whichever narrow rule happens to run later. */
+body.design-traditional .section-title,
+body.design-traditional .app-section-title,
+body.design-traditional .section-heading__title,
+body.design-traditional .app-section-header-dark__title,
+body.design-traditional .app-tstory__heading,
+body.design-traditional .app-events-trad__title,
+body.design-traditional .app-flavours__title,
+body.design-traditional .app-franchise-why__title,
+body.design-traditional .app-franchise-cta__title,
+body.design-traditional .app-bottles__title,
+body.design-traditional .app-otd-title,
+body.design-traditional .app-reviews__title,
+body.design-traditional .app-newsletter__title,
+body.design-traditional .app-videofeat__title,
+body.design-traditional .app-cta-band__title {
+  font-family: var(--font-family-primary);
+  font-size: var(--section-heading-size);
+  font-weight: var(--section-heading-weight);
+  line-height: var(--section-heading-line-height);
+  letter-spacing: var(--section-heading-spacing);
+  margin: 0 0 0.8rem; /* no exact-match spacing token (8px/12px) without a rounding change - left literal */
+  text-wrap: balance;
+  overflow-wrap: break-word;
+}
+
+/* The eyebrow tag above the title, on the same fluid scale so the pairing
+   stays proportional at every width instead of only the title shrinking. */
+body.design-traditional .section-tag,
+body.design-traditional .app-section-tag,
+body.design-traditional .section-heading__eyebrow {
+  font-size: var(--section-heading-tag-size);
+}
+
+.section-body,
+.section-heading__description {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-relaxed);
+}
+
+/* The flourish/underline under a title (see --section-decoration-svg,
+   variables.css §13) - a couple of components add this as their own
+   element rather than a ::after, so it gets one shared class too. */
+.section-heading__decoration {
+  display: block;
+  width: 170px;
+  height: 16px;
+  margin: 12px auto 0;
+  background: var(--section-decoration-svg) center/contain no-repeat;
+}
