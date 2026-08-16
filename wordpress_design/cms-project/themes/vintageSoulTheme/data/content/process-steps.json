@@ -1,0 +1,45 @@
+{
+    "_source": "Extracted + genericized from traditional_template/admin/data/process_steps.json. Feeds an About or Game/Services 'how it works' section (see src/Controllers - a ProcessStepsService would read this the same way TestimonialService reads testimonials.json).",
+
+    "tag": "From Start To Finish",
+    "title": "Our <em>Process</em>",
+    "sub": "A few careful steps between the source and what reaches you.",
+    "steps": [
+        {
+            "title": "Sourcing",
+            "desc": "Working with partners who share our standards for quality and fair pay.",
+            "image": "https://images.unsplash.com/photo-1560493676-04071c5f467b?w=800&q=72&auto=format&fit=crop",
+            "alt": "Sourcing at first light"
+        },
+        {
+            "title": "Selection",
+            "desc": "Chosen by hand at the right moment, when quality is at its best.",
+            "image": "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=800&q=72&auto=format&fit=crop",
+            "alt": "Careful selection"
+        },
+        {
+            "title": "Preparation",
+            "desc": "Prepared within hours so nothing of the original character is lost to time.",
+            "image": "https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=800&q=72&auto=format&fit=crop",
+            "alt": "Traditional preparation"
+        },
+        {
+            "title": "Quality Check",
+            "desc": "Checked for clarity and purity - never treated, never rushed.",
+            "image": "https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=800&q=72&auto=format&fit=crop",
+            "alt": "Quality check"
+        },
+        {
+            "title": "Packaging",
+            "desc": "Sealed with care in recyclable packaging, marked on the day it's made.",
+            "image": "https://images.unsplash.com/photo-1544145945-f90425340c7e?w=800&q=72&auto=format&fit=crop",
+            "alt": "Freshly packaged"
+        },
+        {
+            "title": "Delivery",
+            "desc": "Delivered to your door or handed over fresh at the counter in front of you.",
+            "image": "https://images.unsplash.com/photo-1543269865-cbf427effbad?w=800&q=72&auto=format&fit=crop",
+            "alt": "Delivered fresh"
+        }
+    ]
+}

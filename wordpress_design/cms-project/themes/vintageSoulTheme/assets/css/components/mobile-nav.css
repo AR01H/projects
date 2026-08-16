@@ -1,0 +1,172 @@
+
+
+.mobile-nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: var(--radius-sm);
+}
+.mobile-nav-toggle__bar {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--color-text);
+  border-radius: var(--radius-pill);
+  transition: transform var(--transition-fast) var(--ease-standard), opacity var(--transition-fast) var(--ease-standard);
+}
+
+.mobile-nav-toggle[aria-expanded="true"] .mobile-nav-toggle__bar:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.mobile-nav-toggle[aria-expanded="true"] .mobile-nav-toggle__bar:nth-child(2) {
+  opacity: 0;
+}
+.mobile-nav-toggle[aria-expanded="true"] .mobile-nav-toggle__bar:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+.mobile-nav-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-overlay);
+  background: color-mix(in srgb, var(--color-neutral-900) 55%, transparent);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition-normal) var(--ease-standard);
+}
+.mobile-nav-scrim.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.mobile-nav {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: var(--z-modal);
+  width: min(85vw, 340px);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  background: var(--color-bg);
+  box-shadow: var(--shadow-lg);
+  padding: var(--space-2xl) var(--space-md) var(--space-md);
+  transform: translateX(100%);
+  transition: transform var(--transition-normal) var(--ease-standard);
+}
+.mobile-nav.is-open {
+  transform: translateX(0);
+}
+
+.mobile-nav__list {
+  display: flex;
+  flex-direction: column;
+}
+.mobile-nav__item {
+  border-bottom: var(--border-width) var(--border-style) var(--color-border);
+  @extend .border-line-b;
+}
+.mobile-nav__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+}
+.mobile-nav__link {
+  flex: 1 1 auto;
+  display: block;
+  padding: var(--space-sm) 0;
+  color: var(--color-text);
+
+  font-family: var(--font-family-nav);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.mobile-nav__link:hover,
+.mobile-nav__link.is-active {
+  color: var(--color-primary);
+}
+
+.mobile-nav__toggle {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-circle);
+  transition: background-color var(--transition-fast) var(--ease-standard);
+}
+.mobile-nav__toggle:hover {
+  background: var(--color-bg-alt);
+}
+.mobile-nav__chevron {
+  width: 14px;
+  height: 14px;
+  background-color: var(--color-text);
+  -webkit-mask-image: url("../../svg/icons/chevron-down.svg");
+  mask-image: url("../../svg/icons/chevron-down.svg");
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  transition: transform var(--transition-fast) var(--ease-standard);
+}
+.mobile-nav__item.is-open .mobile-nav__chevron {
+  transform: rotate(180deg);
+}
+
+.mobile-nav__submenu {
+  display: grid;
+  grid-template-rows: 0fr;
+  overflow: hidden;
+  transition: grid-template-rows var(--transition-normal) var(--ease-standard);
+}
+.mobile-nav__item.is-open .mobile-nav__submenu {
+  grid-template-rows: 1fr;
+}
+.mobile-nav__sublist {
+  min-height: 0;
+  overflow: hidden;
+  padding-left: var(--space-sm);
+}
+.mobile-nav__sublist a {
+  display: block;
+  padding: var(--space-2xs) 0;
+  color: var(--color-text-muted);
+
+  font-family: var(--font-family-nav);
+  font-size: var(--font-size-sm);
+  letter-spacing: 0.01em;
+}
+.mobile-nav__sublist a:hover {
+  color: var(--color-primary);
+}
+
+@media (max-width: 768px) {
+  .mobile-nav-toggle {
+    display: inline-flex;
+  }
+}
+@media (min-width: 769px) {
+  .mobile-nav-toggle,
+  .mobile-nav-scrim,
+  .mobile-nav {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mobile-nav,
+  .mobile-nav-scrim,
+  .mobile-nav-toggle__bar,
+  .mobile-nav__chevron,
+  .mobile-nav__submenu {
+    transition: none;
+  }
+}

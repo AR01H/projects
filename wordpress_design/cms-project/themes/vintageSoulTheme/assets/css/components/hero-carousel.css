@@ -1,0 +1,175 @@
+
+
+.hero-carousel {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  color: var(--color-primary-contrast);
+}
+.hero-carousel__track {
+  display: grid;
+}
+.hero-carousel__slide {
+  position: relative;
+  grid-column: 1;
+  grid-row: 1;
+  display: flex;
+  align-items: flex-end;
+  min-height: 420px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--transition-slow) var(--ease-standard);
+}
+.hero-carousel__slide.is-active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.hero-carousel__media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+.hero-carousel__media img,
+.hero-carousel__media video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.hero-carousel__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, color-mix(in srgb, var(--color-neutral-900) 72%, transparent), transparent 65%);
+}
+
+.hero-carousel--autoplay .hero-carousel__slide.is-active .hero-carousel__media img {
+  animation: hero-carousel-ken-burns 4000ms ease-out forwards;
+}
+@keyframes hero-carousel-ken-burns {
+  from { transform: scale(1); }
+  to { transform: scale(1.1); }
+}
+
+.hero-carousel__content {
+  position: relative;
+  z-index: 1;
+  max-width: 560px;
+  padding: var(--space-2xl) var(--space-xl);
+}
+.hero-carousel__subtitle {
+  margin: 0 0 var(--space-2xs);
+  font-size: var(--font-size-sm);
+  color: var(--color-secondary);
+  opacity: 0;
+}
+.hero-carousel__title {
+  margin: 0 0 var(--space-sm);
+  color: var(--color-primary-contrast);
+  opacity: 0;
+}
+.hero-carousel__desc {
+  margin: 0 0 var(--space-md);
+  color: color-mix(in srgb, var(--color-primary-contrast) 85%, transparent);
+  opacity: 0;
+}
+.hero-carousel__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  opacity: 0;
+}
+
+.hero-carousel__slide.is-active .hero-carousel__subtitle {
+  animation: hero-carousel-content-in 600ms var(--ease-standard) forwards;
+  animation-delay: 150ms;
+}
+.hero-carousel__slide.is-active .hero-carousel__title {
+  animation: hero-carousel-content-in 600ms var(--ease-standard) forwards;
+  animation-delay: 280ms;
+}
+.hero-carousel__slide.is-active .hero-carousel__desc {
+  animation: hero-carousel-content-in 600ms var(--ease-standard) forwards;
+  animation-delay: 400ms;
+}
+.hero-carousel__slide.is-active .hero-carousel__actions {
+  animation: hero-carousel-content-in 600ms var(--ease-standard) forwards;
+  animation-delay: 520ms;
+}
+@keyframes hero-carousel-content-in {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hero-carousel__arrow,
+.hero-carousel__toggle {
+  width: 44px;
+  height: 44px;
+  background: color-mix(in srgb, var(--color-primary-contrast) 12%, transparent);
+  border: var(--border-width) var(--border-style) color-mix(in srgb, var(--color-primary-contrast) 40%, transparent);
+  color: var(--color-primary-contrast);
+}
+.hero-carousel__arrow:hover,
+.hero-carousel__toggle:hover {
+  background: var(--color-secondary);
+  border-color: var(--color-secondary);
+  color: var(--color-primary);
+}
+.hero-carousel__arrow--prev {
+  top: 50%;
+  left: var(--space-md);
+  transform: translateY(-50%);
+}
+.hero-carousel__arrow--next {
+  top: 50%;
+  right: var(--space-md);
+  transform: translateY(-50%);
+}
+.hero-carousel__toggle {
+  bottom: var(--space-md);
+  right: var(--space-md);
+}
+
+.hero-carousel__dots {
+  bottom: var(--space-md);
+  left: 50%;
+  transform: translateX(-50%);
+}
+.hero-carousel__dot {
+  background: color-mix(in srgb, var(--color-primary-contrast) 40%, transparent);
+}
+.hero-carousel__dot.is-active {
+  background: var(--color-secondary);
+}
+
+@media (max-width: 768px) {
+  .hero-carousel__slide {
+    min-height: 320px;
+  }
+  .hero-carousel__content {
+    padding: var(--space-lg);
+  }
+  .hero-carousel__arrow,
+  .hero-carousel__toggle {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-carousel__slide {
+    transition: none;
+  }
+  .hero-carousel--autoplay .hero-carousel__slide.is-active .hero-carousel__media img {
+    animation: none;
+  }
+  .hero-carousel__subtitle,
+  .hero-carousel__title,
+  .hero-carousel__desc,
+  .hero-carousel__actions {
+    opacity: 1;
+    animation: none;
+  }
+}

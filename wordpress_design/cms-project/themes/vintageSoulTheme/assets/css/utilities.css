@@ -1,0 +1,13 @@
+
+
+.u-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+  white-space: nowrap;
+}
+
+.u-text-center { text-align: center; }
+.u-text-muted { color: var(--color-text-muted); }

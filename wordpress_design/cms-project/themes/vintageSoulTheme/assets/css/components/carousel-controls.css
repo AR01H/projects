@@ -1,0 +1,64 @@
+
+
+.carousel-arrow,
+.carousel-toggle {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-circle);
+  cursor: pointer;
+  transition: background-color var(--transition-fast) var(--ease-standard),
+    border-color var(--transition-fast) var(--ease-standard),
+    color var(--transition-fast) var(--ease-standard);
+}
+.carousel-arrow[disabled] {
+  opacity: var(--disabled-opacity);
+  cursor: not-allowed;
+}
+
+.carousel-dots {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2xs);
+}
+.carousel-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-circle);
+  cursor: pointer;
+  transition: background-color var(--transition-fast) var(--ease-standard), width var(--transition-fast) var(--ease-standard);
+}
+.carousel-dot.is-active {
+  width: 22px;
+  border-radius: var(--radius-pill);
+}
+
+.carousel-toggle__icon {
+  width: 1em;
+  height: 1em;
+  background-color: currentColor;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-image: url("../../svg/icons/pause.svg");
+  mask-image: url("../../svg/icons/pause.svg");
+}
+.carousel-toggle.is-paused .carousel-toggle__icon {
+  -webkit-mask-image: url("../../svg/icons/play.svg");
+  mask-image: url("../../svg/icons/play.svg");
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .carousel-arrow,
+  .carousel-toggle,
+  .carousel-dot {
+    transition: none;
+  }
+}

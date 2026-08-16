@@ -1,0 +1,14 @@
+{
+    "_source": "Extracted + genericized from traditional_template/admin/data/milestones.json. Feeds an About-page Timeline section.",
+
+    "tag": "Our Timeline",
+    "title": "Milestones Over The <em>Years</em>",
+    "sub": "From a small beginning to where we are today.",
+    "items": [
+        { "year": "1985", "title": "The Beginning", "desc": "One idea, one place, one busy corner." },
+        { "year": "1995", "title": "First Location", "desc": "A permanent home and our first regulars." },
+        { "year": "2005", "title": "Growing Reach", "desc": "Several locations and a growing team." },
+        { "year": "2015", "title": "New Format", "desc": "A new way to bring it straight to your door." },
+        { "year": "2026", "title": "Looking Ahead", "desc": "Partners taking things further together." }
+    ]
+}

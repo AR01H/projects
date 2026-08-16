@@ -1,0 +1,31 @@
+
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xs);
+}
+.list__item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2xs);
+}
+.list__icon {
+  flex-shrink: 0;
+  color: var(--color-primary);
+  margin-top: 0.15em;
+}
+
+.list--horizontal {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+}
+
+.list--divided .list__item {
+  padding-block: var(--space-2xs);
+  border-bottom: var(--border-width) var(--border-style) var(--color-border);
+}
+.list--divided .list__item:last-child {
+  border-bottom: 0;
+}

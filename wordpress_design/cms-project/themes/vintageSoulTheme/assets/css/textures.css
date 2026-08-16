@@ -1,0 +1,334 @@
+
+
+.tex-grain-a,
+.tex-grain-b,
+.tex-roughness-a,
+.tex-roughness-b,
+.tex-paper-fiber-a,
+.tex-paper-aged-a,
+.tex-film-grain-a,
+.tex-film-dust-a,
+.tex-vintage-grain-a,
+.tex-vintage-edge-a,
+.tex-wash-warm-a,
+.tex-wash-sepia-a,
+.tex-combo-roughness-grain-a,
+.tex-combo-paper-brush-a,
+.tex-combo-vintage-brush-edge-a,
+.tex-combo-film-grain-dust-a {
+  position: relative;
+  z-index: 0;
+}
+.tex-grain-a::before,
+.tex-grain-b::before,
+.tex-roughness-a::before,
+.tex-roughness-b::before,
+.tex-paper-fiber-a::before,
+.tex-paper-aged-a::before,
+.tex-film-grain-a::before,
+.tex-film-dust-a::before,
+.tex-vintage-grain-a::before,
+.tex-vintage-edge-a::before,
+.tex-wash-warm-a::before,
+.tex-wash-sepia-a::before,
+.tex-combo-roughness-grain-a::before,
+.tex-combo-paper-brush-a::before,
+.tex-combo-vintage-brush-edge-a::before,
+.tex-combo-film-grain-dust-a::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-repeat: repeat;
+}
+
+.tex-film-grain-a::before,
+.tex-film-dust-a::before,
+.tex-vintage-grain-a::before,
+.tex-vintage-edge-a::before,
+.tex-wash-warm-a::before,
+.tex-wash-sepia-a::before,
+.tex-combo-paper-brush-a::before,
+.tex-combo-vintage-brush-edge-a::before,
+.tex-combo-film-grain-dust-a::before {
+  z-index: 1;
+}
+
+.tex-grain-a::before { background-image: url("../images/textures/grain/grain-a.svg"); background-size: 240px 240px; mix-blend-mode: multiply; opacity: 0.55; }
+.tex-grain-b::before { background-image: url("../images/textures/grain/grain-b.svg"); background-size: 300px 300px; mix-blend-mode: multiply; opacity: 0.5; }
+
+.tex-roughness-a::before { background-image: url("../images/textures/roughness/roughness-a.svg"); background-size: 320px 320px; mix-blend-mode: multiply; opacity: 0.5; }
+.tex-roughness-b::before { background-image: url("../images/textures/roughness/roughness-b.svg"); background-size: 280px 280px; mix-blend-mode: multiply; opacity: 0.45; }
+
+.tex-paper-fiber-a::before { background-image: url("../images/textures/paper/paper-fiber-a.svg"); background-size: 300px 300px; mix-blend-mode: multiply; opacity: 0.6; }
+.tex-paper-aged-a::before { background-image: url("../images/textures/paper/paper-aged-a.svg"); background-size: 320px 320px; mix-blend-mode: multiply; opacity: 0.65; }
+
+.tex-film-grain-a::before { background-image: url("../images/textures/film/film-grain-a.svg"); background-size: 260px 260px; mix-blend-mode: multiply; opacity: 0.4; }
+.tex-film-dust-a::before { background-image: url("../images/textures/film/film-dust-a.svg"); background-size: 400px 400px; mix-blend-mode: screen; opacity: 0.5; }
+
+.tex-vintage-grain-a::before { background-image: url("../images/textures/vintage/vintage-grain-a.svg"); background-size: 100% 100%; background-repeat: no-repeat; mix-blend-mode: multiply; opacity: 0.7; }
+.tex-vintage-edge-a::before { background-image: url("../images/textures/vintage/vintage-edge-a.svg"); background-size: 100% 100%; background-repeat: no-repeat; mix-blend-mode: multiply; opacity: 0.85; }
+
+.tex-wash-warm-a::before { background-image: url("../images/textures/wash/wash-warm-a.svg"); background-size: 100% 100%; background-repeat: no-repeat; mix-blend-mode: soft-light; opacity: 0.9; }
+.tex-wash-sepia-a::before { background-image: url("../images/textures/wash/wash-sepia-a.svg"); background-size: 100% 100%; background-repeat: no-repeat; mix-blend-mode: multiply; opacity: 0.75; }
+
+.tex-combo-roughness-grain-a::before { background-image: url("../images/textures/combinations/roughness-grain-a.svg"); background-size: 320px 320px; mix-blend-mode: multiply; opacity: 0.55; }
+.tex-combo-paper-brush-a::before { background-image: url("../images/textures/combinations/paper-brush-a.svg"); background-size: 100% 100%; background-repeat: no-repeat; mix-blend-mode: multiply; opacity: 0.75; }
+.tex-combo-vintage-brush-edge-a::before { background-image: url("../images/textures/combinations/vintage-brush-edge-a.svg"); background-size: 100% 100%; background-repeat: no-repeat; mix-blend-mode: multiply; opacity: 0.85; }
+.tex-combo-film-grain-dust-a::before { background-image: url("../images/textures/combinations/film-grain-dust-a.svg"); background-size: 100% 100%; background-repeat: no-repeat; mix-blend-mode: multiply; opacity: 0.8; }
+
+.tex-brush-a,
+.tex-brush-b,
+.tex-brush-grain-a,
+.tex-ink-a,
+.tex-ink-brush-a,
+.tex-stain-a,
+.tex-stain-b,
+.tex-dust-a,
+.tex-dust-b,
+.tex-stamp-a,
+.tex-organic-a,
+.tex-organic-b,
+.tex-botanical-a,
+.tex-sugarcane-line-a,
+.tex-border-vintage-a,
+.tex-border-rough-a {
+  position: relative;
+}
+.tex-brush-a::after,
+.tex-brush-b::after,
+.tex-brush-grain-a::after,
+.tex-ink-a::after,
+.tex-ink-brush-a::after,
+.tex-stain-a::after,
+.tex-stain-b::after,
+.tex-dust-a::after,
+.tex-dust-b::after,
+.tex-stamp-a::after,
+.tex-organic-a::after,
+.tex-organic-b::after,
+.tex-botanical-a::after,
+.tex-sugarcane-line-a::after,
+.tex-border-vintage-a::after,
+.tex-border-rough-a::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+  background-repeat: no-repeat;
+}
+
+.tex-brush-a::after { left: 4%; right: 4%; bottom: -0.6em; height: 0.9em; background-image: url("../images/textures/brush/brush-a.svg"); background-size: 100% 100%; opacity: 0.8; }
+.tex-brush-b::after { left: 2%; right: 2%; bottom: -0.7em; height: 1.1em; background-image: url("../images/textures/brush/brush-b.svg"); background-size: 100% 100%; opacity: 0.55; }
+.tex-brush-grain-a::after { left: 4%; right: 4%; bottom: -0.65em; height: 1em; background-image: url("../images/textures/brush-grain/brush-grain-a.svg"); background-size: 100% 100%; opacity: 0.8; }
+
+.tex-ink-a::after { top: -0.4em; right: -0.5em; width: 2.2em; height: 1.1em; background-image: url("../images/textures/ink/ink-a.svg"); background-size: contain; opacity: 0.85; }
+.tex-ink-brush-a::after { left: 3%; right: 3%; bottom: -0.6em; height: 0.9em; background-image: url("../images/textures/ink/ink-brush-a.svg"); background-size: 100% 100%; opacity: 0.85; }
+
+.tex-stain-a::after { right: -6%; bottom: -8%; width: 55%; height: 55%; background-image: url("../images/textures/stain/stain-a.svg"); background-size: contain; opacity: 0.7; }
+.tex-stain-b::after { left: -4%; top: -6%; width: 40%; height: 40%; background-image: url("../images/textures/stain/stain-b.svg"); background-size: contain; opacity: 0.6; }
+
+.tex-dust-a::after { inset: 0; background-image: url("../images/textures/dust/dust-a.svg"); background-repeat: repeat; background-size: 400px 400px; mix-blend-mode: screen; opacity: 0.4; }
+.tex-dust-b::after { inset: 0; background-image: url("../images/textures/dust/dust-b.svg"); background-repeat: repeat; background-size: 400px 400px; mix-blend-mode: screen; opacity: 0.45; }
+
+.tex-stamp-a::after,
+.tex-organic-a::after,
+.tex-organic-b::after,
+.tex-botanical-a::after,
+.tex-sugarcane-line-a::after {
+  background-color: var(--color-accent-alt);
+  background-image: none;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+.tex-stamp-a::after { top: -0.75em; right: -0.75em; width: 3.5em; height: 3.5em; opacity: 0.9; -webkit-mask-image: url("../images/textures/stamp/stamp-a.svg"); mask-image: url("../images/textures/stamp/stamp-a.svg"); }
+.tex-organic-a::after { right: -10%; bottom: -12%; width: 60%; height: 60%; opacity: 0.14; -webkit-mask-image: url("../images/textures/organic/organic-a.svg"); mask-image: url("../images/textures/organic/organic-a.svg"); }
+.tex-organic-b::after { left: -8%; top: -10%; width: 55%; height: 40%; opacity: 0.14; -webkit-mask-image: url("../images/textures/organic/organic-b.svg"); mask-image: url("../images/textures/organic/organic-b.svg"); }
+.tex-botanical-a::after { top: -0.5em; right: 0.5em; width: 1.4em; height: 2.6em; opacity: 0.8; -webkit-mask-image: url("../images/textures/botanical/botanical-a.svg"); mask-image: url("../images/textures/botanical/botanical-a.svg"); }
+.tex-sugarcane-line-a::after { top: -0.5em; right: 0.5em; width: 1.2em; height: 3em; opacity: 0.8; -webkit-mask-image: url("../images/textures/botanical/sugarcane-line-a.svg"); mask-image: url("../images/textures/botanical/sugarcane-line-a.svg"); }
+
+.tex-border-vintage-a::after,
+.tex-border-rough-a::after {
+  background-image: none;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  background-color: var(--color-accent-alt);
+}
+.tex-border-vintage-a::after { inset: -6px; opacity: 0.92; -webkit-mask-image: url("../images/textures/border/border-vintage-a.svg"); mask-image: url("../images/textures/border/border-vintage-a.svg"); }
+.tex-border-rough-a::after { inset: -8px; opacity: 0.88; -webkit-mask-image: url("../images/textures/border/border-rough-a.svg"); mask-image: url("../images/textures/border/border-rough-a.svg"); }
+
+.tex-shadow-vintage-a,
+.tex-shadow-soft-a {
+  position: relative;
+  z-index: 0;
+}
+.tex-shadow-vintage-a::after,
+.tex-shadow-soft-a::after {
+  content: "";
+  position: absolute;
+  left: 6%;
+  right: 6%;
+  bottom: -0.9em;
+  height: 1.6em;
+  z-index: -1;
+  pointer-events: none;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+.tex-shadow-vintage-a::after { background-image: url("../images/textures/shadow/shadow-vintage-a.svg"); }
+.tex-shadow-soft-a::after { background-image: url("../images/textures/shadow/shadow-soft-a.svg"); }
+
+.tex-fade-a {
+  -webkit-mask-image: url("../images/textures/fade/fade-a.svg");
+          mask-image: url("../images/textures/fade/fade-a.svg");
+  -webkit-mask-size: 100% 100%;
+          mask-size: 100% 100%;
+}
+.tex-fade-horizontal-a {
+  -webkit-mask-image: url("../images/textures/fade/fade-horizontal-a.svg");
+          mask-image: url("../images/textures/fade/fade-horizontal-a.svg");
+  -webkit-mask-size: 100% 100%;
+          mask-size: 100% 100%;
+}
+.tex-fade-vertical-a {
+  -webkit-mask-image: url("../images/textures/fade/fade-vertical-a.svg");
+          mask-image: url("../images/textures/fade/fade-vertical-a.svg");
+  -webkit-mask-size: 100% 100%;
+          mask-size: 100% 100%;
+}
+
+.tex-edge-a {
+  -webkit-mask-image: url("../images/textures/edge/edge-a.svg");
+          mask-image: url("../images/textures/edge/edge-a.svg");
+  -webkit-mask-size: 100% 100%;
+          mask-size: 100% 100%;
+}
+.tex-edge-rough-a {
+  -webkit-mask-image: url("../images/textures/edge/edge-rough-a.svg");
+          mask-image: url("../images/textures/edge/edge-rough-a.svg");
+  -webkit-mask-size: 100% 100%;
+          mask-size: 100% 100%;
+}
+
+.tex-cut-a {
+  -webkit-mask-image: url("../images/textures/cut/cut-a.svg");
+          mask-image: url("../images/textures/cut/cut-a.svg");
+  -webkit-mask-size: 100% 100%;
+          mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+}
+.tex-cut-brush-a {
+  -webkit-mask-image: url("../images/textures/cut/cut-brush-a.svg");
+          mask-image: url("../images/textures/cut/cut-brush-a.svg");
+  -webkit-mask-size: 100% 100%;
+          mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+}
+
+.tex-leaf-fall-a {
+  position: relative;
+  z-index: 0;
+}
+.tex-leaf-fall-a::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: var(--tex-leaf-fall-image);
+  background-repeat: repeat;
+  background-size: 450px 300px;
+  opacity: 0.6;
+
+  animation: tex-leaf-fall-drift 45s linear infinite;
+}
+@keyframes tex-leaf-fall-drift {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 450px 300px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tex-leaf-fall-a::before {
+    animation: none;
+  }
+}
+
+.tex-ground-cane-a,
+.tex-ground-soil-a {
+  position: relative;
+  z-index: 0;
+}
+.tex-ground-cane-a::before,
+.tex-ground-soil-a::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 70px;
+  z-index: -1;
+  pointer-events: none;
+  background-repeat: repeat-x;
+  background-position: bottom left;
+}
+.tex-ground-cane-a::before {
+  background-image: var(--tex-ground-cane-image);
+  background-size: auto 70px;
+}
+.tex-ground-soil-a::before {
+  background-image: var(--tex-ground-soil-image);
+  background-size: auto 70px;
+}
+
+.tex-sugarcane-bundle-a {
+  position: relative;
+  z-index: 0;
+}
+.tex-sugarcane-bundle-a::after {
+  content: "";
+  position: absolute;
+  right: -4%;
+  bottom: -6%;
+  width: 45%;
+  max-width: 220px;
+  aspect-ratio: 3 / 2;
+  z-index: -1;
+  pointer-events: none;
+  background-image: var(--tex-sugarcane-bundle-image);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  opacity: 0.9;
+}
+
+.tex-cane-ribbon-a {
+  position: relative;
+  z-index: 0;
+}
+.tex-cane-ribbon-a::after {
+  content: "";
+  position: absolute;
+  top: var(--space-sm);
+  left: 6%;
+  width: 220px;
+  max-width: 55%;
+  aspect-ratio: 1750 / 919;
+  z-index: 2;
+  pointer-events: none;
+  background-image: var(--tex-cane-ribbon-image);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  transform: rotate(-4deg);
+}
+

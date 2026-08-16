@@ -1,0 +1,12 @@
+{
+    "_source": "Extracted + genericized from traditional_template/admin/data/cta_default.json. Feeds a Home closing CTA band - a gap found by cross-checking the reference designs' 'Direct Enquiry'/closing banner section.",
+
+    "tag": "Taste It Yourself",
+    "title": "Something New, <em>Made Today</em>",
+    "sub": "Get in touch, or find us in person.",
+    "image": "https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=800&q=72&auto=format&fit=crop",
+    "buttons": [
+        { "label": "Get In Touch", "route": "contact" },
+        { "label": "See More", "route": "game", "style": "ghost" }
+    ]
+}

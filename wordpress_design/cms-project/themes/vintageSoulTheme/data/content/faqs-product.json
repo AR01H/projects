@@ -1,0 +1,12 @@
+{
+    "_source": "Extracted + genericized from the reference design's About page product-specific FAQ set (some_styles/canehouse/priority) - an alternate/second FAQ set distinct from the existing generic faqs.json (general business questions); this set focuses on product-specific questions.",
+
+    "tag": "Product FAQs",
+    "title": "Common <em>Questions</em>",
+    "items": [
+        { "question": "Is it made fresh daily?", "answer": "Yes, everything is prepared fresh, in small batches, every day." },
+        { "question": "Are there any added preservatives?", "answer": "No, we use only natural ingredients with nothing artificial added." },
+        { "question": "How should it be stored?", "answer": "Best enjoyed fresh; refrigerate and consume within 24 hours if not consumed immediately." },
+        { "question": "Is it suitable for kids?", "answer": "Yes, it's a family-friendly treat enjoyed by all ages." }
+    ]
+}

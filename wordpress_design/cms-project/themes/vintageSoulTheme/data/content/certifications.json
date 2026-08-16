@@ -1,0 +1,12 @@
+{
+    "_source": "Extracted from traditional_template/admin/data/certifications.json - already generic, no changes needed. Feeds a Home or About trust/certifications section.",
+
+    "tag": "Quality",
+    "title": "Our <span>Certifications</span>",
+    "body": "We meet the highest standards of safety and quality.",
+    "items": [
+        { "icon": "🏆", "title": "Top Quality", "desc": "Awarded for excellence.", "badge": "2026" },
+        { "icon": "✅", "title": "Certified", "desc": "Highest safety standards.", "badge": "Active" },
+        { "icon": "🌿", "title": "Organic", "desc": "100% natural ingredients.", "badge": "Verified" }
+    ]
+}

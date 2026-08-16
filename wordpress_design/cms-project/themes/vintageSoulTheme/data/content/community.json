@@ -1,0 +1,13 @@
+{
+    "_source": "Extracted + genericized from the reference design's Home 'Proud to Be Part of the Community' section (some_styles/canehouse/priority) - gap, no matching file existed yet.",
+
+    "tag": "Community",
+    "title": "Proud To Be Part Of The <em>Community</em>",
+    "body": "Supporting the people and places that make us who we are.",
+    "items": [
+        { "icon": "🤝", "title": "Local Partners", "text": "Working hand in hand with local suppliers." },
+        { "icon": "🌱", "title": "Sustainable Practices", "text": "Caring for the land that feeds us." },
+        { "icon": "🎉", "title": "Community Events", "text": "Bringing people together, one gathering at a time." },
+        { "icon": "❤️", "title": "Giving Back", "text": "Supporting local causes that matter." }
+    ]
+}

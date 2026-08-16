@@ -1,0 +1,35 @@
+
+
+.stamp {
+  color: var(--color-primary);
+  overflow: visible;
+}
+
+.stamp__ring {
+  stroke: currentColor;
+}
+.stamp__ring--outer {
+  stroke-width: 2.5px;
+}
+.stamp__ring--inner {
+  stroke-width: 1.5px;
+  stroke-dasharray: 5 4;
+}
+
+.stamp__text {
+  font-family: var(--font-family-display);
+  font-weight: var(--font-weight-bold);
+  fill: currentColor;
+  letter-spacing: 0.12em;
+}
+.stamp__text--arc {
+  font-size: 14px;
+}
+.stamp__text--center {
+  font-size: 16px;
+}
+
+.stamp__rule {
+  stroke: currentColor;
+  stroke-width: 1.5px;
+}

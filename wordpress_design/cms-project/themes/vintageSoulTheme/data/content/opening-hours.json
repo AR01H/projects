@@ -1,0 +1,17 @@
+{
+    "_source": "Extracted + genericized from traditional_template/admin/data/opening_hours.json. Feeds a Contact-page hours section.",
+
+    "tag": "Come And See Us",
+    "title": "When We Are <em>Open</em>",
+    "sub": "We're here most days - last orders are fifteen minutes before we close.",
+    "note": "Public holidays may differ - give us a call before you travel.",
+    "days": [
+        { "label": "Monday", "day": 1, "open": "10:00", "close": "21:00" },
+        { "label": "Tuesday", "day": 2, "open": "10:00", "close": "21:00" },
+        { "label": "Wednesday", "day": 3, "open": "10:00", "close": "21:00" },
+        { "label": "Thursday", "day": 4, "open": "10:00", "close": "22:00" },
+        { "label": "Friday", "day": 5, "open": "10:00", "close": "23:00" },
+        { "label": "Saturday", "day": 6, "open": "09:00", "close": "23:00" },
+        { "label": "Sunday", "day": 0, "open": "11:00", "close": "18:00" }
+    ]
+}

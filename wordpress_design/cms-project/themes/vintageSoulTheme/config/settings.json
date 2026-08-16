@@ -1,0 +1,22 @@
+{
+    "_doc": "Small, site-wide structural settings that aren't WordPress-registration calls (those live in config/theme-support.php) and aren't page content (that lives in data/). Read via VintageSoul\\Services\\SettingsService, never included directly by a template.",
+
+    "site": {
+        "tagline_fallback": "Traditional. Vintage. Handcrafted.",
+        "phone": "+1 (555) 123-4567",
+        "email": "hello@example.com",
+        "address": "123 Main Street, Your City, ST 00000",
+        "logo_fallback": "assets/images/logo/logo.png",
+        "logo_fallback_footer": "assets/images/logo/logotext.png"
+    },
+    "social": {
+        "instagram": "https://www.instagram.com/yourprofile",
+        "facebook": "https://www.facebook.com/yourprofile",
+        "whatsapp": "https://wa.me/1234567890"
+    },
+    "preheader": [
+        "Freshly Pressed",
+        "Naturally Refreshing",
+        "Always Made With Care"
+    ]
+}

@@ -1,0 +1,10 @@
+{
+    "_source": "Extracted + genericized from traditional_template/admin/data/stats.json. Feeds a Home or About stats/counters section.",
+
+    "items": [
+        { "label": "Partners", "value": 500 },
+        { "label": "Customers Served", "value": 50000000 },
+        { "label": "Locations", "value": 200 },
+        { "label": "Years", "value": 39 }
+    ]
+}

@@ -1,0 +1,184 @@
+
+
+.card {
+  display: flex;
+  flex-direction: column;
+  background: var(--color-surface);
+  border: var(--border-width) var(--border-style) var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition:
+    box-shadow var(--transition-fast) var(--ease-standard),
+    transform var(--transition-fast) var(--ease-standard);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+}
+.card:focus-within {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.card__media {
+  display: block;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+}
+.card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.card__header {
+  padding: var(--space-sm) var(--space-sm) 0;
+}
+.card__body {
+  flex: 1;
+  padding: var(--space-sm);
+}
+.card__title {
+  margin: 0 0 var(--space-3xs);
+  font-size: var(--font-size-lg);
+}
+.card__footer {
+  padding: 0 var(--space-sm) var(--space-sm);
+}
+
+.card--flat {
+  border-color: transparent;
+  background: var(--color-bg-alt);
+}
+.card--elevated {
+  border-color: transparent;
+  box-shadow: var(--shadow-sm);
+}
+.card--elevated:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+.card--horizontal {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-sm);
+}
+.card--horizontal .card__media {
+  flex-shrink: 0;
+  width: 80px;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--radius-sm);
+  margin: var(--space-sm) 0 var(--space-sm) var(--space-sm);
+}
+.card--horizontal .card__body {
+  flex: 1;
+  min-width: 0;
+  padding: var(--space-sm);
+}
+@media (max-width: 360px) {
+  .card--horizontal .card__media {
+    width: 64px;
+  }
+  .certificate-card .card__media::after {
+    left: calc(64px + var(--space-sm) + var(--space-sm) / 2);
+  }
+}
+
+.product-card {
+  background: var(--color-background);
+  border-color: color-mix(in srgb, var(--color-secondary) 30%, transparent);
+}
+.product-card__row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-sm);
+}
+.product-card__price {
+  flex-shrink: 0;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+}
+.product-card__desc {
+  margin: var(--space-3xs) 0 0;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+}
+
+.certificate-card {
+  position: relative;
+
+  background: var(--color-background);
+  border-color: color-mix(in srgb, var(--color-secondary) 40%, transparent);
+}
+.certificate-card .card__media::after {
+  content: "";
+  position: absolute;
+  top: 12%;
+  bottom: 12%;
+  left: calc(80px + var(--space-sm) + var(--space-sm) / 2);
+  width: var(--border-width);
+  background-image: repeating-linear-gradient(
+    to bottom,
+    var(--color-border) 0,
+    var(--color-border) 8px,
+    transparent 8px,
+    transparent 10px,
+    var(--color-border) 10px,
+    var(--color-border) 15px,
+    transparent 15px,
+    transparent 16px,
+    var(--color-border) 16px,
+    var(--color-border) 27px,
+    transparent 27px,
+    transparent 30px
+  );
+}
+
+.certificate-card__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg-alt);
+  font-size: var(--font-size-2xl);
+  line-height: 1;
+}
+.certificate-card__desc {
+  margin: var(--space-3xs) 0 var(--space-2xs);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+}
+.certificate-card__badge {
+  margin-bottom: var(--space-2xs);
+}
+.certificate-card__cta {
+  display: block;
+  width: fit-content;
+}
+
+.feature-card {
+  border-color: transparent;
+  text-align: center;
+}
+.feature-card__icon {
+  display: block;
+  font-size: var(--font-size-2xl);
+  line-height: 1;
+  margin-bottom: var(--space-2xs);
+}
+.feature-card__text {
+  margin: var(--space-3xs) 0 0;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+}
+.feature-card__stat {
+  display: inline-block;
+  margin-top: var(--space-sm);
+  padding-top: var(--space-2xs);
+  border-top: var(--border-width) var(--border-style) var(--color-border);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-secondary);
+}

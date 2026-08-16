@@ -1,0 +1,33 @@
+{
+    "_source": "Extracted + genericized from traditional_template/admin/data/reviews.json - brand references removed, shape preserved. Feeds a Home-page Testimonials section (see src/Repositories/JsonTestimonialRepository.php, already built).",
+
+    "tag": "Happy Customers",
+    "title": "What Our <em>Customers Say</em>",
+    "sub": "Loved by thousands across events and everyday visits.",
+    "items": [
+        {
+            "name": "Ramesh P.",
+            "location": "Bengaluru",
+            "rating": 5,
+            "text": "The most refreshing experience I've had in a long time. Totally natural and full of care - you can tell in every detail."
+        },
+        {
+            "name": "Anjali S.",
+            "location": "Mumbai",
+            "rating": 5,
+            "text": "This is my go-to for a healthier choice. Clean, welcoming and made right in front of you."
+        },
+        {
+            "name": "Vikram K.",
+            "location": "Pune",
+            "rating": 5,
+            "text": "Loved the quality and the variety. We booked for our event and guests couldn't stop talking about it."
+        },
+        {
+            "name": "Sarah M.",
+            "location": "Ely, UK",
+            "rating": 5,
+            "text": "Booked for our wedding - it was the highlight of the day. Fresh, fun and absolutely wonderful."
+        }
+    ]
+}

@@ -1,0 +1,8 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+
+# Local environment (if a build step is ever added to this base)
+node_modules/
+vendor/

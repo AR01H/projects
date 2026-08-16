@@ -1,0 +1,24 @@
+{
+    "_source": "Extracted + genericized from traditional_template/admin/data/footer.json. Now wired to components/footer/footer.php via FooterController - see that class. traditional_template's own audit found a duplicate/dead footer-links data source (nav.json's 'footer' array vs. footer.json's 'quick_links', only one ever actually read) - this file's original 'quick_links' key had exactly that problem here too (config/navigation.json's 'footer' array, read through NavigationService::menu('footer'), already covers that same content and is the one FooterController actually calls). Removed it rather than carry the duplicate forward; 'items' below is a genuinely distinct second column, not a duplicate of anything. Same story for social links: FooterController.php reads 'socials' from SettingsService::socials() (config/settings.json's 'social' object), not from this file - a duplicate 'socials' block used to live here too and was removed. To add a Facebook/Instagram/WhatsApp URL, edit config/settings.json's 'social' object - SettingsService::socials() already array_filter()s out empty ones, so filling one in is the only step needed for its icon to appear.",
+
+    "labels": {
+        "quick_links_heading": "Quick Links",
+        "items_heading": "Our Range",
+        "contact_heading": "Contact Us",
+        "rights_text": "All Rights Reserved."
+    },
+    "brand": {
+        "tagline": "Bringing you the authentic, traditional taste of freshly pressed sugarcane. We serve nature's finest extracts, crafted with love, hygiene, and a passion for health. Pure Sugarcane. Pure Love.",
+        "bg_image": "assets/images/backgrounds/minibackground.webp"
+    },
+    "items": [
+        { "label": "Item One", "route": "game" },
+        { "label": "Item Two", "route": "game" },
+        { "label": "Item Three", "route": "game" },
+        { "label": "View All", "route": "game" }
+    ],
+    "bottom_links": [
+        { "label": "Privacy Policy", "url": "/privacy-policy/" },
+        { "label": "Terms & Conditions", "url": "/terms/" }
+    ]
+}

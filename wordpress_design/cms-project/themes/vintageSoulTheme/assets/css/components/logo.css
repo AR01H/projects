@@ -1,0 +1,66 @@
+
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  text-decoration: none;
+}
+.logo img,
+.logo .custom-logo-link img {
+  display: block;
+  width: auto;
+  object-fit: contain;
+}
+
+.logo__fallback {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2xs);
+}
+.logo__icon {
+  display: inline-block;
+  width: 1.5em;
+  height: 1.5em;
+  background-color: var(--color-accent);
+  -webkit-mask-image: url("../../svg/decorations/star-accent.svg");
+  mask-image: url("../../svg/decorations/star-accent.svg");
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+.logo__text {
+  font-family: var(--font-family-heading);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-lg);
+  color: var(--color-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.logo--header img,
+.logo--header .custom-logo-link img {
+  height: 64px;
+}
+.logo--header .logo__icon {
+  width: 2em;
+  height: 2em;
+}
+.logo--header .logo__text {
+  font-size: var(--font-size-xl);
+}
+
+.logo--footer img,
+.logo--footer .custom-logo-link img {
+  height: 120px;
+}
+
+@media (max-width: 768px) {
+  .logo--header img,
+  .logo--footer img,
+  .logo--header .custom-logo-link img,
+  .logo--footer .custom-logo-link img {
+    height: 52px;
+  }
+}

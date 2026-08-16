@@ -1,0 +1,141 @@
+
+
+:root {
+
+  --color-brand-1: #0c6434;
+  --color-brand-2: #f0d2a0;
+  --color-brand-3: #1c360d;
+  --color-brand-4: #c8a064;
+  --color-brand-5: #d2aa78;
+  --color-brand-6: #3b0000;
+  --color-brand-7: #141400;
+
+  --color-primary: var(--color-brand-3);
+  --color-secondary: var(--color-brand-4);
+  --color-accent: var(--color-brand-5);
+  --color-accent-alt: var(--color-brand-6);
+  --color-background: var(--color-brand-2);
+  --color-surface: var(--color-neutral-0);
+  --color-primary-contrast: var(--color-neutral-0);
+  --color-primary-shine: var(--color-brand-1);
+
+  --texture-paper-size: 300px;
+  --texture-paper: url('data:image/svg+xml;utf8,<svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg"><filter id="paperGrain" x="0%25" y="0%25" width="100%25" height="100%25"><feTurbulence type="fractalNoise" baseFrequency="0.025" numOctaves="4" seed="4" stitchTiles="stitch" result="fiber"/><feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="2" seed="9" stitchTiles="stitch" result="grain"/><feBlend in="fiber" in2="grain" mode="multiply" result="blend"/><feColorMatrix in="blend" type="matrix" values="0.3 0.3 0.3 0 0 0.24 0.24 0.24 0 0 0.14 0.14 0.14 0 0 0 0 0 0.32 0"/></filter><rect width="100%" height="100%" filter="url(%23paperGrain)"/></svg>');
+
+  --tex-leaf-fall-image: url("../images/backgrounds/leaf-fall.png");
+  --tex-ground-cane-image: url("../images/backgrounds/ground-cane.png");
+  --tex-ground-soil-image: url("../images/backgrounds/ground-soil.png");
+  --tex-sugarcane-bundle-image: url("../images/backgrounds/sugarcane-stalks-bundle.png");
+  --tex-cane-ribbon-image: url("../images/decorative/paper-ribbon-with-cane.png");
+
+  --color-neutral-0: #ffffff;
+  --color-neutral-100: #f5f5f5;
+  --color-neutral-200: #e5e5e5;
+  --color-neutral-300: #d4d4d4;
+  --color-neutral-400: #a3a3a3;
+  --color-neutral-500: #737373;
+  --color-neutral-600: #525252;
+  --color-neutral-700: #404040;
+  --color-neutral-800: #262626;
+  --color-neutral-900: #171717;
+
+  --color-success: #2e7d32;
+  --color-danger: #c62828;
+  --color-warning: #b8860b;
+  --color-info: #1565c0;
+
+  --color-bg: var(--color-background);
+  --color-bg-alt: var(--color-neutral-100);
+  --color-text: var(--color-brand-7);
+  --color-text-muted: var(--color-neutral-600);
+  --color-border: var(--color-neutral-300);
+
+  --font-family-base: system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-family-display: "Playfair Display", "Cormorant Garamond", Georgia, serif;
+  --font-family-serif-body: "Lora", "EB Garamond", Georgia, "Times New Roman", serif;
+  --font-family-script: "Dancing Script", cursive;
+  --font-family-chunky: "Luckiest Guy", sans-serif;
+  --font-family-decorative: "Jolly Lodger", cursive;
+  --font-family-desc: "Edu VIC WA NT Hand", cursive;
+  --font-family-heavy: "Rubik Dirt", system-ui;
+  --font-family-mono: "Unkempt", cursive;
+  --font-family-blackletter: "Fruktur", system-ui;
+  --font-family-vintage-poster: "Fredericka the Great", serif;
+
+  --font-family-nav: "Oswald", "Segoe UI", sans-serif;
+  --font-family-heading: var(--font-family-display);
+
+  --font-size-2xs: 0.6875rem;
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-md: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.5rem;
+  --font-size-2xl: 2rem;
+  --font-size-3xl: 2.75rem;
+
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+
+  --line-height-tight: 1.2;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
+
+  --space-3xs: 0.25rem;
+  --space-2xs: 0.5rem;
+  --space-xs: 0.75rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2rem;
+  --space-xl: 3rem;
+  --space-2xl: 4rem;
+  --space-3xl: 6rem;
+
+  --container-max-width: 1200px;
+  --container-max-width-narrow: 800px;
+  --container-max-width-wide: 100%;
+  --container-padding: var(--space-sm);
+
+  --section-padding-block: var(--space-2xl);
+  --section-padding-block-sm: var(--space-lg);
+  --section-padding-block-lg: var(--space-3xl);
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-pill: 999px;
+  --radius-circle: 50%;
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.12);
+
+  --border-width: 1px;
+  --border-style: solid;
+
+  --transition-fast: 150ms;
+  --transition-normal: 250ms;
+  --transition-slow: 400ms;
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+
+  --z-header: 100;
+  --z-dropdown: 200;
+  --z-overlay: 300;
+  --z-modal: 400;
+  --z-toast: 500;
+
+  --focus-ring-width: 2px;
+  --focus-ring-offset: 2px;
+  --focus-ring-color: var(--color-primary);
+  --disabled-opacity: 0.5;
+  --hover-opacity: 0.85;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --transition-fast: 0ms;
+    --transition-normal: 0ms;
+    --transition-slow: 0ms;
+  }
+}

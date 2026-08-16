@@ -1,0 +1,26 @@
+
+
+.photo-stamp {
+  position: relative;
+  max-width: 260px;
+  margin-inline: auto;
+}
+.photo-stamp__media {
+  aspect-ratio: 3 / 4;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+.photo-stamp__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.photo-stamp__stamp {
+  position: absolute;
+  top: calc(-1 * var(--space-lg));
+  left: 50%;
+  z-index: 1;
+  transform: translateX(-50%);
+  pointer-events: none;
+}

@@ -1,0 +1,14 @@
+{
+    "_source": "Extracted + genericized from the reference design's About page bullet-list 'uses' section (some_styles/canehouse/priority) - bullet-list style, 6 items, distinct from benefits-list.json (health reasons) - this covers practical/everyday uses instead.",
+
+    "tag": "Everyday Uses",
+    "title": "More Ways To <em>Enjoy It</em>",
+    "items": [
+        "Enjoyed fresh, on its own",
+        "Blended into drinks and desserts",
+        "Used as a natural sweetener in cooking",
+        "Paired with meals as a refreshing side",
+        "Served at events and celebrations",
+        "Shared as a gift for family and friends"
+    ]
+}

@@ -1,0 +1,12 @@
+{
+    "_doc": "Site-wide SEO defaults, read via VintageSoul\\Services\\SeoService - never read directly by a template. Per-page/per-post overrides (once a meta box or admin API exists) should win over these; these are only the fallback.",
+
+    "default_meta_description": "Traditional. Vintage. Handcrafted.",
+    "title_separator": "–",
+    "og_default_image": "",
+    "twitter_card_type": "summary_large_image",
+    "organization": {
+        "name": "",
+        "logo": ""
+    }
+}

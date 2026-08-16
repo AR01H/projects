@@ -1,0 +1,124 @@
+{
+    "_source": "Extracted + genericized from the reference design's About page botanical/product lifecycle section (some_styles/canehouse/priority) - a full-circle growth-to-product-to-soil journey, distinct from process-steps.json (the 6-step production/preparation process). Each step carries its own media gallery (images/videos) plus a longer 'details' paragraph, in addition to the short summary 'text', so a component can show a compact list view or an expanded/gallery view from the same data.",
+
+    "tag": "The Lifecycle",
+    "title": "From <em>Seed</em> To <em>Soil</em>",
+    "circular": true,
+    "cycle_note": "The cycle doesn't end at delivery - what's left behind returns to the soil, ready to nurture the next planting.",
+    "steps": [
+        {
+            "number": 1,
+            "title": "Planting",
+            "text": "Seeds are planted in nutrient-rich soil.",
+            "details": "Healthy stalks are selected and cut into short sections, each holding a few buds. These are laid into prepared furrows of rich, well-drained soil, ready to take root with the first watering.",
+            "images": [
+                "https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?auto=format&fit=crop&w=800&q=80",
+                "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=800&q=80"
+            ],
+            "videos": []
+        },
+        {
+            "number": 2,
+            "title": "Growth",
+            "text": "Months of sun and care nurture healthy growth.",
+            "details": "Over several months, tall green stalks rise under steady sun and regular watering. Careful weeding and natural pest control keep each field healthy through the growing season.",
+            "images": [
+                "https://images.unsplash.com/photo-1500595046743-cd271d694d30?auto=format&fit=crop&w=800&q=80",
+                "https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=800&q=80"
+            ],
+            "videos": []
+        },
+        {
+            "number": 3,
+            "title": "Maturity",
+            "text": "The crop reaches its peak ripeness.",
+            "details": "As the stalks reach full height, natural sugars build up inside. Color and firmness are checked closely to judge exactly when the crop has reached its sweetest, most flavourful point.",
+            "images": [
+                "https://images.unsplash.com/photo-1595855759920-86582396756c?auto=format&fit=crop&w=800&q=80"
+            ],
+            "videos": []
+        },
+        {
+            "number": 4,
+            "title": "Harvesting",
+            "text": "Handpicked at just the right time.",
+            "details": "Stalks are cut close to the ground by hand, preserving as much of the natural goodness inside as possible, then bundled and moved quickly to avoid any loss of freshness.",
+            "images": [
+                "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=800&q=80",
+                "https://images.unsplash.com/photo-1591857177580-dc82b9ac4e1e?auto=format&fit=crop&w=800&q=80"
+            ],
+            "videos": []
+        },
+        {
+            "number": 5,
+            "title": "Processing",
+            "text": "Cleaned and prepared with traditional methods.",
+            "details": "Harvested stalks are washed, trimmed and cut into workable lengths. Traditional preparation methods are used throughout, keeping the process close to how it has always been done.",
+            "images": [
+                "https://images.unsplash.com/photo-1610832958506-aa56368176cf?auto=format&fit=crop&w=800&q=80"
+            ],
+            "videos": []
+        },
+        {
+            "number": 6,
+            "title": "Extraction",
+            "text": "Pure goodness is carefully extracted.",
+            "details": "Prepared stalks are pressed to draw out their natural juice, then strained to remove fiber and impurities, leaving behind a pure, fresh result ready for the final step.",
+            "images": [
+                "https://images.unsplash.com/photo-1621506289937-a8e4df240d0b?auto=format&fit=crop&w=800&q=80",
+                "https://images.unsplash.com/photo-1622597467836-f3285f2131b8?auto=format&fit=crop&w=800&q=80"
+            ],
+            "videos": []
+        },
+        {
+            "number": 7,
+            "title": "Delivery",
+            "text": "Delivered fresh, straight to you.",
+            "details": "The final result is chilled and delivered without delay, so what reaches you is as close as possible to the moment it was first pressed.",
+            "images": [
+                "https://images.unsplash.com/photo-1544145945-f90425340c7e?auto=format&fit=crop&w=800&q=80"
+            ],
+            "videos": []
+        },
+        {
+            "number": 8,
+            "title": "Enjoyed",
+            "text": "Savoured fresh by the people who matter most.",
+            "details": "From a quiet moment at home to a shared celebration, this is where the journey pays off - enjoyed fresh, exactly as intended.",
+            "images": [
+                "https://images.unsplash.com/photo-1544145945-f90425340c7e?auto=format&fit=crop&w=800&q=80"
+            ],
+            "videos": []
+        },
+        {
+            "number": 9,
+            "title": "Leftover Fiber",
+            "text": "Nothing goes to waste.",
+            "details": "The fiber left behind after pressing is collected rather than discarded, kept aside for its next natural purpose.",
+            "images": [
+                "https://images.unsplash.com/photo-1592982537447-6f2a6a0c8d9e?auto=format&fit=crop&w=800&q=80"
+            ],
+            "videos": []
+        },
+        {
+            "number": 10,
+            "title": "Decomposition",
+            "text": "Naturally broken down over time.",
+            "details": "Left to break down naturally, the leftover fiber slowly returns to organic matter - the same quiet process that has always closed the loop.",
+            "images": [
+                "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=800&q=80"
+            ],
+            "videos": []
+        },
+        {
+            "number": 11,
+            "title": "Fertilizer",
+            "text": "Returned to the soil as natural fertilizer.",
+            "details": "What decomposes becomes rich, natural fertilizer, restoring the same soil the next planting will grow from - completing the full cycle.",
+            "images": [
+                "https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?auto=format&fit=crop&w=800&q=80"
+            ],
+            "videos": []
+        }
+    ]
+}

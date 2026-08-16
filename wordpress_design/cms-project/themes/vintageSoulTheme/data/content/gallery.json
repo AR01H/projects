@@ -1,0 +1,18 @@
+{
+    "_source": "Extracted + genericized from traditional_template/admin/data/gallery.json. Feeds a Home or About Gallery section. 'categories' + per-image 'category' already support filter-tab UI, if a future Gallery component adds one.",
+
+    "tag": "Gallery",
+    "title": "A Look Back In Time",
+    "body": "A few of our favourite moments.",
+    "categories": ["All", "On Location", "Behind The Scenes", "Events", "Community"],
+    "images": [
+        { "src": "https://images.unsplash.com/photo-1560493676-04071c5f467b?auto=format&fit=crop&w=600&q=80", "category": "On Location", "label": "Early Morning", "desc": "The site at sunrise" },
+        { "src": "https://images.unsplash.com/photo-1600271886742-f049cd451bba?auto=format&fit=crop&w=600&q=80", "category": "Behind The Scenes", "label": "In Progress", "desc": "Work happening in real time" },
+        { "src": "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600&q=80", "category": "Events", "label": "Summer Wedding", "desc": "Serving at a summer wedding" },
+        { "src": "https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&w=600&q=80", "category": "Community", "label": "Happy Regulars", "desc": "Friends sharing the moment" },
+        { "src": "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=600&q=80", "category": "On Location", "label": "Natural Materials", "desc": "Only the freshest to start with" },
+        { "src": "https://images.unsplash.com/photo-1544145945-f90425340c7e?auto=format&fit=crop&w=600&q=80", "category": "Behind The Scenes", "label": "Our Range", "desc": "Signature seasonal offerings" },
+        { "src": "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&w=600&q=80", "category": "Events", "label": "Festival Day", "desc": "A festival crowd enjoying the day" },
+        { "src": "https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=600&q=80", "category": "Community", "label": "Behind Every Detail", "desc": "The team behind the work" }
+    ]
+}

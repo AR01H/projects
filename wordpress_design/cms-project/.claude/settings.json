@@ -11,7 +11,12 @@
       "Bash(php -l components/gallery-grid.php)",
       "Bash(grep -n '\\\\$args' components/product-benefits.php)",
       "Bash(grep -n '\\\\$args' components/gallery-grid.php)",
-      "Bash(php -r '$d=json_decode\\(file_get_contents\\('\\\\''admin/data/page_sections.json'\\\\''\\),true\\); echo \\(json_last_error\\(\\)===JSON_ERROR_NONE\\)?\"OK - home sections: \".count\\($d['\\\\''home'\\\\'']\\).\"\\\\n\":json_last_error_msg\\(\\).\"\\\\n\";')"
+      "Bash(php -r '$d=json_decode\\(file_get_contents\\('\\\\''admin/data/page_sections.json'\\\\''\\),true\\); echo \\(json_last_error\\(\\)===JSON_ERROR_NONE\\)?\"OK - home sections: \".count\\($d['\\\\''home'\\\\'']\\).\"\\\\n\":json_last_error_msg\\(\\).\"\\\\n\";')",
+      "Bash(php -l config/routes.php)",
+      "Bash(php -l src/Services/RouteService.php)",
+      "Bash(php -l src/Services/AssetService.php)",
+      "Bash(php -r ' *)",
+      "Bash(xargs -0 -n1 php -l)"
     ]
   }
 }

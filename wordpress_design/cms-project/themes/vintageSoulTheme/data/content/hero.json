@@ -1,0 +1,14 @@
+{
+    "_source": "Extracted + genericized from traditional_template/admin/data/home_banner.json + hero_checks.json (the checkmark row was a separate file there - folded in here as 'checks' since it's tightly coupled to this one hero, not reused elsewhere). Feeds the Home-page hero.",
+
+    "title": "Watch It. Taste It. Love It.",
+    "subtitle": "More Than A Drink. It's A Memory.",
+    "description": "Crafted with care to bring you something honest, natural and worth coming back for.",
+    "checks": ["Freshly Pressed", "Naturally Refreshing", "Always Made With Care"],
+    "buttons": [
+        { "label": "Visit Us", "icon": "📍", "route": "contact" },
+        { "label": "Book Us For Your Event", "icon": "📅", "route": "contact" }
+    ],
+    "image": "https://images.unsplash.com/photo-1622597467836-f3285f2131b8?auto=format&fit=crop&w=1920&q=80",
+    "video_url": ""
+}

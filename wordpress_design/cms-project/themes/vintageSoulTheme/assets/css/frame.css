@@ -1,0 +1,20 @@
+
+
+.frame {
+  border: var(--border-width) var(--border-style) var(--color-accent);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.frame--ornate {
+  position: relative;
+}
+.frame--ornate::after {
+  content: "";
+  position: absolute;
+  inset: var(--space-2xs);
+  border: var(--border-width) double var(--color-accent);
+  opacity: 0.6;
+  pointer-events: none;
+}

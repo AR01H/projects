@@ -1,0 +1,16 @@
+{
+    "_source": "Extracted from traditional_template/admin/data/logo_strip.json - already generic (press/partner mentions, no images required). Feeds a Home 'as featured in' strip.",
+
+    "tag": "In Good Company",
+    "title": "Trusted And <em>Spoken About</em>",
+    "sub": "",
+    "marquee": true,
+    "items": [
+        { "name": "Borough Market" },
+        { "name": "The Grocer" },
+        { "name": "Slow Food UK" },
+        { "name": "Eastside Weekly" },
+        { "name": "Harvest Guild" },
+        { "name": "Green Retail Awards" }
+    ]
+}

@@ -1,0 +1,116 @@
+
+
+.marquee {
+  overflow: hidden;
+  white-space: nowrap;
+  padding-block: var(--space-2xs);
+  background: var(--color-surface);
+}
+.marquee__track {
+  display: inline-flex;
+  animation: marquee-scroll 20s linear infinite;
+}
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .marquee__track {
+    animation: none;
+  }
+}
+
+.marquee:hover .marquee__track {
+  animation-play-state: paused;
+}
+
+.marquee.preheader {
+  padding-block: var(--space-3xs);
+  font-size: var(--font-size-xs);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.marquee.preheader .marquee__track {
+  animation-duration: 26s;
+}
+
+.marquee--a {
+  position: relative;
+  z-index: 0;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 60' preserveAspectRatio='none'><filter id='mqa' x='0%25' y='0%25' width='100%25' height='100%25'><feTurbulence type='fractalNoise' baseFrequency='0.012 0.05' numOctaves='3' seed='81' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='7' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='4' y='4' width='392' height='52' fill='%23fff' filter='url(%23mqa)'/></svg>");
+          mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 60' preserveAspectRatio='none'><filter id='mqa' x='0%25' y='0%25' width='100%25' height='100%25'><feTurbulence type='fractalNoise' baseFrequency='0.012 0.05' numOctaves='3' seed='81' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='7' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='4' y='4' width='392' height='52' fill='%23fff' filter='url(%23mqa)'/></svg>");
+}
+.marquee--a::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+  opacity: 0.3;
+  background-repeat: repeat;
+  background-size: 90px 90px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><filter id='mqg'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' seed='83' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 0.08  0 0 0 0 0.06  0 0 0 0 0.03  0 0 0 1 0'/></filter><rect width='100%25' height='100%25' filter='url(%23mqg)'/></svg>");
+}
+
+.marquee--b {
+  position: relative;
+  z-index: 0;
+  color: var(--color-primary-contrast);
+  background-image: linear-gradient(135deg, var(--color-primary), var(--color-secondary) 70%);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 60' preserveAspectRatio='none'><filter id='mqb' x='0%25' y='0%25' width='100%25' height='100%25'><feTurbulence type='fractalNoise' baseFrequency='0.015 0.06' numOctaves='3' seed='87' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='4' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='4' y='4' width='392' height='52' fill='%23fff' filter='url(%23mqb)'/></svg>");
+          mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 60' preserveAspectRatio='none'><filter id='mqb' x='0%25' y='0%25' width='100%25' height='100%25'><feTurbulence type='fractalNoise' baseFrequency='0.015 0.06' numOctaves='3' seed='87' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='4' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='4' y='4' width='392' height='52' fill='%23fff' filter='url(%23mqb)'/></svg>");
+}
+.marquee--b::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+  opacity: 0.35;
+  background-repeat: repeat;
+  background-size: 110px 110px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><filter id='mqt'><feTurbulence type='fractalNoise' baseFrequency='0.06' numOctaves='4' seed='85' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 0.1  0 0 0 0 0.07  0 0 0 0 0.03  0 0 0 1 0'/></filter><rect width='100%25' height='100%25' filter='url(%23mqt)'/></svg>");
+}
+
+.marquee--c {
+  clip-path: polygon(10px 0, calc(100% - 10px) 0, 100% 10px, 100% calc(100% - 10px), calc(100% - 10px) 100%, 10px 100%, 0 calc(100% - 10px), 0 10px);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 60' preserveAspectRatio='none'><defs><linearGradient id='mqcf' x1='0' y1='0' x2='1' y2='0'><stop offset='0%25' stop-color='%23000'/><stop offset='8%25' stop-color='%23fff'/><stop offset='92%25' stop-color='%23fff'/><stop offset='100%25' stop-color='%23000'/></linearGradient></defs><filter id='mqc' x='0%25' y='0%25' width='100%25' height='100%25'><feTurbulence type='fractalNoise' baseFrequency='0.01 0.045' numOctaves='3' seed='101' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='6' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='4' y='4' width='392' height='52' fill='url(%23mqcf)' filter='url(%23mqc)'/></svg>");
+          mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 60' preserveAspectRatio='none'><defs><linearGradient id='mqcf' x1='0' y1='0' x2='1' y2='0'><stop offset='0%25' stop-color='%23000'/><stop offset='8%25' stop-color='%23fff'/><stop offset='92%25' stop-color='%23fff'/><stop offset='100%25' stop-color='%23000'/></linearGradient></defs><filter id='mqc' x='0%25' y='0%25' width='100%25' height='100%25'><feTurbulence type='fractalNoise' baseFrequency='0.01 0.045' numOctaves='3' seed='101' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='6' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='4' y='4' width='392' height='52' fill='url(%23mqcf)' filter='url(%23mqc)'/></svg>");
+}
+
+.marquee--d {
+  position: relative;
+  z-index: 0;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 60' preserveAspectRatio='none'><filter id='mqd' x='0%25' y='0%25' width='100%25' height='100%25'><feTurbulence type='fractalNoise' baseFrequency='0.007 0.03' numOctaves='3' seed='91' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='12' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='4' y='4' width='392' height='52' fill='%23fff' filter='url(%23mqd)'/></svg>");
+          mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 60' preserveAspectRatio='none'><filter id='mqd' x='0%25' y='0%25' width='100%25' height='100%25'><feTurbulence type='fractalNoise' baseFrequency='0.007 0.03' numOctaves='3' seed='91' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='12' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='4' y='4' width='392' height='52' fill='%23fff' filter='url(%23mqd)'/></svg>");
+}
+.marquee--d::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+  opacity: 0.35;
+  background-repeat: repeat;
+  background-size: 110px 110px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><filter id='mqdp'><feTurbulence type='fractalNoise' baseFrequency='0.025' numOctaves='3' seed='93' stitchTiles='stitch' result='n'/><feColorMatrix in='n' type='matrix' values='0 0 0 0 0.1  0 0 0 0 0.08  0 0 0 0 0.04  0 0 0 1 0' result='tinted'/><feComponentTransfer in='tinted'><feFuncA type='discrete' tableValues='0 0 0 0.3 0.3 0.6 0.6 1'/></feComponentTransfer></filter><rect width='100%25' height='100%25' filter='url(%23mqdp)'/></svg>");
+}

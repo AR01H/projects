@@ -1,0 +1,25 @@
+
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-size-sm);
+}
+.table th,
+.table td {
+  padding: var(--space-xs) var(--space-sm);
+  text-align: left;
+  border-bottom: var(--border-width) var(--border-style) var(--color-border);
+}
+.table th {
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
+}
+
+.table tbody tr:hover {
+  background: var(--color-bg-alt);
+}
+
+.table--striped tbody tr:nth-child(even) {
+  background: var(--color-bg-alt);
+}

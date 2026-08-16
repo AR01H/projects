@@ -1,0 +1,53 @@
+
+
+.scroll-top {
+  position: fixed;
+  right: var(--space-md);
+  bottom: var(--space-md);
+  z-index: var(--z-toast);
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-circle);
+  background: var(--color-primary);
+  border: calc(var(--border-width) * 2) var(--border-style) var(--color-secondary);
+  box-shadow: var(--shadow-md);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(10px);
+  transition: opacity var(--transition-normal) var(--ease-standard), transform var(--transition-normal) var(--ease-standard), background-color var(--transition-fast) var(--ease-standard);
+}
+.scroll-top.is-visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+.scroll-top:hover {
+  background: var(--color-secondary);
+}
+.scroll-top__arrow {
+  width: 20px;
+  height: 20px;
+  background-color: var(--color-secondary);
+  -webkit-mask-image: url("../../svg/icons/arrow-up.svg");
+  mask-image: url("../../svg/icons/arrow-up.svg");
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  transition: background-color var(--transition-fast) var(--ease-standard);
+}
+.scroll-top:hover .scroll-top__arrow {
+  background-color: var(--color-primary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-top {
+    transition: opacity var(--transition-fast) linear;
+    transform: none;
+  }
+}

@@ -1,0 +1,13 @@
+{
+    "_source": "Extracted + genericized from the reference design's Home 'Our Events' 4-item benefit-card section (some_styles/canehouse/priority) - distinct from packages.json's 6 event-type package cards; this is a smaller 'why book us for events' feature set, not a pricing/package list.",
+
+    "tag": "Events",
+    "title": "Made For Your <em>Events</em>",
+    "body": "From small gatherings to large celebrations, we bring the freshness to you.",
+    "items": [
+        { "icon": "🎪", "title": "Any Occasion", "text": "Weddings, parties, corporate events and more." },
+        { "icon": "🚚", "title": "We Come To You", "text": "Full setup and service at your venue." },
+        { "icon": "👨‍🍳", "title": "Live Service", "text": "Freshly prepared in front of your guests." },
+        { "icon": "📦", "title": "Flexible Packages", "text": "Options to fit any group size or budget." }
+    ]
+}

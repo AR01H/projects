@@ -1,0 +1,16 @@
+{
+    "_source": "Extracted + genericized from traditional_template/admin/data/hire_packages.json. Fills a gap found by cross-checking the reference designs' 'Our Events' section, which had no generic equivalent yet.",
+
+    "tag": "Events & Hire",
+    "title": "Bring Us To <em>Your Event</em>",
+    "sub": "Available for weddings, corporate events, and parties.",
+    "items": [
+        { "icon": "💍", "title": "Weddings & Celebrations", "desc": "Add something memorable to your special day, for every guest." },
+        { "icon": "🏢", "title": "Corporate Events", "desc": "A live, on-site experience that's a genuine conversation starter." },
+        { "icon": "🎓", "title": "College & School Events", "desc": "High-energy, budget-friendly options that keep a crowd happy." },
+        { "icon": "🎂", "title": "Birthday Parties", "desc": "A fun, memorable touch for guests of every age." },
+        { "icon": "🎪", "title": "Private Parties & Festivals", "desc": "From house parties to street festivals, we bring everything needed." },
+        { "icon": "🏆", "title": "Milestone Celebrations", "desc": "Celebrate achievements with something everyone will remember." }
+    ],
+    "button": { "label": "View All Packages", "route": "game" }
+}

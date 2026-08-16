@@ -1,0 +1,10 @@
+{
+    "_source": "Extracted + genericized from traditional_template/admin/data/newsletter.json. Feeds a Home/footer newsletter signup section.",
+
+    "tag": "Stay In Touch",
+    "title": "Stay Updated, <em>Stay Close</em>",
+    "sub": "News, new arrivals and the occasional offer. No spam, ever.",
+    "placeholder": "Enter your email address",
+    "button": "Subscribe",
+    "note": "Unsubscribe any time - one click, no questions."
+}

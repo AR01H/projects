@@ -1,0 +1,165 @@
+
+
+html.js :is(.card, .feature-row__item, .product-list__item, .faq__item) {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity var(--transition-slow) var(--ease-standard), transform var(--transition-slow) var(--ease-standard);
+}
+html.js :is(.card, .feature-row__item, .product-list__item, .faq__item).is-revealed {
+  opacity: 1;
+  transform: none;
+}
+
+html.js :is(.photo-grid__item, .photo-stamp) {
+  opacity: 0;
+  transform: scale(0.88);
+  transition: opacity var(--transition-slow) var(--ease-standard), transform var(--transition-slow) var(--ease-standard);
+}
+html.js :is(.photo-grid__item, .photo-stamp).is-revealed {
+  opacity: 1;
+  transform: scale(1);
+}
+
+html.js .gallery__item {
+  opacity: 0;
+  transform: scale(0.92) translateX(30px);
+  transition: opacity 900ms var(--ease-standard), transform 900ms var(--ease-standard);
+}
+html.js .gallery__item.is-revealed {
+  opacity: 1;
+  transform: none;
+}
+
+html.js .stats__item {
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity var(--transition-slow) var(--ease-standard), transform var(--transition-slow) var(--ease-standard);
+}
+html.js .stats__item.is-revealed {
+  opacity: 1;
+  transform: scale(1);
+}
+
+html.js :is(.testimonial-card, .video-testimonial-card, .memories__item) {
+  opacity: 0;
+  filter: blur(10px) grayscale(85%) sepia(15%);
+  transform: rotate(-2.5deg) scale(0.94);
+  transition: opacity 1000ms var(--ease-standard), filter 1000ms var(--ease-standard), transform 1000ms var(--ease-standard);
+}
+html.js :is(.testimonial-card, .video-testimonial-card, .memories__item).is-revealed {
+  opacity: 1;
+  filter: blur(0) grayscale(0) sepia(0);
+  transform: rotate(0deg) scale(1);
+}
+
+html.js .process-steps__item {
+  opacity: 0;
+  transform: rotate(-10deg) scale(0.82);
+  transition: opacity 700ms var(--ease-standard), transform 700ms var(--ease-standard);
+}
+html.js .process-steps__item.is-revealed {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+}
+
+html.js .step-chain__item {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity var(--transition-slow) var(--ease-standard), transform var(--transition-slow) var(--ease-standard);
+}
+html.js .step-chain__item.is-revealed {
+  opacity: 1;
+  transform: none;
+}
+
+html.js .banner__media {
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 900ms var(--ease-standard);
+}
+html.js .banner--reverse .banner__media {
+  clip-path: inset(0 0 0 100%);
+}
+html.js .banner__media img {
+  transform: scale(1.12);
+  transition: transform 1400ms var(--ease-standard);
+}
+html.js .banner.is-revealed .banner__media img {
+  transform: scale(1);
+}
+html.js .banner.is-revealed .banner__media {
+  clip-path: inset(0 0 0 0);
+}
+html.js .banner__content {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity var(--transition-slow) var(--ease-standard) 350ms, transform var(--transition-slow) var(--ease-standard) 350ms;
+}
+html.js .banner.is-revealed .banner__content {
+  opacity: 1;
+  transform: none;
+}
+
+html.js .section-header {
+  opacity: 0;
+  transition: opacity var(--transition-slow) var(--ease-standard);
+}
+html.js .section-header.is-revealed {
+  opacity: 1;
+}
+
+html.js :is(.container > h1, .container > h2, .container > h3, .container > p) {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity var(--transition-slow) var(--ease-standard), transform var(--transition-slow) var(--ease-standard);
+}
+html.js :is(.container > h1, .container > h2, .container > h3, .container > p).is-revealed {
+  opacity: 1;
+  transform: none;
+}
+
+html.js :is(.container > .btn, .container > .btn--outline, .container > .badge) {
+  opacity: 0;
+  transform: scale(0.85);
+  transition: opacity var(--transition-normal) var(--ease-standard), transform var(--transition-normal) var(--ease-standard);
+}
+html.js :is(.container > .btn, .container > .btn--outline, .container > .badge).is-revealed {
+  opacity: 1;
+  transform: scale(1);
+}
+
+html.js .site-footer {
+  opacity: 0;
+  filter: sepia(65%) brightness(0.65) contrast(0.9);
+  transition: opacity 1200ms var(--ease-standard), filter 1200ms var(--ease-standard);
+}
+html.js .site-footer.is-revealed {
+  opacity: 1;
+  filter: sepia(0) brightness(1) contrast(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.js :is(.card, .feature-row__item, .gallery__item, .step-chain__item, .process-steps__item, .stats__item, .photo-grid__item, .photo-stamp, .product-list__item, .testimonial-card, .video-testimonial-card, .faq__item, .memories__item, .section-header, .container > h1, .container > h2, .container > h3, .container > p, .container > .btn, .container > .btn--outline, .container > .badge) {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    transition: none;
+  }
+  html.js .banner__media {
+    clip-path: none;
+    transition: none;
+  }
+  html.js .banner__media img {
+    transform: none;
+    transition: none;
+  }
+  html.js .banner__content {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  html.js .site-footer {
+    opacity: 1;
+    filter: none;
+    transition: none;
+  }
+}

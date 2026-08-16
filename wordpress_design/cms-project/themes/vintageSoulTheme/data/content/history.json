@@ -1,0 +1,155 @@
+{
+    "_source": "some_styles/canehouse/priority/sugarcane/history_desktop.jpeg + history_mobile.jpeg - the long-form 'All About Cane' page. One page, several anchor-linked sections (Why Sugarcane / Story / History / Life Cycle / Benefits / Uses / Culture / FAQ), not several separate pages - wired to pages/history/view.php via src/Controllers/HistoryController.php. Photo URLs are Unsplash placeholders (this base theme ships no real photography), same convention pages/elements/view.php already uses throughout.",
+
+    "hero": {
+        "tag": "The Story Behind Sugarcane",
+        "title": "All About Cane",
+        "sub": "From a humble crop to a drink loved across generations.",
+        "image": "https://images.unsplash.com/photo-1622597467836-f3285f2131b8?w=1400&q=72&auto=format&fit=crop"
+    },
+
+    "accent": {
+        "image": "https://images.unsplash.com/photo-1580123099720-9a6dd0d0c4e8?w=500&q=72&auto=format&fit=crop",
+        "stamp": { "top": "Advaith's Gift", "center": "Ancient Craft", "bottom": "" }
+    },
+
+    "intro": {
+        "tag": "More Than Just A Crop",
+        "title": "Sugarcane Has Fed, Healed And Sweetened <em>Millions Of Lives</em>",
+        "sub": "It feeds, heals, sweetens, and sustains millions of lives. At The Cane House, we celebrate its journey, its goodness, and its incredible story.",
+        "image": "https://images.unsplash.com/photo-1560493676-04071c5f467b?w=800&q=72&auto=format&fit=crop",
+        "photos": [
+            { "src": "https://images.unsplash.com/photo-1509587584298-0f3b3a3a1797?w=500&q=72&auto=format&fit=crop" },
+            { "src": "https://images.unsplash.com/photo-1500651230702-0e2d8a49d4ad?w=500&q=72&auto=format&fit=crop" }
+        ]
+    },
+
+    "why": {
+        "tag": "A Journey Through Time",
+        "title": "Why <em>Sugarcane?</em>",
+        "items": [
+            { "icon": "leaf", "label": "Renewable & Sustainable", "note": "Grows back season after season, giving far more than it takes." },
+            { "icon": "leaf", "label": "Naturally Nutritious", "note": "Packed with natural energy and minerals, nothing added." },
+            { "icon": "building", "label": "Supports Farmers", "note": "Every glass supports the growers who work the fields." },
+            { "icon": "flame", "label": "Goodness In Every Sip", "note": "Pressed fresh, so none of its natural goodness is lost." }
+        ]
+    },
+
+    "story": {
+        "tag": "From Ancient Fields To Modern Times",
+        "title": "Story Of <em>Sugarcane</em>",
+        "sub": "Sugarcane has been part of human civilisations for thousands of years. It has sweetened celebrations, strengthened communities, and stood the test of time.",
+        "photos": [
+            { "image": "https://images.unsplash.com/photo-1500651230702-0e2d8a49d4ad?w=500&q=72&auto=format&fit=crop", "label": "Working The Fields", "desc": "The way it has always been done." },
+            { "image": "https://images.unsplash.com/photo-1592982537447-7440770cbfc9?w=500&q=72&auto=format&fit=crop", "label": "Hand-Cut Harvest", "desc": "Cut with care at the perfect time." },
+            { "image": "https://images.unsplash.com/photo-1622597467836-f3285f2131b8?w=500&q=72&auto=format&fit=crop", "label": "Pressed Fresh", "desc": "From field to glass, the same day." }
+        ]
+    },
+
+    "history": {
+        "tag": "Rooted In History",
+        "title": "History Of <em>Sugarcane</em>",
+        "sub": "Originating in New Guinea, sugarcane spread across Asia, the Middle East, Europe and the world. It played a vital role in trade, economies and cultures for centuries.",
+        "image": "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?w=800&q=72&auto=format&fit=crop",
+        "stamp": { "top": "Nature's Gift", "center": "Ancient Origin", "bottom": "Sweet Crop" }
+    },
+
+    "life_cycle": {
+        "tag": "From Field To Glass",
+        "title": "Life Cycle Of <em>Sugarcane</em>",
+        "items": [
+            { "number": "1", "label": "Planting", "desc": "Healthy setts planted in rich, fertile soil.", "image": "https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?w=200&q=70&auto=format&fit=crop" },
+            { "number": "2", "label": "Growth", "desc": "Grows strong under sunlight, water & care.", "image": "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=200&q=70&auto=format&fit=crop" },
+            { "number": "3", "label": "Maturation", "desc": "Over 10-14 months, it reaches full maturity.", "image": "https://images.unsplash.com/photo-1500651230702-0e2d8a49d4ad?w=200&q=70&auto=format&fit=crop" },
+            { "number": "4", "label": "Harvesting", "desc": "Hand-cut with care at the perfect time.", "image": "https://images.unsplash.com/photo-1592982537447-7440770cbfc9?w=200&q=70&auto=format&fit=crop" },
+            { "number": "5", "label": "Transport", "desc": "Cane is carried fresh to the mill.", "image": "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?w=200&q=70&auto=format&fit=crop" },
+            { "number": "6", "label": "Extraction", "desc": "Juice is pressed fresh from the cane.", "image": "https://images.unsplash.com/photo-1622597467836-f3285f2131b8?w=200&q=70&auto=format&fit=crop" },
+            { "number": "7", "label": "Our Juice", "desc": "Pure, fresh, naturally delicious.", "image": "https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=200&q=70&auto=format&fit=crop" }
+        ]
+    },
+
+    "goodness": {
+        "tag": "One Plant, Many Gifts",
+        "title": "From Cane To Many <em>Goodness</em>",
+        "items": [
+            { "image": "https://images.unsplash.com/photo-1578338244251-6258f907691b?w=400&q=72&auto=format&fit=crop", "label": "Washed" },
+            { "image": "https://images.unsplash.com/photo-1764426381444-697bf787844a?w=400&q=72&auto=format&fit=crop", "label": "Crushed" },
+            { "image": "https://images.unsplash.com/photo-1775590080706-7ed46df539ba?w=400&q=72&auto=format&fit=crop", "label": "Pressed" },
+            { "image": "https://images.unsplash.com/photo-1758522965167-42e34a12bf13?w=400&q=72&auto=format&fit=crop", "label": "Filtered" },
+            { "image": "https://images.unsplash.com/photo-1587800387687-60c1e4d08c9d?w=400&q=72&auto=format&fit=crop", "label": "Clarified" },
+            { "image": "https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=400&q=72&auto=format&fit=crop", "label": "Fresh Juice" },
+            { "image": "https://images.unsplash.com/photo-1775817590687-f1da5d70d9ad?w=400&q=72&auto=format&fit=crop", "label": "Jaggery" },
+            { "image": "https://images.unsplash.com/photo-1781631001922-d90a41a16dde?w=400&q=72&auto=format&fit=crop", "label": "Sugar" },
+            { "image": "https://images.unsplash.com/photo-1618263635842-af98c5c8d76f?w=400&q=72&auto=format&fit=crop", "label": "Molasses" },
+            { "image": "https://images.unsplash.com/photo-1639195046198-a73b6d2d9606?w=400&q=72&auto=format&fit=crop", "label": "Ethanol" },
+            { "image": "https://images.unsplash.com/photo-1762711753035-f1625c972cef?w=400&q=72&auto=format&fit=crop", "label": "Bagasse" },
+            { "image": "https://images.unsplash.com/photo-1727021024941-2119e2f233be?w=400&q=72&auto=format&fit=crop", "label": "Plates & Bio Products" }
+        ]
+    },
+
+    "benefits": {
+        "tag": "Good For You",
+        "title": "Benefits Of <em>Sugarcane</em>",
+        "items": [
+            "Rich in natural energy",
+            "Improves digestion",
+            "Hydrating & refreshing",
+            "Packed with minerals",
+            "Boosts immunity",
+            "Good for overall health"
+        ],
+        "image": "https://images.unsplash.com/photo-1560493676-04071c5f467b?w=800&q=72&auto=format&fit=crop"
+    },
+
+    "uses": {
+        "tag": "One Plant, Every Purpose",
+        "title": "Uses Of <em>Sugarcane</em>",
+        "items": [
+            "Food & Beverages",
+            "Natural Sweetener",
+            "Medicinal Uses",
+            "Biofuel (Ethanol)",
+            "Animal Feed",
+            "Industrial Uses"
+        ],
+        "image": "https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=800&q=72&auto=format&fit=crop"
+    },
+
+    "culture": {
+        "tag": "Rooted In Tradition",
+        "title": "Sugarcane In Our <em>Culture</em>",
+        "sub": "A part of festivals, traditions, rituals and celebrations. It connects generations and brings people together.",
+        "image": "https://images.unsplash.com/photo-1601758228041-f3b2795255f1?w=800&q=72&auto=format&fit=crop",
+        "stamp": { "top": "From Our Fields", "center": "Tradition", "bottom": "To Your Glass" }
+    },
+
+    "why_everyone_loves": {
+        "tag": "Loved By All Ages",
+        "title": "Why Everyone Loves <em>Sugarcane</em>",
+        "items": [
+            { "icon": "❤️", "label": "It's naturally sweet" },
+            { "icon": "❤️", "label": "It's refreshing" },
+            { "icon": "❤️", "label": "Loved by all ages" },
+            { "icon": "❤️", "label": "It's healthy" },
+            { "icon": "❤️", "label": "It's simple & pure" },
+            { "icon": "❤️", "label": "It brings happiness" }
+        ],
+        "image": "https://images.unsplash.com/photo-1622597467836-f3285f2131b8?w=800&q=72&auto=format&fit=crop"
+    },
+
+    "faq": {
+        "heading": "Frequently Asked Questions",
+        "items": [
+            { "question": "Is sugarcane juice safe for diabetics?", "answer": "In moderation, and best discussed with your doctor - it is naturally sweet with no added sugar, but still a source of natural sugars." },
+            { "question": "Does sugarcane juice have calories?", "answer": "Yes, naturally - it's a whole-plant drink, not a diet product, but it has none of the artificial additives found in most soft drinks." },
+            { "question": "How is your juice different?", "answer": "Pressed fresh in front of you, from cane sourced the same day - never bottled, never stored." },
+            { "question": "Is your juice 100% natural?", "answer": "Yes - no added sugar, colours, or preservatives, ever." },
+            { "question": "How should I store it?", "answer": "It's best enjoyed fresh, right after pressing - like any fresh juice, it doesn't keep well overnight." }
+        ]
+    },
+
+    "closing": {
+        "title": "The Sweetest Story Ever Told",
+        "sub": "Sugarcane is more than a crop. It is a legacy. A gift from nature. A symbol of life. At The Cane House, we honour this timeless sweetness, and bring it to you - fresh, pure, and full of goodness."
+    }
+}

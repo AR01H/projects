@@ -1,0 +1,13 @@
+{
+    "_source": "Extracted + genericized from the reference design's About page 'From Cane to Many Goodness' process-flow + outputs section (some_styles/canehouse/priority) - gap, no matching file existed yet.",
+
+    "tag": "Beyond The Obvious",
+    "title": "From One Source, <em>Many Goods</em>",
+    "body": "Very little goes to waste - the same source gives us far more than the main product alone.",
+    "items": [
+        { "icon": "🥤", "title": "The Main Product", "text": "Our signature fresh offering." },
+        { "icon": "🍯", "title": "Natural Syrup", "text": "A pure, unrefined sweetener." },
+        { "icon": "🌾", "title": "Fiber By-Product", "text": "Repurposed for animal feed and compost." },
+        { "icon": "🔋", "title": "Renewable Energy", "text": "Leftover material used to generate clean energy." }
+    ]
+}

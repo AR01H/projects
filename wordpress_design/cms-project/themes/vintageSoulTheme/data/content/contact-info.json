@@ -1,0 +1,16 @@
+{
+    "_source": "Extracted + genericized from the reference design's Home 'Let's Connect' compact info card (some_styles/canehouse/priority) - distinct from locations.json (multi-location finder with maps); this is a single compact card of core contact details for a one-location or primary-location display.",
+
+    "title": "Let's <em>Connect</em>",
+    "address": "123 Main Street, Your City, ST 00000",
+    "phone": "+1 (555) 123-4567",
+    "email": "hello@example.com",
+    "website": "www.example.com",
+    "hours": "Mon - Sun: 9:00 AM - 9:00 PM",
+    "socials": [
+        { "icon": "facebook", "url": "#" },
+        { "icon": "instagram", "url": "#" },
+        { "icon": "whatsapp", "url": "#" },
+        { "icon": "youtube", "url": "#" }
+    ]
+}

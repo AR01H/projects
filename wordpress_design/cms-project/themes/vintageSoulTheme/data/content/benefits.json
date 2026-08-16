@@ -1,0 +1,13 @@
+{
+    "_source": "Extracted + genericized from traditional_template/admin/data/benefits_items.json. Feeds a Home 'why choose us' section.",
+
+    "tag": "Why Us",
+    "title": "The Benefits",
+    "body": "What sets us apart.",
+    "items": [
+        { "icon": "🌿", "title": "Roots Of Tradition", "text": "Made the way it always has been, preserving something honest from a simpler time.", "stat": "Generations old" },
+        { "icon": "🕰️", "title": "Timeless Craft", "text": "Care taken at every step, the kind that gives you a reason to slow down.", "stat": "Pure vitality" },
+        { "icon": "💧", "title": "Familiar Comfort", "text": "The kind of thing that quietly takes you back to somewhere good.", "stat": "Pure nostalgia" },
+        { "icon": "❤️", "title": "Made With Love", "text": "No shortcuts, no tricks. Just unhurried care, done properly.", "stat": "Honest recipe" }
+    ]
+}

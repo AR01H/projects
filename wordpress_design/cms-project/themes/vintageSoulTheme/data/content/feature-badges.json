@@ -1,0 +1,11 @@
+{
+    "_source": "Extracted from traditional_template/admin/data/feature_badges.json - already generic. Feeds a Home trust-badge strip (see components/badge.css already built).",
+
+    "items": [
+        { "icon": "❀", "label": "100% Natural", "note": "Nothing added, nothing hidden" },
+        { "icon": "✦", "label": "No Additives", "note": "Kept honest, start to finish" },
+        { "icon": "❃", "label": "Rich In Quality", "note": "Never cut corners" },
+        { "icon": "✿", "label": "Sustainably Sourced", "note": "Fair pay, better practice" },
+        { "icon": "☘", "label": "Freshly Made", "note": "Made the day you get it" }
+    ]
+}

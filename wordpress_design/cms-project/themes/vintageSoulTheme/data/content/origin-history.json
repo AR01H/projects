@@ -1,0 +1,12 @@
+{
+    "_source": "Fresh, genericized narrative content written for the About page's origin/history section (some_styles/canehouse/priority, history_mobile/history_desktop) - deliberately NOT copied from traditional_template's history.json, since that file is a brand-specific timeline already covered in shape by milestones.json. This is a short narrative story (not a dated timeline).",
+
+    "tag": "Our Origin",
+    "title": "Where It All <em>Began</em>",
+    "paragraphs": [
+        "It started with a simple idea, passed down through generations: take something the land gives freely, and turn it into a moment people remember.",
+        "What began as a small, humble effort grew slowly, through word of mouth and repeat visits, into something the community came to rely on.",
+        "Today, that same spirit of care and simplicity still guides everything we do."
+    ],
+    "image": "https://images.unsplash.com/photo-1533090161767-e6ffed986c88?auto=format&fit=crop&w=1200&q=80"
+}

@@ -1,0 +1,12 @@
+{
+    "_source": "Extracted + genericized from the reference design's Home 'Memories' plain photo grid (some_styles/canehouse/priority) - distinct from gallery.json (which supports filter tabs); this is a simpler, unfiltered set of captioned photos.",
+
+    "tag": "Memories",
+    "title": "Moments Worth <em>Remembering</em>",
+    "items": [
+        { "image": "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=500&q=80", "caption": "Summer Days" },
+        { "image": "https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&w=500&q=80", "caption": "Family Moments" },
+        { "image": "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=500&q=80", "caption": "Timeless Tradition" },
+        { "image": "https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=500&q=80", "caption": "Simple Joys" }
+    ]
+}

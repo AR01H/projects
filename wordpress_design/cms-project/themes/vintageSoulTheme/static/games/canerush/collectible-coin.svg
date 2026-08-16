@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 160">
+
+  <circle cx="70" cy="70" r="56" fill="#F3E5C8" stroke="#3B2A1E" stroke-width="5"/>
+  <circle cx="70" cy="70" r="47" fill="none" stroke="#C1502E" stroke-width="3" stroke-dasharray="6 5"/>
+  <circle cx="70" cy="70" r="40" fill="#E8A33D" stroke="#3B2A1E" stroke-width="4"/>
+  
+  <text x="70" y="80" font-family="Georgia, serif" font-size="34" font-weight="900" fill="#3B2A1E" text-anchor="middle">C</text>
+
+
+</svg>

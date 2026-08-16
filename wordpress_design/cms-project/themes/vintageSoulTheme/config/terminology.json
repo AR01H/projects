@@ -1,0 +1,13 @@
+{
+    "_doc": "Stable-key -> display-label map. Templates/components ask TerminologyService::label('some_key') and never hard-code the English text - see docs/data-flow.md 'Terminology strategy'. Rename a label here; nothing else changes.",
+
+    "read_more": "Read More",
+    "view_all": "View All",
+    "learn_more": "Learn More",
+    "get_in_touch": "Get in Touch",
+    "testimonials_section_title": "What People Are Saying",
+    "testimonials_section_tag": "Testimonials",
+    "gallery_section_title": "Gallery",
+    "not_found_title": "Page Not Found",
+    "not_found_body": "The page you're looking for doesn't exist or has moved."
+}

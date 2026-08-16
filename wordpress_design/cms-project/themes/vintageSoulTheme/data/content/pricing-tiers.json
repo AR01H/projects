@@ -1,0 +1,37 @@
+{
+    "_source": "Extracted + genericized from traditional_template/admin/data/pricing_tiers.json. Feeds a Game/Services-style page's pricing section (see config/routes.php - 'game' is an alternate-name slot for 'shop'/'services').",
+
+    "tag": "Partner With Us",
+    "title": "Investment <em>Plans</em>",
+    "sub": "A few formats to suit different needs, every one fully supported from day one.",
+    "tiers": [
+        {
+            "name": "Starter",
+            "note": "Investment",
+            "price": "£15k - £25k",
+            "features": ["Compact footprint", "Ideal for smaller locations", "Fastest route to launch"]
+        },
+        {
+            "name": "Standard",
+            "note": "Investment",
+            "price": "£30k - £55k",
+            "badge": "Most Popular",
+            "features": ["Full setup", "Extended range", "High-traffic locations"]
+        },
+        {
+            "name": "Flagship",
+            "note": "Investment",
+            "price": "£70k - £120k",
+            "features": ["Largest format available", "Events hub included", "Prime locations"]
+        }
+    ],
+    "offer_title": "What We Offer",
+    "offers": [
+        "Site selection assistance",
+        "Training & onboarding",
+        "Marketing & launch support",
+        "Ongoing operational support",
+        "Setup & equipment support",
+        "Proven, profitable model"
+    ]
+}

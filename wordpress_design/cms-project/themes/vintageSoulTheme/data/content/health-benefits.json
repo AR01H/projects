@@ -1,0 +1,14 @@
+{
+    "_source": "Extracted + genericized from the reference design's Home 'Benefits of Sugarcane' card section (some_styles/canehouse/priority) - card-style, 5 items. Distinct from benefits.json (nostalgia-framed) and the About page's bullet-list benefits-list.json - same underlying idea shown three different ways across the reference designs, kept as three separate files rather than forced into one shape.",
+
+    "tag": "Health & Wellness",
+    "title": "Benefits Of <em>Nature</em>",
+    "body": "More than a treat - packed with natural goodness.",
+    "items": [
+        { "icon": "⚡", "title": "Rich In Energy", "text": "A natural source of instant energy." },
+        { "icon": "🌿", "title": "Good For Digestion", "text": "Helps improve digestion naturally." },
+        { "icon": "💧", "title": "Naturally Refreshing", "text": "Keeps you cool and hydrated." },
+        { "icon": "🍃", "title": "Natural Ingredients", "text": "100% natural, nothing artificial." },
+        { "icon": "🛡️", "title": "Boosts Immunity", "text": "Packed with essential nutrients." }
+    ]
+}

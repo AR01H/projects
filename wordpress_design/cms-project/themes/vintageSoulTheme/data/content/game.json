@@ -1,0 +1,9 @@
+{
+    "_source": "New content for pages/game/view.php via src/Controllers/GameController.php. The embed itself is a standalone HTML5 canvas game living at static/games/canerush/index.html (not a WordPress-templated page) - the Controller resolves that relative path against VINTAGESOUL_URI for the iframe src, same local-asset pattern data/content/franchise.json's hero.image already uses.",
+
+    "hero": {
+        "tag": "Play A Round",
+        "title": "Cane Rush",
+        "sub": "Dodge the crates, dash past the carts, and race the cane fields for the high score."
+    }
+}
