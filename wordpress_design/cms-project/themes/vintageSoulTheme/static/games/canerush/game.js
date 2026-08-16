@@ -53,6 +53,8 @@ class Game{
     this.resetRun();
     this.lastT = performance.now();
     this.animPhase = 0;
+    this.idleTimer = 0;     // seconds of inactivity (no jump/slide/bank)
+    this.idlePhase = 0;    // 0-1 breathing cycle for idle animation
     this._fpsSmooth = 60;
 
     this.bindUI();
@@ -100,6 +102,8 @@ class Game{
     Object.keys(this.powerUpManager.registry).forEach(k=>this.powerups[k]=0);
     this.shakeT=0; this.shakeMag=0; this.slowMoT=0;
     this.gameOverHandled=false;
+    this.idleTimer = 0;
+    this.idlePhase = 0;
   }
 
   /* ---------------- SPECIAL EVENTS ---------------- */
@@ -139,6 +143,21 @@ class Game{
     this.distance += sf*34*dt;
     this.animPhase += dt*(2.6*sf);
     if(this.animPhase>1) this.animPhase-=Math.floor(this.animPhase);
+
+    // Idle timer: accumulates when the player isn't doing anything special
+    const isActive = this.player.jumping || this.player.sliding || Math.abs(this.player.lane - this.player.laneF) > 0.08;
+    if(isActive){
+      this.idleTimer = 0;
+    } else {
+      this.idleTimer += dt;
+    }
+    // Idle breathing cycle advances only when truly idle (>2 s still)
+    if(this.idleTimer > 2.0){
+      this.idlePhase += dt * 0.5; // slow, 2-second breathing loop
+      if(this.idlePhase > 1) this.idlePhase -= Math.floor(this.idlePhase);
+    } else {
+      this.idlePhase = 0;
+    }
 
     this.environmentManager.update(this.distance, (env)=>this.ui.showBanner(env.name));
 
@@ -323,7 +342,7 @@ class Game{
       ctx.translate(rand(-this.shakeMag,this.shakeMag), rand(-this.shakeMag,this.shakeMag));
     }
     const env = this.environmentManager.current, nextEnv = this.environmentManager.next;
-    drawEnvironment(ctx, proj, env, nextEnv, this.environmentManager.blend);
+    drawEnvironment(ctx, proj, env, nextEnv, this.environmentManager.blend, this.distance);
 
     if(this.specialActive==='juiceBoost'){
       ctx.save(); ctx.globalAlpha=0.18;
@@ -390,26 +409,66 @@ class Game{
     const baseY = proj.y(z);
     const scale = proj.scale(z)*1.35;
 
-    let state='run';
-    if(p.hit) state='hit';
-    else if(p.jumping) state='jump';
-    else if(p.sliding) state='slide';
+    // ---- Determine animation state ----
+    let state = 'run';
+    if(p.hit)                              state = 'hit';
+    else if(p.jumping && this.powerups.superjump > 0) state = 'superjump';
+    else if(p.jumping)                     state = 'jump';
+    else if(p.sliding)                     state = 'slide';
+    else if(this.idleTimer > 2.0)          state = 'idle';
+
     const jumpLift = p.airY;
 
+    // Drop shadow (shrinks while airborne)
     ctx.save();
     ctx.globalAlpha = 0.28;
     ctx.fillStyle='#000';
-    ctx.beginPath(); ctx.ellipse(baseX, baseY+6, 34*scale*(1-jumpLift/300), 10*scale*(1-jumpLift/300),0,0,Math.PI*2); ctx.fill();
+    ctx.beginPath();
+    ctx.ellipse(baseX, baseY+6, 34*scale*(1-jumpLift/300), 10*scale*(1-jumpLift/300), 0, 0, Math.PI*2);
+    ctx.fill();
     ctx.restore();
 
-    if(this.powerups.shield>0){
-      ctx.save(); ctx.globalAlpha=0.35+Math.sin(this.animPhase*20)*0.1;
-      ctx.strokeStyle=COLORS.aqua; ctx.lineWidth=4;
-      ctx.beginPath(); ctx.arc(baseX, baseY - jumpLift - 60*scale, 55*scale,0,Math.PI*2); ctx.stroke();
+    // Shield bubble
+    if(this.powerups.shield > 0){
+      ctx.save();
+      ctx.globalAlpha = 0.35 + Math.sin(this.animPhase*20)*0.1;
+      ctx.strokeStyle = COLORS.aqua; ctx.lineWidth = 4;
+      ctx.beginPath(); ctx.arc(baseX, baseY - jumpLift - 60*scale, 55*scale, 0, Math.PI*2); ctx.stroke();
       ctx.restore();
     }
 
-    drawRunner(ctx, this.selectedChar, baseX, baseY - jumpLift, scale, state, this.animPhase, {});
+    // Super-jump golden glow
+    if(state === 'superjump'){
+      ctx.save();
+      ctx.globalAlpha = 0.25 + Math.sin(this.animPhase*18)*0.15;
+      const sjG = ctx.createRadialGradient(baseX, baseY - jumpLift - 30*scale, 5*scale, baseX, baseY - jumpLift - 30*scale, 70*scale);
+      sjG.addColorStop(0, 'rgba(255,220,50,0.9)');
+      sjG.addColorStop(1, 'rgba(255,140,0,0)');
+      ctx.fillStyle = sjG;
+      ctx.beginPath(); ctx.arc(baseX, baseY - jumpLift - 30*scale, 70*scale, 0, Math.PI*2); ctx.fill();
+      ctx.restore();
+    }
+
+    // Compute timing fractions for per-frame animation
+    const superJumpFrac = (this.powerups.superjump > 0 && p.jumping)
+      ? clamp(1 - this.powerups.superjump / (POWERUP_CONFIG.superjump?.duration || 8), 0, 1)
+      : 0;
+    const airYFrac  = p.airY > 0
+      ? (p.velY >= 0
+          ? 0.5 + (1 - p.airY / (p.airY + 1)) * 0.5
+          : p.airY / (PLAYER_PHYSICS.jumpVelocity * -0.05 + 1))
+      : 0;
+    const slideFrac = p.sliding ? p.slideT / PLAYER_PHYSICS.slideDuration : 0;
+    const hitFrac   = p.hit    ? Math.min(1, p.hitT / 0.6) : 0;
+
+    drawRunner(ctx, this.selectedChar, baseX, baseY - jumpLift, scale, state, this.animPhase, {
+      bank:         p.lane - p.laneF,
+      airYFrac,
+      slideFrac,
+      hitFrac,
+      idlePhase:    this.idlePhase,
+      superJumpFrac,
+    });
 
     if(this.powerups.rush>0 && Math.random()<0.6){
       this.particles.burst(baseX, baseY-jumpLift-40*scale, {count:1,color:COLORS.orange,up:0,life:16,minSpd:0.2,maxSpd:0.6,minSize:4,maxSize:8});

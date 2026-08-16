@@ -42,38 +42,87 @@ const COLORS = {
    power-up SVG here and it's available everywhere — no other file
    needs to change. */
 const ASSET_MANIFEST = {
-  'obstacle-fallenCane':      'obstacle-fallen-cane.svg',
-  'obstacle-rollingCoconut':  'obstacle-rolling-coconut.svg',
-  'obstacle-crate':           'obstacle-juice-crate.svg',
-  'obstacle-puddle':          'obstacle-slippery-puddle.svg',
-  'obstacle-coconutPile':     'obstacle-coconut-pile.svg',
-  'obstacle-barrier':         'obstacle-wooden-barrier.svg',
-  'obstacle-archway':         'obstacle-market-arch.svg',
-  'obstacle-cart':            'obstacle-fruit-cart.svg',
-  'obstacle-truck':           'obstacle-delivery-truck.svg',
-  'obstacle-stall':           'obstacle-market-stall.svg',
-  'obstacle-bottleStack':     'obstacle-bottle-stack.svg',
+  // Idle animation – subtle breathing
+  'player-idle-1':  'assets/img/movements/idle1.png',
+  'player-idle-2':  'assets/img/movements/idle2.png',
+  // Super Jump — 3 frames (launch, upward, land)
+  'player-superjump-1': 'assets/img/movements/superjump1.png',
+  'player-superjump-2': 'assets/img/movements/superjump2.png',
+  'player-superjump-3': 'assets/img/movements/superjump3.png',
+  // Running cycle — 8 frames
+  'player-run-1':   'assets/img/movements/run1.png',
+  'player-run-2':   'assets/img/movements/run2.png',
+  'player-run-3':   'assets/img/movements/run3.png',
+  'player-run-4':   'assets/img/movements/run4.png',
+  'player-run-5':   'assets/img/movements/run5.png',
+  'player-run-6':   'assets/img/movements/run6.png',
+  'player-run-7':   'assets/img/movements/run7.png',
+  'player-run-8':   'assets/img/movements/run8.png',
+  // Jump — 4 frames (rise → peak → fall → land)
+  'player-jump-1':  'assets/img/movements/jump1.png',
+  'player-jump-2':  'assets/img/movements/jump2.png',
+  'player-jump-3':  'assets/img/movements/jump3.png',
+  'player-jump-4':  'assets/img/movements/jump4.png',
+  // Slide — 4 frames (enter duck → full slide → exit)
+  'player-slide-1': 'assets/img/movements/slide1.png',
+  'player-slide-2': 'assets/img/movements/slide2.png',
+  'player-slide-3': 'assets/img/movements/slide3.png',
+  'player-slide-4': 'assets/img/movements/slide4.png',
+  // Fall / Hit — 4 frames (stumble → topple → down)
+  'player-fall-1':  'assets/img/movements/fall1.png',
+  'player-fall-2':  'assets/img/movements/fall2.png',
+  'player-fall-3':  'assets/img/movements/fall3.png',
+  'player-fall-4':  'assets/img/movements/fall4.png',
+  // Move Left — 4 frames (lean → full bank → recover)
+  'player-left-1':  'assets/img/movements/left1.png',
+  'player-left-2':  'assets/img/movements/left2.png',
+  'player-left-3':  'assets/img/movements/left3.png',
+  'player-left-4':  'assets/img/movements/left4.png',
+  // Move Right — 4 frames
+  'player-right-1': 'assets/img/movements/right1.png',
+  'player-right-2': 'assets/img/movements/right2.png',
+  'player-right-3': 'assets/img/movements/right3.png',
+  'player-right-4': 'assets/img/movements/right4.png',
 
-  'collectible-cane-normal':  'collectible-cane.svg',
-  'collectible-cane-fresh':   'collectible-cane-fresh.svg',
-  'collectible-cane-golden':  'collectible-cane-golden.svg',
-  'collectible-coin':         'collectible-coin.svg',
-  'collectible-mango':        'collectible-fruit-mango.svg',
-  'collectible-pineapple':    'collectible-fruit-pineapple.svg',
-  'collectible-lemon':        'collectible-fruit-lemon.svg',
-  'collectible-coconut':      'collectible-fruit-coconut.svg',
-  'collectible-watermelon':   'collectible-fruit-watermelon.svg',
+  // ---- ENVIRONMENT ----
+  'env-skybox':               'assets/img/env_skybox.png',
+  'env-bglayer':              'assets/img/env_bg_layer.png',
 
-  'powerup-magnet':           'powerup-cane-magnet.svg',
-  'powerup-rush':             'powerup-sugar-rush.svg',
-  'powerup-shield':           'powerup-juice-shield.svg',
-  'powerup-golden':           'powerup-golden-cane.svg',
-  'powerup-blast':            'powerup-fruit-blast.svg',
-  'powerup-superjump':        'powerup-super-jump.svg',
-  'powerup-fruitBoost':       'powerup-fruit-boost.svg',
-  'powerup-secondWind':       'powerup-second-wind.svg',
-  'powerup-slowSugar':        'powerup-slow-sugar.svg',
-  'powerup-coinRain':         'powerup-coin-rain.svg',
+  // ---- OBSTACLES ----
+  'obstacle-fallenCane':      'assets/img/obstacles/obstacle-fallen-cane.png',
+  'obstacle-rollingCoconut':  'assets/img/obstacles/obstacle-rolling-coconut.png',
+  'obstacle-crate':           'assets/img/obstacles/obstacle-juice-crate.png',
+  'obstacle-puddle':          'assets/img/obstacles/obstacle-slippery-puddle.png',
+  'obstacle-coconutPile':     'assets/img/obstacles/obstacle-coconut-pile.png',
+  'obstacle-barrier':         'assets/img/obstacles/obstacle-wooden-barrier.png',
+  'obstacle-archway':         'assets/img/obstacles/obstacle-market-arch.png',
+  'obstacle-cart':            'assets/img/obstacles/obstacle-fruit-cart.png',
+  'obstacle-truck':           'assets/img/obstacles/obstacle-delivery-truck.png',
+  'obstacle-stall':           'assets/img/obstacles/obstacle-market-stall.png',
+  'obstacle-bottleStack':     'assets/img/obstacles/obstacle-bottle-stack.png',
+
+  // ---- COLLECTIBLES ----
+  'collectible-cane-normal':  'assets/img/collectibles/collectible-cane.png',
+  'collectible-cane-fresh':   'assets/img/collectibles/collectible-cane-fresh.png',
+  'collectible-cane-golden':  'assets/img/collectibles/collectible-cane-golden.png',
+  'collectible-coin':         'assets/img/collectibles/collectible-coin.png',
+  'collectible-mango':        'assets/img/collectibles/collectible-fruit-mango.png',
+  'collectible-pineapple':    'assets/img/collectibles/collectible-fruit-pineapple.png',
+  'collectible-lemon':        'assets/img/collectibles/collectible-fruit-lemon.png',
+  'collectible-coconut':      'assets/img/collectibles/collectible-fruit-coconut.png',
+  'collectible-watermelon':   'assets/img/collectibles/collectible-fruit-watermelon.png',
+
+  // ---- POWERUPS ----
+  'powerup-magnet':           'assets/img/powerups/powerup-cane-magnet.png',
+  'powerup-rush':             'assets/img/powerups/powerup-sugar-rush.png',
+  'powerup-shield':           'assets/img/powerups/powerup-juice-shield.png',
+  'powerup-golden':           'assets/img/powerups/powerup-golden-cane.png',
+  'powerup-blast':            'assets/img/powerups/powerup-fruit-boost.png', // Map blast to fruit-boost for consistency
+  'powerup-superjump':        'assets/img/powerups/powerup-super-jump.png',
+  'powerup-fruitBoost':       'assets/img/powerups/powerup-fruit-boost.png',
+  'powerup-secondWind':       'assets/img/powerups/powerup-second-wind.png',
+  'powerup-slowSugar':        'assets/img/powerups/powerup-slow-sugar.png',
+  'powerup-coinRain':         'assets/img/powerups/powerup-coin-rain.png',
 };
 
 /* Player physics — all values are in REF_HEIGHT virtual units so
@@ -99,13 +148,13 @@ const DIFFICULTY_TIERS = [
 
 /* ---------------- ENVIRONMENTS ---------------- */
 const ENVIRONMENT_CONFIG = [
-  { name:'Sugarcane Farm', sky:['#E8D9A8','#F3E5C8'], ground:'#DCC98F', road:'#C9AD6E', accent:'#7A8450', deco:'farm' },
-  { name:'Tropical Road', sky:['#CFE0DA','#EAF2ED'], ground:'#C7D6C9', road:'#A9C0AC', accent:'#2F7A72', deco:'road' },
-  { name:'Fruit Garden', sky:['#F0DAB8','#F8EEDA'], ground:'#E3C594','road':'#D6AE72', accent:'#C1502E', deco:'garden' },
-  { name:'Juice Factory', sky:['#E7D1CD','#F5E9E5'], ground:'#DABEB6', road:'#CDA79C', accent:'#C77B71', deco:'factory' },
-  { name:'Beach Road', sky:['#D8E4E2','#F0F5F3'], ground:'#E9D6A9', road:'#DCC287', accent:'#2F7A72', deco:'beach' },
-  { name:'Tropical Market', sky:['#DCD3E0','#F1EBF2'], ground:'#D3C4A8', road:'#C2AE86', accent:'#2E4A5C', deco:'market' },
-  { name:'Festival City', sky:['#EFD8AE','#F8ECD4'], ground:'#E0C088', road:'#D3A968', accent:'#C1502E', deco:'festival' }
+  { name:'Sugarcane Farm', sky:['#E8D9A8','#F3E5C8'], ground:'#DCC98F', road:'#C9AD6E', accent:'#7A8450', deco:'farm', sky_img:'env-skybox', bg_img:'env-bglayer' },
+  { name:'Tropical Road', sky:['#CFE0DA','#EAF2ED'], ground:'#C7D6C9', road:'#A9C0AC', accent:'#2F7A72', deco:'road', sky_img:'env-skybox', bg_img:'env-bglayer' },
+  { name:'Fruit Garden', sky:['#F0DAB8','#F8EEDA'], ground:'#E3C594','road':'#D6AE72', accent:'#C1502E', deco:'garden', sky_img:'env-skybox', bg_img:'env-bglayer' },
+  { name:'Juice Factory', sky:['#E7D1CD','#F5E9E5'], ground:'#DABEB6', road:'#CDA79C', accent:'#C77B71', deco:'factory', sky_img:'env-skybox', bg_img:'env-bglayer' },
+  { name:'Beach Road', sky:['#D8E4E2','#F0F5F3'], ground:'#E9D6A9', road:'#DCC287', accent:'#2F7A72', deco:'beach', sky_img:'env-skybox', bg_img:'env-bglayer' },
+  { name:'Tropical Market', sky:['#DCD3E0','#F1EBF2'], ground:'#D3C4A8', road:'#C2AE86', accent:'#2E4A5C', deco:'market', sky_img:'env-skybox', bg_img:'env-bglayer' },
+  { name:'Festival City', sky:['#EFD8AE','#F8ECD4'], ground:'#E0C088', road:'#D3A968', accent:'#C1502E', deco:'festival', sky_img:'env-skybox', bg_img:'env-bglayer' }
 ];
 
 /* ---------------- CHARACTERS ---------------- */

@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CaneHouseRush — Sprite Frame Preview</title>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: linear-gradient(135deg, #1a2e0d 0%, #2d4f1a 50%, #1a2e0d 100%);
+      font-family: 'Baloo 2', sans-serif;
+      color: #e8d5a3;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      gap: 20px;
+    }
+    h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      background: linear-gradient(90deg, #FFD700, #FFA500, #FFD700);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 2px;
+    }
+    .subtitle { color: #a8c870; font-size: 0.9rem; text-align: center; opacity: 0.8; }
+    .layout { display: flex; gap: 24px; width: 100%; max-width: 1200px; flex-wrap: wrap; justify-content: center; align-items: flex-start; }
+
+    /* ── Laptop frame ─────────────────────────────────── */
+    .preview-panel {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      flex: 0 0 480px;
+    }
+    .preview-panel h2 { font-size: 1rem; color: #FFD700; text-transform: uppercase; letter-spacing: 2px; }
+
+    .laptop-wrap { position: relative; width: 460px; }
+
+    /* lid (screen housing) */
+    .laptop-lid {
+      position: relative;
+      background: linear-gradient(160deg, #2a2a2e 0%, #1a1a1e 100%);
+      border-radius: 18px 18px 0 0;
+      padding: 14px 18px 8px;
+      border: 2.5px solid #3a3a40;
+      border-bottom: none;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.08),
+        0 -6px 28px rgba(0,0,0,0.6);
+    }
+    /* camera dot */
+    .laptop-lid::before {
+      content: '';
+      position: absolute;
+      top: 7px; left: 50%; transform: translateX(-50%);
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #333;
+      border: 1.5px solid #555;
+    }
+    /* screen bezel inner */
+    .laptop-screen-inner {
+      background: #000;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1.5px solid #111;
+      box-shadow: inset 0 0 40px rgba(0,0,0,0.8);
+    }
+    #previewCanvas {
+      display: block;
+      width: 424px;
+      height: 280px;
+    }
+
+    /* hinge strip */
+    .laptop-hinge {
+      height: 10px;
+      background: linear-gradient(to bottom, #1a1a1e, #2f2f35);
+      border-left: 2.5px solid #3a3a40;
+      border-right: 2.5px solid #3a3a40;
+      width: 100%;
+    }
+    /* base/keyboard */
+    .laptop-base {
+      background: linear-gradient(170deg, #252528 0%, #1c1c1f 100%);
+      border: 2.5px solid #3a3a40;
+      border-top: none;
+      border-radius: 0 0 14px 14px;
+      padding: 10px 24px 14px;
+      box-shadow:
+        0 12px 40px rgba(0,0,0,0.7),
+        inset 0 -1px 0 rgba(255,255,255,0.04);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    /* keyboard rows */
+    .kb-row {
+      display: flex;
+      gap: 4px;
+    }
+    .kb-key {
+      height: 9px;
+      border-radius: 2.5px;
+      background: linear-gradient(to bottom, #2e2e32, #252528);
+      border: 1px solid #3a3a40;
+    }
+    /* trackpad */
+    .trackpad {
+      width: 90px; height: 20px;
+      border-radius: 5px;
+      background: linear-gradient(to bottom, #1e1e22, #252528);
+      border: 1px solid #3a3a40;
+    }
+    /* bottom feet notch */
+    .laptop-base::after {
+      content: '';
+      display: block;
+      width: 60px; height: 3px;
+      border-radius: 2px;
+      background: #111;
+      margin-top: 2px;
+    }
+
+    /* auto-play speed badge */
+    .speed-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.72rem;
+      color: #a8c870;
+      background: rgba(0,0,0,0.3);
+      border: 1px solid rgba(168,200,112,0.3);
+      border-radius: 20px;
+      padding: 3px 12px;
+    }
+    .speed-badge .dot { width: 7px; height: 7px; border-radius: 50%; background: #50E050; animation: pulse 1.2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.7)} }
+    .state-label { font-size: 1.1rem; font-weight: 600; color: #FFA500; background: rgba(255,165,0,0.12); border: 1px solid rgba(255,165,0,0.3); border-radius: 8px; padding: 6px 20px; }
+    .file-label { font-size: 0.75rem; color: #a8c870; opacity: 0.8; font-family: monospace; }
+    .status-badge { font-size: 0.75rem; padding: 4px 14px; border-radius: 20px; font-weight: 600; }
+    .status-badge.found    { background: rgba(50,200,80,0.2);  color: #50E050; border: 1px solid #50E050; }
+    .status-badge.missing  { background: rgba(220,50,50,0.2);  color: #F06060; border: 1px solid #F06060; }
+    .status-badge.fallback { background: rgba(255,165,0,0.2);  color: #FFA500; border: 1px solid #FFA500; }
+    .nav-row { display: flex; gap: 10px; }
+    .nav-btn {
+      background: rgba(255,215,0,0.15);
+      border: 1.5px solid rgba(255,215,0,0.4);
+      color: #FFD700;
+      font-family: 'Baloo 2', sans-serif;
+      font-size: 1.4rem;
+      border-radius: 10px;
+      width: 44px; height: 44px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .nav-btn:hover { background: rgba(255,215,0,0.3); transform: scale(1.08); }
+    .frames-panel { flex: 1; min-width: 300px; display: flex; flex-direction: column; gap: 12px; }
+    .section-title { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 3px; color: #a8c870; padding-left: 4px; }
+    .frames-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; }
+    .frame-card {
+      background: rgba(0,0,0,0.35);
+      border: 2px solid rgba(255,215,0,0.15);
+      border-radius: 14px;
+      padding: 10px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      transition: border-color 0.2s, background 0.2s, transform 0.15s;
+      position: relative;
+    }
+    .frame-card:hover { border-color: rgba(255,165,0,0.6); background: rgba(255,165,0,0.08); transform: translateY(-2px); }
+    .frame-card.active { border-color: #FFD700; background: rgba(255,215,0,0.12); box-shadow: 0 0 18px rgba(255,215,0,0.25); }
+    .frame-thumb {
+      width: 80px; height: 90px;
+      background: repeating-conic-gradient(#3a3a3a 0% 25%, #2a2a2a 0% 50%) 0 0 / 10px 10px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .frame-thumb img { max-width: 100%; max-height: 100%; object-fit: contain; display: none; }
+    .frame-thumb img.loaded { display: block; }
+    .thumb-placeholder { font-size: 2rem; opacity: 0.3; }
+    .frame-name { font-size: 0.7rem; font-weight: 600; color: #e8d5a3; text-align: center; }
+    .frame-dot { width: 8px; height: 8px; border-radius: 50%; position: absolute; top: 6px; right: 6px; }
+    .frame-dot.found   { background: #50E050; box-shadow: 0 0 6px #50E050; }
+    .frame-dot.missing { background: #F06060; box-shadow: 0 0 6px #F06060; }
+    .progress-bar-wrap { background: rgba(0,0,0,0.3); border-radius: 10px; height: 10px; overflow: hidden; width: 100%; }
+    .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #4CAF50, #8BC34A); border-radius: 10px; transition: width 0.5s; }
+    .progress-label { font-size: 0.8rem; color: #a8c870; }
+    .tip-box {
+      background: rgba(255,165,0,0.1);
+      border: 1px solid rgba(255,165,0,0.3);
+      border-radius: 12px;
+      padding: 12px 18px;
+      font-size: 0.8rem;
+      color: #e8d5a3;
+      line-height: 1.6;
+      max-width: 1100px;
+      width: 100%;
+    }
+    .tip-box strong { color: #FFD700; }
+    code { background: rgba(0,0,0,0.4); padding: 2px 6px; border-radius: 4px; font-family: monospace; font-size: 0.75rem; color: #a8c870; }
+  </style>
+</head>
+<body>
+
+<h1>🎮 CaneHouseRush</h1>
+<p class="subtitle">Sprite Frame Preview — Click any card to preview it. Green dot = image found, Red = missing (procedural fallback active).</p>
+
+<div class="layout">
+
+  <div class="preview-panel">
+    <h2>🖥️ Live Preview</h2>
+
+    <!-- Laptop frame -->
+    <div class="laptop-wrap">
+      <div class="laptop-lid">
+        <div class="laptop-screen-inner">
+          <canvas id="previewCanvas" width="424" height="280"></canvas>
+        </div>
+      </div>
+      <div class="laptop-hinge"></div>
+      <div class="laptop-base">
+        <!-- keyboard rows -->
+        <div class="kb-row">
+          <div class="kb-key" style="width:22px"></div>
+          <div class="kb-key" style="width:22px"></div>
+          <div class="kb-key" style="width:22px"></div>
+          <div class="kb-key" style="width:22px"></div>
+          <div class="kb-key" style="width:22px"></div>
+          <div class="kb-key" style="width:22px"></div>
+          <div class="kb-key" style="width:22px"></div>
+          <div class="kb-key" style="width:22px"></div>
+          <div class="kb-key" style="width:22px"></div>
+          <div class="kb-key" style="width:22px"></div>
+          <div class="kb-key" style="width:22px"></div>
+          <div class="kb-key" style="width:22px"></div>
+          <div class="kb-key" style="width:22px"></div>
+          <div class="kb-key" style="width:36px"></div>
+        </div>
+        <div class="kb-row">
+          <div class="kb-key" style="width:32px"></div>
+          <div class="kb-key" style="width:22px"></div>
+          <div class="kb-key" style="width:22px"></div>
+          <div class="kb-key" style="width:22px"></div>
+          <div class="kb-key" style="width:22px"></div>
+          <div class="kb-key" style="width:22px"></div>
+          <div class="kb-key" style="width:22px"></div>
+          <div class="kb-key" style="width:22px"></div>
+          <div class="kb-key" style="width:22px"></div>
+          <div class="kb-key" style="width:22px"></div>
+          <div class="kb-key" style="width:22px"></div>
+          <div class="kb-key" style="width:22px"></div>
+          <div class="kb-key" style="width:28px"></div>
+        </div>
+        <div class="kb-row">
+          <div class="kb-key" style="width:42px"></div>
+          <div class="kb-key" style="width:22px"></div>
+          <div class="kb-key" style="width:22px"></div>
+          <div class="kb-key" style="width:22px"></div>
+          <div class="kb-key" style="width:22px"></div>
+          <div class="kb-key" style="width:22px"></div>
+          <div class="kb-key" style="width:22px"></div>
+          <div class="kb-key" style="width:22px"></div>
+          <div class="kb-key" style="width:22px"></div>
+          <div class="kb-key" style="width:22px"></div>
+          <div class="kb-key" style="width:22px"></div>
+          <div class="kb-key" style="width:40px"></div>
+        </div>
+        <div class="kb-row">
+          <div class="kb-key" style="width:34px"></div>
+          <div class="kb-key" style="width:160px"></div>
+          <div class="kb-key" style="width:34px"></div>
+        </div>
+        <div class="trackpad"></div>
+      </div>
+    </div>
+    <!-- /Laptop frame -->
+
+    <div class="state-label" id="currentStateName">—</div>
+    <div class="file-label" id="currentFileName">—</div>
+    <div class="status-badge fallback" id="currentStatus">No frame selected</div>
+    <div class="speed-badge"><span class="dot"></span> Auto-playing all frames</div>
+    <div class="nav-row">
+      <button class="nav-btn" id="btnPrev" title="Previous frame">‹</button>
+      <button class="nav-btn" id="btnPlay" title="Pause / Resume">⏸</button>
+      <button class="nav-btn" id="btnNext" title="Next frame">›</button>
+    </div>
+  </div>
+
+  <div class="frames-panel">
+    <div class="section-title">Movements</div>
+    <div class="frames-grid" id="gridMovements"></div>
+
+    <div class="section-title" style="margin-top:20px">Power-ups</div>
+    <div class="frames-grid" id="gridPowerups"></div>
+
+    <div class="section-title" style="margin-top:20px">Obstacles</div>
+    <div class="frames-grid" id="gridObstacles"></div>
+
+    <div class="section-title" style="margin-top:20px">Collectibles</div>
+    <div class="frames-grid" id="gridCollectibles"></div>
+
+    <div class="section-title" style="margin-top:20px">Assets Progress</div>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-fill" id="progressFill" style="width:0%"></div>
+    </div>
+    <div class="progress-label" id="progressLabel">Checking…</div>
+  </div>
+</div>
+
+<div class="tip-box">
+  <strong>How to use:</strong> Drop your PNG frames into the respective subdirectories under <code>assets/img/</code>.
+  The page auto-detects found (green) vs missing (red) images. Click any card to preview at in-game size.
+</div>
+
+<script>
+const FRAMES = [
+  // movements
+  { key:'player-run-1',   file:'assets/img/movements/run1.png',   label:'Run 1',   group:'run',   icon:'🏃', cat:'movements' },
+  { key:'player-run-2',   file:'assets/img/movements/run2.png',   label:'Run 2',   group:'run',   icon:'🏃', cat:'movements' },
+  { key:'player-run-3',   file:'assets/img/movements/run3.png',   label:'Run 3',   group:'run',   icon:'🏃', cat:'movements' },
+  { key:'player-run-4',   file:'assets/img/movements/run4.png',   label:'Run 4',   group:'run',   icon:'🏃', cat:'movements' },
+  { key:'player-run-5',   file:'assets/img/movements/run5.png',   label:'Run 5',   group:'run',   icon:'🏃', cat:'movements' },
+  { key:'player-run-6',   file:'assets/img/movements/run6.png',   label:'Run 6',   group:'run',   icon:'🏃', cat:'movements' },
+  { key:'player-run-7',   file:'assets/img/movements/run7.png',   label:'Run 7',   group:'run',   icon:'🏃', cat:'movements' },
+  { key:'player-run-8',   file:'assets/img/movements/run8.png',   label:'Run 8',   group:'run',   icon:'🏃', cat:'movements' },
+  { key:'player-jump-1',  file:'assets/img/movements/jump1.png',  label:'Jump 1',  group:'jump',  icon:'⬆️', cat:'movements' },
+  { key:'player-jump-2',  file:'assets/img/movements/jump2.png',  label:'Jump 2',  group:'jump',  icon:'⬆️', cat:'movements' },
+  { key:'player-jump-3',  file:'assets/img/movements/jump3.png',  label:'Jump 3',  group:'jump',  icon:'⬆️', cat:'movements' },
+  { key:'player-jump-4',  file:'assets/img/movements/jump4.png',  label:'Jump 4',  group:'jump',  icon:'⬆️', cat:'movements' },
+  { key:'player-super-1', file:'assets/img/movements/superjump1.png', label:'Super Jump 1', group:'jump', icon:'🚀', cat:'movements' },
+  { key:'player-super-2', file:'assets/img/movements/superjump2.png', label:'Super Jump 2', group:'jump', icon:'🚀', cat:'movements' },
+  { key:'player-super-3', file:'assets/img/movements/superjump3.png', label:'Super Jump 3', group:'jump', icon:'🚀', cat:'movements' },
+  { key:'player-slide-1', file:'assets/img/movements/slide1.png', label:'Slide 1',  group:'slide', icon:'⬇️', cat:'movements' },
+  { key:'player-slide-2', file:'assets/img/movements/slide2.png', label:'Slide 2',  group:'slide', icon:'⬇️', cat:'movements' },
+  { key:'player-slide-3', file:'assets/img/movements/slide3.png', label:'Slide 3',  group:'slide', icon:'⬇️', cat:'movements' },
+  { key:'player-slide-4', file:'assets/img/movements/slide4.png', label:'Slide 4',  group:'slide', icon:'⬇️', cat:'movements' },
+  { key:'player-left-1',  file:'assets/img/movements/left1.png',  label:'Left 1',   group:'left',  icon:'⬅️', cat:'movements' },
+  { key:'player-left-2',  file:'assets/img/movements/left2.png',  label:'Left 2',   group:'left',  icon:'⬅️', cat:'movements' },
+  { key:'player-left-3',  file:'assets/img/movements/left3.png',  label:'Left 3',   group:'left',  icon:'⬅️', cat:'movements' },
+  { key:'player-left-4',  file:'assets/img/movements/left4.png',  label:'Left 4',   group:'left',  icon:'⬅️', cat:'movements' },
+  { key:'player-right-1', file:'assets/img/movements/right1.png', label:'Right 1',  group:'right', icon:'➡️', cat:'movements' },
+  { key:'player-right-2', file:'assets/img/movements/right2.png', label:'Right 2',  group:'right', icon:'➡️', cat:'movements' },
+  { key:'player-right-3', file:'assets/img/movements/right3.png', label:'Right 3',  group:'right', icon:'➡️', cat:'movements' },
+  { key:'player-right-4', file:'assets/img/movements/right4.png', label:'Right 4',  group:'right', icon:'➡️', cat:'movements' },
+  { key:'player-idle-1',  file:'assets/img/movements/idle1.png',  label:'Idle 1',   group:'run',   icon:'🧘', cat:'movements' },
+  { key:'player-idle-2',  file:'assets/img/movements/idle2.png',  label:'Idle 2',   group:'run',   icon:'🧘', cat:'movements' },
+  { key:'player-fall-1',  file:'assets/img/movements/fall1.png',  label:'Fall 1',   group:'fall',  icon:'💥', cat:'movements' },
+  { key:'player-fall-2',  file:'assets/img/movements/fall2.png',  label:'Fall 2',   group:'fall',  icon:'💥', cat:'movements' },
+  { key:'player-fall-3',  file:'assets/img/movements/fall3.png',  label:'Fall 3',   group:'fall',  icon:'💥', cat:'movements' },
+  { key:'player-fall-4',  file:'assets/img/movements/fall4.png',  label:'Fall 4',   group:'fall',  icon:'💥', cat:'movements' },
+
+  // powerups
+  { key:'pow-shield',     file:'assets/img/powerups/powerup-juice-shield.png', label:'Shield',     group:'obj', icon:'🛡️', cat:'powerups' },
+  { key:'pow-rush',       file:'assets/img/powerups/powerup-sugar-rush.png',   label:'Sugar Rush', group:'obj', icon:'⚡', cat:'powerups' },
+  { key:'pow-golden',     file:'assets/img/powerups/powerup-golden-cane.png',  label:'Golden Multi', group:'obj', icon:'⭐', cat:'powerups' },
+  { key:'pow-magnet',     file:'assets/img/powerups/powerup-cane-magnet.png',  label:'Magnet',     group:'obj', icon:'🧲', cat:'powerups' },
+  { key:'pow-boost',      file:'assets/img/powerups/powerup-fruit-boost.png',  label:'Fruit Boost', group:'obj', icon:'🍹', cat:'powerups' },
+  { key:'pow-wind',       file:'assets/img/powerups/powerup-second-wind.png',  label:'Second Wind', group:'obj', icon:'💚', cat:'powerups' },
+  { key:'pow-rain',       file:'assets/img/powerups/powerup-coin-rain.png',    label:'Coin Rain',  group:'obj', icon:'🪙', cat:'powerups' },
+  { key:'pow-slow',       file:'assets/img/powerups/powerup-slow-sugar.png',   label:'Slow Sugar', group:'obj', icon:'⏳', cat:'powerups' },
+  { key:'pow-sjump',      file:'assets/img/powerups/powerup-super-jump.png',   label:'Super Jump', group:'obj', icon:'🚀', cat:'powerups' },
+
+  // obstacles
+  { key:'obs-fallen',     file:'assets/img/obstacles/obstacle-fallen-cane.png',   label:'Fallen Cane',  group:'obj', icon:'🚧', cat:'obstacles' },
+  { key:'obs-cart',       file:'assets/img/obstacles/obstacle-fruit-cart.png',    label:'Fruit Cart',   group:'obj', icon:'🛒', cat:'obstacles' },
+  { key:'obs-crate',      file:'assets/img/obstacles/obstacle-juice-crate.png',   label:'Juice Crate',  group:'obj', icon:'📦', cat:'obstacles' },
+  { key:'obs-coconut',    file:'assets/img/obstacles/obstacle-coconut-pile.png',  label:'Coconut Pile', group:'obj', icon:'🥥', cat:'obstacles' },
+  { key:'obs-pile',       file:'assets/img/obstacles/obstacle-cane-pile.png',     label:'Cane Pile',    group:'obj', icon:'🎋', cat:'obstacles' },
+  { key:'obs-puddle',     file:'assets/img/obstacles/obstacle-slippery-puddle.png', label:'Puddle',      group:'obj', icon:'💦', cat:'obstacles' },
+  { key:'obs-barrier',    file:'assets/img/obstacles/obstacle-wooden-barrier.png',  label:'Barrier',    group:'obj', icon:'🪵', cat:'obstacles' },
+  { key:'obs-arch',       file:'assets/img/obstacles/obstacle-market-arch.png',   label:'Market Arch',  group:'obj', icon:'⛩️', cat:'obstacles' },
+  { key:'obs-hanging',    file:'assets/img/obstacles/obstacle-hanging-cane.png',  label:'Hanging Cane', group:'obj', icon:'🎋', cat:'obstacles' },
+  { key:'obs-trap',       file:'assets/img/obstacles/obstacle-falling-cane-trap.png', label:'Cane Trap',  group:'obj', icon:'🪤', cat:'obstacles' },
+  { key:'obs-spikes',     file:'assets/img/obstacles/obstacle-spikes.png',        label:'Spikes',       group:'obj', icon:'💥', cat:'obstacles' },
+  { key:'obs-rcoco',      file:'assets/img/obstacles/obstacle-rolling-coconut.png', label:'Rolling Coco', group:'obj', icon:'🥎', cat:'obstacles' },
+  { key:'obs-lava',       file:'assets/img/obstacles/obstacle-lava-crack.png',    label:'Lava Crack',   group:'obj', icon:'🌋', cat:'obstacles' },
+  { key:'obs-blade',      file:'assets/img/obstacles/obstacle-cane-blade.png',    label:'Cane Blade',   group:'obj', icon:'🪓', cat:'obstacles' },
+  { key:'obs-narrow',     file:'assets/img/obstacles/obstacle-narrow-path.png',   label:'Narrow Path',  group:'obj', icon:'🚪', cat:'obstacles' },
+  { key:'obs-bridge',     file:'assets/img/obstacles/obstacle-bridge.png',        label:'Bridge',       group:'obj', icon:'🌉', cat:'obstacles' },
+  { key:'obs-bush',       file:'assets/img/obstacles/obstacle-thorny-bush.png',   label:'Thorny Bush',  group:'obj', icon:'🌳', cat:'obstacles' },
+  { key:'obs-pillar',     file:'assets/img/obstacles/obstacle-stone-pillar.png',  label:'Stone Pillar', group:'obj', icon:'🏛️', cat:'obstacles' },
+  { key:'obs-rocks',      file:'assets/img/obstacles/obstacle-falling-rocks.png', label:'Falling Rocks',group:'obj', icon:'🪨', cat:'obstacles' },
+  { key:'obs-wall',       file:'assets/img/obstacles/obstacle-cane-wall.png',    label:'Cane Wall',    group:'obj', icon:'🧱', cat:'obstacles' },
+  { key:'obs-bstack',     file:'assets/img/obstacles/obstacle-bottle-stack.png',  label:'Bottle Stack', group:'obj', icon:'🧴', cat:'obstacles' },
+
+  // collectibles
+  { key:'col-coin',       file:'assets/img/collectibles/collectible-coin.png',         label:'Coin',        group:'obj', icon:'🪙', cat:'collectibles' },
+  { key:'col-gcane',      file:'assets/img/collectibles/collectible-cane-golden.png',  label:'Golden Cane', group:'obj', icon:'✨', cat:'collectibles' },
+  { key:'col-coconut',    file:'assets/img/collectibles/collectible-fruit-coconut.png', label:'Coconut',     group:'obj', icon:'🥥', cat:'collectibles' },
+  { key:'col-lemon',      file:'assets/img/collectibles/collectible-fruit-lemon.png',   label:'Lemon',       group:'obj', icon:'🍋', cat:'collectibles' },
+  { key:'col-watermelon', file:'assets/img/collectibles/collectible-fruit-watermelon.png', label:'Watermelon', group:'obj', icon:'🍉', cat:'collectibles' },
+  { key:'col-pineapple',  file:'assets/img/collectibles/collectible-fruit-pineapple.png', label:'Pineapple',  group:'obj', icon:'🍍', cat:'collectibles' },
+  { key:'col-cane',       file:'assets/img/collectibles/collectible-cane.png',         label:'Cane Stalk',  group:'obj', icon:'🎋', cat:'collectibles' },
+  { key:'col-fresh',      file:'assets/img/collectibles/collectible-cane-fresh.png',   label:'Fresh Leaf',  group:'obj', icon:'🍃', cat:'collectibles' },
+  { key:'col-mango',      file:'assets/img/collectibles/collectible-fruit-mango.png',   label:'Mango',       group:'obj', icon:'🥭', cat:'collectibles' },
+];
+
+const canvas = document.getElementById('previewCanvas');
+const ctx = canvas.getContext('2d');
+const W = canvas.width, H = canvas.height;
+const imageCache = {};
+let foundCount = 0;
+const cardsList = [];
+
+function loadImage(frame) {
+  return new Promise(resolve => {
+    const img = new Image();
+    img.onload  = () => { imageCache[frame.key] = img; foundCount++; resolve(true); };
+    img.onerror = () => { imageCache[frame.key] = null; resolve(false); };
+    img.src = frame.file;
+  });
+}
+
+function initGrids() {
+  const grids = {
+    movements: document.getElementById('gridMovements'),
+    powerups: document.getElementById('gridPowerups'),
+    obstacles: document.getElementById('gridObstacles'),
+    collectibles: document.getElementById('gridCollectibles')
+  };
+
+  FRAMES.forEach((frame, idx) => {
+    const card = document.createElement('div');
+    card.className = 'frame-card';
+    card.dataset.idx = idx;
+
+    const dot = document.createElement('div');
+    dot.className = 'frame-dot missing';
+
+    const thumb = document.createElement('div');
+    thumb.className = 'frame-thumb';
+    const img = document.createElement('img');
+    img.alt = frame.label;
+    const placeholder = document.createElement('div');
+    placeholder.className = 'thumb-placeholder';
+    placeholder.textContent = frame.icon;
+    thumb.appendChild(img);
+    thumb.appendChild(placeholder);
+
+    const name = document.createElement('div');
+    name.className = 'frame-name';
+    name.textContent = frame.label;
+
+    const fname = document.createElement('div');
+    fname.style.cssText = 'font-size:0.6rem;color:#7a9a50;font-family:monospace;text-align:center;word-break:break-all';
+    fname.textContent = frame.file.split('/').pop();
+
+    card.appendChild(dot);
+    card.appendChild(thumb);
+    card.appendChild(name);
+    card.appendChild(fname);
+
+    grids[frame.cat].appendChild(card);
+    cardsList.push(card);
+
+    card.addEventListener('click', () => selectFrame(idx));
+
+    loadImage(frame).then(ok => {
+      if(ok) {
+        img.src = frame.file;
+        img.onload = () => { img.classList.add('loaded'); placeholder.style.display = 'none'; };
+        dot.classList.replace('missing','found');
+      }
+      updateProgress();
+    });
+  });
+}
+
+initGrids();
+
+function updateProgress() {
+  const pct = Math.round(foundCount / FRAMES.length * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = foundCount + ' / ' + FRAMES.length + ' frames found  (' + pct + '%)';
+}
+
+let currentIdx = -1;
+let playing = false;
+let playInterval = null;
+
+function selectFrame(idx) {
+  if(currentIdx >= 0) cardsList[currentIdx].classList.remove('active');
+  currentIdx = idx;
+  cardsList[idx].classList.add('active');
+  const frame = FRAMES[idx];
+  const img = imageCache[frame.key];
+  document.getElementById('currentStateName').textContent = frame.label;
+  document.getElementById('currentFileName').textContent = frame.file;
+  const s = document.getElementById('currentStatus');
+  if(img) { s.textContent = '✓ Image found — will use in-game'; s.className = 'status-badge found'; }
+  else     { s.textContent = '✗ Missing — procedural fallback active'; s.className = 'status-badge missing'; }
+  drawPreview(img, frame);
+}
+
+function drawPreview(img, frame) {
+  ctx.clearRect(0, 0, W, H);
+  const skyG = ctx.createLinearGradient(0, 0, 0, H * 0.55);
+  skyG.addColorStop(0, '#4AA8E0'); skyG.addColorStop(1, '#A0D8F8');
+  ctx.fillStyle = skyG; ctx.fillRect(0, 0, W, H * 0.55);
+  ctx.fillStyle = '#a8d860'; ctx.fillRect(0, H*0.55, W, H*0.17);
+  ctx.fillStyle = '#8B6940'; ctx.fillRect(0, H*0.72, W, H);
+  ctx.fillStyle = '#6D5030';
+  ctx.beginPath();
+  ctx.moveTo(W*0.38, H*0.72); ctx.lineTo(W*0.62, H*0.72);
+  ctx.lineTo(W*0.8, H); ctx.lineTo(W*0.2, H);
+  ctx.closePath(); ctx.fill();
+  const groundY = H * 0.88;
+  ctx.fillStyle = 'rgba(0,0,0,0.28)';
+  ctx.beginPath(); ctx.ellipse(W/2, groundY+8, 50, 14, 0, 0, Math.PI*2); ctx.fill();
+  if(img) {
+    const tH = H * 0.62;
+    const tW = tH * (img.width / img.height);
+    ctx.drawImage(img, W/2 - tW/2, groundY - tH, tW, tH);
+  } else {
+    drawProceduralChar(ctx, W/2, groundY, 1.15, frame.group);
+  }
+  ctx.fillStyle = 'rgba(0,0,0,0.55)'; ctx.fillRect(0, H-36, W, 36);
+  ctx.fillStyle = img ? '#50E050' : '#FFA500';
+  ctx.font = 'bold 12px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText(img ? '✓ ' + frame.label : '⚠ Procedural Fallback — ' + frame.label, W/2, H-18);
+}
+
+function drawProceduralChar(ctx, x, y, scale, group) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(scale, scale);
+  const BW = 36, BH = 48;
+  let bodyLift = 0, squash = 1, stretch = 1, tilt = 0;
+  const t = performance.now() / 600;
+  const swing = Math.sin(t * Math.PI * 2);
+  if(group==='run'){ bodyLift=Math.abs(swing)*6; squash=1-Math.abs(swing)*0.04; stretch=1+Math.abs(swing)*0.04; }
+  else if(group==='jump'){ bodyLift=28; squash=1.05; tilt=-3; }
+  else if(group==='slide'){ bodyLift=-12; squash=0.5; stretch=1.3; }
+  else if(group==='fall'){ tilt=28; squash=0.9; }
+  ctx.rotate(tilt*Math.PI/180); ctx.translate(0,-bodyLift);
+  ctx.fillStyle = '#3a6e1a';
+  const la = group==='run' ? swing*45 : (group==='jump'?-65:(group==='slide'?12:0));
+  const lb = group==='run' ? -swing*45 : la;
+  [[- 10, la],[10, lb]].forEach(([px, ang]) => {
+    ctx.save(); ctx.translate(px, BH*0.4*squash); ctx.rotate(ang*Math.PI/180);
+    ctx.fillRect(-4, 0, 8, 22); ctx.restore();
+  });
+  const g = ctx.createLinearGradient(0,-BH*0.7,0,BH*0.5);
+  g.addColorStop(0,'#8de84a'); g.addColorStop(1,'#4d9a1e');
+  ctx.fillStyle = g;
+  ctx.beginPath();
+  const bx = -BW/2*stretch, by = -BH*0.72*squash, bw = BW*stretch, bh = BH*1.1*squash, br = BW*0.4*stretch;
+  ctx.moveTo(bx+br,by); ctx.lineTo(bx+bw-br,by); ctx.arcTo(bx+bw,by,bx+bw,by+br,br);
+  ctx.lineTo(bx+bw,by+bh-br); ctx.arcTo(bx+bw,by+bh,bx+bw-br,by+bh,br);
+  ctx.lineTo(bx+br,by+bh); ctx.arcTo(bx,by+bh,bx,by+bh-br,br);
+  ctx.lineTo(bx,by+br); ctx.arcTo(bx,by,bx+br,by,br);
+  ctx.fill();
+  ctx.fillStyle = '#2d7a0f';
+  for(let i=0;i<5;i++){
+    const ang = -95 + i*47.5;
+    ctx.save(); ctx.translate(0,-BH*0.72*squash); ctx.rotate(ang*Math.PI/180);
+    ctx.beginPath(); ctx.moveTo(-2,0); ctx.quadraticCurveTo(-5,-14,0,-22-(i%2)*3); ctx.quadraticCurveTo(5,-14,2,0);
+    ctx.fill(); ctx.restore();
+  }
+  ctx.restore();
+}
+
+document.getElementById('btnPrev').addEventListener('click', () => { stopPlay(); selectFrame((currentIdx-1+FRAMES.length)%FRAMES.length); });
+document.getElementById('btnNext').addEventListener('click', () => { stopPlay(); selectFrame((currentIdx+1)%FRAMES.length); });
+document.getElementById('btnPlay').addEventListener('click', togglePlay);
+
+function togglePlay() {
+  playing = !playing;
+  document.getElementById('btnPlay').textContent = playing ? '⏸' : '▶';
+  if(playing) {
+    clearInterval(playInterval);
+    playInterval = setInterval(() => selectFrame((currentIdx + 1) % FRAMES.length), 220);
+  } else { stopPlay(); }
+}
+function stopPlay() { playing=false; document.getElementById('btnPlay').textContent='▶'; clearInterval(playInterval); }
+
+// Animate procedural preview continuously
+(function loop(){ if(currentIdx>=0){ const f=FRAMES[currentIdx]; if(!imageCache[f.key]) drawPreview(null,f); } requestAnimationFrame(loop); })();
+
+// Auto-start playing through ALL frames after images have had time to load
+setTimeout(() => {
+  selectFrame(0);
+  playing = true;
+  playInterval = setInterval(() => selectFrame((currentIdx + 1) % FRAMES.length), 220);
+}, 500);
+</script>
+</body>
+</html>
+
