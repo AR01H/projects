@@ -134,7 +134,7 @@ class UIManager{
     this.el.startScreen.classList.remove('hidden');
   }
   showPanel(id){ this.hidePanels(); document.getElementById(id).classList.remove('hidden'); }
-  hidePanels(){ ['charScreen','shopScreen','achScreen','settingsScreen'].forEach(id=>document.getElementById(id).classList.add('hidden')); }
+  hidePanels(){ ['achScreen','settingsScreen'].forEach(id=>document.getElementById(id).classList.add('hidden')); }
 
   updateMenuStats(){
     this.el.pillBest.textContent = SAVE.bestScore.toLocaleString();
@@ -150,38 +150,6 @@ class UIManager{
     },16);
   }
 
-  /* ---------------- Populate panels ---------------- */
-  populateCharacters(selectedChar, onPick){
-    const grid = document.getElementById('charGrid');
-    grid.innerHTML='';
-    CHARACTER_CONFIG.forEach(ch=>{
-      const unlocked = SAVE.unlockedChars.includes(ch.id);
-      const div = document.createElement('div');
-      div.className='char-card'+(SAVE.selectedChar===ch.id?' selected':'');
-      div.innerHTML = `<canvas width="120" height="90"></canvas><div class="char-name">${ch.name}</div><div style="font-size:11px;color:#7a7362;">${ch.desc}</div>${unlocked?'':`<div class="buy-badge">🪙 ${ch.cost}</div>`}${unlocked?'':'<div class="char-lock">LOCKED</div>'}`;
-      grid.appendChild(div);
-      const cvs = div.querySelector('canvas');
-      const cctx = cvs.getContext('2d');
-      cctx.save(); if(!unlocked){cctx.globalAlpha=0.45;}
-      drawRunner(cctx, ch.id, 60, 78, 0.62, 'idle', 0, {});
-      cctx.restore();
-      div.addEventListener('click', ()=>{ AudioManager.click(); onPick(ch); });
-    });
-  }
-  populateShop(onPick){
-    const grid = document.getElementById('shopGrid');
-    grid.innerHTML='';
-    BOTTLE_CONFIG.forEach(b=>{
-      const unlocked = SAVE.unlockedBottles.includes(b.id);
-      const div = document.createElement('div');
-      div.className='shop-card'+(SAVE.selectedBottle===b.id?' selected':'');
-      div.innerHTML = `<canvas width="120" height="90"></canvas><div class="shop-name">${b.name}</div>${unlocked?'':`<div class="buy-badge">🪙 ${b.cost}</div>`}${unlocked?'':'<div class="shop-lock">LOCKED</div>'}`;
-      grid.appendChild(div);
-      const cvs = div.querySelector('canvas'); const cctx = cvs.getContext('2d');
-      drawShopBottle(cctx, b.color, 60, 78, unlocked?1:0.45);
-      div.addEventListener('click', ()=>{ AudioManager.click(); onPick(b); });
-    });
-  }
   populateAchievements(){
     const list = document.getElementById('achList');
     list.innerHTML='';
@@ -208,7 +176,7 @@ class UIManager{
       const sc = Math.min(r.width,r.height)/170;
       ctx.save(); ctx.globalAlpha=0.15; ctx.fillStyle=COLORS.limeDark;
       ctx.beginPath(); ctx.ellipse(r.width/2, r.height*0.86, 46*sc,10*sc,0,0,Math.PI*2); ctx.fill(); ctx.restore();
-      drawRunner(ctx, getSelectedChar(), r.width/2, r.height*0.86, sc*1.5, 'run', phase, {});
+      drawRunner(ctx, getSelectedChar(), r.width/2, r.height*0.86, sc*0.55, 'run', phase, {});
       requestAnimationFrame(loop);
     };
     loop();

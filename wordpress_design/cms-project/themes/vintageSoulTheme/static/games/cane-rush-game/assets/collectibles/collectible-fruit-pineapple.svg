@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="pineBody" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FFE38A"/>
+      <stop offset="100%" stop-color="#E8AC1A"/>
+    </linearGradient>
+  </defs>
+  <!-- crown -->
+  <g stroke="#2E2A1F" stroke-opacity="0.2" stroke-width="2.5">
+    <path d="M50,40 C42,26 40,12 50,2 C60,12 58,26 50,40 Z" fill="#5FA82C"/>
+    <path d="M50,40 C38,30 28,20 26,6 C42,10 50,22 50,40 Z" fill="#6FAF3C"/>
+    <path d="M50,40 C62,30 72,20 74,6 C58,10 50,22 50,40 Z" fill="#6FAF3C"/>
+  </g>
+  <!-- body -->
+  <ellipse cx="50" cy="66" rx="27" ry="30" fill="url(#pineBody)" stroke="#2E2A1F" stroke-opacity="0.22" stroke-width="3"/>
+  <g stroke="#C4871A" stroke-width="2" opacity="0.6" fill="none">
+    <path d="M27,50 Q50,58 73,50"/>
+    <path d="M25,64 Q50,72 75,64"/>
+    <path d="M27,78 Q50,86 73,78"/>
+    <path d="M35,42 Q40,66 33,90"/>
+    <path d="M50,40 Q50,66 50,92"/>
+    <path d="M65,42 Q60,66 67,90"/>
+  </g>
+  <ellipse cx="40" cy="52" rx="9" ry="6" fill="#FFFFFF" opacity="0.35" transform="rotate(-20 40 52)"/>
+</svg>

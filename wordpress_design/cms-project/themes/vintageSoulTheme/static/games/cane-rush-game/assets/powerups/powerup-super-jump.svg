@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+  <defs>
+    <radialGradient id="jumpBg" cx="38%" cy="32%" r="75%">
+      <stop offset="0%" stop-color="#B6EA82"/>
+      <stop offset="60%" stop-color="#8BD246"/>
+      <stop offset="100%" stop-color="#5FA82C"/>
+    </radialGradient>
+  </defs>
+  <circle cx="60" cy="60" r="52" fill="url(#jumpBg)" stroke="#2E2A1F" stroke-opacity="0.25" stroke-width="4"/>
+  <circle cx="60" cy="60" r="52" fill="none" stroke="#FFFFFF" stroke-opacity="0.35" stroke-width="3"/>
+  <ellipse cx="46" cy="38" rx="16" ry="8" fill="#FFFFFF" opacity="0.18" transform="rotate(-20 46 38)"/>
+
+  <path d="M60,20 C72,32 76,46 72,60 H48 C44,46 48,32 60,20 Z" fill="#FFF7E9" stroke="#2E2A1F" stroke-width="4" stroke-linejoin="round"/>
+  <circle cx="60" cy="38" r="6" fill="#3FD1D9" stroke="#2E2A1F" stroke-opacity="0.3" stroke-width="2"/>
+  <path d="M48,60 l-8,14 h12 z" fill="#FF5A5F" stroke="#2E2A1F" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M72,60 l8,14 h-12 z" fill="#FF5A5F" stroke="#2E2A1F" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M52,60 h16 l-4,14 h-8 z" fill="#EFE6CE" stroke="#2E2A1F" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M50,78 C46,88 52,96 60,100 C68,96 74,88 70,78 C65,84 55,84 50,78 Z" fill="#FFD23F" stroke="#2E2A1F" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M55,82 C53,88 57,92 60,95 C63,92 67,88 65,82" fill="#FF8C3B"/>
+</svg>

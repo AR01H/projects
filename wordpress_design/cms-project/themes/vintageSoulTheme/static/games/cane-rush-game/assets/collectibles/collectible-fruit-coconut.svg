@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="cocoBody" x1="0.15" y1="0" x2="0.85" y2="1">
+      <stop offset="0%" stop-color="#B08152"/>
+      <stop offset="55%" stop-color="#8B5A2B"/>
+      <stop offset="100%" stop-color="#6B4423"/>
+    </linearGradient>
+  </defs>
+  <circle cx="50" cy="54" r="32" fill="url(#cocoBody)" stroke="#2E2A1F" stroke-opacity="0.3" stroke-width="3"/>
+  <g fill="none" stroke="#6B4423" stroke-width="2" opacity="0.6">
+    <path d="M22,44 Q50,36 78,44"/>
+    <path d="M20,58 Q50,50 80,58"/>
+    <path d="M24,72 Q50,64 76,72"/>
+  </g>
+  <g fill="#3B2A1E">
+    <circle cx="42" cy="32" r="4.6"/>
+    <circle cx="58" cy="32" r="4.6"/>
+    <circle cx="50" cy="42" r="4.6"/>
+  </g>
+  <ellipse cx="38" cy="42" rx="9" ry="6" fill="#FFFFFF" opacity="0.25" transform="rotate(-20 38 42)"/>
+</svg>

@@ -24,6 +24,30 @@ class Projector{
   scale(z){ return lerp(0.16, 1.0, z); }
 }
 
+/* ---------------- ROAD GRAIN TEXTURE ----------------
+   A flat gradient always reads as "vector art", not a real surface — what
+   actually sells a material as physical is fine irregular grain. Build a
+   small speckle texture once (deterministic seed so it never flickers
+   frame to frame) and reuse it as a tiled, multiply-blended overlay. */
+let _roadNoisePattern = null;
+function getRoadNoisePattern(ctx){
+  if(_roadNoisePattern) return _roadNoisePattern;
+  const size = 96;
+  const c = document.createElement('canvas');
+  c.width = size; c.height = size;
+  const nctx = c.getContext('2d');
+  let seed = 1337;
+  const rand = () => { seed = (seed*9301+49297) % 233280; return seed/233280; };
+  for(let i=0; i<900; i++){
+    const x = rand()*size, y = rand()*size, r = rand()*1.1+0.2;
+    const dark = rand() > 0.45;
+    nctx.fillStyle = dark ? `rgba(30,20,12,${(rand()*0.35+0.08).toFixed(2)})` : `rgba(255,245,225,${(rand()*0.25+0.05).toFixed(2)})`;
+    nctx.beginPath(); nctx.arc(x,y,r,0,Math.PI*2); nctx.fill();
+  }
+  _roadNoisePattern = ctx.createPattern(c, 'repeat');
+  return _roadNoisePattern;
+}
+
 /* ---------------- CHARACTER RENDERING ---------------- */
 function limbTransform(ctx, pivotX, pivotY, angleDeg){
   ctx.save(); ctx.translate(pivotX,pivotY); ctx.rotate(angleDeg*Math.PI/180);
@@ -119,8 +143,13 @@ function drawRunner(ctx, charId, x, groundY, scale, state, phase, opts={}){
 
     ctx.translate(0, -bodyLift);
     const baseScale = 165 / 217; // fixed scale factor based on tallest cell (Overview standing row)
-    const dw = img.width * baseScale;
-    const dh = img.height * baseScale;
+    // Slide frames are a genuinely short crouch crop (~128px tall vs ~295px
+    // for standing/running) - drawn at the same scale as everything else it
+    // reads as a shrunk character rather than a deliberate low duck, so
+    // boost it back up toward a believable crouch proportion.
+    const stateSizeBoost = state === 'slide' ? 1.5 : 1;
+    const dw = img.width * baseScale * stateSizeBoost;
+    const dh = img.height * baseScale * stateSizeBoost;
     ctx.drawImage(img, -dw / 2, -dh, dw, dh);
 
   } else {
@@ -537,20 +566,37 @@ function drawObstacleShape(ctx, type){
 }
 
 /* Small floating glyph above a warned obstacle showing the required
-   action — shape + text, never color alone. */
+   action — shape + text, never color alone.
+   'lane' obstacles (cart/truck/stall/bottle-stack/sugarcane-cart) can
+   NEVER be jumped or slid through — the only way past is switching lanes.
+   That was easy to miss with a same-size, same-color badge as the
+   jump/slide ones, so 'lane' gets a bigger, red, higher-contrast badge
+   instead of the shared gold "do this move" one. */
 const ACTION_GLYPH = { jump:'⬆', slide:'⬇', lane:'⬌' };
 function drawWarningGlyph(ctx, action, x, y){
   ctx.save();
   ctx.translate(x, y);
   const bob = Math.sin(performance.now()/140)*4;
   ctx.translate(0, bob);
-  ctx.globalAlpha = 0.55+Math.sin(performance.now()/90)*0.25;
-  ctx.fillStyle = COLORS.warn;
-  ctx.beginPath(); ctx.arc(0,0,15,0,Math.PI*2); ctx.fill();
-  ctx.strokeStyle = COLORS.ink; ctx.lineWidth=2; ctx.stroke();
-  ctx.fillStyle = COLORS.ink;
-  ctx.font='900 16px Baloo, sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
+  const isLane = action === 'lane';
+  ctx.globalAlpha = isLane ? (0.75+Math.sin(performance.now()/90)*0.2) : (0.55+Math.sin(performance.now()/90)*0.25);
+  const radius = isLane ? 20 : 15;
+  if(isLane){
+    ctx.shadowColor = COLORS.red; ctx.shadowBlur = 14;
+  }
+  ctx.fillStyle = isLane ? COLORS.red : COLORS.warn;
+  ctx.beginPath(); ctx.arc(0,0,radius,0,Math.PI*2); ctx.fill();
+  ctx.shadowBlur = 0;
+  ctx.strokeStyle = COLORS.ink; ctx.lineWidth = isLane ? 3 : 2;
+  ctx.stroke();
+  ctx.fillStyle = isLane ? COLORS.cream : COLORS.ink;
+  ctx.font = `900 ${isLane ? 20 : 16}px Baloo, sans-serif`; ctx.textAlign='center'; ctx.textBaseline='middle';
   ctx.fillText(ACTION_GLYPH[action]||'!', 0, 1);
+  if(isLane){
+    ctx.fillStyle = COLORS.ink;
+    ctx.font = '900 10px Baloo, sans-serif';
+    ctx.fillText('MUST DODGE', 0, radius+13);
+  }
   ctx.restore();
 }
 
@@ -662,6 +708,24 @@ function drawCollectible(ctx, type, x, y, scale, bob, sub){
 
   } else if(type==='powerup'){
     drawPowerupToken(ctx, sub, 0, 0, 1, 0);
+  } else {
+    // Fruit pickups (mango, pineapple, lemon, coconut, watermelon) had no
+    // draw branch at all here — they spawn (see CollectibleManager.spawnAt)
+    // but were completely invisible in-game. Draw from their SVG badge,
+    // same pattern as powerups above.
+    const fruitKey = 'collectible-' + type;
+    const drew = drawImageBadge(ctx, fruitKey, 0, 0, COLLECTIBLE_BADGE_DIAMETER);
+    if(!drew){
+      const FRUIT_FALLBACK = {
+        mango:      ['#D9A441', '#A9761E'],
+        pineapple:  ['#E8A33D', '#B67D26'],
+        lemon:      ['#E8D078', '#B7A03E'],
+        coconut:    ['#DEC28B', '#5A3B22'],
+        watermelon: ['#C77B71', '#7A8450'],
+      };
+      const [body, dark] = FRUIT_FALLBACK[type] || ['#8FAE4E', '#5F7A34'];
+      drawFruitIcon(ctx, body, dark, 20, 'circle');
+    }
   }
 
   ctx.restore();
@@ -774,47 +838,98 @@ function drawEnvironment(ctx, proj, env, nextEnv, envBlend, distance){
   const topL = proj.x(-1.35, 0), topR = proj.x(1.35,0);
   const botL = proj.x(-1.35, 1), botR = proj.x(1.35,1);
   
-  // Road gradient (lighter near horizon, darker near player)
+  // Road gradient — warm packed-earth/timber tones, deeper contrast than a
+  // flat fill so the planking reads as weathered wood, not painted card.
   const roadGrad = ctx.createLinearGradient(0, proj.horizonY, 0, proj.groundY);
-  roadGrad.addColorStop(0, lerpColor(roadColor, '#fff', 0.15));
-  roadGrad.addColorStop(1, lerpColor(roadColor, '#000', 0.12));
+  roadGrad.addColorStop(0, lerpColor(roadColor, '#F3E5C8', 0.22));
+  roadGrad.addColorStop(0.55, roadColor);
+  roadGrad.addColorStop(1, lerpColor(roadColor, '#4A2F18', 0.42));
   ctx.fillStyle = roadGrad;
   ctx.beginPath(); ctx.moveTo(topL,proj.horizonY); ctx.lineTo(topR,proj.horizonY);
   ctx.lineTo(botR,proj.groundY); ctx.lineTo(botL,proj.groundY); ctx.closePath(); ctx.fill();
 
-  // Road edge lines (strong)
-  ctx.strokeStyle='rgba(255,255,255,0.6)';
-  ctx.lineWidth = 3;
-  [[topL, topR, botL, botR]].forEach(()=>{
-    ctx.beginPath(); ctx.moveTo(topL, proj.horizonY); ctx.lineTo(botL, proj.groundY); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(topR, proj.horizonY); ctx.lineTo(botR, proj.groundY); ctx.stroke();
-  });
-  
-  // Centre dashed line
-  ctx.strokeStyle='rgba(255,255,255,0.5)';
-  ctx.lineWidth = 2;
-  ctx.setLineDash([16, 12]);
-  ctx.lineDashOffset = -(distance * 6) % 28;
-  ctx.beginPath();
-  ctx.moveTo(proj.x(0, 0), proj.horizonY);
-  ctx.lineTo(proj.x(0, 1), proj.groundY);
-  ctx.stroke();
-  ctx.setLineDash([]);
-  ctx.lineDashOffset = 0;
+  // Grain texture — a tiled speckle pattern, multiply-blended, is what
+  // actually reads as a physical surface instead of a flat vector fill.
+  ctx.save();
+  ctx.beginPath(); ctx.moveTo(topL,proj.horizonY); ctx.lineTo(topR,proj.horizonY);
+  ctx.lineTo(botR,proj.groundY); ctx.lineTo(botL,proj.groundY); ctx.closePath(); ctx.clip();
+  ctx.globalCompositeOperation = 'multiply';
+  ctx.globalAlpha = 0.55;
+  ctx.fillStyle = getRoadNoisePattern(ctx);
+  ctx.fillRect(Math.min(topL,botL), proj.horizonY, Math.max(topR,botR)-Math.min(topL,botL), proj.groundY-proj.horizonY);
+  ctx.restore();
 
-  // Lane dividers (dashed)
-  ctx.strokeStyle='rgba(255,255,255,0.3)';
-  ctx.lineWidth = 2;
-  ctx.setLineDash([10, 18]);
-  ctx.lineDashOffset = -(distance * 6) % 28;
-  [-0.5, 0.5].forEach(lo=>{
+  // Worn foot-path — the centre strip wears smoother/lighter than the
+  // edges from constant traffic, a strong "this is a real used surface" cue.
+  ctx.save();
+  ctx.beginPath(); ctx.moveTo(topL,proj.horizonY); ctx.lineTo(topR,proj.horizonY);
+  ctx.lineTo(botR,proj.groundY); ctx.lineTo(botL,proj.groundY); ctx.closePath(); ctx.clip();
+  ctx.beginPath();
+  ctx.moveTo(proj.x(-0.4,0), proj.horizonY); ctx.lineTo(proj.x(0.4,0), proj.horizonY);
+  ctx.lineTo(proj.x(0.55,1), proj.groundY); ctx.lineTo(proj.x(-0.55,1), proj.groundY);
+  ctx.closePath();
+  const wearGrad = ctx.createLinearGradient(0, proj.horizonY, 0, proj.groundY);
+  wearGrad.addColorStop(0, 'rgba(220,196,150,0.05)');
+  wearGrad.addColorStop(1, 'rgba(220,196,150,0.22)');
+  ctx.fillStyle = wearGrad;
+  ctx.fill();
+  ctx.restore();
+
+  // Edge vignette — darker along the rope-rails, like worn/shadowed board
+  // edges, so the deck reads as rounded planking rather than a flat card.
+  ctx.save();
+  ctx.beginPath(); ctx.moveTo(topL,proj.horizonY); ctx.lineTo(topR,proj.horizonY);
+  ctx.lineTo(botR,proj.groundY); ctx.lineTo(botL,proj.groundY); ctx.closePath(); ctx.clip();
+  const vignetteGrad = ctx.createLinearGradient(botL, 0, botR, 0);
+  vignetteGrad.addColorStop(0, 'rgba(30,20,12,0.38)');
+  vignetteGrad.addColorStop(0.16, 'rgba(30,20,12,0)');
+  vignetteGrad.addColorStop(0.84, 'rgba(30,20,12,0)');
+  vignetteGrad.addColorStop(1, 'rgba(30,20,12,0.38)');
+  ctx.fillStyle = vignetteGrad;
+  ctx.fillRect(Math.min(topL,botL), proj.horizonY, Math.max(topR,botR)-Math.min(topL,botL), proj.groundY-proj.horizonY);
+
+  // Longitudinal wood-grain streaks — a handful of deterministic (non-
+  // flickering) gently-wavy lines running the length of the deck.
+  for(let g=0; g<5; g++){
+    const lane = -1.1 + g*0.55;
+    const wobble = Math.sin(g*2.7)*0.12;
+    ctx.strokeStyle = `rgba(74,47,24,${0.12 + (g%2)*0.06})`;
+    ctx.lineWidth = 2;
     ctx.beginPath();
-    ctx.moveTo(proj.x(lo,0), proj.horizonY);
-    ctx.lineTo(proj.x(lo,1), proj.groundY);
+    ctx.moveTo(proj.x(lane, 0), proj.horizonY);
+    ctx.quadraticCurveTo(proj.x(lane+wobble, 0.5), proj.y(0.5), proj.x(lane, 1), proj.groundY);
     ctx.stroke();
-  });
-  ctx.setLineDash([]);
-  ctx.lineDashOffset = 0;
+  }
+  ctx.restore();
+
+  // Cane-bridge cross planks — evenly spaced timber slats receding into the
+  // distance, scrolling toward the player (replaces painted highway lanes,
+  // which don't belong on a mud/cane bridge track). Each plank's shading
+  // is nudged by a fixed per-index seed so the deck reads as rough-hewn
+  // boards instead of a perfectly uniform repeat.
+  const plankCount = 14;
+  ctx.save();
+  for(let i=0; i<plankCount; i++){
+    const z = ((i / plankCount) + (distance * 0.0035)) % 1;
+    if(z < 0.03) continue;
+    const y = proj.y(z);
+    const xL = proj.x(-1.35, z), xR = proj.x(1.35, z);
+    const scale = proj.scale(z);
+    const roughness = 0.85 + ((i*37) % 30) / 100; // ~0.85-1.14, deterministic
+    ctx.strokeStyle = `rgba(45,30,18,${(0.42*scale*roughness).toFixed(3)})`;
+    ctx.lineWidth = Math.max(1, 4.5*scale);
+    ctx.beginPath(); ctx.moveTo(xL, y); ctx.lineTo(xR, y); ctx.stroke();
+    ctx.strokeStyle = `rgba(243,229,200,${(0.22*scale*roughness).toFixed(3)})`;
+    ctx.lineWidth = Math.max(1, 1.5*scale);
+    ctx.beginPath(); ctx.moveTo(xL, y - 2.5*scale); ctx.lineTo(xR, y - 2.5*scale); ctx.stroke();
+  }
+  ctx.restore();
+
+  // Rope-rail edges instead of painted highway shoulder lines
+  ctx.strokeStyle = 'rgba(45,30,18,0.65)';
+  ctx.lineWidth = 3.5;
+  ctx.beginPath(); ctx.moveTo(topL, proj.horizonY); ctx.lineTo(botL, proj.groundY); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(topR, proj.horizonY); ctx.lineTo(botR, proj.groundY); ctx.stroke();
 
   // ---- ROADSIDE SUGARCANE STALKS ----
   // These scroll toward the player, drawn after road so they appear beside it

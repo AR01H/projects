@@ -56,10 +56,24 @@ canvas{display:block; width:100%; height:100%;}
 
 /* ---------- START SCREEN ---------- */
 #startScreen{
+  overflow:hidden;
   background:
-    radial-gradient(circle at 20% 15%, rgba(255,250,235,0.5), transparent 40%),
+    radial-gradient(circle at 50% 30%, rgba(255,250,235,0.65), transparent 55%),
     radial-gradient(circle at 85% 80%, rgba(47,122,114,0.25), transparent 45%),
+    radial-gradient(circle at 10% 85%, rgba(193,80,46,0.18), transparent 40%),
     linear-gradient(160deg, var(--cream) 0%, var(--cream2) 55%, #E3C594 100%);
+}
+.field-band{
+  position:absolute; left:0; right:0; bottom:0; height:9vh; min-height:46px;
+  z-index:-1; pointer-events:none;
+  background-image: repeating-linear-gradient(90deg,
+    var(--lime-dark) 0 3px, var(--lime) 3px 7px, transparent 7px 22px);
+  background-position:bottom;
+  background-repeat:repeat-x;
+  background-size:22px 100%;
+  -webkit-mask-image:linear-gradient(0deg, #000 55%, transparent 100%);
+          mask-image:linear-gradient(0deg, #000 55%, transparent 100%);
+  opacity:0.55;
 }
 .logo-wrap{margin-top:2vh; display:flex; flex-direction:column; align-items:center;}
 .logo-title{
@@ -90,7 +104,18 @@ canvas{display:block; width:100%; height:100%;}
 }
 @keyframes floaty{ 0%,100%{transform:rotate(-1.5deg) translateY(0);} 50%{transform:rotate(-0.5deg) translateY(-8px);} }
 
-#menuMascot{ width:min(46vw,220px); height:min(46vw,220px); margin:2vh 0; animation:bob 2.2s ease-in-out infinite; }
+.mascot-stage{
+  position:relative; margin:1.5vh 0;
+  width:min(52vw,250px); height:min(52vw,250px);
+  display:flex; align-items:center; justify-content:center;
+}
+.mascot-stage::before{
+  content:''; position:absolute; inset:0; z-index:0; border-radius:50%;
+  background:radial-gradient(circle, rgba(255,250,235,0.9) 0%, rgba(232,163,61,0.35) 55%, transparent 78%);
+  animation: spotlight-pulse 2.2s ease-in-out infinite;
+}
+@keyframes spotlight-pulse{ 0%,100%{opacity:0.75; transform:scale(0.97);} 50%{opacity:1; transform:scale(1.03);} }
+#menuMascot{ position:relative; z-index:1; width:min(46vw,220px); height:min(46vw,220px); animation:bob 2.2s ease-in-out infinite; }
 @keyframes bob{ 0%,100%{transform:translateY(0) rotate(-3deg);} 50%{transform:translateY(-14px) rotate(3deg);} }
 
 .menu-buttons{display:flex; flex-direction:column; gap:12px; width:min(78vw,300px); margin-top:8px;}
@@ -104,6 +129,11 @@ canvas{display:block; width:100%; height:100%;}
   box-shadow:var(--shadow);
   transition:transform .12s ease, filter .12s ease;
   position:relative;
+  overflow:hidden;
+}
+.btn::before{
+  content:''; position:absolute; left:6%; right:6%; top:8%; height:34%;
+  border-radius:999px; background:rgba(255,255,255,0.35); pointer-events:none;
 }
 .btn:active{transform:scale(0.95); filter:brightness(0.95);}
 .btn-primary{
@@ -132,11 +162,19 @@ canvas{display:block; width:100%; height:100%;}
 .icon-item{display:flex; flex-direction:column; align-items:center; gap:5px;}
 .icon-item span{font-size:10px; font-weight:800; letter-spacing:0.5px; color:var(--lime-dark); opacity:0.85;}
 .icon-btn{
-  width:50px; height:50px; border-radius:50%; border:2px solid var(--ink); cursor:pointer;
-  background:var(--coconut); box-shadow:var(--shadow); font-size:21px;
+  position:relative; overflow:hidden;
+  width:54px; height:54px; border-radius:50%; border:2px solid var(--ink); cursor:pointer;
+  background:var(--coconut); box-shadow:var(--shadow); font-size:22px;
   display:flex; align-items:center; justify-content:center;
+  transition:transform .12s ease, filter .12s ease;
 }
-.icon-btn:active{ transform:scale(0.92); }
+.icon-btn::before{
+  content:''; position:absolute; left:14%; top:10%; width:44%; height:36%;
+  border-radius:50%; background:rgba(255,255,255,0.4); pointer-events:none;
+}
+.icon-btn:active{ transform:scale(0.92); filter:brightness(0.95); }
+.icon-btn--gold{ background:linear-gradient(180deg, var(--yellow), #A9761E); }
+.icon-btn--aqua{ background:linear-gradient(180deg, var(--aqua), var(--aqua-dark)); }
 
 /* ---------- TOP BAR STATS on start screen ---------- */
 .stat-pills{display:flex; gap:8px; margin-bottom:8px; flex-wrap:wrap; justify-content:center;}
@@ -402,36 +440,19 @@ canvas{display:block; width:100%; height:100%;}
     </div>
     <div class="logo-wrap">
       <div class="logo-title">CANE<br/>RUSH</div>
-      <div class="logo-sub">A THE CANE HOUSE ADVENTURE</div>
+      <div class="logo-sub">THE CANE HOUSE ADVENTURE</div>
     </div>
-    <canvas id="menuMascot"></canvas>
+    <div class="mascot-stage">
+      <canvas id="menuMascot"></canvas>
+    </div>
     <div class="menu-buttons">
       <button class="btn btn-primary" id="btnStart">▶ START RUN</button>
     </div>
     <div class="icon-row">
-      <div class="icon-item"><button class="icon-btn" id="btnCharacters">🧃</button><span>Cast</span></div>
-      <div class="icon-item"><button class="icon-btn" id="btnShop">🛍</button><span>Shop</span></div>
-      <div class="icon-item"><button class="icon-btn" id="btnAchievements">🏅</button><span>Awards</span></div>
-      <div class="icon-item"><button class="icon-btn" id="btnSettings">⚙</button><span>Settings</span></div>
+      <div class="icon-item"><button class="icon-btn icon-btn--gold" id="btnAchievements">🏅</button><span>Awards</span></div>
+      <div class="icon-item"><button class="icon-btn icon-btn--aqua" id="btnSettings">⚙</button><span>Settings</span></div>
     </div>
-  </div>
-
-  <!-- CHARACTERS SCREEN -->
-  <div id="charScreen" class="screen panel-screen hidden">
-    <div class="panel-header">
-      <div class="panel-title">CHARACTERS</div>
-      <button class="close-btn" data-close>✕</button>
-    </div>
-    <div class="scroll-area"><div class="card-grid" id="charGrid"></div></div>
-  </div>
-
-  <!-- SHOP SCREEN -->
-  <div id="shopScreen" class="screen panel-screen hidden">
-    <div class="panel-header">
-      <div class="panel-title">SHOP</div>
-      <button class="close-btn" data-close>✕</button>
-    </div>
-    <div class="scroll-area"><div class="card-grid" id="shopGrid"></div></div>
+    <div class="field-band" aria-hidden="true"></div>
   </div>
 
   <!-- ACHIEVEMENTS SCREEN -->
@@ -484,7 +505,6 @@ canvas{display:block; width:100%; height:100%;}
     </div>
     <div class="menu-buttons">
       <button class="btn btn-primary" id="btnRunAgain">🔁 RUN AGAIN</button>
-      <button class="btn btn-secondary" id="btnGoShop">🛍 SHOP</button>
       <button class="btn btn-ghost" id="btnGoHome">🏠 HOME</button>
     </div>
   </div>

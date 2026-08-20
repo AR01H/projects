@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="lemonBody" x1="0.2" y1="0" x2="0.8" y2="1">
+      <stop offset="0%" stop-color="#FFF9B0"/>
+      <stop offset="55%" stop-color="#FFF066"/>
+      <stop offset="100%" stop-color="#E0C400"/>
+    </linearGradient>
+  </defs>
+  <ellipse cx="50" cy="52" rx="30" ry="24" fill="url(#lemonBody)" stroke="#2E2A1F" stroke-opacity="0.2" stroke-width="3"/>
+  <path d="M20,52 Q14,52 12,48" fill="none" stroke="#E0C400" stroke-width="5" stroke-linecap="round"/>
+  <path d="M80,52 Q86,52 88,48" fill="none" stroke="#E0C400" stroke-width="5" stroke-linecap="round"/>
+  <g stroke="#E0C400" stroke-width="2" opacity="0.5">
+    <path d="M30,36 Q50,42 70,36" fill="none"/>
+    <path d="M28,52 Q50,58 72,52" fill="none"/>
+    <path d="M30,68 Q50,74 70,68" fill="none"/>
+  </g>
+  <ellipse cx="38" cy="40" rx="10" ry="6" fill="#FFFFFF" opacity="0.5" transform="rotate(-20 38 40)"/>
+</svg>

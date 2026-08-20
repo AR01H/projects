@@ -108,7 +108,7 @@ class DifficultyManager{
     return t;
   }
   get speedFactor(){
-    let f = 1 + clamp(this.distance/1500, 0, this.tier.maxSpeedMult-1);
+    let f = 0.68 * (1 + clamp(this.distance/1500, 0, this.tier.maxSpeedMult-1));
     if(this.rushActive) f *= 1.55;
     return f;
   }

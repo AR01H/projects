@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="melonFlesh" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FF8892"/>
+      <stop offset="100%" stop-color="#FF5D6C"/>
+    </linearGradient>
+  </defs>
+  <path d="M14,32 A48,48 0 0 1 86,32 L50,90 Z" fill="#3FA34D" stroke="#2E2A1F" stroke-opacity="0.25" stroke-width="3"/>
+  <path d="M21,36 A40,40 0 0 1 79,36 L50,82 Z" fill="#EAF7D6"/>
+  <path d="M27,39 A34,34 0 0 1 73,39 L50,76 Z" fill="url(#melonFlesh)"/>
+  <g fill="#2E2A1F">
+    <circle cx="43" cy="48" r="2.6"/>
+    <circle cx="58" cy="50" r="2.6"/>
+    <circle cx="47" cy="60" r="2.6"/>
+    <circle cx="56" cy="63" r="2.6"/>
+    <circle cx="50" cy="70" r="2.6"/>
+  </g>
+  <ellipse cx="40" cy="44" rx="8" ry="4" fill="#FFFFFF" opacity="0.4" transform="rotate(-15 40 44)"/>
+</svg>

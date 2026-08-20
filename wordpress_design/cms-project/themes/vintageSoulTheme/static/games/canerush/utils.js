@@ -144,7 +144,7 @@ const StorageManager = (function(){
       bestCombo:1, runs:0, goldenCaneCollected:0,
       unlockedChars:['cane'], selectedChar:'cane',
       unlockedBottles:['original'], selectedBottle:'original',
-      achievements:[], soundOn:true, musicOn:true
+      achievements:[], soundOn:false, musicOn:false
     };
   }
   function load(){

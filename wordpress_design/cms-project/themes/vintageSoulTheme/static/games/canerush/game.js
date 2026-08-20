@@ -58,8 +58,6 @@ class Game{
     this._fpsSmooth = 60;
 
     this.bindUI();
-    this.ui.populateCharacters(this.selectedChar, (ch)=>this.pickCharacter(ch));
-    this.ui.populateShop((b)=>this.pickBottle(b));
     this.ui.populateAchievements();
     this.ui.updateMenuStats();
     this.ui.initMenuMascot(()=>this.selectedChar);
@@ -407,7 +405,7 @@ class Game{
     const z = PLAYER_Z;
     const baseX = proj.x(p.laneF, z);
     const baseY = proj.y(z);
-    const scale = proj.scale(z)*1.35;
+    const scale = proj.scale(z)*0.62;
 
     // ---- Determine animation state ----
     let state = 'run';
@@ -415,7 +413,6 @@ class Game{
     else if(p.jumping && this.powerups.superjump > 0) state = 'superjump';
     else if(p.jumping)                     state = 'jump';
     else if(p.sliding)                     state = 'slide';
-    else if(this.idleTimer > 2.0)          state = 'idle';
 
     const jumpLift = p.airY;
 
@@ -546,8 +543,6 @@ class Game{
     if(isRecord) AudioManager.record();
 
     this.ui.updateMenuStats();
-    this.ui.populateCharacters(this.selectedChar, (ch)=>this.pickCharacter(ch));
-    this.ui.populateShop((b)=>this.pickBottle(b));
     this.ui.populateAchievements();
 
     if(newly.length){ setTimeout(()=>this.ui.showBanner('🏅 '+newly[0].name.toUpperCase()), 900); }
@@ -565,31 +560,9 @@ class Game{
     this.ui.updateMenuStats();
   }
 
-  pickCharacter(ch){
-    const unlocked = SAVE.unlockedChars.includes(ch.id);
-    if(unlocked){
-      SAVE.selectedChar = ch.id; this.selectedChar = ch.id; StorageManager.save();
-      this.ui.populateCharacters(this.selectedChar, (c)=>this.pickCharacter(c));
-    } else if(SAVE.totalCoins>=ch.cost){
-      SAVE.totalCoins -= ch.cost; SAVE.unlockedChars.push(ch.id);
-      SAVE.selectedChar = ch.id; this.selectedChar = ch.id;
-      StorageManager.save(); this.ui.populateCharacters(this.selectedChar, (c)=>this.pickCharacter(c)); this.ui.updateMenuStats();
-    } else { this.ui.showBanner('NEED MORE COINS'); }
-  }
-  pickBottle(b){
-    const unlocked = SAVE.unlockedBottles.includes(b.id);
-    if(unlocked){ SAVE.selectedBottle=b.id; StorageManager.save(); this.ui.populateShop((bb)=>this.pickBottle(bb)); }
-    else if(SAVE.totalCoins>=b.cost){
-      SAVE.totalCoins-=b.cost; SAVE.unlockedBottles.push(b.id); SAVE.selectedBottle=b.id;
-      StorageManager.save(); this.ui.populateShop((bb)=>this.pickBottle(bb)); this.ui.updateMenuStats();
-    } else { this.ui.showBanner('NEED MORE COINS'); }
-  }
-
   /* ---------------- UI BINDING ---------------- */
   bindUI(){
     document.getElementById('btnStart').addEventListener('click', ()=>{ AudioManager.click(); this.startRun(); });
-    document.getElementById('btnCharacters').addEventListener('click', ()=>{ AudioManager.click(); this.ui.showPanel('charScreen'); });
-    document.getElementById('btnShop').addEventListener('click', ()=>{ AudioManager.click(); this.ui.showPanel('shopScreen'); });
     document.getElementById('btnAchievements').addEventListener('click', ()=>{ AudioManager.click(); this.ui.showPanel('achScreen'); });
     document.getElementById('btnSettings').addEventListener('click', ()=>{ AudioManager.click(); this.ui.showPanel('settingsScreen'); });
     document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click', ()=>{ AudioManager.click(); this.ui.hidePanels(); }));
@@ -600,7 +573,6 @@ class Game{
 
     document.getElementById('btnRunAgain').addEventListener('click', ()=>{ AudioManager.click(); this.startRun(); });
     document.getElementById('btnGoHome').addEventListener('click', ()=>{ AudioManager.click(); this.goHome(); });
-    document.getElementById('btnGoShop').addEventListener('click', ()=>{ AudioManager.click(); document.getElementById('gameOverScreen').classList.add('hidden'); this.ui.showPanel('shopScreen'); });
 
     const st = document.getElementById('toggleSound');
     const mt = document.getElementById('toggleMusic');
@@ -611,8 +583,7 @@ class Game{
     document.getElementById('btnReset').addEventListener('click', ()=>{
       if(confirm('Reset all progress? This cannot be undone.')){
         StorageManager.reset(); Object.assign(SAVE, StorageManager.data); this.selectedChar='cane';
-        this.ui.updateMenuStats(); this.ui.populateCharacters(this.selectedChar,(c)=>this.pickCharacter(c));
-        this.ui.populateShop((b)=>this.pickBottle(b)); this.ui.populateAchievements();
+        this.ui.updateMenuStats(); this.ui.populateAchievements();
       }
     });
 

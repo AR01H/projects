@@ -89,48 +89,51 @@ const ASSET_MANIFEST = {
   'env-bglayer':              'assets/img/env_bg_layer.png',
 
   // ---- OBSTACLES ----
-  'obstacle-fallenCane':      'assets/img/obstacles/obstacle-fallen-cane.png',
-  'obstacle-rollingCoconut':  'assets/img/obstacles/obstacle-rolling-coconut.png',
-  'obstacle-crate':           'assets/img/obstacles/obstacle-juice-crate.png',
-  'obstacle-puddle':          'assets/img/obstacles/obstacle-slippery-puddle.png',
-  'obstacle-coconutPile':     'assets/img/obstacles/obstacle-coconut-pile.png',
-  'obstacle-barrier':         'assets/img/obstacles/obstacle-wooden-barrier.png',
-  'obstacle-archway':         'assets/img/obstacles/obstacle-market-arch.png',
-  'obstacle-cart':            'assets/img/obstacles/obstacle-fruit-cart.png',
-  'obstacle-truck':           'assets/img/obstacles/obstacle-delivery-truck.png',
-  'obstacle-stall':           'assets/img/obstacles/obstacle-market-stall.png',
-  'obstacle-bottleStack':     'assets/img/obstacles/obstacle-bottle-stack.png',
+  'obstacle-fallenCane':      'obstacle-fallen-cane.svg',
+  'obstacle-rollingCoconut':  'obstacle-rolling-coconut.svg',
+  'obstacle-crate':           'obstacle-juice-crate.svg',
+  'obstacle-puddle':          'obstacle-slippery-puddle.svg',
+  'obstacle-coconutPile':     'obstacle-coconut-pile.svg',
+  'obstacle-barrier':         'obstacle-wooden-barrier.svg',
+  'obstacle-archway':         'obstacle-market-arch.svg',
+  'obstacle-cart':            'obstacle-fruit-cart.svg',
+  'obstacle-truck':           'obstacle-delivery-truck.svg',
+  'obstacle-stall':           'obstacle-market-stall.svg',
+  'obstacle-bottleStack':     'obstacle-bottle-stack.svg',
+  'obstacle-rocks':           'obstacle-rocks.svg',
+  'obstacle-sugarcaneCart':   'obstacle-sugarcane-cart.svg',
+  'obstacle-hole':            'obstacle-hole.svg',
 
   // ---- COLLECTIBLES ----
-  'collectible-cane-normal':  'assets/img/collectibles/collectible-cane.png',
-  'collectible-cane-fresh':   'assets/img/collectibles/collectible-cane-fresh.png',
-  'collectible-cane-golden':  'assets/img/collectibles/collectible-cane-golden.png',
-  'collectible-coin':         'assets/img/collectibles/collectible-coin.png',
-  'collectible-mango':        'assets/img/collectibles/collectible-fruit-mango.png',
-  'collectible-pineapple':    'assets/img/collectibles/collectible-fruit-pineapple.png',
-  'collectible-lemon':        'assets/img/collectibles/collectible-fruit-lemon.png',
-  'collectible-coconut':      'assets/img/collectibles/collectible-fruit-coconut.png',
-  'collectible-watermelon':   'assets/img/collectibles/collectible-fruit-watermelon.png',
+  'collectible-cane-normal':  'collectible-cane.svg',
+  'collectible-cane-fresh':   'collectible-cane-fresh.svg',
+  'collectible-cane-golden':  'collectible-cane-golden.svg',
+  'collectible-coin':         'collectible-coin.svg',
+  'collectible-mango':        'collectible-fruit-mango.svg',
+  'collectible-pineapple':    'collectible-fruit-pineapple.svg',
+  'collectible-lemon':        'collectible-fruit-lemon.svg',
+  'collectible-coconut':      'collectible-fruit-coconut.svg',
+  'collectible-watermelon':   'collectible-fruit-watermelon.svg',
 
   // ---- POWERUPS ----
-  'powerup-magnet':           'assets/img/powerups/powerup-cane-magnet.png',
-  'powerup-rush':             'assets/img/powerups/powerup-sugar-rush.png',
-  'powerup-shield':           'assets/img/powerups/powerup-juice-shield.png',
-  'powerup-golden':           'assets/img/powerups/powerup-golden-cane.png',
-  'powerup-blast':            'assets/img/powerups/powerup-fruit-boost.png', // Map blast to fruit-boost for consistency
-  'powerup-superjump':        'assets/img/powerups/powerup-super-jump.png',
-  'powerup-fruitBoost':       'assets/img/powerups/powerup-fruit-boost.png',
-  'powerup-secondWind':       'assets/img/powerups/powerup-second-wind.png',
-  'powerup-slowSugar':        'assets/img/powerups/powerup-slow-sugar.png',
-  'powerup-coinRain':         'assets/img/powerups/powerup-coin-rain.png',
+  'powerup-magnet':           'powerup-cane-magnet.svg',
+  'powerup-rush':             'powerup-sugar-rush.svg',
+  'powerup-shield':           'powerup-juice-shield.svg',
+  'powerup-golden':           'powerup-golden-cane.svg',
+  'powerup-blast':            'powerup-fruit-boost.svg', // Map blast to fruit-boost for consistency
+  'powerup-superjump':        'powerup-super-jump.svg',
+  'powerup-fruitBoost':       'powerup-fruit-boost.svg',
+  'powerup-secondWind':       'powerup-second-wind.svg',
+  'powerup-slowSugar':        'powerup-slow-sugar.svg',
+  'powerup-coinRain':         'powerup-coin-rain.svg',
 };
 
 /* Player physics — all values are in REF_HEIGHT virtual units so
    they scale identically across every screen size. */
 const PLAYER_PHYSICS = {
   gravity: 2600,          // virtual px / s^2
-  jumpVelocity: -800,     // initial upward velocity (negative = up)
-  superJumpVelocity: -1150,
+  jumpVelocity: -930,     // initial upward velocity (negative = up)
+  superJumpVelocity: -1300,
   fullHeight: 140,        // standing collision height
   fullWidth: 70,
   slideHeightFactor: 0.5, // collision height while sliding
@@ -219,6 +222,9 @@ const OBSTACLE_CONFIG = {
   truck:       { action:'lane',  label:'Delivery Truck', box:{bottom:0, height:210}, asset:'obstacle-truck' },
   stall:       { action:'lane',  label:'Market Stall',  box:{bottom:0,  height:210}, asset:'obstacle-stall' },
   bottleStack: { action:'lane',  label:'Bottle Stack',  box:{bottom:0,  height:210}, asset:'obstacle-bottleStack' },
+  rocks:       { action:'jump',  label:'Rock Pile',     box:{bottom:0,  height:76 }, asset:'obstacle-rocks' },
+  sugarcaneCart: { action:'lane', label:'Sugarcane Cart', box:{bottom:0, height:210}, asset:'obstacle-sugarcaneCart' },
+  hole:        { action:'jump',  label:'Hole',          box:{bottom:0,  height:40 }, asset:'obstacle-hole' },
 };
 
 /* ---------------- COLLECTIBLES ---------------- */
