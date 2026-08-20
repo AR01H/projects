@@ -20,13 +20,6 @@ defined( 'ABSPATH' ) || exit;
 
 <a class="skip-link screen-reader-text" href="#main"><?php esc_html_e( 'Skip to content', 'vintagesoul' ); ?></a>
 
-<?php
-$preheader_items = SettingsService::preheader();
-if ( ! empty( $preheader_items ) ) :
-	View::component( 'marquee/marquee', array( 'items' => $preheader_items, 'variant' => 'b', 'class' => 'preheader' ) );
-endif;
-?>
-
 <header class="site-header" role="banner">
 	<span class="site-header__bg roughness-both-b" aria-hidden="true"></span>
 	<div class="container site-header__inner">
@@ -63,9 +56,6 @@ endif;
 		</nav>
 		<div class="site-header__actions">
 			<?php
-
-			View::component( 'navigation/mobile-nav', array( 'items' => NavigationService::menu( 'primary' ) ) );
-
 			$header_cta = NavigationService::header_cta();
 			if ( '' !== $header_cta['label'] && '' !== $header_cta['route'] ) :
 				?>
@@ -79,6 +69,28 @@ endif;
 					<span class="header-cta__icon" aria-hidden="true"></span>
 				</a>
 			<?php endif; ?>
+<?php
+
+			View::component(
+				'navigation/mobile-nav',
+				array(
+					'items' => NavigationService::menu( 'primary' ),
+					'cta'   => $header_cta,
+				)
+			);
+
+			?>
 		</div>
 	</div>
 </header>
+
+<?php
+$preheader_items = SettingsService::preheader();
+if ( ! empty( $preheader_items ) ) :
+	// Rendered after </header> rather than before it - a post-header
+	// marquee strip, not a pre-header one - despite the method name still
+	// being SettingsService::preheader() (config/naming untouched, only
+	// where the markup is placed).
+	View::component( 'marquee/marquee', array( 'items' => $preheader_items, 'variant' => 'b', 'class' => 'preheader' ) );
+endif;
+?>

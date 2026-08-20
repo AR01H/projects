@@ -50,12 +50,15 @@
   right: 0;
   bottom: 0;
   z-index: var(--z-modal);
-  width: min(85vw, 340px);
+  width: min(92vw, 420px);
   overflow-y: auto;
+  overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
-  background: var(--color-bg);
+  background-color: var(--color-bg);
+  background-image: var(--texture-paper);
+  background-size: var(--texture-paper-size) var(--texture-paper-size);
   box-shadow: var(--shadow-lg);
-  padding: var(--space-2xl) var(--space-md) var(--space-md);
+  padding: var(--space-lg) var(--space-md) var(--space-md);
   transform: translateX(100%);
   transition: transform var(--transition-normal) var(--ease-standard);
 }
@@ -63,13 +66,76 @@
   transform: translateX(0);
 }
 
+/* Same hand-torn language as the header's bottom edge (cut-repeat-a.svg,
+   header.css), transposed into cut-repeat-a-vertical.svg for the drawer's
+   left edge - a CSS transform can reorient the element but not the axis a
+   tiled mask repeats along, so this is its own asset rather than a rotated
+   reuse. Sits just outside the drawer's own box rather than eating into
+   its padding. */
+.mobile-nav::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 10px;
+  transform: translateX(-100%);
+  background-color: var(--color-edge-tint);
+  pointer-events: none;
+  -webkit-mask-image: url("../../images/textures/cut/cut-repeat-a-vertical.svg");
+          mask-image: url("../../images/textures/cut/cut-repeat-a-vertical.svg");
+  -webkit-mask-size: 100% 96px;
+          mask-size: 100% 96px;
+  -webkit-mask-repeat: repeat-y;
+          mask-repeat: repeat-y;
+}
+
+/* Quiet corner flourish for the empty space below a short menu - purely
+   decorative, never competes with the paper texture or the list itself.
+   Bottom-left rather than bottom-right so it never sits under the
+   site-wide scroll-to-top button (scroll-top.css), which stays anchored
+   bottom-right of the viewport even while the drawer is open. */
+.mobile-nav__ornament {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 140px;
+  height: 140px;
+  background-color: var(--color-secondary);
+  opacity: 0.16;
+  pointer-events: none;
+  -webkit-mask-image: url("../../svg/decorations/corner-ornament.svg");
+  mask-image: url("../../svg/decorations/corner-ornament.svg");
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: bottom left;
+  mask-position: bottom left;
+}
+
 .mobile-nav__list {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
 }
 .mobile-nav__item {
-  border-bottom: var(--border-width) var(--border-style) var(--color-border);
-  @extend .border-line-b;
+  border-bottom: var(--border-width) var(--border-style) color-mix(in srgb, var(--color-secondary) 35%, transparent);
+  opacity: 0;
+  transform: translateX(16px);
+}
+.mobile-nav.is-open .mobile-nav__item {
+  animation: mobile-nav-item-in 420ms var(--ease-standard) forwards;
+}
+.mobile-nav.is-open .mobile-nav__item:nth-child(1) { animation-delay: 80ms; }
+.mobile-nav.is-open .mobile-nav__item:nth-child(2) { animation-delay: 140ms; }
+.mobile-nav.is-open .mobile-nav__item:nth-child(3) { animation-delay: 200ms; }
+.mobile-nav.is-open .mobile-nav__item:nth-child(4) { animation-delay: 260ms; }
+.mobile-nav.is-open .mobile-nav__item:nth-child(5) { animation-delay: 320ms; }
+.mobile-nav.is-open .mobile-nav__item:nth-child(6) { animation-delay: 380ms; }
+@keyframes mobile-nav-item-in {
+  to { opacity: 1; transform: translateX(0); }
 }
 .mobile-nav__row {
   display: flex;
@@ -80,7 +146,8 @@
 .mobile-nav__link {
   flex: 1 1 auto;
   display: block;
-  padding: var(--space-sm) 0;
+  padding: var(--space-sm) 0 var(--space-sm) var(--space-sm);
+  border-left: 3px solid transparent;
   color: var(--color-text);
 
   font-family: var(--font-family-nav);
@@ -88,10 +155,13 @@
   font-weight: var(--font-weight-bold);
   text-transform: uppercase;
   letter-spacing: 0.04em;
+  transition: color var(--transition-fast) var(--ease-standard), border-color var(--transition-fast) var(--ease-standard), padding-left var(--transition-fast) var(--ease-standard);
 }
 .mobile-nav__link:hover,
 .mobile-nav__link.is-active {
   color: var(--color-primary);
+  border-left-color: var(--color-secondary);
+  padding-left: calc(var(--space-sm) + var(--space-3xs));
 }
 
 .mobile-nav__toggle {
@@ -103,8 +173,10 @@
   border-radius: var(--radius-circle);
   transition: background-color var(--transition-fast) var(--ease-standard);
 }
-.mobile-nav__toggle:hover {
-  background: var(--color-bg-alt);
+.mobile-nav__toggle:hover,
+.mobile-nav__toggle:focus-visible,
+.mobile-nav__item.is-open .mobile-nav__toggle {
+  background: color-mix(in srgb, var(--color-secondary) 25%, transparent);
 }
 .mobile-nav__chevron {
   width: 14px;
@@ -147,6 +219,53 @@
 }
 .mobile-nav__sublist a:hover {
   color: var(--color-primary);
+}
+
+.mobile-nav__cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2xs);
+  margin-top: var(--space-lg);
+  padding: var(--space-sm);
+  background: var(--color-primary);
+  color: var(--color-primary-contrast);
+  border-radius: var(--radius-sm);
+  text-align: center;
+  transition: background-color var(--transition-fast) var(--ease-standard);
+}
+.mobile-nav__cta:hover {
+  background: color-mix(in srgb, var(--color-primary) 82%, black);
+  color: var(--color-primary-contrast);
+}
+.mobile-nav__cta-text {
+  display: flex;
+  flex-direction: column;
+  line-height: var(--line-height-tight);
+}
+.mobile-nav__cta-line1 {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.mobile-nav__cta-line2 {
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  opacity: 0.75;
+}
+.mobile-nav__cta-icon {
+  flex-shrink: 0;
+  width: 1.25em;
+  height: 1.25em;
+  background-color: currentColor;
+  -webkit-mask-image: url("../../svg/icons/calendar.svg");
+  mask-image: url("../../svg/icons/calendar.svg");
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
 }
 
 @media (max-width: 768px) {

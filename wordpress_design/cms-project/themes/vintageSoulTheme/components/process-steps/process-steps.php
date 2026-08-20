@@ -45,10 +45,17 @@ $presets = array( 'a', 'b', 'c' );
 					</div>
 					<span class="process-steps__index"><?php echo esc_html( str_pad( (string) ( $i + 1 ), 2, '0', STR_PAD_LEFT ) ); ?></span>
 				</div>
-			<?php endif; ?>
-			<h3 class="process-steps__title"><?php echo esc_html( $item['title'] ); ?></h3>
-			<?php if ( '' !== $item['desc'] ) : ?>
-				<p class="process-steps__desc"><?php echo esc_html( $item['desc'] ); ?></p>
+				<div class="process-steps__caption">
+					<h3 class="process-steps__title"><?php echo esc_html( $item['title'] ); ?></h3>
+					<?php if ( '' !== $item['desc'] ) : ?>
+						<p class="process-steps__desc"><?php echo esc_html( $item['desc'] ); ?></p>
+					<?php endif; ?>
+				</div>
+			<?php else : ?>
+				<h3 class="process-steps__title process-steps__title--plain"><?php echo esc_html( $item['title'] ); ?></h3>
+				<?php if ( '' !== $item['desc'] ) : ?>
+					<p class="process-steps__desc process-steps__desc--plain"><?php echo esc_html( $item['desc'] ); ?></p>
+				<?php endif; ?>
 			<?php endif; ?>
 		</li>
 	<?php endforeach; ?>

@@ -16,6 +16,16 @@
   --color-accent-alt: var(--color-brand-6);
   --color-background: var(--color-brand-2);
   --color-surface: var(--color-neutral-0);
+  /* Warm off-white for "paper" surfaces (cards, callouts) in vintage
+     contexts, where --color-surface's pure white reads as a cold modern
+     panel against this theme's cream background. Derived from the brand
+     cream rather than a new hex, so a brand swap carries it along. */
+  --color-surface-paper: color-mix(in srgb, var(--color-neutral-0) 76%, var(--color-brand-2));
+  /* Deeper, less washed-out than --color-background - used where a flat
+     fill sits directly against a photographic background (e.g. the header's
+     torn-edge cutout) and needs to read as a shadow/tint on that photo
+     rather than a visibly separate pale swatch. */
+  --color-edge-tint: color-mix(in srgb, var(--color-brand-2) 70%, var(--color-brand-4) 30%);
   --color-primary-contrast: var(--color-neutral-0);
   --color-primary-shine: var(--color-brand-1);
 

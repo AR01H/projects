@@ -4,7 +4,7 @@ defined( 'ABSPATH' ) || exit;
 
 use VintageSoul\Services\SettingsService;
 
-$context       = isset( $context ) && in_array( $context, array( 'header', 'footer' ), true ) ? $context : 'header';
+$context       = isset( $context ) && in_array( $context, array( 'header', 'footer', 'mobile-nav' ), true ) ? $context : 'header';
 $has_logo      = has_custom_logo();
 $fallback_path = SettingsService::logo_fallback( $context );
 $site_name     = get_bloginfo( 'name' );

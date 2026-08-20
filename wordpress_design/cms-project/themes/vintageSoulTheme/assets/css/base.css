@@ -19,9 +19,11 @@ html {
 body {
   margin: 0;
   background-color: var(--color-bg);
-  background-image: var(--texture-paper);
-
-  background-size: var(--texture-paper-size) var(--texture-paper-size);
+  background-image: url("../images/decorative/body-background.png"), var(--texture-paper);
+  background-repeat: no-repeat, repeat;
+  background-size: cover, var(--texture-paper-size) var(--texture-paper-size);
+  background-position: center, top left;
+  background-attachment: scroll, scroll;
   color: var(--color-text);
   font-family: var(--font-family-base);
   font-size: var(--font-size-md);

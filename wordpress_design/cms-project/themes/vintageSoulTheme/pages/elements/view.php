@@ -14,18 +14,77 @@ $data = ( new PageController() )->prepare();
 
 		<section class="section section--sm">
 			<h2>Hero</h2>
-			<p>From <code>components/hero/hero.php</code> + <code>assets/css/components/hero.css</code> - matching <code>data/content/hero.json</code>'s shape. The photo carries a sepia/contrast color grade (<code>filter: sepia() saturate() contrast()</code> on the <code>&lt;img&gt;</code>, composing with the Ken Burns zoom which is a separate <code>transform</code> animation on the same element - filter and transform don't fight each other) for a warmer, more vintage tone than a raw photo. Text sits directly on the photo, not a card - legibility comes from a dark bottom-weighted gradient on <code>.hero__media::after</code> plus a second radial scrim anchored specifically behind <code>.hero__content</code> and a text-shadow stack on every line. <code>title</code> cycles three photo-safe colors (<code>--color-primary-contrast</code>/<code>--color-secondary</code>/<code>--color-primary-shine</code>). The photo layer (<code>.hero__media</code>) is a clean full-width rectangle - no torn-edge mask on Hero specifically (removed on request) - just the vintage-grain vignette wash and one random corner accent (<code>tex-organic-*</code>/<code>tex-botanical-a</code>/<code>tex-stamp-a</code>). Content cascades in on load - title lines first, then subtitle/rule, then checks, then actions - and the photo carries both the Ken Burns zoom and real scroll-linked parallax (<code>assets/js/core/parallax.js</code>) independently. Reload this page a few times to see the random corner accent change.</p>
+			<p>From <code>components/hero/hero.php</code> + <code>assets/css/components/hero.css</code> + <code>assets/js/components/hero.js</code> - the full-width vintage editorial hero stage (the actual Home page hero, wired through <code>HomeController</code>/<code>data/content/hero.json</code> - see that JSON file's own <code>_source</code> note). One large framed photo/video per slide with small floating annotation cards around it. A card's <code>position</code> is deliberately not a fixed "top-left"/"bottom-right" keyword - it's a free <code>{ top|bottom, left|right }</code> percentage pair (see the component's own docblock), so cards land anywhere around the photo instead of only at a handful of exact slots; that same pair also decides which direction the card animates in from and which way its optional connector line points, so the motion still reads as intentional. <code>content.position</code> places the eyebrow/title/description independently of the cards. Below 768px this is a deliberately different composition, not a shrunk desktop one - media on top, copy below it, cards become a swipeable one-at-a-time scroll-snap row (same technique Certificate carousel below already uses, no JS needed for the swipe itself). <code>settings</code> controls autoplay/timing/pause-on-hover/touch/keyboard. The video slide (slide 2 below) plays to its own end and advances on THAT instead of a fixed timer.</p>
 			<?php
 			View::component(
 				'hero/hero',
 				array(
-					'title'   => 'Watch It. Taste It. Love It.',
-					'subtitle' => 'Fresh Sugarcane Juice',
-					'checks'  => array( 'Freshly Pressed', 'Naturally Refreshing', 'Always Made With Care' ),
-					'image'   => 'https://images.unsplash.com/photo-1622597467836-f3285f2131b8?w=1200&q=72&auto=format&fit=crop',
-					'buttons' => array(
-						array( 'label' => 'Explore More', 'icon' => '📍', 'route' => 'game', 'style' => 'ghost' ),
-						array( 'label' => 'Book Us For Your Event', 'icon' => '📅', 'route' => 'contact' ),
+					'id'       => 'el-hero',
+					'settings' => array(
+						'autoplay'       => true,
+						'autoplay_delay' => 5000,
+						'pause_on_hover' => true,
+						'touch_enabled'  => true,
+						'keyboard_enabled' => true,
+					),
+					'slides'   => array(
+						array(
+							'media'   => array(
+								'type' => 'image',
+								'src'  => 'https://images.unsplash.com/photo-1622597467836-f3285f2131b8?w=1200&q=72&auto=format&fit=crop',
+								'alt'  => 'Sugarcane juice being pressed',
+							),
+							'content' => array(
+								'eyebrow'     => 'Fresh Sugarcane Juice',
+								'title'       => 'Watch It. Taste It. Love It.',
+								'description' => 'Freshly pressed. Naturally refreshing. Always made with care.',
+								'position'    => 'bottom-left',
+								'buttons'     => array(
+									array( 'label' => 'Explore More', 'icon' => '📍', 'route' => 'game', 'style' => 'ghost' ),
+									array( 'label' => 'Book Us For Your Event', 'icon' => '📅', 'route' => 'contact' ),
+								),
+							),
+							'cards'   => array(
+								array( 'number' => '01', 'title' => 'Fresh Cane', 'text' => 'Pressed fresh for every glass.', 'position' => array( 'top' => '5%', 'left' => '4%' ), 'connector' => true ),
+								array( 'number' => '02', 'title' => 'Traditional Press', 'text' => 'The good old way of making it.', 'position' => array( 'top' => '5%', 'right' => '4%' ), 'connector' => false ),
+							),
+						),
+						array(
+							'media'   => array(
+								'type'   => 'video',
+								'src'    => 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',
+								'poster' => 'https://images.unsplash.com/photo-1560493676-04071c5f467b?w=1200&q=72&auto=format&fit=crop',
+								'alt'    => 'From our farm to your glass',
+							),
+							'content' => array(
+								'eyebrow'     => 'From Our Farm',
+								'title'       => 'To Your Glass',
+								'description' => 'Video slide - plays to its own end, no fixed timer.',
+								'position'    => 'top-right',
+								'buttons'     => array( array( 'label' => 'Watch More', 'route' => 'game', 'style' => 'ghost' ) ),
+							),
+							'cards'   => array(
+								array( 'number' => '01', 'title' => 'Freshly Served', 'text' => 'Made and served while you watch.', 'position' => array( 'top' => '8%', 'left' => '4%' ), 'connector' => false ),
+								array( 'number' => '02', 'title' => 'Made With Care', 'text' => 'Every glass prepared with attention.', 'position' => array( 'bottom' => '8%', 'left' => '38%' ), 'connector' => false ),
+							),
+						),
+						array(
+							'media'   => array(
+								'type' => 'image',
+								'src'  => 'https://images.unsplash.com/photo-1546173159-315724a31696?w=1200&q=72&auto=format&fit=crop',
+								'alt'  => 'A glass of sugarcane juice',
+							),
+							'content' => array(
+								'eyebrow'     => 'Watch It, Taste It',
+								'title'       => 'Love It',
+								'description' => 'More than a drink - it\'s a memory.',
+								'position'    => 'bottom-right',
+								'buttons'     => array( array( 'label' => 'Visit Us', 'route' => 'contact' ) ),
+							),
+							'cards'   => array(
+								array( 'number' => '01', 'title' => '100% Natural', 'text' => 'Nothing added, nothing to hide.', 'position' => array( 'top' => '8%', 'left' => '40%' ), 'connector' => false ),
+							),
+						),
 					),
 				)
 			);
@@ -79,7 +138,7 @@ $data = ( new PageController() )->prepare();
 				<li><strong>Sepia fade</strong> - opacity + <code>filter: sepia(65%) brightness(0.65)</code> clearing to natural colour over 1200ms, the slowest reveal in the library. The site footer only - reads as the page settling into an aged photograph rather than a hard cut to "here's the footer."</li>
 				<li><strong>Generic text rise / button pop</strong> - <code>.container &gt; h1/h2/h3/p</code> and <code>.container &gt; .btn/.badge</code> (direct children only, so text/buttons already inside an animating card or banner don't double-animate) get a plain rise or scale-pop - the catch-all for loose copy that isn't part of a more specific component.</li>
 			</ul>
-			<p>No flash-of-hidden-content: every hidden-by-default rule above is gated behind an <code>html.js</code> class set by a tiny synchronous inline script at the very top of <code>header.php</code>'s <code>&lt;head&gt;</code>, so it's present before anything in <code>&lt;body&gt;</code> paints. JS disabled, or <code>IntersectionObserver</code> unsupported, both leave content fully visible from the start instead of stuck invisible. Respects <code>prefers-reduced-motion</code> throughout. To add a new component, add its class to BOTH the relevant rule in <code>animations.css</code> and the <code>SELECTOR</code> string in <code>reveal.js</code> - they're not shared since one's CSS and the other's JS. The Hero and Hero carousel above don't use this system at all - they're above the fold, so their own entrance (a fixed page-load cascade for Hero, an <code>.is-active</code>-triggered one that replays per slide for Hero carousel) fires immediately instead of waiting on scroll position. Hero also gets real scroll-linked parallax (<code>assets/js/core/parallax.js</code> - a rAF-throttled scroll listener nudging <code>.hero__media</code>'s own <code>translateY</code>, independent of the Ken Burns zoom already on the <code>&lt;img&gt;</code> itself, composing into a combined push-in-with-depth feel) - not IntersectionObserver-driven, since it needs to track scroll position continuously rather than fire once.</p>
+			<p>No flash-of-hidden-content: every hidden-by-default rule above is gated behind an <code>html.js</code> class set by a tiny synchronous inline script at the very top of <code>header.php</code>'s <code>&lt;head&gt;</code>, so it's present before anything in <code>&lt;body&gt;</code> paints. JS disabled, or <code>IntersectionObserver</code> unsupported, both leave content fully visible from the start instead of stuck invisible. Respects <code>prefers-reduced-motion</code> throughout. To add a new component, add its class to BOTH the relevant rule in <code>animations.css</code> and the <code>SELECTOR</code> string in <code>reveal.js</code> - they're not shared since one's CSS and the other's JS. Hero and Hero carousel above don't use this system at all - they're above the fold, so their own entrance (an <code>.is-active</code>-triggered cascade that replays every time a slide becomes active, on both) fires immediately instead of waiting on scroll position.</p>
 		</section>
 
 		<section class="section section--sm">
@@ -297,7 +356,7 @@ $data = ( new PageController() )->prepare();
 
 		<section class="section section--sm">
 			<h2>Banner</h2>
-			<p>From <code>components/banner/banner.php</code> + <code>assets/css/components/banner.css</code> - a full-width promo/CTA band (tag + title + sub + image + buttons), matching <code>data/content/cta.json</code>'s shape (also the reference design's "Direct Enquiry"/closing-CTA and "Make It A Combo!" bands). Not a page hero - a reusable band any page's content can drop in. <code>title</code> accepts safe HTML for inline emphasis (<code>&lt;em&gt;</code>); <code>variant: 'reverse'</code> flips the image to the left. The panel carries <code>tex-paper-aged-a</code> (surface) on <code>.banner</code> and <code>tex-ink-brush-a</code> (underline accent) on <code>.banner__content</code>. <code>tex-border-vintage-a</code> was here too but got dropped after actually rendering it on this wide a panel - see <code>textures.css</code>'s own note on why that mask only holds up on roughly-square elements.</p>
+			<p>From <code>components/banner/banner.php</code> + <code>assets/css/components/banner.css</code> - a full-width promo/CTA band (tag + title + sub + image + buttons), matching <code>data/content/cta.json</code>'s shape (also the reference design's "Direct Enquiry"/closing-CTA and "Make It A Combo!" bands). Not a page hero - a reusable band any page's content can drop in. <code>title</code> accepts safe HTML for inline emphasis (<code>&lt;em&gt;</code>); <code>variant: 'reverse'</code> flips the image to the left. The panel carries <code>tex-paper-aged-a</code> (surface) on <code>.banner</code> and <code>tex-ink-brush-a</code> (underline accent) on <code>.banner__content</code>. <code>tex-border-vintage-a</code> was here too but got dropped after actually rendering it on this wide a panel - see <code>textures.css</code>'s own note on why that mask only holds up on roughly-square elements. <code>video</code> is a newer, optional param (the first example below uses it) - when set, it replaces the plain <code>img</code> with a muted looping <code>video</code>, <code>image</code> doubling as its poster, same convention <code>components/hero-carousel</code> already used; existing image-only callers (Franchise/History pages) are untouched. The media panel now also carries the same vintage colour grade + film grain as the hero photo (<code>assets/images/textures/grain/grain-c.svg</code>) plus a small cane-ribbon corner flourish (<code>--tex-cane-ribbon-image</code>, mirrored via <code>variant: 'reverse'</code>) - one consistent vintage-photograph language across both components instead of a plain modern photo here and a graded one there.</p>
 			<?php
 			View::component(
 				'banner/banner',
@@ -306,6 +365,7 @@ $data = ( new PageController() )->prepare();
 					'title'   => 'Something New, <em>Made Today</em>',
 					'sub'     => 'Get in touch, or find us in person.',
 					'image'   => 'https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=800&q=72&auto=format&fit=crop',
+					'video'   => VINTAGESOUL_URI . '/assets/videos/hero_bg.mp4',
 					'buttons' => array(
 						array( 'label' => 'Get In Touch', 'route' => 'contact' ),
 						array( 'label' => 'See More', 'route' => 'game', 'style' => 'ghost' ),
@@ -329,7 +389,7 @@ $data = ( new PageController() )->prepare();
 				?>
 			</div>
 			<div style="margin-top: var(--space-md);">
-				<p><code>items</code> (a checklist between sub and buttons - <code>data/content/franchise-teaser.json</code>'s icon+title shape, or a plain string array like <code>data/content/hero.json</code>'s "checks"):</p>
+				<p><code>items</code> (a checklist between sub and buttons - <code>data/content/franchise-teaser.json</code>'s icon+title shape, or a plain string array):</p>
 				<?php
 				View::component(
 					'banner/banner',

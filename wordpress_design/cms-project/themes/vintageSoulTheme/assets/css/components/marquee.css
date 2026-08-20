@@ -25,7 +25,7 @@
 }
 
 .marquee.preheader {
-  padding-block: var(--space-3xs);
+  padding-block: var(--space-2xs);
   font-size: var(--font-size-xs);
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -61,13 +61,35 @@
   position: relative;
   z-index: 0;
   color: var(--color-primary-contrast);
-  background-image: linear-gradient(135deg, var(--color-primary), var(--color-secondary) 70%);
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  -webkit-mask-size: 100% 100%;
-  mask-size: 100% 100%;
-  -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 60' preserveAspectRatio='none'><filter id='mqb' x='0%25' y='0%25' width='100%25' height='100%25'><feTurbulence type='fractalNoise' baseFrequency='0.015 0.06' numOctaves='3' seed='87' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='4' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='4' y='4' width='392' height='52' fill='%23fff' filter='url(%23mqb)'/></svg>");
-          mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 60' preserveAspectRatio='none'><filter id='mqb' x='0%25' y='0%25' width='100%25' height='100%25'><feTurbulence type='fractalNoise' baseFrequency='0.015 0.06' numOctaves='3' seed='87' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='4' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='4' y='4' width='392' height='52' fill='%23fff' filter='url(%23mqb)'/></svg>");
+  /* Frosted-glass surface - same translucent-tint-plus-blur language as the
+     nav dropdown and process-steps cards (navigation.css/process-steps.css)
+     - rather than an opaque fill, so the page's own paper texture shows
+     through it softly instead of the strip reading as a separate solid
+     band under the header. One flat tone across the whole strip rather
+     than a gradient. */
+  background-color: color-mix(in srgb, var(--color-accent-alt) 65%, transparent);
+  backdrop-filter: blur(8px) saturate(160%);
+  -webkit-backdrop-filter: blur(8px) saturate(160%);
+  /* Fixed-size tiled torn edges (same assets as the header's bottom edge and
+     the nav dropdown) rather than one 400x60 mask stretched to 100% 100%.
+     Stretched across a full-width, ~30px-tall strip that mask squashes
+     vertically and smears horizontally, which is what made the cut read as
+     a distorted band instead of torn paper. Tiling keeps every tooth the
+     same physical size no matter how wide the viewport gets. */
+  -webkit-mask-image:
+    url("../../images/textures/cut/cut-repeat-a-top.svg"),
+    linear-gradient(#fff, #fff),
+    url("../../images/textures/cut/cut-repeat-a.svg");
+          mask-image:
+    url("../../images/textures/cut/cut-repeat-a-top.svg"),
+    linear-gradient(#fff, #fff),
+    url("../../images/textures/cut/cut-repeat-a.svg");
+  -webkit-mask-repeat: repeat-x, no-repeat, repeat-x;
+          mask-repeat: repeat-x, no-repeat, repeat-x;
+  -webkit-mask-size: 80px 6px, 100% calc(100% - 12px), 80px 6px;
+          mask-size: 80px 6px, 100% calc(100% - 12px), 80px 6px;
+  -webkit-mask-position: top left, 0 6px, bottom left;
+          mask-position: top left, 0 6px, bottom left;
 }
 .marquee--b::after {
   content: "";
@@ -80,6 +102,11 @@
   background-repeat: repeat;
   background-size: 110px 110px;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><filter id='mqt'><feTurbulence type='fractalNoise' baseFrequency='0.06' numOctaves='4' seed='85' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 0.1  0 0 0 0 0.07  0 0 0 0 0.03  0 0 0 1 0'/></filter><rect width='100%25' height='100%25' filter='url(%23mqt)'/></svg>");
+}
+@supports not (backdrop-filter: blur(1px)) {
+  .marquee--b {
+    background-color: var(--color-accent-alt);
+  }
 }
 
 .marquee--c {

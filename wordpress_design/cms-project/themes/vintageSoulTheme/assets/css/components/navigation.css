@@ -76,20 +76,69 @@
   position: absolute;
   top: 100%;
   left: 50%;
-  min-width: 180px;
-  margin: 0;
+  min-width: 200px;
+  margin: var(--space-3xs) 0 0;
   padding: var(--space-2xs);
+  overflow: hidden;
 
-  background: var(--color-background);
-  border: var(--border-width) var(--border-style) color-mix(in srgb, var(--color-secondary) 45%, transparent);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-md);
+  /* Same frosted-glass language as the process-steps captions/badges
+     (process-steps.css) - a translucent tint plus blur, rather than an
+     opaque paper fill, so it reads as one consistent "glass" treatment
+     across the theme instead of two different card styles. */
+  background-color: color-mix(in srgb, var(--color-edge-tint) 55%, transparent);
+  backdrop-filter: blur(10px) saturate(160%);
+  -webkit-backdrop-filter: blur(10px) saturate(160%);
+  border: var(--border-width) var(--border-style) var(--color-secondary);
+  border-radius: 0;
+  box-shadow: var(--shadow-lg);
+  /* Hand-torn top/bottom instead of a rounded rectangle - matches the
+     header's own torn bottom edge and the drawer's torn left edge
+     (header.css / mobile-nav.css). Three mask layers rather than one
+     stretched image: cut-repeat-a-top/-a tile at a fixed 10px regardless
+     of the menu's height (item count varies), with a plain solid layer
+     filling everything between them - a single mask stretched to the
+     whole box would smear the tooth shapes on a tall multi-item menu. */
+  -webkit-mask-image:
+    url("../../images/textures/cut/cut-repeat-a-top.svg"),
+    linear-gradient(#fff, #fff),
+    url("../../images/textures/cut/cut-repeat-a.svg");
+          mask-image:
+    url("../../images/textures/cut/cut-repeat-a-top.svg"),
+    linear-gradient(#fff, #fff),
+    url("../../images/textures/cut/cut-repeat-a.svg");
+  -webkit-mask-repeat: repeat-x, no-repeat, repeat-x;
+          mask-repeat: repeat-x, no-repeat, repeat-x;
+  -webkit-mask-size: 80px 10px, 100% calc(100% - 20px), 80px 10px;
+          mask-size: 80px 10px, 100% calc(100% - 20px), 80px 10px;
+  -webkit-mask-position: top left, 0 10px, bottom left;
+          mask-position: top left, 0 10px, bottom left;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
   transform: translate(-50%, 8px);
   transition: opacity var(--transition-fast) var(--ease-standard), transform var(--transition-fast) var(--ease-standard), visibility 0s linear var(--transition-fast);
   z-index: var(--z-dropdown);
+}
+.nav__submenu::before {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  /* --color-surface-paper (a pale white/brand-2 mix meant for cards on a
+     flat page bg) reads noticeably washed-out against the richer photo
+     backgrounds now behind the page and header (base.css/header.css) -
+     --color-edge-tint is the warmer token already introduced for that. */
+  background-color: var(--color-edge-tint);
+  border-top: var(--border-width) var(--border-style) var(--color-secondary);
+  border-left: var(--border-width) var(--border-style) var(--color-secondary);
+  transform: translateX(-50%) rotate(45deg);
+}
+@supports not (backdrop-filter: blur(1px)) {
+  .nav__submenu {
+    background-color: var(--color-edge-tint);
+  }
 }
 .nav__item--has-children:hover .nav__submenu,
 .nav__item--has-children:focus-within .nav__submenu {
@@ -104,8 +153,8 @@
 }
 .nav__submenu-link {
   display: block;
-  padding: var(--space-2xs) var(--space-sm);
-  border-radius: var(--radius-sm);
+  padding: var(--space-xs) var(--space-sm);
+  border-left: 3px solid transparent;
   color: var(--color-text);
 
   font-family: var(--font-family-nav);
@@ -113,12 +162,17 @@
   font-weight: var(--font-weight-medium);
   letter-spacing: 0.01em;
   white-space: nowrap;
-  transition: background-color var(--transition-fast) var(--ease-standard), color var(--transition-fast) var(--ease-standard);
+  transition: background-color var(--transition-fast) var(--ease-standard), color var(--transition-fast) var(--ease-standard), border-color var(--transition-fast) var(--ease-standard), padding-left var(--transition-fast) var(--ease-standard);
+}
+.nav__submenu li + li {
+  border-top: var(--border-width) var(--border-style) color-mix(in srgb, var(--color-secondary) 30%, transparent);
 }
 .nav__submenu-link:hover,
 .nav__submenu-link:focus-visible {
   background: color-mix(in srgb, var(--color-secondary) 14%, transparent);
   color: var(--color-primary);
+  border-left-color: var(--color-secondary);
+  padding-left: calc(var(--space-sm) + var(--space-3xs));
 }
 
 @media (prefers-reduced-motion: reduce) {

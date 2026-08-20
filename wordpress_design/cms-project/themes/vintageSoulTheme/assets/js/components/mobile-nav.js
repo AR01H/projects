@@ -52,6 +52,7 @@
 		toggle.setAttribute('aria-expanded', 'true');
 		toggle.setAttribute('aria-label', toggle.dataset.labelClose || 'Close menu');
 		document.body.style.overflow = 'hidden';
+		document.body.classList.add('has-open-drawer');
 
 		var focusable = dom.qsa(FOCUSABLE, drawer);
 		if (focusable.length) focusable[0].focus();
@@ -66,6 +67,7 @@
 		toggle.setAttribute('aria-label', toggle.dataset.labelOpen || 'Open menu');
 		drawer.inert = true;
 		document.body.style.overflow = '';
+		document.body.classList.remove('has-open-drawer');
 		closeAllSubmenus();
 
 		if (lastFocused && typeof lastFocused.focus === 'function') {

@@ -315,20 +315,5 @@
   position: relative;
   z-index: 0;
 }
-.tex-cane-ribbon-a::after {
-  content: "";
-  position: absolute;
-  top: var(--space-sm);
-  left: 6%;
-  width: 220px;
-  max-width: 55%;
-  aspect-ratio: 1750 / 919;
-  z-index: 2;
-  pointer-events: none;
-  background-image: var(--tex-cane-ribbon-image);
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center;
-  transform: rotate(-4deg);
-}
+
 

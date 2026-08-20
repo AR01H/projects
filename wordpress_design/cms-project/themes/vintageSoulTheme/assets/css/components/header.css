@@ -6,34 +6,86 @@
   z-index: var(--z-header);
 }
 
+/* Carries `roughness-both-b` (shape.css) in header.php - a torn top/bottom
+   paper edge via mask-image. Anything added HERE (border, ::before/::after)
+   is subject to that same mask, so the masthead rule below lives on
+   .site-header__inner instead, where the mask can't eat it. The paper
+   grain, on the other hand, is meant to be torn along with the edge - so
+   it belongs on this element. */
 .site-header__bg {
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: var(--color-background);
+  /* Transparent on purpose - the flat --color-background fill used to sit
+     visibly off-tone against body's own background-image (base.css), a
+     seam right at the header's torn edge. Leaving this layer see-through
+     lets the same body background paint underneath, so the header's tone
+     can never drift from the page again; the grain overlay below is what
+     still gives the header its own "separate paper" texture on top of it. */
+  background-color: transparent;
+  background-image: var(--texture-paper);
+  background-size: var(--texture-paper-size) var(--texture-paper-size);
   box-shadow: var(--shadow-sm);
   pointer-events: none;
 }
 .site-header__inner {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-md);
   padding-block: var(--space-xs);
 }
+
 .site-header__actions {
   display: flex;
   align-items: center;
   gap: var(--space-sm);
   flex-shrink: 0;
+  margin-left: auto;
   opacity: 0;
   animation: header-fade-in 500ms var(--ease-standard) forwards;
   animation-delay: 500ms;
 }
 
+.logo--header {
+  position: absolute;
+  left: var(--space-md);
+  top: calc(95%);
+  z-index: 1;
+}
 .site-header .logo--header {
   opacity: 0;
-  animation: header-fade-in 500ms var(--ease-standard) forwards;
+  transform: translateY(calc(-50% - 100px));
+  animation: header-plank-drop 700ms var(--ease-standard) forwards;
+  animation-delay: 100ms;
+}
+@keyframes header-plank-drop {
+  to { opacity: 1; transform: translateY(-50%); }
+}
+
+/* The plank overflows .site-header__inner's own box on purpose (it's
+   bigger than the header bar), and the mobile drawer is rendered as a
+   descendant of .site-header__actions so it can sit next to the CTA
+   button in source order - so once the drawer is open, the still-visible
+   plank paints above it near the top of the screen despite the drawer's
+   much higher z-index. Simplest fix: fade the plank out for as long as
+   the drawer is open, instead of fighting the stacking context. */
+.site-header:has(.mobile-nav.is-open) .logo--header,
+body.has-open-drawer .site-header .logo--header {
+  /* The entrance animation below fills forwards (opacity: 1 stays applied
+     after it finishes), and a CSS animation's filled end value always
+     outranks a normal declaration in the cascade regardless of selector
+     specificity - opacity: 0 here was silently losing to it. Cancelling
+     the animation on this same rule is what lets the opacity win. */
+  animation: none;
+  opacity: 0;
+  transition: opacity var(--transition-fast) var(--ease-standard);
+  pointer-events: none;
+}
+
+.site-header .nav {
+  margin-left: 190px;
 }
 
 .site-header .nav__item {
@@ -115,7 +167,7 @@
   }
 
   .site-header__actions {
-    flex-direction: column;
+    /* flex-direction: column; */
     gap: var(--space-3xs);
   }
 
@@ -126,9 +178,17 @@
     justify-content: center;
     background: transparent;
     color: var(--color-text);
+    /* roughness-a (header.php, shape.css) masks a wide 200:60 pill shape -
+       squished into this 40x40 icon button it stretches unevenly and reads
+       as a dark, misshapen smudge instead of a clean edge. A plain circle
+       matches the toggle button right next to it (mobile-nav.css) anyway. */
+    -webkit-mask-image: none;
+    mask-image: none;
+    border-radius: var(--radius-circle);
   }
-  .header-cta-button:hover {
-    background: var(--color-bg-alt);
+  .header-cta-button:hover,
+  .header-cta-button:focus-visible {
+    background: color-mix(in srgb, var(--color-secondary) 25%, transparent);
   }
   .header-cta__text {
     display: none;

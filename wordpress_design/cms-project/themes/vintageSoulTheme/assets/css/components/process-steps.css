@@ -2,8 +2,8 @@
 
 .process-steps {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: var(--space-md);
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-xl) var(--space-lg);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -25,41 +25,51 @@
   width: 100%;
   height: 100%;
 }
-.process-steps__media::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background-repeat: no-repeat;
-  background-image:
-    repeating-linear-gradient(to right, var(--color-border) 0, var(--color-border) 8px, transparent 8px, transparent 10px, var(--color-border) 10px, var(--color-border) 15px, transparent 15px, transparent 16px, var(--color-border) 16px, var(--color-border) 27px, transparent 27px, transparent 30px),
-    repeating-linear-gradient(to right, var(--color-border) 0, var(--color-border) 8px, transparent 8px, transparent 10px, var(--color-border) 10px, var(--color-border) 15px, transparent 15px, transparent 16px, var(--color-border) 16px, var(--color-border) 27px, transparent 27px, transparent 30px),
-    repeating-linear-gradient(to bottom, var(--color-border) 0, var(--color-border) 8px, transparent 8px, transparent 10px, var(--color-border) 10px, var(--color-border) 15px, transparent 15px, transparent 16px, var(--color-border) 16px, var(--color-border) 27px, transparent 27px, transparent 30px),
-    repeating-linear-gradient(to bottom, var(--color-border) 0, var(--color-border) 8px, transparent 8px, transparent 10px, var(--color-border) 10px, var(--color-border) 15px, transparent 15px, transparent 16px, var(--color-border) 16px, var(--color-border) 27px, transparent 27px, transparent 30px);
-  background-position: top left, bottom left, top left, top right;
-  background-size:
-    100% calc(var(--border-width) * 2),
-    100% calc(var(--border-width) * 2),
-    calc(var(--border-width) * 2) 100%,
-    calc(var(--border-width) * 2) 100%;
-}
 .process-steps__index {
   position: absolute;
   top: 0;
   right: var(--space-2xs);
-  z-index: 1;
+  z-index: 2;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   border-radius: var(--radius-circle);
-  background: var(--color-primary);
-  color: var(--color-primary-contrast);
+  background: color-mix(in srgb, var(--color-neutral-0) 30%, transparent);
+  backdrop-filter: blur(6px) saturate(160%);
+  -webkit-backdrop-filter: blur(6px) saturate(160%);
+  border: var(--border-width) var(--border-style) color-mix(in srgb, var(--color-neutral-0) 55%, transparent);
+  box-shadow: var(--shadow-sm);
+  color: var(--color-primary);
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-bold);
-  box-shadow: var(--shadow-sm);
 }
+
+/* .process-steps__media's sticker child is rotated a couple degrees with
+   its own irregular torn-edge mask (memory-card.css) - a glass panel
+   floated up over its straight bottom edge reads as a caption overlapping
+   the photo without having to fight that rotation/mask for a clean crop. */
+.process-steps__caption {
+  position: relative;
+  z-index: 1;
+  margin-top: calc(-1 * var(--space-lg));
+  margin-inline: var(--space-md);
+  padding: var(--space-sm) var(--space-md);
+  background: color-mix(in srgb, var(--color-surface-paper) 70%, transparent);
+  backdrop-filter: blur(10px) saturate(160%);
+  -webkit-backdrop-filter: blur(10px) saturate(160%);
+  border: var(--border-width) var(--border-style) color-mix(in srgb, var(--color-neutral-0) 60%, transparent);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md);
+}
+@supports not (backdrop-filter: blur(1px)) {
+  .process-steps__index,
+  .process-steps__caption {
+    background: var(--color-surface-paper);
+  }
+}
+
 .process-steps__title {
   margin: 0 0 var(--space-3xs);
   font-size: var(--font-size-lg);
@@ -71,4 +81,11 @@
   margin: 0;
   color: var(--color-text-muted);
   font-size: var(--font-size-sm);
+}
+
+/* No-image fallback (process-steps.php) has no sticker for the caption to
+   float over, so it stays a plain block instead of the glass treatment. */
+.process-steps__title--plain,
+.process-steps__desc--plain {
+  margin-top: 0;
 }

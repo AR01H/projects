@@ -471,6 +471,7 @@ section{
   font-style: italic; 
   font-weight: 500;
   display: inline;
+  font-size: clamp(1.9rem, 4vw, 2.5rem);
 }
 .hero-title .hero-sub-line {
   display: block;

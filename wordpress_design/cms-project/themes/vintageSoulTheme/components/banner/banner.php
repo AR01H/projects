@@ -9,6 +9,7 @@ $tag       = isset( $tag ) ? (string) $tag : '';
 $title     = isset( $title ) ? (string) $title : '';
 $sub       = isset( $sub ) ? (string) $sub : '';
 $image     = isset( $image ) ? (string) $image : '';
+$video     = isset( $video ) ? (string) $video : ''; // optional - image doubles as its poster, same convention hero-carousel already uses
 $buttons   = ( isset( $buttons ) && is_array( $buttons ) ) ? $buttons : array();
 $is_reverse = isset( $variant ) && 'reverse' === $variant;
 $variant   = $is_reverse ? ' banner--reverse' : '';
@@ -89,7 +90,19 @@ if ( '' === $title && '' === $sub ) {
 			</div>
 		<?php endif; ?>
 	</div>
-	<?php if ( '' !== $image ) : ?>
+	<?php if ( '' !== $video ) : ?>
+		<div class="banner__media hover-zoom">
+			<video
+				src="<?php echo esc_url( $video ); ?>"
+				<?php echo ( '' !== $image ) ? 'poster="' . esc_url( $image ) . '"' : ''; ?>
+				muted
+				loop
+				playsinline
+				autoplay
+				preload="metadata"
+			></video>
+		</div>
+	<?php elseif ( '' !== $image ) : ?>
 		<div class="banner__media hover-zoom">
 			<img src="<?php echo esc_url( $image ); ?>" alt="" loading="lazy">
 		</div>

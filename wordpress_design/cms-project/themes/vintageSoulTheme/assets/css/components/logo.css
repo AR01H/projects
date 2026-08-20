@@ -39,9 +39,32 @@
   letter-spacing: 0.02em;
 }
 
+.logo--header {
+  padding: var(--space-2xs) var(--space-sm);
+  background-image: url("../../images/decorative/wooden-plank-riveted.png");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+.logo--header::before,
+.logo--header::after {
+  content: "";
+  position: absolute;
+  top: -18px;
+  width: 1px;
+  height: 18px;
+  background: color-mix(in srgb, var(--color-neutral-900) 55%, transparent);
+  pointer-events: none;
+}
+.logo--header::before { left: 18%; }
+.logo--header::after { right: 18%; }
 .logo--header img,
 .logo--header .custom-logo-link img {
-  height: 64px;
+  height: 128px;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5));
+}
+.logo--header .logo__text {
+  color: var(--color-neutral-0);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
 }
 .logo--header .logo__icon {
   width: 2em;
@@ -56,10 +79,34 @@
   height: 120px;
 }
 
+/* Small brand mark for the drawer's own top (mobile-nav.php) - the header's
+   .logo--header plank is deliberately oversized and now fades out while the
+   drawer is open (header.css), so the drawer needed its own modest one
+   instead of being left unbranded. */
+.logo--mobile-nav {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  margin-bottom: var(--space-lg);
+}
+.logo--mobile-nav img,
+.logo--mobile-nav .custom-logo-link img {
+  height: clamp(100px, 10vw, 20vw);
+}
+.logo--mobile-nav .logo__icon {
+  width: 1.75em;
+  height: 1.75em;
+}
+.logo--mobile-nav .logo__text {
+  font-size: var(--font-size-md);
+}
+
 @media (max-width: 768px) {
   .logo--header img,
+  .logo--header .custom-logo-link img {
+    height: 92px;
+  }
   .logo--footer img,
-  .logo--header .custom-logo-link img,
   .logo--footer .custom-logo-link img {
     height: 52px;
   }

@@ -78,6 +78,7 @@ return array(
 		'ui-scroll-top'  => 'assets/js/components/scroll-top.js',
 		'ui-faq'         => 'assets/js/components/faq.js',
 		'ui-gallery'     => 'assets/js/components/gallery.js',
+		'ui-hero'             => 'assets/js/components/hero.js',
 		'ui-hero-carousel'    => 'assets/js/components/hero-carousel.js',
 		'ui-video-testimonial-card'     => 'assets/js/components/video-testimonial-card.js',
 		'ui-video-testimonial-carousel' => 'assets/js/components/video-testimonial-carousel.js',
