@@ -1,6 +1,7 @@
 <?php
 
 use VintageSoul\Controllers\HistoryController;
+use VintageSoul\Services\RouteService;
 use VintageSoul\Support\View;
 
 defined( 'ABSPATH' ) || exit;
@@ -24,17 +25,24 @@ $closing            = $data['closing'];
 ?>
 
 <?php if ( ! empty( $hero ) ) : ?>
-	<?php
-	View::component(
-		'hero/hero',
-		array(
-			'title'       => (string) ( $hero['title'] ?? '' ),
-			'subtitle'    => (string) ( $hero['tag'] ?? '' ),
-			'description' => (string) ( $hero['sub'] ?? '' ),
-			'image'       => (string) ( $hero['image'] ?? '' ),
-		)
-	);
-	?>
+	<header class="page-hero">
+		<?php if ( ! empty( $hero['image'] ) ) : ?>
+			<div class="page-hero__media">
+				<img src="<?php echo esc_url( (string) $hero['image'] ); ?>" alt="" loading="eager">
+			</div>
+		<?php endif; ?>
+		<div class="container page-hero__inner">
+			<span class="page-hero__flourish" aria-hidden="true"></span>
+			<h1 class="page-hero__title"><?php echo esc_html( (string) ( $hero['title'] ?? '' ) ); ?></h1>
+			<?php if ( ! empty( $hero['tag'] ) ) : ?>
+				<p class="page-hero__tag"><?php echo esc_html( (string) $hero['tag'] ); ?></p>
+			<?php endif; ?>
+			<?php if ( ! empty( $hero['sub'] ) ) : ?>
+				<p class="page-hero__sub"><?php echo esc_html( (string) $hero['sub'] ); ?></p>
+			<?php endif; ?>
+			<span class="page-hero__flourish" aria-hidden="true"></span>
+		</div>
+	</header>
 <?php endif; ?>
 
 <?php if ( ! empty( $accent ) ) : ?>
@@ -290,3 +298,12 @@ $closing            = $data['closing'];
 	</div>
 	<div class="section-cut tex-cut-brush-a" style="background-color: var(--color-primary); margin-bottom: -85px;" aria-hidden="true"></div>
 <?php endif; ?>
+
+<section class="section section--sm back-home">
+	<div class="container container--narrow back-home__inner">
+		<h2 class="back-home__title"><?php esc_html_e( 'Back To Cane House', 'vintagesoul' ); ?></h2>
+		<a class="btn btn--lg" href="<?php echo esc_url( RouteService::url( 'home' ) ); ?>">
+			<?php esc_html_e( 'Visit The Cane House', 'vintagesoul' ); ?>
+		</a>
+	</div>
+</section>

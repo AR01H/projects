@@ -43,10 +43,10 @@ $edge_shapes = array( 'tex-edge-a', 'tex-edge-rough-a' );
 		<span class="badge badge--primary product-list__tag"><?php echo esc_html( $tag ); ?></span>
 	<?php endif; ?>
 	<ul class="product-list__items">
-		<?php foreach ( $items as $item ) : ?>
-			<li class="product-list__item card--horizontal">
+		<?php foreach ( $items as $i => $item ) : ?>
+			<li class="product-list__item card">
 				<?php if ( '' !== $item['image'] ) : ?>
-					<div class="card__media hover-zoom <?php echo esc_attr( $edge_shapes[ array_rand( $edge_shapes ) ] ); ?>">
+					<div class="card__media hover-zoom <?php echo esc_attr( $edge_shapes[ $i % count( $edge_shapes ) ] ); ?>">
 						<img src="<?php echo esc_url( $item['image'] ); ?>" alt="<?php echo esc_attr( $item['name'] ); ?>" loading="lazy">
 					</div>
 				<?php endif; ?>

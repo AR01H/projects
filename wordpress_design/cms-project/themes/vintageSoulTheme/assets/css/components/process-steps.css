@@ -1,5 +1,3 @@
-
-
 .process-steps {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -36,37 +34,31 @@
   width: 34px;
   height: 34px;
   border-radius: var(--radius-circle);
-  background: color-mix(in srgb, var(--color-neutral-0) 30%, transparent);
-  backdrop-filter: blur(6px) saturate(160%);
-  -webkit-backdrop-filter: blur(6px) saturate(160%);
-  border: var(--border-width) var(--border-style) color-mix(in srgb, var(--color-neutral-0) 55%, transparent);
+  background-color: var(--paper-50);
+  border: var(--border-width-thick) var(--border-style) var(--color-border-strong);
   box-shadow: var(--shadow-sm);
-  color: var(--color-primary);
+  color: var(--color-text-strong);
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-bold);
 }
 
-/* .process-steps__media's sticker child is rotated a couple degrees with
-   its own irregular torn-edge mask (memory-card.css) - a glass panel
-   floated up over its straight bottom edge reads as a caption overlapping
-   the photo without having to fight that rotation/mask for a clean crop. */
 .process-steps__caption {
   position: relative;
   z-index: 1;
   margin-top: calc(-1 * var(--space-lg));
   margin-inline: var(--space-md);
   padding: var(--space-sm) var(--space-md);
-  background: color-mix(in srgb, var(--color-surface-paper) 70%, transparent);
-  backdrop-filter: blur(10px) saturate(160%);
-  -webkit-backdrop-filter: blur(10px) saturate(160%);
-  border: var(--border-width) var(--border-style) color-mix(in srgb, var(--color-neutral-0) 60%, transparent);
+  background-color: color-mix(in srgb, var(--paper-50) 94%, transparent);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  border: var(--border-width) var(--border-style) var(--color-border);
   border-radius: var(--radius-sm);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-paper);
 }
 @supports not (backdrop-filter: blur(1px)) {
   .process-steps__index,
   .process-steps__caption {
-    background: var(--color-surface-paper);
+    background-color: var(--paper-50);
   }
 }
 
@@ -75,7 +67,7 @@
   font-size: var(--font-size-lg);
   color: var(--color-primary);
   text-transform: uppercase;
-  letter-spacing: 0.02em;
+  letter-spacing: var(--tracking-slight);
 }
 .process-steps__desc {
   margin: 0;
@@ -83,8 +75,6 @@
   font-size: var(--font-size-sm);
 }
 
-/* No-image fallback (process-steps.php) has no sticker for the caption to
-   float over, so it stays a plain block instead of the glass treatment. */
 .process-steps__title--plain,
 .process-steps__desc--plain {
   margin-top: 0;

@@ -297,14 +297,15 @@ $has_multiple_slides = $count > 1;
 								<?php if ( '' !== $content['eyebrow'] ) : ?>
 									<p class="vst-hero__eyebrow"><?php echo esc_html( $content['eyebrow'] ); ?></p>
 								<?php endif; ?>
-								<<?php echo tag_escape( $heading_tag ); ?> class="vst-hero__title"><?php echo esc_html( $content['title'] ); ?></<?php echo tag_escape( $heading_tag ); ?>>
+								<?php $slide_heading_tag = ( 0 === $i ) ? $heading_tag : 'h' . min( 6, $heading_level + 1 ); ?>
+								<<?php echo tag_escape( $slide_heading_tag ); ?> class="vst-hero__title"><?php echo esc_html( $content['title'] ); ?></<?php echo tag_escape( $slide_heading_tag ); ?>>
 								<?php if ( '' !== $content['description'] ) : ?>
 									<p class="vst-hero__desc"><?php echo esc_html( $content['description'] ); ?></p>
 								<?php endif; ?>
 								<?php if ( ! empty( $content['buttons'] ) ) : ?>
 									<div class="vst-hero__actions">
 										<?php foreach ( $content['buttons'] as $btn ) : ?>
-											<a class="btn<?php echo $btn['ghost'] ? ' btn--outline' : ''; ?>" href="<?php echo esc_url( RouteService::url( $btn['route'] ) ); ?>">
+											<a class="roughness-a btn<?php echo $btn['ghost'] ? ' btn--outline' : ''; ?>" href="<?php echo esc_url( RouteService::url( $btn['route'] ) ); ?>">
 												<?php if ( '' !== $btn['icon'] ) : ?>
 													<span aria-hidden="true"><?php echo esc_html( $btn['icon'] ); ?></span>
 												<?php endif; ?>

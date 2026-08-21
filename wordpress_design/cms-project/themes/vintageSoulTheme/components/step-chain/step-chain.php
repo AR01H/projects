@@ -13,7 +13,10 @@ $items = array_values(
 					'image'  => (string) ( $item['image'] ?? '' ),
 					'icon'   => (string) ( $item['icon'] ?? '' ),
 					'number' => (string) ( $item['number'] ?? '' ),
-					'label'  => trim( (string) ( $item['label'] ?? '' ) ),
+					// Content JSON in this theme names this field 'title' as often as
+					// 'label' (serve-steps.json, lifecycle.json). Accept both, or the
+					// filter below drops every item and the section renders empty.
+					'label'  => trim( (string) ( $item['label'] ?? $item['title'] ?? '' ) ),
 					'desc'   => (string) ( $item['desc'] ?? '' ),
 				);
 			},

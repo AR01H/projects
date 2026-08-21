@@ -1,1 +1,170 @@
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-lg);
+}
 
+.testimonial-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--space-lg);
+}
+
+.enquiry-prompt {
+  text-align: center;
+}
+.enquiry-prompt__title {
+  margin: 0 0 var(--space-2xs);
+  font-family: var(--font-family-heading);
+  font-size: var(--font-size-2xl);
+  color: var(--color-primary-contrast);
+}
+.enquiry-prompt__title em {
+  color: var(--color-secondary);
+  font-style: italic;
+}
+.enquiry-prompt__body {
+  margin: 0 0 var(--space-md);
+  color: color-mix(in srgb, var(--color-primary-contrast) 82%, transparent);
+}
+
+.connect-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-sm);
+  max-width: var(--container-max-width);
+  margin-inline: auto;
+}
+.connect-list__item {
+  flex: 1 1 240px;
+  max-width: 320px;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  padding: var(--space-xs) var(--space-sm);
+  background-color: color-mix(in srgb, var(--paper-50) 85%, transparent);
+  border: var(--border-width) var(--border-style) var(--color-border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-xs);
+  transition:
+    border-color var(--transition-fast) var(--ease-standard),
+    box-shadow var(--transition-fast) var(--ease-standard);
+}
+.connect-list__item:hover {
+  border-color: var(--color-border-strong);
+  box-shadow: var(--shadow-sm);
+}
+.connect-list__icon {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  background-color: var(--color-secondary);
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+}
+.connect-list__icon--map-pin {
+  -webkit-mask-image: url("../../svg/icons/map-pin.svg");
+  mask-image: url("../../svg/icons/map-pin.svg");
+}
+.connect-list__icon--phone {
+  -webkit-mask-image: url("../../svg/icons/phone.svg");
+  mask-image: url("../../svg/icons/phone.svg");
+}
+.connect-list__icon--mail {
+  -webkit-mask-image: url("../../svg/icons/mail.svg");
+  mask-image: url("../../svg/icons/mail.svg");
+}
+.connect-list__icon--globe {
+  -webkit-mask-image: url("../../svg/icons/globe.svg");
+  mask-image: url("../../svg/icons/globe.svg");
+}
+.connect-list__icon--clock {
+  -webkit-mask-image: url("../../svg/icons/clock.svg");
+  mask-image: url("../../svg/icons/clock.svg");
+}
+.connect-list__text {
+  font-size: var(--font-size-sm);
+}
+
+.closing-quote {
+  text-align: center;
+}
+.closing-quote__text {
+  margin: 0;
+  font-family: var(--font-family-script);
+  font-size: var(--font-size-2xl);
+  line-height: var(--line-height-tight);
+  color: var(--color-primary);
+}
+.closing-quote__attr {
+  margin: var(--space-2xs) 0 0;
+  font-family: var(--font-family-ui);
+  font-size: var(--font-size-xs);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+@media (max-width: 480px) {
+  .feature-grid,
+  .testimonial-grid {
+    gap: var(--space-md);
+  }
+  .closing-quote__text {
+    font-size: var(--font-size-xl);
+  }
+}
+
+#testimonials {
+  position: relative;
+}
+#testimonials::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 0;
+  width: min(560px, 62%);
+  aspect-ratio: 1374 / 1145;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  opacity: 0.14;
+  background-image: var(--texture-wreath);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+#testimonials > .container {
+  position: relative;
+  z-index: 1;
+}
+
+#connect {
+  position: relative;
+  overflow: hidden;
+}
+#connect::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 0;
+  width: min(520px, 58%);
+  aspect-ratio: 1374 / 1145;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  opacity: 0.13;
+  background-image: var(--texture-wreath);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+#connect > .container {
+  position: relative;
+  z-index: 1;
+}

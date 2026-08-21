@@ -1,36 +1,92 @@
-
-
 .faq__heading {
   margin: 0 0 var(--space-md);
+  text-align: center;
 }
 
 .faq__list {
   display: flex;
   flex-direction: column;
+  gap: var(--space-2xs);
 }
+
 .faq__item {
-  border-bottom: var(--border-width) var(--border-style) var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border);
+  border-radius: 0;
+  background-color: var(--paper-50);
+  background-image: var(--texture-body-image);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  box-shadow: var(--shadow-xs);
+  -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 60' preserveAspectRatio='none'><filter id='r'><feTurbulence type='fractalNoise' baseFrequency='0.05 0.14' numOctaves='2' seed='3' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='3' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='3' y='3' width='194' height='54' rx='8' fill='%23fff' filter='url(%23r)'/></svg>");
+          mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 60' preserveAspectRatio='none'><filter id='r'><feTurbulence type='fractalNoise' baseFrequency='0.05 0.14' numOctaves='2' seed='3' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='3' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='3' y='3' width='194' height='54' rx='8' fill='%23fff' filter='url(%23r)'/></svg>");
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+          mask-size: 100% 100%;
+  transition:
+    border-color var(--transition-fast) var(--ease-standard),
+    box-shadow var(--transition-fast) var(--ease-standard),
+    background-color var(--transition-fast) var(--ease-standard);
 }
+.faq__item:hover {
+  border-color: var(--color-border-strong);
+}
+.faq__item.is-open {
+  background-color: var(--paper-50);
+  border-color: var(--color-secondary);
+  box-shadow: var(--shadow-sm);
+}
+.faq__list {
+  gap: var(--space-xs);
+}
+
 .faq__question {
   margin: 0;
   font-size: inherit;
   font-weight: inherit;
 }
+
 .faq__trigger {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: var(--space-sm);
   width: 100%;
-  padding: var(--space-sm) 0;
+  padding: var(--space-sm) var(--space-md);
   text-align: left;
+  font-family: var(--font-family-heading);
   font-size: var(--font-size-md);
-  font-weight: var(--font-weight-medium);
-  color: var(--color-text);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-strong);
   transition: color var(--transition-fast) var(--ease-standard);
+}
+.faq__trigger::before {
+  content: "?";
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border: var(--border-width) var(--border-style) var(--color-border-strong);
+  border-radius: var(--radius-circle);
+  background: var(--color-surface-raised);
+  color: var(--color-secondary);
+  font-family: var(--font-family-ui);
+  font-size: var(--font-size-sm);
+  line-height: 1;
+  transition:
+    background-color var(--transition-fast) var(--ease-standard),
+    color var(--transition-fast) var(--ease-standard);
+}
+.faq__trigger > span:first-of-type {
+  flex: 1 1 auto;
 }
 .faq__trigger:hover {
   color: var(--color-primary);
+}
+.faq__item.is-open .faq__trigger::before {
+  background: var(--color-primary);
+  color: var(--color-primary-contrast);
 }
 
 .faq__icon {
@@ -38,6 +94,7 @@
   flex-shrink: 0;
   width: 18px;
   height: 18px;
+  color: var(--color-secondary);
 }
 .faq__icon::before,
 .faq__icon::after {
@@ -77,14 +134,28 @@
   overflow: hidden;
 }
 .faq__panel-inner p {
-  margin: 0 0 var(--space-sm);
+  margin: 0;
+  padding: 0 var(--space-md) var(--space-sm) calc(var(--space-md) + 26px + var(--space-sm));
   color: var(--color-text-muted);
   font-size: var(--font-size-sm);
   line-height: var(--line-height-relaxed);
 }
 
+@media (max-width: 480px) {
+  .faq__trigger {
+    padding: var(--space-xs) var(--space-sm);
+    font-size: var(--font-size-sm);
+  }
+  .faq__panel-inner p {
+    padding-left: var(--space-sm);
+    padding-right: var(--space-sm);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .faq__item,
   .faq__panel,
+  .faq__trigger::before,
   .faq__icon::before,
   .faq__icon::after {
     transition: none;

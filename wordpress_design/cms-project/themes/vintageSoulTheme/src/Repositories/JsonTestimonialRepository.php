@@ -9,7 +9,11 @@ defined( 'ABSPATH' ) || exit;
 final class JsonTestimonialRepository implements TestimonialRepositoryInterface {
 
 	public function all(): array {
-		$rows = JsonFileProvider::read( 'data/content/testimonials.json' );
+		$data = JsonFileProvider::read( 'data/content/testimonials.json' );
+		// The file is a {tag, title, items} document like every other content
+		// JSON in this theme - not a bare list. Fall back to the top level so a
+		// plain array still works.
+		$rows = ( isset( $data['items'] ) && is_array( $data['items'] ) ) ? $data['items'] : $data;
 
 		return array_values( array_filter( array_map( static function ( $row ) {
 			$row  = (array) $row;

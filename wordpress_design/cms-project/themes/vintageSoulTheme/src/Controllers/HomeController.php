@@ -10,14 +10,42 @@ defined( 'ABSPATH' ) || exit;
 
 final class HomeController {
 
+	private const SECTIONS = array(
+		'ticker'          => 'ticker.json',
+		'stats'           => 'stats.json',
+		'story'           => 'story.json',
+		'sourcing'        => 'sourcing.json',
+		'products'        => 'products.json',
+		'certifications'  => 'certifications.json',
+		'benefits'        => 'benefits.json',
+		'serve_steps'     => 'serve-steps.json',
+		'gallery'         => 'gallery.json',
+		'memories'        => 'memories.json',
+		'order_steps'     => 'order-steps.json',
+		'events'          => 'events-features.json',
+		'franchise'       => 'franchise.json',
+		'showcases'       => 'showcases.json',
+		'enquiry'         => 'enquiry-prompt.json',
+		'faqs'            => 'faqs.json',
+		'contact'         => 'contact-info.json',
+		'closing'         => 'closing-quote.json',
+	);
+
 	public function prepare(): array {
-		return array(
-			'nav'                      => NavigationService::menu( 'primary' ),
-			'hero'                     => $this->prepare_hero(),
-			'testimonials'             => ( new TestimonialService() )->featured(),
-			'testimonials_title'       => TerminologyService::label( 'testimonials_section_title' ),
-			'testimonials_tag'         => TerminologyService::label( 'testimonials_section_tag' ),
+		$data = array(
+			'nav'                => NavigationService::menu( 'primary' ),
+			'hero'               => $this->prepare_hero(),
+			'testimonials'       => ( new TestimonialService() )->featured(),
+			'testimonials_title' => TerminologyService::label( 'testimonials_section_title' ),
+			'testimonials_tag'   => TerminologyService::label( 'testimonials_section_tag' ),
+			'testimonials_meta'  => JsonFileProvider::read( 'data/content/testimonials.json' ),
 		);
+
+		foreach ( self::SECTIONS as $key => $file ) {
+			$data[ $key ] = JsonFileProvider::read( 'data/content/' . $file );
+		}
+
+		return $data;
 	}
 
 	private function prepare_hero(): array {
@@ -25,7 +53,7 @@ final class HomeController {
 		$slides = is_array( $data['slides'] ?? null ) ? $data['slides'] : array();
 
 		foreach ( $slides as &$slide ) {
-			$slide         = (array) $slide;
+			$slide          = (array) $slide;
 			$slide['media'] = $this->resolve_media_urls( (array) ( $slide['media'] ?? array() ) );
 		}
 		unset( $slide );

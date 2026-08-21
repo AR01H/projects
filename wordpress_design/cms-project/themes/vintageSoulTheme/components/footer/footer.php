@@ -88,7 +88,7 @@ $known_social_icons = array( 'facebook', 'instagram', 'whatsapp', 'youtube' );
 		</div>
 	</div>
 
-	<div class="site-footer__bottom roughness-top-a grain-xl-c">
+	<div class="site-footer__bottom">
 		<div class="container site-footer__bottom-inner">
 			<?php if ( ! empty( $bottom_links ) ) : ?>
 				<div class="site-footer__legal">

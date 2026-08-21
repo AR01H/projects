@@ -1,14 +1,19 @@
-
-
 .marquee {
   overflow: hidden;
   white-space: nowrap;
   padding-block: var(--space-2xs);
   background: var(--color-surface);
+  font-family: var(--font-family-script);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
 }
 .marquee__track {
   display: inline-flex;
   animation: marquee-scroll 20s linear infinite;
+  gap:15px;
 }
 @keyframes marquee-scroll {
   from { transform: translateX(0); }
@@ -26,9 +31,8 @@
 
 .marquee.preheader {
   padding-block: var(--space-2xs);
-  font-size: var(--font-size-xs);
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  font-size: var(--font-size-2xs);
+  letter-spacing: var(--tracking-widest);
 }
 .marquee.preheader .marquee__track {
   animation-duration: 26s;
@@ -37,12 +41,6 @@
 .marquee--a {
   position: relative;
   z-index: 0;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  -webkit-mask-size: 100% 100%;
-  mask-size: 100% 100%;
-  -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 60' preserveAspectRatio='none'><filter id='mqa' x='0%25' y='0%25' width='100%25' height='100%25'><feTurbulence type='fractalNoise' baseFrequency='0.012 0.05' numOctaves='3' seed='81' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='7' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='4' y='4' width='392' height='52' fill='%23fff' filter='url(%23mqa)'/></svg>");
-          mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 60' preserveAspectRatio='none'><filter id='mqa' x='0%25' y='0%25' width='100%25' height='100%25'><feTurbulence type='fractalNoise' baseFrequency='0.012 0.05' numOctaves='3' seed='81' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='7' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='4' y='4' width='392' height='52' fill='%23fff' filter='url(%23mqa)'/></svg>");
 }
 .marquee--a::before {
   content: "";
@@ -60,55 +58,11 @@
 .marquee--b {
   position: relative;
   z-index: 0;
-  color: var(--color-primary-contrast);
-  /* Frosted-glass surface - same translucent-tint-plus-blur language as the
-     nav dropdown and process-steps cards (navigation.css/process-steps.css)
-     - rather than an opaque fill, so the page's own paper texture shows
-     through it softly instead of the strip reading as a separate solid
-     band under the header. One flat tone across the whole strip rather
-     than a gradient. */
-  background-color: color-mix(in srgb, var(--color-accent-alt) 65%, transparent);
-  backdrop-filter: blur(8px) saturate(160%);
-  -webkit-backdrop-filter: blur(8px) saturate(160%);
-  /* Fixed-size tiled torn edges (same assets as the header's bottom edge and
-     the nav dropdown) rather than one 400x60 mask stretched to 100% 100%.
-     Stretched across a full-width, ~30px-tall strip that mask squashes
-     vertically and smears horizontally, which is what made the cut read as
-     a distorted band instead of torn paper. Tiling keeps every tooth the
-     same physical size no matter how wide the viewport gets. */
-  -webkit-mask-image:
-    url("../../images/textures/cut/cut-repeat-a-top.svg"),
-    linear-gradient(#fff, #fff),
-    url("../../images/textures/cut/cut-repeat-a.svg");
-          mask-image:
-    url("../../images/textures/cut/cut-repeat-a-top.svg"),
-    linear-gradient(#fff, #fff),
-    url("../../images/textures/cut/cut-repeat-a.svg");
-  -webkit-mask-repeat: repeat-x, no-repeat, repeat-x;
-          mask-repeat: repeat-x, no-repeat, repeat-x;
-  -webkit-mask-size: 80px 6px, 100% calc(100% - 12px), 80px 6px;
-          mask-size: 80px 6px, 100% calc(100% - 12px), 80px 6px;
-  -webkit-mask-position: top left, 0 6px, bottom left;
-          mask-position: top left, 0 6px, bottom left;
-}
-.marquee--b::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  mix-blend-mode: multiply;
-  opacity: 0.35;
-  background-repeat: repeat;
-  background-size: 110px 110px;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><filter id='mqt'><feTurbulence type='fractalNoise' baseFrequency='0.06' numOctaves='4' seed='85' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 0.1  0 0 0 0 0.07  0 0 0 0 0.03  0 0 0 1 0'/></filter><rect width='100%25' height='100%25' filter='url(%23mqt)'/></svg>");
-}
-@supports not (backdrop-filter: blur(1px)) {
-  .marquee--b {
-    background-color: var(--color-accent-alt);
-  }
-}
+  color: color-mix(in srgb, var(--color-primary-contrast) 88%, transparent);
 
+  background-color: var(--color-accent-alt);
+  border-block: var(--border-width) var(--border-style) color-mix(in srgb, var(--ink-950) 30%, transparent);
+}
 .marquee--c {
   clip-path: polygon(10px 0, calc(100% - 10px) 0, 100% 10px, 100% calc(100% - 10px), calc(100% - 10px) 100%, 10px 100%, 0 calc(100% - 10px), 0 10px);
   -webkit-mask-repeat: no-repeat;

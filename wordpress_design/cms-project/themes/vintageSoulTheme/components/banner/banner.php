@@ -9,6 +9,7 @@ $tag       = isset( $tag ) ? (string) $tag : '';
 $title     = isset( $title ) ? (string) $title : '';
 $sub       = isset( $sub ) ? (string) $sub : '';
 $image     = isset( $image ) ? (string) $image : '';
+$image_alt = isset( $image_alt ) ? (string) $image_alt : '';
 $video     = isset( $video ) ? (string) $video : ''; // optional - image doubles as its poster, same convention hero-carousel already uses
 $buttons   = ( isset( $buttons ) && is_array( $buttons ) ) ? $buttons : array();
 $is_reverse = isset( $variant ) && 'reverse' === $variant;
@@ -18,6 +19,7 @@ $id     = ( isset( $id ) && '' !== trim( (string) $id ) ) ? sanitize_html_class(
 $stamp  = ( isset( $stamp ) && is_array( $stamp ) ) ? $stamp : array();
 $stamp_center = trim( (string) ( $stamp['center'] ?? '' ) );
 
+$body  = ( isset( $body ) && is_array( $body ) ) ? array_values( array_filter( array_map( 'trim', array_map( 'strval', $body ) ) ) ) : array();
 $items = ( isset( $items ) && is_array( $items ) ) ? $items : array();
 $items = array_values(
 	array_filter(
@@ -27,12 +29,14 @@ $items = array_values(
 					return array(
 						'icon'  => '',
 						'label' => trim( $item ),
+						'text'  => '',
 					);
 				}
 				$item = (array) $item;
 				return array(
 					'icon'  => (string) ( $item['icon'] ?? '' ),
 					'label' => trim( (string) ( $item['label'] ?? $item['title'] ?? '' ) ),
+					'text'  => trim( (string) ( $item['text'] ?? $item['note'] ?? '' ) ),
 				);
 			},
 			$items
@@ -59,7 +63,12 @@ if ( '' === $title && '' === $sub ) {
 			<h2 class="banner__title"><?php echo wp_kses_post( $title ); ?></h2>
 		<?php endif; ?>
 		<?php if ( '' !== $sub ) : ?>
-			<p class="banner__sub"><?php echo esc_html( $sub ); ?></p>
+			<p class="banner__sub"><?php echo wp_kses_post( $sub ); ?></p>
+		<?php endif; ?>
+		<?php if ( ! empty( $body ) ) : ?>
+			<?php foreach ( $body as $paragraph ) : ?>
+				<p class="banner__body"><?php echo wp_kses_post( $paragraph ); ?></p>
+			<?php endforeach; ?>
 		<?php endif; ?>
 		<?php if ( ! empty( $items ) ) : ?>
 			<ul class="banner__list">
@@ -69,7 +78,12 @@ if ( '' === $title && '' === $sub ) {
 						<?php if ( '' !== $item['icon'] ) : ?>
 							<span class="banner__list-icon" aria-hidden="true"><?php echo esc_html( $item['icon'] ); ?></span>
 						<?php endif; ?>
-						<span><?php echo esc_html( $item['label'] ); ?></span>
+						<span class="banner__list-label">
+							<?php echo esc_html( $item['label'] ); ?>
+							<?php if ( '' !== $item['text'] ) : ?>
+								<small class="banner__list-note"><?php echo esc_html( $item['text'] ); ?></small>
+							<?php endif; ?>
+						</span>
 					</li>
 				<?php endforeach; ?>
 			</ul>
@@ -104,7 +118,7 @@ if ( '' === $title && '' === $sub ) {
 		</div>
 	<?php elseif ( '' !== $image ) : ?>
 		<div class="banner__media hover-zoom">
-			<img src="<?php echo esc_url( $image ); ?>" alt="" loading="lazy">
+			<img src="<?php echo esc_url( $image ); ?>" alt="<?php echo esc_attr( $image_alt ); ?>" loading="lazy">
 		</div>
 	<?php endif; ?>
 	<?php if ( '' !== $stamp_center ) : ?>

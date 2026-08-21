@@ -7,7 +7,7 @@
 
 .vst-hero__stage {
   position: relative;
-  padding: var(--space-xl) 0 var(--space-lg);
+  /* padding: var(--space-xl) 0 var(--space-lg); */
 }
 
 .vst-hero__track {
@@ -128,7 +128,7 @@
   font-family: var(--font-family-nav);
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-bold);
-  letter-spacing: 0.15em;
+  letter-spacing: var(--tracking-widest);
   text-transform: uppercase;
   color: var(--color-secondary);
   opacity: 0;
@@ -219,6 +219,9 @@
 
 .vst-hero__card {
   display: block;
+  width: 100%;
+  max-width: 290px;
+  margin-inline: auto;
   aspect-ratio: 1750 / 919;
   padding: 15% var(--space-sm) 10% 36%;
   background-image: url("../../images/decorative/paper-ribbon-with-cane.png");
@@ -238,9 +241,10 @@
   margin: 0;
   font-size: var(--font-size-sm);
   color: var(--color-text-muted);
+  line-height: 12px;
 }
 .vst-hero__connector {
-  display: none; 
+  display: none;
 }
 
 .vst-hero__toggle {
@@ -290,7 +294,7 @@
 @media (min-width: 768px) {
   .vst-hero__stage {
     position: relative;
-    padding: var(--space-md) 0;
+    /* padding: var(--space-md) 0; */
   }
 
   .vst-hero__slide.is-active .vst-hero__card-slot:nth-child(1),
@@ -358,8 +362,8 @@
     left: var(--vst-card-left, auto);
     right: var(--vst-card-right, auto);
 
-    width: 280px;
-    max-width: 42%;
+    width: 216px;
+    max-width: 33%;
     pointer-events: auto;
     transform: translate(var(--vst-card-from-x, 0), var(--vst-card-from-y, 0)) scale(0.4);
   }
@@ -408,7 +412,7 @@
 
 @media (min-width: 1024px) {
   .vst-hero__stage {
-    padding: var(--space-lg) 0;
+    /* padding: var(--space-lg) 0; */
   }
   .vst-hero__media {
     aspect-ratio: 21 / 9;
@@ -423,8 +427,8 @@
     font-size: var(--font-size-md);
   }
   .vst-hero__card-slot {
-    width: 320px;
-    max-width: 32%; 
+    width: 248px;
+    max-width: 25%;
   }
   .vst-hero__card-slot:nth-of-type(n + 3) {
     display: block;

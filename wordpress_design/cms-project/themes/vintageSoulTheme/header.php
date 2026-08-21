@@ -21,7 +21,7 @@ defined( 'ABSPATH' ) || exit;
 <a class="skip-link screen-reader-text" href="#main"><?php esc_html_e( 'Skip to content', 'vintagesoul' ); ?></a>
 
 <header class="site-header" role="banner">
-	<span class="site-header__bg roughness-both-b" aria-hidden="true"></span>
+	<span class="site-header__bg roughness-bottom-b" aria-hidden="true"></span>
 	<div class="container site-header__inner">
 		<?php View::component( 'logo/logo', array( 'context' => 'header' ) ); ?>
 		<nav class="nav" aria-label="<?php esc_attr_e( 'Primary', 'vintagesoul' ); ?>">
@@ -46,7 +46,7 @@ defined( 'ABSPATH' ) || exit;
 										continue;
 									}
 								?>
-									<li><a class="nav__submenu-link roughness-c" href="<?php echo esc_url( UrlHelper::resolve( (string) ( $child['url'] ?? '#' ) ) ); ?>"><?php echo esc_html( $child_label ); ?></a></li>
+									<li><a class="nav__submenu-link" href="<?php echo esc_url( UrlHelper::resolve( (string) ( $child['url'] ?? '#' ) ) ); ?>"><?php echo esc_html( $child_label ); ?></a></li>
 								<?php endforeach; ?>
 							</ul>
 						<?php endif; ?>

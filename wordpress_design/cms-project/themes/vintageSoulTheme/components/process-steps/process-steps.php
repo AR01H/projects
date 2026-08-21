@@ -11,7 +11,7 @@ $items = array_values(
 				$item = (array) $item;
 				return array(
 					'title' => trim( (string) ( $item['title'] ?? '' ) ),
-					'desc'  => (string) ( $item['desc'] ?? '' ),
+					'desc'  => (string) ( $item['desc'] ?? $item['text'] ?? '' ),
 					'image' => (string) ( $item['image'] ?? '' ),
 					'alt'   => (string) ( $item['alt'] ?? '' ),
 				);

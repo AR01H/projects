@@ -1,64 +1,97 @@
-
-
 :root {
-
   --color-brand-1: #0c6434;
-  --color-brand-2: #f0d2a0;
+  --color-brand-2: #f3d49d;
   --color-brand-3: #1c360d;
-  --color-brand-4: #c8a064;
-  --color-brand-5: #d2aa78;
-  --color-brand-6: #3b0000;
-  --color-brand-7: #141400;
+  --color-brand-4: #a17036;
+  --color-brand-5: #cb924d;
+  --color-brand-6: #6b2f18;
+  --color-brand-7: #2f200e;
+
+  --paper-0: #fbf2e6;
+  --paper-50: #f8e7d3;
+  --paper-100: #f4dcc0;
+  --paper-200: #eccaa2;
+  --paper-300: #e7bc7c;
+  --tan-400: #dcad74;
+  --tan-500: #cb924d;
+  --bark-600: #a17036;
+  --bark-700: #7d582c;
+  --ink-800: #604320;
+  --ink-900: #463016;
+  --ink-950: #2f200e;
 
   --color-primary: var(--color-brand-3);
   --color-secondary: var(--color-brand-4);
   --color-accent: var(--color-brand-5);
   --color-accent-alt: var(--color-brand-6);
-  --color-background: var(--color-brand-2);
-  --color-surface: var(--color-neutral-0);
-  /* Warm off-white for "paper" surfaces (cards, callouts) in vintage
-     contexts, where --color-surface's pure white reads as a cold modern
-     panel against this theme's cream background. Derived from the brand
-     cream rather than a new hex, so a brand swap carries it along. */
-  --color-surface-paper: color-mix(in srgb, var(--color-neutral-0) 76%, var(--color-brand-2));
-  /* Deeper, less washed-out than --color-background - used where a flat
-     fill sits directly against a photographic background (e.g. the header's
-     torn-edge cutout) and needs to read as a shadow/tint on that photo
-     rather than a visibly separate pale swatch. */
-  --color-edge-tint: color-mix(in srgb, var(--color-brand-2) 70%, var(--color-brand-4) 30%);
-  --color-primary-contrast: var(--color-neutral-0);
+  --color-primary-contrast: var(--paper-0);
   --color-primary-shine: var(--color-brand-1);
+
+  --color-background: var(--color-brand-2);
+  --color-surface: var(--paper-100);
+  --color-surface-paper: var(--paper-50);
+  --color-surface-raised: var(--paper-0);
+  --color-surface-sunken: var(--paper-200);
+  --color-edge-tint: var(--paper-300);
+
+  --color-neutral-0: var(--paper-0);
+  --color-neutral-100: var(--paper-50);
+  --color-neutral-200: var(--paper-100);
+  --color-neutral-300: var(--paper-200);
+  --color-neutral-400: var(--tan-500);
+  --color-neutral-500: var(--bark-600);
+  --color-neutral-600: var(--bark-700);
+  --color-neutral-700: var(--ink-800);
+  --color-neutral-800: var(--ink-900);
+  --color-neutral-900: var(--ink-950);
+
+  --color-bg: var(--color-background);
+  --color-bg-alt: var(--paper-200);
+  --color-text: var(--ink-950);
+  --color-text-strong: #241809;
+  --color-text-muted: var(--bark-700);
+  --color-text-subtle: var(--bark-600);
+  --color-text-inverse: var(--paper-0);
+
+  --color-border: var(--paper-300);
+  --color-border-subtle: var(--paper-200);
+  --color-border-strong: var(--bark-600);
+  --color-rule: color-mix(in srgb, var(--bark-600) 40%, transparent);
+
+  --color-success: #4a6b2a;
+  --color-danger: #8f3620;
+  --color-warning: #b07d1e;
+  --color-info: #3f5a6b;
+
+  --color-success-surface: color-mix(in srgb, var(--color-success) 12%, var(--paper-50));
+  --color-danger-surface: color-mix(in srgb, var(--color-danger) 12%, var(--paper-50));
+  --color-warning-surface: color-mix(in srgb, var(--color-warning) 14%, var(--paper-50));
+  --color-info-surface: color-mix(in srgb, var(--color-info) 12%, var(--paper-50));
+
+  --color-hover-wash: color-mix(in srgb, var(--bark-600) 12%, transparent);
+  --color-active-wash: color-mix(in srgb, var(--bark-600) 20%, transparent);
+  --color-selected-wash: color-mix(in srgb, var(--color-secondary) 22%, transparent);
 
   --texture-paper-size: 300px;
   --texture-paper: url('data:image/svg+xml;utf8,<svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg"><filter id="paperGrain" x="0%25" y="0%25" width="100%25" height="100%25"><feTurbulence type="fractalNoise" baseFrequency="0.025" numOctaves="4" seed="4" stitchTiles="stitch" result="fiber"/><feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="2" seed="9" stitchTiles="stitch" result="grain"/><feBlend in="fiber" in2="grain" mode="multiply" result="blend"/><feColorMatrix in="blend" type="matrix" values="0.3 0.3 0.3 0 0 0.24 0.24 0.24 0 0 0.14 0.14 0.14 0 0 0 0 0 0.32 0"/></filter><rect width="100%" height="100%" filter="url(%23paperGrain)"/></svg>');
+
+  --scroll-cap-left: url("../images/decorative/scroll-cap-left.png");
+  --scroll-cap-right: url("../images/decorative/scroll-cap-right.png");
+  --scroll-mid: url("../images/decorative/scroll-mid.png");
+  --texture-scroll-banner: url("../images/decorative/parchment-scroll-banner-alt.png");
+  --texture-wreath: url("../../images/decorative/cane-heart-wreath.png");
+  --texture-body-image: url("../../images/decorative/body-background.png");
+  --ing-dew: url("../images/decorative/ingredients/sugarcane-closeup-dew.png");
+  --ing-roots: url("../images/decorative/ingredients/sugarcane-plant-with-roots.png");
+  --ing-cluster: url("../images/decorative/ingredients/sugarcane-stalk-cluster.png");
+  --ing-bundle: url("../images/decorative/ingredients/sugarcane-stalks-bundle.png");
+  --ing-crossed: url("../images/decorative/ingredients/sugarcane-stalks-crossed.png");
 
   --tex-leaf-fall-image: url("../images/backgrounds/leaf-fall.png");
   --tex-ground-cane-image: url("../images/backgrounds/ground-cane.png");
   --tex-ground-soil-image: url("../images/backgrounds/ground-soil.png");
   --tex-sugarcane-bundle-image: url("../images/backgrounds/sugarcane-stalks-bundle.png");
   --tex-cane-ribbon-image: url("../images/decorative/paper-ribbon-with-cane.png");
-
-  --color-neutral-0: #ffffff;
-  --color-neutral-100: #f5f5f5;
-  --color-neutral-200: #e5e5e5;
-  --color-neutral-300: #d4d4d4;
-  --color-neutral-400: #a3a3a3;
-  --color-neutral-500: #737373;
-  --color-neutral-600: #525252;
-  --color-neutral-700: #404040;
-  --color-neutral-800: #262626;
-  --color-neutral-900: #171717;
-
-  --color-success: #2e7d32;
-  --color-danger: #c62828;
-  --color-warning: #b8860b;
-  --color-info: #1565c0;
-
-  --color-bg: var(--color-background);
-  --color-bg-alt: var(--color-neutral-100);
-  --color-text: var(--color-brand-7);
-  --color-text-muted: var(--color-neutral-600);
-  --color-border: var(--color-neutral-300);
 
   --font-family-base: system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-family-display: "Playfair Display", "Cormorant Garamond", Georgia, serif;
@@ -74,6 +107,7 @@
 
   --font-family-nav: "Oswald", "Segoe UI", sans-serif;
   --font-family-heading: var(--font-family-display);
+  --font-family-ui: "Oswald", "Segoe UI", sans-serif;
 
   --font-size-2xs: 0.6875rem;
   --font-size-xs: 0.75rem;
@@ -89,8 +123,15 @@
   --font-weight-bold: 700;
 
   --line-height-tight: 1.2;
-  --line-height-normal: 1.5;
-  --line-height-relaxed: 1.75;
+  --line-height-normal: 1.6;
+  --line-height-relaxed: 1.8;
+
+  --tracking-tight: -0.01em;
+  --tracking-normal: 0;
+  --tracking-slight: 0.02em;
+  --tracking-wide: 0.04em;
+  --tracking-wider: 0.08em;
+  --tracking-widest: 0.14em;
 
   --space-3xs: 0.25rem;
   --space-2xs: 0.5rem;
@@ -105,29 +146,36 @@
   --container-max-width: 1200px;
   --container-max-width-narrow: 800px;
   --container-max-width-wide: 100%;
-  --container-padding: var(--space-sm);
+  --container-padding: var(--space-md);
 
-  --section-padding-block: var(--space-2xl);
-  --section-padding-block-sm: var(--space-lg);
-  --section-padding-block-lg: var(--space-3xl);
+  --section-padding-block: var(--space-xl);
+  --section-padding-block-sm: var(--space-md);
+  --section-padding-block-lg: var(--space-2xl);
 
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 16px;
+  --radius-sm: 2px;
+  --radius-md: 3px;
+  --radius-lg: 4px;
   --radius-pill: 999px;
   --radius-circle: 50%;
 
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.12);
+  --shadow-xs: 0 1px 2px rgba(70, 48, 22, 0.12);
+  --shadow-sm: 0 1px 3px rgba(70, 48, 22, 0.16);
+  --shadow-md: 0 3px 8px rgba(70, 48, 22, 0.18);
+  --shadow-lg: 0 8px 20px rgba(70, 48, 22, 0.22);
+  --shadow-press: inset 0 2px 4px rgba(47, 32, 14, 0.28);
+  --shadow-paper: 0 1px 2px rgba(70, 48, 22, 0.14), 0 6px 16px rgba(70, 48, 22, 0.12);
 
   --border-width: 1px;
+  --border-width-thick: 2px;
   --border-style: solid;
+  --border-frame: var(--border-width-thick) var(--border-style) var(--color-border-strong);
+  --border-hairline: var(--border-width) var(--border-style) var(--color-border);
 
   --transition-fast: 150ms;
   --transition-normal: 250ms;
   --transition-slow: 400ms;
   --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-settle: cubic-bezier(0.22, 0.61, 0.36, 1);
 
   --z-header: 100;
   --z-dropdown: 200;
@@ -137,8 +185,8 @@
 
   --focus-ring-width: 2px;
   --focus-ring-offset: 2px;
-  --focus-ring-color: var(--color-primary);
-  --disabled-opacity: 0.5;
+  --focus-ring-color: var(--bark-600);
+  --disabled-opacity: 0.45;
   --hover-opacity: 0.85;
 }
 

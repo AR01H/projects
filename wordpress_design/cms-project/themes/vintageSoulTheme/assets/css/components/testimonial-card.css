@@ -1,5 +1,3 @@
-
-
 .testimonial-card {
   position: relative;
   z-index: 0;
@@ -12,28 +10,34 @@
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: var(--color-background);
-  border: var(--border-width) var(--border-style) color-mix(in srgb, var(--color-secondary) 30%, transparent);
-  border-radius: var(--radius-sm);
+  background-color: var(--paper-50);
+  background-image: var(--texture-body-image);
+  background-size: cover;
+  background-position: center;
+  border-radius: 0;
   box-shadow: var(--shadow-sm);
+  opacity: 0.6;
+  -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 60' preserveAspectRatio='none'><filter id='r'><feTurbulence type='fractalNoise' baseFrequency='0.05 0.14' numOctaves='2' seed='3' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='3' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='3' y='3' width='194' height='54' rx='8' fill='%23fff' filter='url(%23r)'/></svg>");
+          mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 60' preserveAspectRatio='none'><filter id='r'><feTurbulence type='fractalNoise' baseFrequency='0.05 0.14' numOctaves='2' seed='3' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='3' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='3' y='3' width='194' height='54' rx='8' fill='%23fff' filter='url(%23r)'/></svg>");
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+          mask-size: 100% 100%;
+}
 
-  -webkit-mask-repeat: no-repeat, no-repeat;
-  mask-repeat: no-repeat, no-repeat;
-  -webkit-mask-size: 100% 24px, 100% calc(100% - 20px);
-  mask-size: 100% 24px, 100% calc(100% - 20px);
-  -webkit-mask-position: top center, bottom center;
-  mask-position: top center, bottom center;
-  -webkit-mask-image:
-    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 24' preserveAspectRatio='none'><filter id='tca' x='0%25' y='0%25' width='100%25' height='100%25'><feTurbulence type='fractalNoise' baseFrequency='0.03 0.09' numOctaves='3' seed='601' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='4' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='0' y='2' width='300' height='20' fill='%23fff' filter='url(%23tca)'/></svg>"),
-    linear-gradient(#000, #000);
-  mask-image:
-    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 24' preserveAspectRatio='none'><filter id='tca2' x='0%25' y='0%25' width='100%25' height='100%25'><feTurbulence type='fractalNoise' baseFrequency='0.03 0.09' numOctaves='3' seed='601' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='4' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='0' y='2' width='300' height='20' fill='%23fff' filter='url(%23tca2)'/></svg>"),
-    linear-gradient(#000, #000);
+.testimonial-card__author {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2xs);
+}
+.testimonial-card__author-text {
+  display: flex;
+  flex-direction: column;
 }
 
 .testimonial-card__quote {
   margin: 0 0 var(--space-sm);
-  padding-right: var(--space-2xl);
+  padding-right: 0;
 }
 .testimonial-card__quote p {
   margin: 0;
@@ -47,13 +51,9 @@
   display: block;
   margin-bottom: var(--space-sm);
   color: var(--color-secondary);
-  letter-spacing: 0.12em;
+  letter-spacing: var(--tracking-widest);
 }
 
-.testimonial-card__author {
-  display: flex;
-  flex-direction: column;
-}
 .testimonial-card__name {
   font-weight: var(--font-weight-bold);
   color: var(--color-text);
@@ -64,15 +64,11 @@
 }
 
 .testimonial-card__avatar {
-  position: absolute;
-  top: calc(-1 * var(--space-md));
-  right: var(--space-md);
-  z-index: 1;
-  width: 56px;
-  height: 56px;
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
   border-radius: var(--radius-circle);
-  border: 3px solid var(--color-background);
-  box-shadow: var(--shadow-md);
+  border: var(--border-width-thick) var(--border-style) var(--color-secondary);
   object-fit: cover;
 }
 .testimonial-card__avatar--fallback {

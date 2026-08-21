@@ -21,7 +21,7 @@ if ( '' === $title ) {
 			<img src="<?php echo esc_url( $image ); ?>" alt="" loading="lazy">
 		</div>
 	<?php elseif ( '' !== $icon ) : ?>
-		<div class="card__media certificate-card__icon" aria-hidden="true"><?php echo esc_html( $icon ); ?></div>
+		<div class="card__media certificate-card__icon roughness-b" aria-hidden="true"><?php echo esc_html( $icon ); ?></div>
 	<?php endif; ?>
 	<div class="card__body">
 		<h3 class="card__title"><?php echo esc_html( $title ); ?></h3>

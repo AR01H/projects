@@ -1,5 +1,3 @@
-
-
 .memory-card-a,
 .memory-card-b,
 .memory-card-c,
@@ -198,12 +196,12 @@
   height: 14px;
   margin-left: -7px;
   border-radius: var(--radius-circle);
-  background: radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--color-accent-alt) 40%, white), var(--color-accent-alt) 65%, color-mix(in srgb, var(--color-accent-alt) 60%, black));
+  background: radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--color-accent-alt) 40%, var(--paper-0)), var(--color-accent-alt) 65%, color-mix(in srgb, var(--color-accent-alt) 60%, var(--ink-950)));
   box-shadow: var(--shadow-sm);
 }
 .sticker-c::after {
   left: 65%;
-  background: radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--color-secondary) 50%, white), var(--color-secondary) 65%, color-mix(in srgb, var(--color-secondary) 55%, black));
+  background: radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--color-secondary) 50%, var(--paper-0)), var(--color-secondary) 65%, color-mix(in srgb, var(--color-secondary) 55%, var(--ink-950)));
 }
 
 .sticker-b::after {

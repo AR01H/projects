@@ -1,5 +1,3 @@
-
-
 .mobile-nav-toggle {
   display: none;
   flex-direction: column;
@@ -55,8 +53,10 @@
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
   background-color: var(--color-bg);
-  background-image: var(--texture-paper);
-  background-size: var(--texture-paper-size) var(--texture-paper-size);
+  background-image: var(--texture-body-image);
+  background-size: cover;
+  background-position: center;
+  border-left: var(--border-width-thick) var(--border-style) var(--color-border-strong);
   box-shadow: var(--shadow-lg);
   padding: var(--space-lg) var(--space-md) var(--space-md);
   transform: translateX(100%);
@@ -66,35 +66,7 @@
   transform: translateX(0);
 }
 
-/* Same hand-torn language as the header's bottom edge (cut-repeat-a.svg,
-   header.css), transposed into cut-repeat-a-vertical.svg for the drawer's
-   left edge - a CSS transform can reorient the element but not the axis a
-   tiled mask repeats along, so this is its own asset rather than a rotated
-   reuse. Sits just outside the drawer's own box rather than eating into
-   its padding. */
-.mobile-nav::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  width: 10px;
-  transform: translateX(-100%);
-  background-color: var(--color-edge-tint);
-  pointer-events: none;
-  -webkit-mask-image: url("../../images/textures/cut/cut-repeat-a-vertical.svg");
-          mask-image: url("../../images/textures/cut/cut-repeat-a-vertical.svg");
-  -webkit-mask-size: 100% 96px;
-          mask-size: 100% 96px;
-  -webkit-mask-repeat: repeat-y;
-          mask-repeat: repeat-y;
-}
 
-/* Quiet corner flourish for the empty space below a short menu - purely
-   decorative, never competes with the paper texture or the list itself.
-   Bottom-left rather than bottom-right so it never sits under the
-   site-wide scroll-to-top button (scroll-top.css), which stays anchored
-   bottom-right of the viewport even while the drawer is open. */
 .mobile-nav__ornament {
   position: absolute;
   left: 0;
@@ -154,7 +126,7 @@
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-bold);
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: var(--tracking-wide);
   transition: color var(--transition-fast) var(--ease-standard), border-color var(--transition-fast) var(--ease-standard), padding-left var(--transition-fast) var(--ease-standard);
 }
 .mobile-nav__link:hover,
@@ -215,7 +187,7 @@
 
   font-family: var(--font-family-nav);
   font-size: var(--font-size-sm);
-  letter-spacing: 0.01em;
+  letter-spacing: var(--tracking-slight);
 }
 .mobile-nav__sublist a:hover {
   color: var(--color-primary);
@@ -235,7 +207,7 @@
   transition: background-color var(--transition-fast) var(--ease-standard);
 }
 .mobile-nav__cta:hover {
-  background: color-mix(in srgb, var(--color-primary) 82%, black);
+  background: color-mix(in srgb, var(--color-primary) 84%, var(--ink-950));
   color: var(--color-primary-contrast);
 }
 .mobile-nav__cta-text {
@@ -247,12 +219,12 @@
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-bold);
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: var(--tracking-wide);
 }
 .mobile-nav__cta-line2 {
   font-size: var(--font-size-xs);
   text-transform: uppercase;
-  letter-spacing: 0.03em;
+  letter-spacing: var(--tracking-wide);
   opacity: 0.75;
 }
 .mobile-nav__cta-icon {

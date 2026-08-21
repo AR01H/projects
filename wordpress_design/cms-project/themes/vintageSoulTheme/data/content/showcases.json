@@ -1,0 +1,216 @@
+{
+    "_source": "Authored to match the reference design's repeating three-part block (information / carousel / reviews) used by Events, Franchise and Order. Labels follow the mockup. Feeds components/showcase/showcase.php via HomeController.",
+    "events": {
+        "carousel_tag": "Event Carousel",
+        "items": [
+            {
+                "title": "Wedding Celebration",
+                "desc": "Make your special day even sweeter.",
+                "image": "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600&q=80",
+                "cta": {
+                    "label": "Enquire Now",
+                    "route": "contact"
+                }
+            },
+            {
+                "title": "College Fest",
+                "desc": "Keep students energised with fresh, healthy juice.",
+                "image": "https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&w=600&q=80",
+                "cta": {
+                    "label": "Enquire Now",
+                    "route": "contact"
+                }
+            },
+            {
+                "title": "Corporate Event",
+                "desc": "A healthy choice for a productive team.",
+                "image": "https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=600&q=80",
+                "cta": {
+                    "label": "Enquire Now",
+                    "route": "contact"
+                }
+            },
+            {
+                "title": "College Fest",
+                "desc": "Keep students energised with fresh, healthy juice.",
+                "image": "https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&w=600&q=80",
+                "cta": {
+                    "label": "Enquire Now",
+                    "route": "contact"
+                }
+            },
+                        {
+                "title": "College Fest",
+                "desc": "Keep students energised with fresh, healthy juice.",
+                "image": "https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&w=600&q=80",
+                "cta": {
+                    "label": "Enquire Now",
+                    "route": "contact"
+                }
+            },
+            {
+                "title": "Birthday Party",
+                "desc": "Add a refreshing touch to your celebration.",
+                "image": "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&w=600&q=80",
+                "cta": {
+                    "label": "Enquire Now",
+                    "route": "contact"
+                }
+            }
+        ],
+        "reviews_tag": "Event Experiences",
+        "reviews": [
+            {
+                "text": "The juice was a huge hit at our wedding. Our guests loved it.",
+                "name": "Priya & Arjun",
+                "role": "Wedding, London",
+                "rating": 5,
+                "image": "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=160&q=80"
+            },
+            {
+                "text": "Such a great team and service. They made our college fest extra special.",
+                "name": "Greenfield College",
+                "role": "Sutton, UK",
+                "rating": 5,
+                "image": "https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&w=160&q=80"
+            },
+            {
+                "text": "Highly professional and easy to work with. Perfect for any corporate event.",
+                "name": "TechNova Solutions",
+                "role": "Sutton, UK",
+                "rating": 5,
+                "image": "https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=160&q=80"
+            }
+        ]
+    },
+    "franchise": {
+        "carousel_tag": "Franchise Carousel",
+        "items": [
+            {
+                "title": "City Kiosk",
+                "desc": "Perfect for malls, high streets and busy locations.",
+                "image": "https://images.unsplash.com/photo-1560493676-04071c5f467b?auto=format&fit=crop&w=600&q=80",
+                "cta": {
+                    "label": "Apply Now",
+                    "route": "franchise"
+                }
+            },
+            {
+                "title": "Event Franchise",
+                "desc": "Specialised in events, fairs, festivals and weddings.",
+                "image": "https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=600&q=80",
+                "cta": {
+                    "label": "Apply Now",
+                    "route": "franchise"
+                }
+            },
+            {
+                "title": "Community Outlet",
+                "desc": "Serve your local community with freshness and care.",
+                "image": "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=600&q=80",
+                "cta": {
+                    "label": "Apply Now",
+                    "route": "franchise"
+                }
+            },
+            {
+                "title": "Mobile Cart",
+                "desc": "Take freshness anywhere with our mobile setup.",
+                "image": "https://images.unsplash.com/photo-1615478503562-ec2d8aa0e24e?auto=format&fit=crop&w=600&q=80",
+                "cta": {
+                    "label": "Apply Now",
+                    "route": "franchise"
+                }
+            }
+        ],
+        "reviews_tag": "Partner Stories",
+        "reviews": [
+            {
+                "text": "Great brand support and training. My outlet is doing excellent business.",
+                "name": "Ramesh Kumar",
+                "role": "Partner, Croydon",
+                "rating": 5,
+                "image": "https://images.unsplash.com/photo-1560493676-04071c5f467b?auto=format&fit=crop&w=160&q=80"
+            },
+            {
+                "text": "A trusted brand. Customers love the taste and the quality.",
+                "name": "Aisha Patel",
+                "role": "Partner, Wembley",
+                "rating": 5,
+                "image": "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=160&q=80"
+            },
+            {
+                "text": "Profitable business with amazing guidance. Recommended.",
+                "name": "David Wilson",
+                "role": "Partner, Sutton",
+                "rating": 5,
+                "image": "https://images.unsplash.com/photo-1615478503562-ec2d8aa0e24e?auto=format&fit=crop&w=160&q=80"
+            }
+        ]
+    },
+    "order": {
+        "carousel_tag": "Order Carousel",
+        "items": [
+            {
+                "title": "Classic Juice",
+                "desc": "Pure. Natural. Refreshing.",
+                "image": "https://images.unsplash.com/photo-1600271886742-f049cd451bba?auto=format&fit=crop&w=600&q=80",
+                "cta": {
+                    "label": "Order Now",
+                    "route": "game"
+                }
+            },
+            {
+                "title": "Flavoured Juices",
+                "desc": "Pineapple, lemon, mint and more.",
+                "image": "https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=600&q=80",
+                "cta": {
+                    "label": "Order Now",
+                    "route": "game"
+                }
+            },
+            {
+                "title": "Family Packs",
+                "desc": "Perfect for family gatherings.",
+                "image": "https://images.unsplash.com/photo-1621263764928-df1444c5e859?auto=format&fit=crop&w=600&q=80",
+                "cta": {
+                    "label": "Order Now",
+                    "route": "game"
+                }
+            },
+            {
+                "title": "Bulk Supply",
+                "desc": "For offices, events and businesses.",
+                "image": "https://images.unsplash.com/photo-1544145945-f90425340c7e?auto=format&fit=crop&w=600&q=80",
+                "cta": {
+                    "label": "Contact Us",
+                    "route": "contact"
+                }
+            }
+        ],
+        "reviews_tag": "Order Experiences",
+        "reviews": [
+            {
+                "text": "Super fresh and best taste. Delivered right on time.",
+                "name": "Neha Sharma",
+                "role": "Sutton, UK",
+                "rating": 5,
+                "image": "https://images.unsplash.com/photo-1600271886742-f049cd451bba?auto=format&fit=crop&w=160&q=80"
+            },
+            {
+                "text": "We ordered for our office event. Everyone loved the juice.",
+                "name": "Office Event",
+                "role": "London",
+                "rating": 5,
+                "image": "https://images.unsplash.com/photo-1544145945-f90425340c7e?auto=format&fit=crop&w=160&q=80"
+            },
+            {
+                "text": "Love the home delivery service. So convenient and healthy.",
+                "name": "Sofia Khan",
+                "role": "Home Delivery",
+                "rating": 5,
+                "image": "https://images.unsplash.com/photo-1621263764928-df1444c5e859?auto=format&fit=crop&w=160&q=80"
+            }
+        ]
+    }
+}

@@ -1,13 +1,14 @@
-
-
 .alert {
   display: flex;
   align-items: flex-start;
   gap: var(--space-2xs);
   padding: var(--space-sm) var(--space-md);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-sm);
   border: var(--border-width) var(--border-style) var(--color-border);
-  background: var(--color-bg-alt);
+  border-left-width: 4px;
+  border-left-color: var(--color-border-strong);
+  background-color: var(--color-surface-paper);
+  box-shadow: var(--shadow-xs);
   color: var(--color-text);
   font-size: var(--font-size-sm);
   line-height: var(--line-height-normal);
@@ -30,26 +31,33 @@
   border-radius: var(--radius-sm);
   font-size: var(--font-size-md);
   line-height: 1;
-  opacity: var(--hover-opacity);
-  transition: opacity var(--transition-fast) var(--ease-standard);
+  color: var(--color-text-muted);
+  transition:
+    background-color var(--transition-fast) var(--ease-standard),
+    color var(--transition-fast) var(--ease-standard);
 }
 .alert__dismiss:hover {
-  opacity: 1;
+  background: var(--color-hover-wash);
+  color: var(--color-text);
 }
 
 .alert--info {
-  border-color: color-mix(in srgb, var(--color-info) 40%, var(--color-border));
-  background: color-mix(in srgb, var(--color-info) 10%, var(--color-bg-alt));
+  border-color: color-mix(in srgb, var(--color-info) 35%, var(--color-border));
+  border-left-color: var(--color-info);
+  background-color: var(--color-info-surface);
 }
 .alert--success {
-  border-color: color-mix(in srgb, var(--color-success) 40%, var(--color-border));
-  background: color-mix(in srgb, var(--color-success) 10%, var(--color-bg-alt));
+  border-color: color-mix(in srgb, var(--color-success) 35%, var(--color-border));
+  border-left-color: var(--color-success);
+  background-color: var(--color-success-surface);
 }
 .alert--warning {
-  border-color: color-mix(in srgb, var(--color-warning) 40%, var(--color-border));
-  background: color-mix(in srgb, var(--color-warning) 10%, var(--color-bg-alt));
+  border-color: color-mix(in srgb, var(--color-warning) 35%, var(--color-border));
+  border-left-color: var(--color-warning);
+  background-color: var(--color-warning-surface);
 }
 .alert--danger {
-  border-color: color-mix(in srgb, var(--color-danger) 40%, var(--color-border));
-  background: color-mix(in srgb, var(--color-danger) 10%, var(--color-bg-alt));
+  border-color: color-mix(in srgb, var(--color-danger) 35%, var(--color-border));
+  border-left-color: var(--color-danger);
+  background-color: var(--color-danger-surface);
 }

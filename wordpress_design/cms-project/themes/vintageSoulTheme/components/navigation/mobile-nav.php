@@ -67,7 +67,7 @@ $has_cta      = '' !== $cta_label && '' !== $cta_route;
 		<?php endforeach; ?>
 	</ul>
 	<?php if ( $has_cta ) : ?>
-		<a class="mobile-nav__cta roughness-c" href="<?php echo esc_url( RouteService::url( $cta_route ) ); ?>">
+		<a class="mobile-nav__cta roughness-a" href="<?php echo esc_url( RouteService::url( $cta_route ) ); ?>">
 			<span class="mobile-nav__cta-text">
 				<span class="mobile-nav__cta-line1"><?php echo esc_html( $cta_label ); ?></span>
 				<?php if ( '' !== $cta_sublabel ) : ?>

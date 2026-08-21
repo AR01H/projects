@@ -26,5 +26,6 @@ if ( '' !== $extra_class ) {
 	<div class="marquee__track">
 		<span><?php echo esc_html( $text ); ?></span>
 		<span aria-hidden="true"><?php echo esc_html( $text ); ?></span>
+		<span><?php echo esc_html( $text ); ?></span>
 	</div>
 </div>

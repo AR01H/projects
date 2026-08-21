@@ -1,8 +1,6 @@
-
-
 .container {
   width: 100%;
-  max-width: var(--container-max-width-wide);
+  max-width: var(--container-max-width);
   margin-inline: auto;
   padding-inline: var(--container-padding);
 }
@@ -18,9 +16,9 @@
 }
 
 .section {
+  position: relative;
   padding-block: var(--section-padding-block);
 }
-
 .section--sm {
   padding-block: var(--section-padding-block-sm);
 }
@@ -31,7 +29,53 @@
   padding-block: 0;
 }
 .section--alt {
-  background: var(--color-bg-alt);
+  background-color: var(--color-bg-alt);
+  border-block: var(--border-width) var(--border-style) var(--color-border);
+}
+.section--paper {
+  background-color: var(--color-surface-paper);
+  border-block: var(--border-width) var(--border-style) var(--color-border);
+}
+.section--ink {
+  background-color: var(--color-primary);
+  color: var(--color-primary-contrast);
+}
+.section--ink h1,
+.section--ink h2,
+.section--ink h3,
+.section--ink h4 {
+  color: var(--color-primary-contrast);
+}
+
+.rule {
+  height: var(--border-width);
+  margin-block: var(--space-lg);
+  border: 0;
+  background-image: linear-gradient(
+    to right,
+    transparent,
+    var(--color-border-strong) 18%,
+    var(--color-border-strong) 82%,
+    transparent
+  );
+  opacity: 0.6;
+}
+.rule--ornament {
+  position: relative;
+  height: 1px;
+  margin-block: var(--space-xl);
+  overflow: visible;
+}
+.rule--ornament::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 26px;
+  height: 26px;
+  transform: translate(-50%, -50%) rotate(45deg);
+  background-color: var(--color-bg);
+  border: var(--border-width) var(--border-style) var(--color-border-strong);
 }
 
 .section-cut {
@@ -57,4 +101,33 @@
 }
 .skip-link:focus {
   top: 0;
+}
+
+.section--scroll {
+  position: relative;
+  /* Three layers instead of one stretched image: the rolled end caps keep
+     their aspect at a fixed height, and the middle tiles horizontally. A
+     single background stretched to 100% 100% smears the curls into slivers
+     on a wide, slim band. border-image would be the textbook fix but the
+     theme's texture notes record that it did not render reliably here. */
+  background-image: var(--scroll-cap-left), var(--scroll-cap-right), var(--scroll-mid);
+  background-repeat: no-repeat, no-repeat, repeat-x;
+  background-position: left center, right center, center;
+  background-size: auto 100%, auto 100%, auto 100%;
+  padding-block: var(--space-md);
+  min-height: 92px;
+}
+.section--scroll > .container {
+  position: relative;
+  z-index: 1;
+  padding-inline: clamp(var(--space-lg), 9%, 160px);
+}
+
+@media (max-width: 768px) {
+  .section--scroll {
+    padding-block: var(--space-sm);
+  }
+  .section--scroll > .container {
+    padding-inline: 10%;
+  }
 }

@@ -35,7 +35,7 @@
             "cards": [
                 { "id": "card-fresh-cane", "number": "01", "title": "Fresh Cane", "text": "Pressed fresh for every glass.", "position": { "top": "5%", "left": "4%" }, "connector": false },
                 { "id": "card-tradition", "number": "02", "title": "Traditional Press", "text": "The good old way of making sugarcane juice.", "position": { "top": "5%", "right": "4%" }, "connector": false },
-                { "id": "card-served", "number": "03", "title": "Freshly Served", "text": "Made and served while you watch.", "position": { "top": "42%", "left": "4%" }, "connector": false },
+                { "id": "card-served", "number": "03", "title": "Freshly Served", "text": "Made and served while you watch.", "position": { "top": "42%", "right": "4%" }, "connector": false },
                 { "id": "card-care", "number": "04", "title": "Made With Care", "text": "Every glass prepared with attention.", "position": { "bottom": "6%", "right": "4%" }, "connector": false }
             ]
         },

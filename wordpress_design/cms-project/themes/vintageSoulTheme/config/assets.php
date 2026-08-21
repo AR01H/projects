@@ -52,6 +52,13 @@ return array(
 		'ui-booking-wizard'       => 'assets/css/components/booking-wizard.css',
 		'ui-photo-stamp'          => 'assets/css/components/photo-stamp.css',
 		'ui-photo-grid'           => 'assets/css/components/photo-grid.css',
+		'ui-showcase'             => 'assets/css/components/showcase.css',
+		'page-home'     => 'assets/css/pages/home.css',
+		'page-history'  => 'assets/css/pages/history.css',
+		'page-about'    => 'assets/css/pages/about.css',
+		'page-contact'  => 'assets/css/pages/contact.css',
+		'page-game'     => 'assets/css/pages/game.css',
+
 		'utilities'     => 'assets/css/utilities.css',
 
 		'shape'         => 'assets/css/shape.css',
@@ -83,6 +90,7 @@ return array(
 		'ui-video-testimonial-card'     => 'assets/js/components/video-testimonial-card.js',
 		'ui-video-testimonial-carousel' => 'assets/js/components/video-testimonial-carousel.js',
 		'ui-certificate-carousel' => 'assets/js/components/certificate-carousel.js',
+		'ui-showcase'             => 'assets/js/components/showcase.js',
 		'ui-booking-wizard'       => 'assets/js/components/booking-wizard.js',
 	),
 );
