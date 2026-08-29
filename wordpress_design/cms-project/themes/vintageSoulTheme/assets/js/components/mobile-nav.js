@@ -82,6 +82,11 @@
 		drawer = document.getElementById('mobile-nav');
 		if (!toggle || !scrim || !drawer) return;
 
+		if (drawer.parentElement !== document.body) {
+			document.body.appendChild(scrim);
+			document.body.appendChild(drawer);
+		}
+
 		dom.qsa('.mobile-nav__submenu', drawer).forEach(function (sub) {
 			sub.inert = true;
 		});
@@ -90,6 +95,11 @@
 			if (isOpen()) close(); else open();
 		});
 		scrim.addEventListener('click', close);
+
+		var closeBtn = document.getElementById('mobile-nav-close');
+		if (closeBtn) {
+			closeBtn.addEventListener('click', close);
+		}
 
 		dom.on(drawer, 'click', 'a[href]', function () {
 			close();

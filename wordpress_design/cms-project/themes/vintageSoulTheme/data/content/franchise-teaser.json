@@ -1,14 +1,22 @@
 {
-    "_source": "Extracted + genericized from the reference design's Home 'Franchise Opportunities' 4-item teaser section (some_styles/canehouse/priority) - distinct from pricing-tiers.json (pricing plans); this is a short benefits teaser with a single 'Know More' CTA, not a pricing table.",
-
-    "tag": "Opportunities",
-    "title": "Partner <em>With Us</em>",
-    "body": "Join a growing family of partners and bring this experience to your own community.",
-    "items": [
-        { "icon": "📈", "title": "Proven Model", "text": "A tested business model ready to grow." },
-        { "icon": "🎓", "title": "Full Training", "text": "We guide you through every step." },
-        { "icon": "🤝", "title": "Ongoing Support", "text": "Continued support after you launch." },
-        { "icon": "💰", "title": "Low Investment", "text": "Affordable entry, strong potential returns." }
+    "tag": "Partner With Us",
+    "title": "FRANCHISE OPPORTUNITIES",
+    "sub": "Be a part of The Cane House family. Grow with us.",
+    "benefits": [
+        { "icon": "🏪", "title": "BRAND RECOGNITION", "text": "Established brand with a loyal customer base." },
+        { "icon": "🌿", "title": "PROVEN BUSINESS MODEL", "text": "Tested and profitable business model." },
+        { "icon": "🤝", "title": "TRAINING & SUPPORT", "text": "Comprehensive training and ongoing support." },
+        { "icon": "📈", "title": "HIGH RETURN POTENTIAL", "text": "Attractive returns with long-term growth." }
     ],
-    "cta": { "label": "Know More", "route": "contact" }
+    "franchisees": [
+        { "city": "BENGALURU, KA", "owner": "Owner: Ramesh B.", "rating": 5, "image": "assets/images/sugarcane/story_moments.jpg", "route": "contact" },
+        { "city": "HYDERABAD, TG", "owner": "Owner: Suresh K.", "rating": 5, "image": "assets/images/sugarcane/stacks.jpg", "route": "contact" },
+        { "city": "PUNE, MH", "owner": "Owner: Priya M.", "rating": 5, "image": "assets/images/sugarcane/hero_juice.jpg", "route": "contact" },
+        { "city": "CHENNAI, TN", "owner": "Owner: Arvind S.", "rating": 5, "image": "assets/images/sugarcane/combo.jpg", "route": "contact" }
+    ],
+    "quotes": [
+        { "quote": "The Cane House is more than a brand, it's a family that supports your growth.", "author": "Ramesh B.", "avatar": "assets/images/sugarcane/hero_juice.jpg" },
+        { "quote": "Great support, excellent training and a profitable business opportunity.", "author": "Priya M.", "avatar": "assets/images/sugarcane/story_moments.jpg" },
+        { "quote": "Proud to be part of The Cane House journey. Highly recommended!", "author": "Arvind S.", "avatar": "assets/images/sugarcane/stacks.jpg" }
+    ]
 }

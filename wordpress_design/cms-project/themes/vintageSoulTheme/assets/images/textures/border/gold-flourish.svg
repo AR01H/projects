@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 20" preserveAspectRatio="xMidYMid meet">
+  <line x1="0" y1="10" x2="130" y2="10" stroke="#8e622d" stroke-width="1" opacity="0.5"/>
+  <line x1="270" y1="10" x2="400" y2="10" stroke="#8e622d" stroke-width="1" opacity="0.5"/>
+  <path d="M140,10 L155,4 L170,10 L185,4 L200,10 L215,4 L230,10 L245,4 L260,10" fill="none" stroke="#d49842" stroke-width="1.2" opacity="0.7"/>
+  <circle cx="135" cy="10" r="2.5" fill="#8e622d" opacity="0.6"/>
+  <circle cx="265" cy="10" r="2.5" fill="#8e622d" opacity="0.6"/>
+  <path d="M185,6 L200,2 L215,6" fill="none" stroke="#caa06d" stroke-width="0.8" opacity="0.4"/>
+  <path d="M185,14 L200,18 L215,14" fill="none" stroke="#caa06d" stroke-width="0.8" opacity="0.4"/>
+</svg>

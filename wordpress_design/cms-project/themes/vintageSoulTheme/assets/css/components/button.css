@@ -1,123 +1,183 @@
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-2xs);
-  padding: var(--space-2xs) var(--space-md);
-  border-radius: 0;
-  border: var(--border-width) var(--border-style) var(--color-border-strong);
-  background-color: var(--color-primary);
-  color: var(--color-primary-contrast);
-  font-family: var(--font-family-ui);
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-medium);
-  letter-spacing: var(--tracking-wide);
-  text-transform: uppercase;
-  line-height: 1;
-  box-shadow: var(--shadow-xs);
-  cursor: pointer;
-  transition:
-    background-color var(--transition-fast) var(--ease-standard),
-    border-color var(--transition-fast) var(--ease-standard),
-    box-shadow var(--transition-fast) var(--ease-standard),
-    color var(--transition-fast) var(--ease-standard);
-  -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 60' preserveAspectRatio='none'><filter id='r'><feTurbulence type='fractalNoise' baseFrequency='0.05 0.14' numOctaves='2' seed='3' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='3' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='3' y='3' width='194' height='54' rx='8' fill='%23fff' filter='url(%23r)'/></svg>");
-          mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 60' preserveAspectRatio='none'><filter id='r'><feTurbulence type='fractalNoise' baseFrequency='0.05 0.14' numOctaves='2' seed='3' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='3' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='3' y='3' width='194' height='54' rx='8' fill='%23fff' filter='url(%23r)'/></svg>");
-  -webkit-mask-repeat: no-repeat;
-          mask-repeat: no-repeat;
-  -webkit-mask-size: 100% 100%;
-          mask-size: 100% 100%;
+/* ==========================================================================
+   VintageSoulTheme - Master Button System (Rock-Solid Vintage Styling)
+   ========================================================================== */
 
+.btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  padding: 10px 24px !important;
+  background-color: #11381b !important;
+  background-image:
+    url("../images/textures/roughness/roughness-a.svg"),
+    linear-gradient(180deg, #1b542a 0%, #0d2f16 100%) !important;
+  background-size: 140px 140px, 100% 100% !important;
+  background-repeat: repeat, no-repeat !important;
+  color: #f6d599 !important;
+  font-family: 'Cinzel', 'Playfair Display', Georgia, serif !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  line-height: 1.2 !important;
+  border-radius: 4px !important;
+  border: 2px solid #8e622d !important;
+  box-shadow:
+    inset 0 0 0 1.5px #caa06d,
+    0 4px 12px rgba(0, 0, 0, 0.4) !important;
+  cursor: pointer !important;
+  text-decoration: none !important;
+  position: relative !important;
+  overflow: hidden !important;
+  transition: all 0.2s ease !important;
+  z-index: 1 !important;
+}
+
+.btn > * {
+  position: relative;
+  z-index: 2;
+}
+
+.btn em {
+  font-style: normal;
 }
 
 .btn:hover {
-  background-color: color-mix(in srgb, var(--color-primary) 84%, var(--ink-950));
-  color: var(--color-primary-contrast);
-  box-shadow: var(--shadow-sm);
+  background-color: #0b2913 !important;
+  background-image:
+    url("../images/textures/roughness/roughness-a.svg"),
+    linear-gradient(180deg, #113c1c 0%, #051608 100%) !important;
+  color: #ffffff !important;
+  border-color: #f6d599 !important;
+  box-shadow:
+    inset 0 0 0 1.5px #f6d599,
+    0 6px 18px rgba(0, 0, 0, 0.55),
+    0 0 12px rgba(246, 213, 153, 0.4) !important;
+  transform: translateY(-2px) !important;
 }
-.btn:focus-visible {
-  outline: var(--focus-ring-width) solid var(--focus-ring-color);
-  outline-offset: var(--focus-ring-offset);
-}
+
 .btn:active {
-  box-shadow: var(--shadow-press);
-  transform: translateY(1px);
-}
-.btn:disabled,
-.btn[aria-disabled="true"] {
-  opacity: var(--disabled-opacity);
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
+  transform: translateY(1px) !important;
+  box-shadow: inset 0 0 0 1.5px #caa06d, 0 2px 4px rgba(0, 0, 0, 0.3) !important;
 }
 
-.btn--secondary {
-  background-color: var(--color-secondary);
-  border-color: color-mix(in srgb, var(--bark-700) 70%, transparent);
-  color: var(--color-primary-contrast);
-}
-.btn--secondary:hover {
-  background-color: color-mix(in srgb, var(--color-secondary) 82%, var(--ink-950));
+/* ═══════════ PRIMARY BUTTON (Botanical Green) ═══════════ */
+.btn--primary,
+.btn--primary-vintage {
+  background-color: #11381b !important;
+  background-image:
+    url("../images/textures/roughness/roughness-a.svg"),
+    linear-gradient(180deg, #1b542a 0%, #0d2f16 100%) !important;
+  color: #f6d599 !important;
+  border: 2px solid #8e622d !important;
+  box-shadow:
+    inset 0 0 0 1.5px #caa06d,
+    0 4px 12px rgba(0, 0, 0, 0.4) !important;
 }
 
+/* ═══════════ SECONDARY / OUTLINE BUTTON (Roasted Mahogany Sepia) ═══════════ */
+.btn--secondary,
+.btn--secondary-vintage,
+.btn--outline-vintage {
+  background-color: #2b1406 !important;
+  background-image:
+    url("../images/textures/roughness/roughness-a.svg"),
+    linear-gradient(180deg, #44220c 0%, #1e0c03 100%) !important;
+  color: #fbf2e6 !important;
+  border: 2px solid #8e622d !important;
+  box-shadow:
+    inset 0 0 0 1.5px #caa06d,
+    0 4px 12px rgba(0, 0, 0, 0.4) !important;
+}
+.btn--secondary:hover,
+.btn--secondary-vintage:hover,
+.btn--outline-vintage:hover {
+  background-color: #11381b !important;
+  background-image:
+    url("../images/textures/roughness/roughness-a.svg"),
+    linear-gradient(180deg, #1b542a 0%, #0d2f16 100%) !important;
+  border-color: #f6d599 !important;
+  box-shadow:
+    inset 0 0 0 1.5px #f6d599,
+    0 6px 18px rgba(0, 0, 0, 0.55),
+    0 0 12px rgba(246, 213, 153, 0.4) !important;
+  color: #ffffff !important;
+}
+
+/* ═══════════ AMBER HONEY BUTTON ═══════════ */
+.btn--amber,
+.btn--amber-vintage {
+  background-color: #542b0a !important;
+  background-image:
+    url("../images/textures/roughness/roughness-a.svg"),
+    linear-gradient(180deg, #7a4214 0%, #341604 100%) !important;
+  color: #fbf2e6 !important;
+  border: 2px solid #caa06d !important;
+  box-shadow:
+    inset 0 0 0 1.5px #f6d599,
+    0 4px 12px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* ═══════════ OUTLINE BUTTON ON PARCHMENT ═══════════ */
 .btn--outline {
-  background-color: transparent;
-  background-image: none;
-  border-color: var(--color-border-strong);
-  color: var(--color-text);
-  box-shadow: none;
+  background-color: transparent !important;
+  background-image: none !important;
+  color: #172b15 !important;
+  border: 2px solid #8e622d !important;
+  box-shadow:
+    inset 0 0 0 1.5px #caa06d,
+    0 2px 6px rgba(0, 0, 0, 0.15) !important;
 }
 .btn--outline:hover {
-  background-color: var(--color-hover-wash);
-  border-color: var(--bark-700);
-  color: var(--color-text);
-  box-shadow: none;
+  background-color: #11381b !important;
+  background-image: linear-gradient(180deg, #1b542a 0%, #0d2f16 100%) !important;
+  color: #f6d599 !important;
+  border-color: #11381b !important;
 }
 
-.btn--text {
-  -webkit-mask-image: none;
-          mask-image: none;
-  padding-inline: var(--space-3xs);
-  background-color: transparent;
-  background-image: none;
-  border-color: transparent;
-  color: var(--color-text);
-  box-shadow: none;
+/* ═══════════ ORDER NOW ACTION BUTTON ═══════════ */
+.btn--order-now {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background-color: #11381b !important;
+  background-image:
+    url("../images/textures/roughness/roughness-a.svg"),
+    linear-gradient(180deg, #1b542a 0%, #0d2f16 100%) !important;
+  color: #f6d599 !important;
+  font-family: 'Cinzel', 'Playfair Display', serif !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  padding: 8px 18px !important;
+  border-radius: 4px !important;
+  border: 1.5px solid #8e622d !important;
+  box-shadow:
+    inset 0 0 0 1px #caa06d,
+    0 3px 8px rgba(0, 0, 0, 0.35) !important;
+  text-decoration: none !important;
+  position: relative !important;
+  overflow: hidden !important;
+  transition: all 0.15s ease !important;
+  z-index: 1 !important;
 }
-.btn--text:hover {
-  background-color: transparent;
-  color: var(--color-primary);
-  text-decoration: underline;
-  text-underline-offset: 0.25em;
-  box-shadow: none;
-}
-
-.btn--danger {
-  background-color: var(--color-danger);
-  border-color: color-mix(in srgb, var(--color-danger) 60%, var(--ink-950));
-  color: var(--paper-0);
-}
-.btn--danger:hover {
-  background-color: color-mix(in srgb, var(--color-danger) 84%, var(--ink-950));
-}
-
-.btn--sm {
-  padding: var(--space-3xs) var(--space-sm);
-  font-size: var(--font-size-xs);
-  letter-spacing: var(--tracking-wide);
-}
-.btn--lg {
-  padding: var(--space-xs) var(--space-lg);
-  font-size: var(--font-size-md);
-  letter-spacing: var(--tracking-wider);
-}
-.btn--block {
-  display: flex;
-  width: 100%;
+.btn--order-now:hover {
+  background-color: #0b2913 !important;
+  background-image: linear-gradient(180deg, #113c1c 0%, #051608 100%) !important;
+  border-color: #f6d599 !important;
+  box-shadow:
+    inset 0 0 0 1px #f6d599,
+    0 5px 12px rgba(0, 0, 0, 0.45) !important;
+  color: #ffffff !important;
+  transform: translateY(-2px) !important;
 }
 
-@media (max-width: 480px) {
-  .btn {
-    min-height: 44px;
-  }
+/* ═══════════ SUBMIT BUTTON IN CONTACT FORM ═══════════ */
+.btn--submit {
+  width: 100% !important;
+  padding: 12px 24px !important;
+  font-size: 13px !important;
+  cursor: pointer !important;
 }

@@ -1,90 +1,125 @@
 {
-    "_source": "Home-page hero. Read directly by HomeController (JsonFileProvider, same pattern as HistoryController/FranchiseController - no Repository layer, this is a single content record with no swap-source scenario yet) and rendered through components/hero/hero.php as the vintage editorial hero stage. 'slides[].media.src'/'mobile_src'/'poster' may be a full URL (used as-is) or a theme-relative path (e.g. 'assets/images/...') - HomeController prefixes any non-http path with VINTAGESOUL_URI, same rule FranchiseController already applies to its own hero image. All three slides here use 'type: image' - the theme's only local video asset (assets/videos/hero_bg.mp4) turned out to be unrelated mascot/character animation content, not a usable ambient background clip, so it was swapped back out; components/hero/hero.php and its CSS/JS still fully support a video slide (type: video, plus mobile_src/poster) for whenever a real background-video asset exists - see pages/elements/view.php's own Hero demo, which still uses one, for a working reference. The photo is edge-to-edge (no side gutter at md+), so 'slides[].cards[].position' values here are small POSITIVE insets - the card sits as a small paper badge just inside the photo's own edge, not floating outside it in margin space that no longer exists. It's still a free {top|bottom, left|right} percentage pair, not a fixed 'top-left'/'bottom-right' keyword - components/hero/hero.php's own docblock explains how that pair also drives which direction the card animates in from. 'connector' is off on every card here since a connector line pointing from a card toward the photo doesn't read sensibly once the card already sits on the photo - the component still supports it for a future slide whose cards float outside the media instead.",
-
+    "_source": "Home-page hero multi-image & live video carousel record with authentic local assets",
     "enabled": true,
-
     "settings": {
         "autoplay": true,
-        "autoplay_delay": 6500,
-        "transition": "editorial",
-        "transition_duration": 900,
-        "pause_on_hover": true,
-        "touch_enabled": true,
-        "keyboard_enabled": true
+        "autoplay_delay": 5000,
+        "transition": "fade",
+        "transition_duration": 800,
+        "pause_on_hover": true
     },
-
     "slides": [
         {
-            "id": "slide-cane",
+            "id": "slide-cane-video",
             "media": {
-                "type": "image",
-                "src": "https://images.unsplash.com/photo-1622597467836-f3285f2131b8?auto=format&fit=crop&w=1920&q=80",
-                "mobile_src": "https://images.unsplash.com/photo-1622597467836-f3285f2131b8?auto=format&fit=crop&w=900&q=80",
-                "alt": "Fresh sugarcane juice being pressed and poured"
+                "type": "video",
+                "src": "assets/videos/hero_bg.mp4",
+                "video": "assets/videos/hero_bg.mp4",
+                "poster": "assets/images/sugarcane/hero_juice.jpg",
+                "alt": "Live fresh sugarcane extraction and pouring"
             },
             "content": {
-                "eyebrow": "Fresh Sugarcane Juice",
-                "title": "Watch It. Taste It. Love It.",
-                "description": "Freshly pressed. Naturally refreshing. Always made with care.",
-                "position": "bottom-left",
+                "eyebrow": "A Taste of Tradition",
+                "title": "WATCH IT. TASTE IT. LOVE IT.",
+                "description": "Pure, natural sugarcane juice pressed fresh right before your eyes.",
+                "checklist": [
+                    "Freshly pressed right before your eyes.",
+                    "100% pure sugarcane — nothing added.",
+                    "A taste of tradition, crafted with love."
+                ],
                 "buttons": [
                     { "label": "Visit Us", "icon": "📍", "route": "contact" },
                     { "label": "Book Us For Your Event", "icon": "📅", "route": "contact", "style": "ghost" }
                 ]
-            },
-            "cards": [
-                { "id": "card-fresh-cane", "number": "01", "title": "Fresh Cane", "text": "Pressed fresh for every glass.", "position": { "top": "5%", "left": "4%" }, "connector": false },
-                { "id": "card-tradition", "number": "02", "title": "Traditional Press", "text": "The good old way of making sugarcane juice.", "position": { "top": "5%", "right": "4%" }, "connector": false },
-                { "id": "card-served", "number": "03", "title": "Freshly Served", "text": "Made and served while you watch.", "position": { "top": "42%", "right": "4%" }, "connector": false },
-                { "id": "card-care", "number": "04", "title": "Made With Care", "text": "Every glass prepared with attention.", "position": { "bottom": "6%", "right": "4%" }, "connector": false }
-            ]
+            }
         },
         {
-            "id": "slide-journey",
+            "id": "slide-cane-1",
             "media": {
                 "type": "image",
-                "src": "https://images.unsplash.com/photo-1560493676-04071c5f467b?auto=format&fit=crop&w=1920&q=80",
-                "mobile_src": "https://images.unsplash.com/photo-1560493676-04071c5f467b?auto=format&fit=crop&w=900&q=80",
-                "alt": "The cane juice press at work, from farm to glass"
+                "src": "assets/images/sugarcane/hero_juice.jpg",
+                "alt": "Fresh sugarcane juice being poured"
             },
             "content": {
-                "eyebrow": "From Our Farm",
-                "title": "To Your Glass.",
-                "description": "Field, press, counter, glass — the long way round.",
-                "position": "top-right",
-                "buttons": [
-                    { "label": "Our Story", "icon": "", "route": "history" }
-                ]
-            },
-            "cards": [
-                { "id": "card-sourced", "number": "01", "title": "Sourced With Care", "text": "Grown by partners who share our standards.", "position": { "top": "8%", "left": "4%" }, "connector": false },
-                { "id": "card-pressed", "number": "02", "title": "Pressed Fresh", "text": "Crushed and pressed within hours of cutting.", "position": { "bottom": "8%", "left": "38%" }, "connector": false },
-                { "id": "card-chilled", "number": "03", "title": "Served Chilled", "text": "Poured cold, right in front of you.", "position": { "bottom": "8%", "right": "4%" }, "connector": false }
-            ]
-        },
-        {
-            "id": "slide-memory",
-            "media": {
-                "type": "image",
-                "src": "https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=1920&q=80",
-                "mobile_src": "https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=900&q=80",
-                "alt": "A glass of sugarcane juice shared among friends"
-            },
-            "content": {
-                "eyebrow": "Watch It, Taste It",
-                "title": "Love It.",
-                "description": "More than a drink — it's a memory.",
-                "position": "bottom-right",
+                "eyebrow": "Pure Cold Pressed",
+                "title": "COLD EXTRACTED JUICE",
+                "description": "Pure, natural sugarcane juice pressed right before your eyes.",
+                "checklist": [
+                    "Freshly pressed right before your eyes.",
+                    "100% pure sugarcane — nothing added.",
+                    "A taste of tradition, crafted with love."
+                ],
                 "buttons": [
                     { "label": "Visit Us", "icon": "📍", "route": "contact" },
-                    { "label": "See The Range", "icon": "", "route": "game", "style": "ghost" }
+                    { "label": "Book Us For Your Event", "icon": "📅", "route": "contact", "style": "ghost" }
                 ]
+            }
+        },
+        {
+            "id": "slide-cane-2",
+            "media": {
+                "type": "image",
+                "src": "assets/images/sugarcane/stacks.jpg",
+                "alt": "Freshly harvested natural sugarcane stalks"
             },
-            "cards": [
-                { "id": "card-natural", "number": "01", "title": "100% Natural", "text": "Nothing added, nothing to hide.", "position": { "top": "6%", "left": "40%" }, "connector": false },
-                { "id": "card-family", "number": "02", "title": "Family Business", "text": "Generations old, still hand-pressed.", "position": { "top": "40%", "left": "4%" }, "connector": false },
-                { "id": "card-moments", "number": "03", "title": "Shared Moments", "text": "Best enjoyed together.", "position": { "bottom": "8%", "left": "4%" }, "connector": false }
-            ]
+            "content": {
+                "eyebrow": "From Farm To Stall",
+                "title": "HARVESTED PURE. PRESSED COLD.",
+                "description": "Selected premium stalks freshly pressed for authentic natural sweetness.",
+                "checklist": [
+                    "Hand-picked premium sugarcane.",
+                    "Cold extraction for maximum nutrients.",
+                    "Rich in iron, magnesium & potassium."
+                ],
+                "buttons": [
+                    { "label": "All About Cane", "icon": "🌾", "route": "history" },
+                    { "label": "Find Our Stall", "icon": "📍", "route": "contact" }
+                ]
+            }
+        },
+        {
+            "id": "slide-cane-3",
+            "media": {
+                "type": "image",
+                "src": "assets/images/sugarcane/combo.jpg",
+                "alt": "Refreshing natural sugarcane juice combinations"
+            },
+            "content": {
+                "eyebrow": "Handcrafted Flavours",
+                "title": "SIGNATURE VINTAGE COMBOS",
+                "description": "Ginger, mint, lemon, and chaat masala infused freshly upon order.",
+                "checklist": [
+                    "Fresh ginger, mint & lime infusions.",
+                    "No added sugar, ice dilution or preservatives.",
+                    "Crafted to order in seconds."
+                ],
+                "buttons": [
+                    { "label": "Explore Drinks", "icon": "🥤", "route": "history" },
+                    { "label": "Book Live Bar", "icon": "🎪", "route": "contact" }
+                ]
+            }
+        },
+        {
+            "id": "slide-cane-4",
+            "media": {
+                "type": "image",
+                "src": "assets/images/sugarcane/story_moments.jpg",
+                "alt": "Heritage sugarcane pressing moments"
+            },
+            "content": {
+                "eyebrow": "Heritage & Community",
+                "title": "MORE THAN JUST A DRINK",
+                "description": "Creating joyful shared moments at London markets, weddings & festivals.",
+                "checklist": [
+                    "Live pressing counter for weddings & private events.",
+                    "London Borough & weekend market stall favourite.",
+                    "Loved by thousands of happy customers."
+                ],
+                "buttons": [
+                    { "label": "Our Heritage", "icon": "📖", "route": "about" },
+                    { "label": "Get In Touch", "icon": "✉️", "route": "contact" }
+                ]
+            }
         }
     ]
 }

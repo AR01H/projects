@@ -1,24 +1,16 @@
 {
-    "_source": "Extracted + genericized from traditional_template/admin/data/about.json. Feeds the About-page main narrative section - a gap found by cross-checking against the some_styles/canehouse/priority reference designs (its 'Our Story' section had no matching data/content file yet).",
-
-    "tag": "Our Heritage",
-    "heading_lead": "Our",
-    "heading_em": "Story",
-    "subtitle": "Bringing Back Memories For Some<br>Creating New Memories For Others",
-    "stamp_line1": "Made Fresh",
-    "stamp_line2": "Every Day",
-    "body_1": "It began with simple memories - the sound of something being made by hand, the joy of watching it happen, and a taste that stayed with us.",
-    "body_2": "Today, we carry that tradition forward, doing things properly while you watch.",
-    "body_3": "A taste of home. A tradition shared across generations.",
-    "cta_label": "Read Our Story",
-    "cta_route": "about",
-    "image": "https://images.unsplash.com/photo-1571934811356-5cc061b6821f?auto=format&fit=crop&w=700&q=80",
-    "image_alt": "Our story",
-
+    "tag": "About Us",
+    "title": "OUR STORY",
+    "sub": "A Tradition With Deep Roots",
+    "body": "Started with a passion for bringing the authentic, traditional sugarcane juice experience to modern communities. Every stalk is carefully selected, pressed fresh, and served with pride.",
+    "cta": {
+        "label": "Discover Our Story",
+        "route": "about"
+    },
     "pillars": [
-        { "icon": "🌱", "label": "Tradition", "note": "Proud of our heritage" },
-        { "icon": "✦", "label": "Quality", "note": "Carefully selected" },
-        { "icon": "🤝", "label": "Community", "note": "Connected to where we are" },
-        { "icon": "❤️", "label": "Authentic", "note": "Traditional taste, always" }
+        { "icon": "hourglass", "label": "TRADITION", "note": "Handcrafted method passed down" },
+        { "icon": "leaf", "label": "QUALITY", "note": "Freshly harvested cane" },
+        { "icon": "heart", "label": "COMMUNITY", "note": "Bringing people together" },
+        { "icon": "shield", "label": "AUTHENTIC", "note": "Zero artificial additives" }
     ]
 }

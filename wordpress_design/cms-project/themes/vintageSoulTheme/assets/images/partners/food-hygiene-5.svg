@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 50">
+  <rect x="2" y="2" width="176" height="46" rx="4" fill="#0f3319" stroke="#8e622d" stroke-width="1.5"/>
+  <rect x="5" y="5" width="170" height="40" rx="3" fill="none" stroke="#caa06d" stroke-width="0.8"/>
+  <circle cx="28" cy="25" r="14" fill="#1b5228" stroke="#d49842" stroke-width="1"/>
+  <text x="28" y="30" font-family="'Rubik Dirt', serif" font-size="16" fill="#f6d599" text-anchor="middle">5</text>
+  <text x="50" y="23" font-family="'Rubik Dirt', 'Cinzel', serif" font-size="10.5" fill="#fdf6eb" letter-spacing="1">FOOD HYGIENE</text>
+  <text x="50" y="36" font-family="'Cinzel', serif" font-size="8.5" fill="#d49842" letter-spacing="1.5">★★★★★ VERY GOOD</text>
+</svg>

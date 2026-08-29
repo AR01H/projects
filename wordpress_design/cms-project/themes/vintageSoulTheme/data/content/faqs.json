@@ -3,10 +3,13 @@
 
     "heading": "Frequently Asked Questions",
     "items": [
-        { "question": "Is everything made fresh?", "answer": "Yes - everything is prepared to order, right in front of you. Nothing is pre-made or stored." },
-        { "question": "Do you use any additives?", "answer": "Never. Everything we offer is 100% natural with no added sugar, colours or preservatives." },
-        { "question": "Can I book you for a private event?", "answer": "Absolutely. We bring a live counter to weddings, corporate events, festivals and parties. Use the enquiry form to get a quote." },
-        { "question": "Do you deliver?", "answer": "Yes, we offer local delivery. Place an order online and choose a slot - it arrives ready to enjoy." },
-        { "question": "How do I get in touch about a partnership?", "answer": "Tell us your city and a little about you via the enquiry form. Our team replies within 24 hours with next steps." }
+        { "question": "What events do you cater for?", "answer": "We cater for weddings, birthday parties, college fests, corporate events, festivals, and private gatherings of any size." },
+        { "question": "Where do you provide your service?", "answer": "We currently serve Sutton, London, Surrey, and surrounding areas across the United Kingdom." },
+        { "question": "Can I book The Cane House for a wedding?", "answer": "Yes! Our live artisanal sugarcane pressing cart is a unique and popular live beverage counter for wedding receptions." },
+        { "question": "How far in advance should I book?", "answer": "We recommend booking at least 2 to 4 weeks in advance, especially during the busy summer and wedding season." },
+        { "question": "Do you provide custom event packages?", "answer": "Yes, we tailor beverage menus, cup branding, and live counter setups to match your event theme and guest count." },
+        { "question": "Can I order sugarcane juice online?", "answer": "Yes, we provide fresh chilled doorstep delivery in eco-friendly bottles across our local delivery radius." },
+        { "question": "Do you offer franchise opportunities?", "answer": "Yes! We offer low-investment franchise setups including city kiosks, event carts, and full training and operational support." },
+        { "question": "How can I make an enquiry?", "answer": "You can fill out our enquiry form on the website, call us at +44 7770 461 999, or email thecanehouseuk@gmail.com." }
     ]
 }

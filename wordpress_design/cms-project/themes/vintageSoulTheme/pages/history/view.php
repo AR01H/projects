@@ -43,6 +43,11 @@ $closing            = $data['closing'];
 			<span class="page-hero__flourish" aria-hidden="true"></span>
 		</div>
 	</header>
+
+	<!-- Deckled Edge Divider -->
+	<div class="deckled-divider" aria-hidden="true">
+		<img src="<?php echo esc_url( \VintageSoul\Support\UrlHelper::resolve( 'assets/images/textures/border/deckled-edge.svg' ) ); ?>" alt="" loading="lazy">
+	</div>
 <?php endif; ?>
 
 <?php if ( ! empty( $accent ) ) : ?>
@@ -307,3 +312,6 @@ $closing            = $data['closing'];
 		</a>
 	</div>
 </section>
+
+<?php View::component( 'sections/trust-ribbon-section' ); ?>
+

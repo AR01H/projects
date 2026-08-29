@@ -1,8 +1,8 @@
 {
     "_source": "Extracted + genericized from the reference design's Home 'Make It A Combo!' small banner section (some_styles/canehouse/priority) - gap, no matching file existed yet.",
 
-    "title": "Make It A <em>Combo!</em>",
-    "body": "Pair your favourite with a snack on the side - better together.",
-    "image": "https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=500&q=80",
-    "cta": { "label": "See Combos", "route": "game" }
+    "title": "Make It A Combo!",
+    "body": "Add jaggery, lemon or ginger for an extra burst of flavour.",
+    "image": "assets/images/sugarcane/combo.jpg",
+    "cta": { "label": "Order Combo", "route": "contact" }
 }

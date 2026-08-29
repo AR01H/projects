@@ -313,3 +313,86 @@
   position: relative;
   z-index: 0;
 }
+
+/* ═══════════ GLOBAL TORN PAPER EDGE SYSTEM (DISABLED) ═══════════ */
+.torn-top-parchment,
+.torn-bottom-parchment,
+.torn-top-dark,
+.torn-bottom-dark,
+.torn-dark-block {
+  position: relative;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.torn-top-parchment::before,
+.torn-bottom-parchment::after,
+.torn-top-dark::before,
+.torn-bottom-dark::after,
+.torn-dark-block::before,
+.torn-dark-block::after {
+  display: none !important;
+  content: none !important;
+}
+
+.gold-flourish {
+  display: block;
+  width: 280px;
+  max-width: 60%;
+  height: 20px;
+  margin: 20px auto;
+  background: url("../images/textures/border/gold-flourish.svg") no-repeat center;
+  background-size: contain;
+}
+
+.deckled-divider,
+.gold-wave-divider {
+  width: 100%;
+  line-height: 0;
+  overflow: hidden;
+}
+.deckled-divider img,
+.gold-wave-divider img {
+  width: 100%;
+  height: 12px;
+  display: block;
+  object-fit: cover;
+}
+.gold-wave-divider img {
+  height: 8px;
+}
+
+.paper-rough {
+  position: relative;
+}
+.paper-rough::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("../images/textures/roughness/roughness-a.svg");
+  background-size: 320px 320px;
+  background-repeat: repeat;
+  mix-blend-mode: multiply;
+  opacity: 0.25;
+  pointer-events: none;
+  z-index: 0;
+}
+.paper-rough > * { position: relative; z-index: 1; }
+
+.grain-dark {
+  position: relative;
+}
+.grain-dark::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("../images/textures/grain/grain-a.svg");
+  background-size: 240px 240px;
+  background-repeat: repeat;
+  mix-blend-mode: screen;
+  opacity: 0.12;
+  pointer-events: none;
+  z-index: 0;
+}
+.grain-dark > * { position: relative; z-index: 1; }
+

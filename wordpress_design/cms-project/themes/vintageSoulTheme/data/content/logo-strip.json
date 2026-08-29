@@ -1,16 +1,14 @@
 {
-    "_source": "Extracted from traditional_template/admin/data/logo_strip.json - already generic (press/partner mentions, no images required). Feeds a Home 'as featured in' strip.",
-
     "tag": "In Good Company",
-    "title": "Trusted And <em>Spoken About</em>",
-    "sub": "",
+    "title": "AS FEATURED & TRUSTED BY",
+    "sub": "Proudly recognized by leading culinary & cultural establishments.",
     "marquee": true,
     "items": [
-        { "name": "Borough Market" },
-        { "name": "The Grocer" },
-        { "name": "Slow Food UK" },
-        { "name": "Eastside Weekly" },
-        { "name": "Harvest Guild" },
-        { "name": "Green Retail Awards" }
+        { "name": "BBC GOOD FOOD", "image": "assets/images/partners/bbc-good-food.svg", "subtitle": "Featured Stalls" },
+        { "name": "TIME OUT LONDON", "image": "assets/images/partners/timeout-london.svg", "subtitle": "Editor's Pick" },
+        { "name": "BOROUGH MARKET", "image": "assets/images/partners/borough-market.svg", "subtitle": "London" },
+        { "name": "THE GROCER", "image": "assets/images/partners/the-grocer.svg", "subtitle": "UK Food & Drink" },
+        { "name": "SLOW FOOD UK", "image": "assets/images/partners/slow-food.svg", "subtitle": "Heritage Choice" },
+        { "name": "FOOD HYGIENE RATING", "image": "assets/images/partners/food-hygiene-5.svg", "subtitle": "5 Star Rating" }
     ]
 }

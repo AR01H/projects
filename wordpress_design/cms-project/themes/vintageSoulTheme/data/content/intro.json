@@ -1,13 +1,9 @@
 {
-    "_source": "Extracted + genericized from the reference design's Home 'More Than Just A Drink' intro block (some_styles/canehouse/priority) - distinct from story.json's fuller 'Our Story' section further down the same page.",
-
     "tag": "More Than Just A Drink",
-    "title": "It's A <em>Memory</em>",
-    "body": "Before supermarkets and everything became instant, there was something simple. Freshly made. Shared with friends. Enjoyed together under the sun.",
+    "title": "MORE THAN JUST A DRINK.",
+    "subtitle": "It's a memory.",
+    "body": "Before supermarkets and everything became instant, there was something simple. Freshly made. Shared with friends. Enjoyed together under the summer sun.",
     "cta_label": "Discover Our Story",
     "cta_route": "about",
-    "images": [
-        "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=500&q=80",
-        "https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&w=500&q=80"
-    ]
+    "image": "assets/images/sugarcane/story_moments.jpg"
 }

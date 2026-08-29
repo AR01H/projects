@@ -3,19 +3,20 @@
 
     "labels": {
         "quick_links_heading": "Quick Links",
-        "items_heading": "Our Range",
+        "services_heading": "Our Services",
         "contact_heading": "Contact Us",
+        "follow_heading": "Follow Us",
         "rights_text": "All Rights Reserved."
     },
     "brand": {
-        "tagline": "Bringing you the authentic, traditional taste of freshly pressed sugarcane. We serve nature's finest extracts, crafted with love, hygiene, and a passion for health. Pure Sugarcane. Pure Love.",
+        "tagline": "Freshly Pressed. Naturally Refreshing. Always Made With Care.",
         "bg_image": "assets/images/backgrounds/minibackground.webp"
     },
-    "items": [
-        { "label": "Item One", "route": "game" },
-        { "label": "Item Two", "route": "game" },
-        { "label": "Item Three", "route": "game" },
-        { "label": "View All", "route": "game" }
+    "services": [
+        { "label": "Events", "url": "/#events" },
+        { "label": "Catering", "url": "/#events" },
+        { "label": "Home Delivery", "url": "/#order" },
+        { "label": "Bulk Orders", "url": "/#order" }
     ],
     "bottom_links": [
         { "label": "Privacy Policy", "url": "/privacy-policy/" },

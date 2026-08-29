@@ -93,21 +93,15 @@
   --tex-sugarcane-bundle-image: url("../images/backgrounds/sugarcane-stalks-bundle.png");
   --tex-cane-ribbon-image: url("../images/decorative/paper-ribbon-with-cane.png");
 
-  --font-family-base: system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-family-display: "Playfair Display", "Cormorant Garamond", Georgia, serif;
-  --font-family-serif-body: "Lora", "EB Garamond", Georgia, "Times New Roman", serif;
-  --font-family-script: "Dancing Script", cursive;
-  --font-family-chunky: "Luckiest Guy", sans-serif;
-  --font-family-decorative: "Jolly Lodger", cursive;
-  --font-family-desc: "Edu VIC WA NT Hand", cursive;
-  --font-family-heavy: "Rubik Dirt", system-ui;
-  --font-family-mono: "Unkempt", cursive;
-  --font-family-blackletter: "Fruktur", system-ui;
-  --font-family-vintage-poster: "Fredericka the Great", serif;
-
-  --font-family-nav: "Oswald", "Segoe UI", sans-serif;
-  --font-family-heading: var(--font-family-display);
-  --font-family-ui: "Oswald", "Segoe UI", sans-serif;
+  --font-family-base: "EB Garamond", "Lora", Georgia, serif;
+  --font-family-display: "Cinzel", "Playfair Display", "EB Garamond", serif;
+  --font-family-slab: "Cinzel", "Playfair Display", "EB Garamond", serif;
+  --font-family-serif-body: "EB Garamond", "Lora", Georgia, serif;
+  --font-family-script: "Dancing Script", "Cormorant Garamond", cursive;
+  --font-family-chunky: "Cinzel", "Playfair Display", serif;
+  --font-family-heading: "Cinzel", "Playfair Display", "EB Garamond", serif;
+  --font-family-ui: "Cinzel", "EB Garamond", serif;
+  --font-family-nav: "Cinzel", "EB Garamond", Georgia, serif;
 
   --font-size-2xs: 0.6875rem;
   --font-size-xs: 0.75rem;

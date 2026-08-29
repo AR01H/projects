@@ -1,14 +1,13 @@
 {
-    "_source": "Extracted + genericized from traditional_template/admin/data/flavours.json (its 'flavours' array, which already had name/desc/price/image - the shape a product-menu-style component needs). Fills a gap found by cross-checking the reference designs' 'Our Drinks' / product-grid section, which had no generic equivalent yet. Feeds a Game/Services-style page (see config/routes.php's 'game' -> 'shop' alternate name).",
-
     "tag": "Our Range",
-    "title": "Fresh, <em>Made To Order</em>",
-    "sub": "Every item is made fresh. Prices shown are per item.",
+    "title": "OUR JUICES",
+    "sub": "Pure, natural and freshly pressed sugarcane juice — served chilled.",
     "items": [
-        { "name": "Classic", "desc": "Pure and simple - the original.", "price": "£3.00", "image": "https://images.unsplash.com/photo-1600271886742-f049cd451bba?auto=format&fit=crop&w=600&q=80" },
-        { "name": "Seasonal Special", "desc": "A tropical twist on the classic.", "price": "£3.50", "image": "https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=600&q=80" },
-        { "name": "Summer Favourite", "desc": "Light and fruity, loved by all ages.", "price": "£3.50", "image": "https://images.unsplash.com/photo-1615478503562-ec2d8aa0e24e?auto=format&fit=crop&w=600&q=80" },
-        { "name": "House Blend", "desc": "A refreshing twist with an extra kick.", "price": "£3.50", "image": "https://images.unsplash.com/photo-1621263764928-df1444c5e859?auto=format&fit=crop&w=600&q=80" }
-    ],
-    "button": { "label": "View Full Range", "route": "game" }
+        { "name": "CLASSIC CANE JUICE", "desc": "Pure & Natural", "price": "₹ 50.00", "image": "assets/images/sugarcane/drink_classic.jpg", "button": { "label": "ORDER NOW", "route": "contact" } },
+        { "name": "LEMON CANE JUICE", "desc": "With a twist of lemon", "price": "₹ 60.00", "image": "assets/images/sugarcane/drink_lemon.jpg", "button": { "label": "ORDER NOW", "route": "contact" } },
+        { "name": "GINGER CANE JUICE", "desc": "With natural ginger", "price": "₹ 60.00", "image": "assets/images/sugarcane/drink_pineapple.jpg", "button": { "label": "ORDER NOW", "route": "contact" } },
+        { "name": "MINT CANE JUICE", "desc": "Refreshing mint flavor", "price": "₹ 60.00", "image": "assets/images/sugarcane/drink_mint.jpg", "button": { "label": "ORDER NOW", "route": "contact" } },
+        { "name": "MASALA CANE JUICE", "desc": "Indian masala twist", "price": "₹ 60.00", "image": "assets/images/sugarcane/drink_masala.jpg", "button": { "label": "ORDER NOW", "route": "contact" } },
+        { "name": "MIX FRUIT CANE JUICE", "desc": "Healthy & Delicious", "price": "₹ 70.00", "image": "assets/images/sugarcane/drink_mixfruit.jpg", "button": { "label": "ORDER NOW", "route": "contact" } }
+    ]
 }

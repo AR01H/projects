@@ -1,0 +1,61 @@
+{
+    "_source": "Contact and Event Booking Page Content for The Cane House",
+
+    "hero": {
+        "tag": "Let's Connect",
+        "title": "GET IN TOUCH",
+        "sub": "Have questions, want to book us for an event, or looking to franchise? We'd love to hear from you.",
+        "image": "assets/images/sugarcane/hero_juice.jpg"
+    },
+
+    "contact_info": {
+        "phone": "+44 7770 461 999",
+        "phone_label": "+44 7770 461 999",
+        "whatsapp_url": "https://wa.me/447770461999",
+        "email": "thecanehouseuk@gmail.com",
+        "address": "Sutton, London, United Kingdom",
+        "hours": "Monday – Sunday: 9:00 AM – 9:00 PM",
+        "socials": [
+            { "name": "Facebook", "icon": "facebook", "url": "https://facebook.com/thecanehouseuk" },
+            { "name": "Instagram", "icon": "instagram", "url": "https://instagram.com/thecanehouseuk" },
+            { "name": "WhatsApp", "icon": "whatsapp", "url": "https://wa.me/447770461999" }
+        ]
+    },
+
+    "event_bar": {
+        "title": "🎪 BOOK OUR LIVE CANE BAR",
+        "sub": "Bring authentic freshly pressed sugarcane juice to your wedding, birthday, corporate event, or festival.",
+        "highlights": [
+            "Live cold-pressing on-site before your guests",
+            "100% natural pure sugarcane juice — nothing added",
+            "Custom flavor bar (Lemon, Ginger, Mint, Masala & Mix Fruit)",
+            "Fully certified, insured & self-contained setup"
+        ]
+    },
+
+    "enquiry_types": [
+        { "value": "event", "label": "Event Catering / Live Cane Bar" },
+        { "value": "franchise", "label": "Franchise Partnership" },
+        { "value": "bulk", "label": "Wholesale / Bulk Juice Order" },
+        { "value": "general", "label": "General Enquiry & Feedback" }
+    ],
+
+    "faqs": [
+        {
+            "question": "How do I book The Cane House for my wedding or party?",
+            "answer": "Simply fill out the form above with your event date, location, and estimated guest count. Our team will get back to you within 24 hours with package options and availability."
+        },
+        {
+            "question": "What is included with the live sugarcane bar?",
+            "answer": "Our live bar includes our traditional press machine, trained baristas, fresh premium sugarcane stalks, biodegradable cups, and a full range of natural flavor infusions."
+        },
+        {
+            "question": "How far in advance should I book?",
+            "answer": "We recommend booking at least 2 to 4 weeks in advance during peak summer and wedding seasons to secure your preferred date."
+        },
+        {
+            "question": "Where are you currently serving?",
+            "answer": "We are based in Sutton, London, and cater across Greater London, Surrey, and surrounding areas. For larger events and franchises, nationwide service is available."
+        }
+    ]
+}

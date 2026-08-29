@@ -1,5 +1,9 @@
 {
     "_source": "Extracted + genericized from the reference design's Home scrolling trust-ribbon (some_styles/canehouse/priority) - gap, no matching file existed yet.",
 
-    "items": ["Freshly Pressed", "100% Natural", "Naturally Refreshing", "Always Made With Care"]
+    "items": [
+        "Bringing Back Memories For Some.",
+        "Creating New Memories For Others.",
+        "Tradition In Every Glass."
+    ]
 }

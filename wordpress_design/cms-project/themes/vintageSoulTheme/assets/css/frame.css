@@ -1,18 +1,145 @@
+/* ==========================================================================
+   VintageSoulTheme - Authentic Rough Cut Frames & Shapes
+   Uses 9-Slice Handcrafted Jagged Torn Paper Cut Slices with Double Gold Lines
+   ========================================================================== */
+
 .frame {
-  border: var(--border-width) var(--border-style) var(--color-accent);
-  border-radius: var(--radius-sm);
-  background: var(--color-surface);
-  box-shadow: var(--shadow-sm);
+  border: 1.5px solid #8e622d;
+  border-radius: 5px;
+  background: linear-gradient(135deg, #fcf2e3 0%, #f6e0c3 100%);
+  box-shadow: 0 2px 6px rgba(42, 26, 12, 0.08);
 }
 
-.frame--ornate {
+/* ═══════════ MASTER 9-SLICE ROUGH-CUT PHOTO & CARD FRAMES ═══════════ */
+.frame--ornate,
+.frame--rough-cut,
+.photo--rough-cut,
+.card--rough-cut,
+.memory-card-vintage,
+.gallery-item,
+.about-gallery-item,
+.look-back-card__media,
+.event-gallery-card__media,
+.franchise-gallery-card__media,
+.order-gallery-card__media {
   position: relative;
+  border-width: 6px 8px;
+  border-style: solid;
+  border-color: transparent;
+  border-image-source: url("../images/textures/border/photo-rough-cut-frame.svg");
+  border-image-slice: 16 18 16 18 fill;
+  border-image-repeat: stretch;
+  filter: drop-shadow(0 4px 12px rgba(42, 26, 12, 0.2));
+  transition: transform 0.25s ease, filter 0.25s ease;
+  overflow: hidden;
+  border-radius: 4px;
 }
-.frame--ornate::after {
-  content: "";
+
+.frame--ornate:hover,
+.frame--rough-cut:hover,
+.photo--rough-cut:hover,
+.card--rough-cut:hover,
+.memory-card-vintage:hover,
+.gallery-item:hover,
+.about-gallery-item:hover,
+.look-back-card:hover .look-back-card__media,
+.event-gallery-card:hover .event-gallery-card__media,
+.franchise-gallery-card:hover .franchise-gallery-card__media,
+.order-gallery-card:hover .order-gallery-card__media {
+  transform: translateY(-3px) scale(1.02);
+  filter: drop-shadow(0 8px 20px rgba(42, 26, 12, 0.3));
+}
+
+/* Disable duplicate nested pseudo-element borders on rough-cut cards */
+.card--rough-cut::after,
+.card--rough-cut-dark::after,
+.frame--rough-cut::after,
+.photo--rough-cut::after,
+.frame--ornate::after,
+.memory-card-vintage::after,
+.about-gallery-item::after,
+.look-back-card::after,
+.event-type-card::after,
+.franchise-pillar-card::after,
+.wholesale-card::after {
+  display: none !important;
+}
+
+/* Inner images inside rough cut frames */
+.frame--ornate img,
+.frame--rough-cut img,
+.photo--rough-cut img,
+.memory-card-vintage img,
+.gallery-item img,
+.about-gallery-item img,
+.look-back-card__media img,
+.event-gallery-card__media img,
+.franchise-gallery-card__media img,
+.order-gallery-card__media img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  border-radius: 2px;
+}
+
+/* ═══════════ DARK ROUGH-CUT CARDS ═══════════ */
+.card--rough-cut-dark {
+  position: relative;
+  border-width: 8px 10px;
+  border-style: solid;
+  border-color: transparent;
+  border-image-source: url("../images/textures/border/card-rough-cut-dark.svg");
+  border-image-slice: 16 18 16 18 fill;
+  border-image-repeat: stretch;
+  color: #fbf2e6;
+  filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.35));
+  transition: transform 0.25s ease, filter 0.25s ease;
+  border-radius: 4px;
+}
+
+.card--rough-cut-dark:hover {
+  transform: translateY(-3px);
+  filter: drop-shadow(0 8px 22px rgba(0, 0, 0, 0.45));
+}
+
+/* Stamp Circle */
+.stamp-circle {
   position: absolute;
-  inset: var(--space-2xs);
-  border: var(--border-width) double var(--color-accent);
-  opacity: 0.6;
+  bottom: 14px;
+  right: 14px;
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #6b2f18 0%, #2f200e 100%);
+  border: 2px dashed #f3d49d;
+  color: #fbf2e6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  transform: rotate(-12deg);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
   pointer-events: none;
+  z-index: 10;
+}
+.stamp-circle__line1 {
+  font-family: 'Cinzel', serif;
+  font-size: 8px;
+  letter-spacing: 0.1em;
+  color: #f3d49d;
+}
+.stamp-circle__line2 {
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #ffffff;
+  margin: 1px 0;
+}
+.stamp-circle__line3 {
+  font-family: 'Dancing Script', cursive, serif;
+  font-size: 12px;
+  color: #f3d49d;
 }

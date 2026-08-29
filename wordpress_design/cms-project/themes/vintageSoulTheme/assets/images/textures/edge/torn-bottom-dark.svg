@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 28" preserveAspectRatio="none">
+  <defs>
+    <!-- Paper fiber texture -->
+    <filter id="torn-btm-fiber" x="0%" y="0%" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.08 0.04" numOctaves="3" seed="44" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+
+  <!-- Real Organic Torn Paper Curve (Dark Botanical Fill) -->
+  <path d="M0,0
+           L1200,0
+           L1200,12
+           Q1140,19 1080,13 Q1020,7 960,15 Q900,20 840,12 Q780,7 720,15 Q660,21 600,12 Q540,7 480,15 Q420,20 360,13 Q300,7 240,15 Q180,21 120,12 Q60,7 0,14 Z"
+        fill="#102d18"
+        filter="url(#torn-btm-fiber)"/>
+
+  <!-- Delicate Antique Gold Deckle Trim Line -->
+  <path d="M1200,13
+           Q1140,20 1080,14 Q1020,8 960,16 Q900,21 840,13 Q780,8 720,16 Q660,22 600,13 Q540,8 480,16 Q420,21 360,14 Q300,8 240,16 Q180,22 120,13 Q60,8 0,15"
+        fill="none"
+        stroke="#caa06d"
+        stroke-width="1.2"
+        opacity="0.8"
+        filter="url(#torn-btm-fiber)"/>
+</svg>

@@ -2,12 +2,13 @@
     "_source": "Extracted + genericized from the reference design's Home 'Stacks of Sugarcane' section (some_styles/canehouse/priority) - gap, no matching file existed yet.",
 
     "tag": "Our Sourcing",
-    "title": "Where It <em>Starts</em>",
-    "body": "We source the highest quality material from trusted partners. Prepared the traditional way to bring you pure, natural goodness.",
-    "sign_lines": ["FRESH", "PREMIUM QUALITY", "DAILY MADE", "ALWAYS FRESH"],
+    "title": "Stacks of Sugarcane",
+    "body": "We source the freshest sugarcane from trusted farms. Pressed the traditional way to bring you pure, fresh and natural goodness.",
+    "sign_lines": ["FRESH CANE", "PREMIUM QUALITY", "DAILY PRESSED", "ALWAYS FRESH"],
+    "image": "assets/images/sugarcane/stacks.jpg",
     "items": [
-        { "icon": "🌾", "title": "Fresh Source", "text": "Handpicked with care." },
-        { "icon": "⭐", "title": "Premium Quality", "text": "Rich in quality, naturally sweet." },
-        { "icon": "⚙️", "title": "Traditional Process", "text": "Cold-prepared for maximum care." }
+        { "icon": "🌾", "title": "Fresh Cane", "text": "Handpicked with care." },
+        { "icon": "⭐", "title": "Premium Cane", "text": "Rich in juice, naturally sweet." },
+        { "icon": "⚙️", "title": "Traditional Pressing", "text": "Cold pressed for maximum taste & goodness." }
     ]
 }

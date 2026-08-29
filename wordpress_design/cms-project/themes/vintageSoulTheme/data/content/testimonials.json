@@ -1,33 +1,30 @@
 {
     "_source": "Extracted + genericized from traditional_template/admin/data/reviews.json - brand references removed, shape preserved. Feeds a Home-page Testimonials section (see src/Repositories/JsonTestimonialRepository.php, already built).",
 
-    "tag": "Happy Customers",
-    "title": "What Our <em>Customers Say</em>",
-    "sub": "Loved by thousands across events and everyday visits.",
+    "tag": "Customer Stories",
+    "title": "Reviews",
+    "sub": "Loved by colleges, weddings, corporates and everyday visitors in Sutton & beyond.",
     "items": [
         {
-            "name": "Ramesh P.",
-            "location": "Bengaluru",
+            "name": "Greenfield College",
+            "location": "Sutton, UK",
             "rating": 5,
-            "text": "The most refreshing experience I've had in a long time. Totally natural and full of care - you can tell in every detail."
+            "text": "Best sugarcane juice I had at our college fest! Loved it!",
+            "badge": "Facebook Verified"
         },
         {
-            "name": "Anjali S.",
-            "location": "Mumbai",
+            "name": "Priya & Arjun",
+            "location": "Wedding Event",
             "rating": 5,
-            "text": "This is my go-to for a healthier choice. Clean, welcoming and made right in front of you."
+            "text": "They made our event so refreshing and memorable. The live pressing cart was a massive hit!",
+            "badge": "Google Review"
         },
         {
-            "name": "Vikram K.",
-            "location": "Pune",
+            "name": "FOODNOVA",
+            "location": "TECHNOVA Corp",
             "rating": 5,
-            "text": "Loved the quality and the variety. We booked for our event and guests couldn't stop talking about it."
-        },
-        {
-            "name": "Sarah M.",
-            "location": "Ely, UK",
-            "rating": 5,
-            "text": "Booked for our wedding - it was the highlight of the day. Fresh, fun and absolutely wonderful."
+            "text": "Best sugarcane juice in Sutton! Always fresh, hygienic, and wonderfully tasty.",
+            "badge": "Corporate Partner"
         }
     ]
 }

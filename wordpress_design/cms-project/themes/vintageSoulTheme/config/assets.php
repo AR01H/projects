@@ -5,12 +5,14 @@ defined( 'ABSPATH' ) || exit;
 return array(
 	'css' => array(
 
-		'fonts'      => 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Dancing+Script:wght@400..700&family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Jolly+Lodger&family=Lora:ital,wght@0,400..700;1,400..700&family=Luckiest+Guy&family=Oswald:wght@400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap&family=Edu+VIC+WA+NT+Hand:wght@400..700&family=Fondamento:ital@0;1&family=Rock+Salt&family=Special+Elite&display=swap&family=Rubik+Dirt&display=swap&family=Unkempt:wght@400;700&family=Fruktur&family=Fredericka+the+Great&display=swap',
+		'fonts'      => 'https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Cinzel:wght@600;700;800;900&family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500;1,700&family=Dancing+Script:wght@400..700&family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Lora:ital,wght@0,400..700;1,400..700&family=Patua+One&family=Playfair+Display:ital,wght@0,600;0,800;0,900;1,600;1,800;1,900&family=Rubik+Dirt&display=swap',
 
 		'variables'  => 'assets/css/variables.css',
 		'base'       => 'assets/css/base.css',
 		'layout'     => 'assets/css/layout.css',
 		'frame'      => 'assets/css/frame.css',
+		'textures'   => 'assets/css/textures.css',
+		'shape'      => 'assets/css/shape.css',
 		'animations' => 'assets/css/animations.css',
 
 		'ui-button'     => 'assets/css/components/button.css',

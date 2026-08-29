@@ -16,41 +16,16 @@ html {
 
 body {
   margin: 0;
-  background-color: var(--color-bg);
-  background-image:  url("../../assets/images/decorative/body-background.png");
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  color: var(--color-text);
-  font-family: var(--font-family-base);
-  font-size: var(--font-size-md);
-  line-height: var(--line-height-normal);
-  -webkit-font-smoothing: antialiased;
-}
-
-body {
-  position: relative;
-}
-body::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  opacity: 0.16;
+  background-color: #f5e6d0;
   background-image:
-    var(--ing-roots), var(--ing-bundle), var(--ing-cluster),
-    var(--ing-crossed), var(--ing-dew), var(--ing-bundle),
-    var(--ing-cluster), var(--ing-roots), var(--ing-crossed);
-  background-repeat: no-repeat;
-  background-position:
-    -3% 3%, 96% 11%, 6% 24%,
-    93% 37%, -2% 52%, 90% 64%,
-    8% 76%, 95% 86%, 2% 96%;
-  background-size:
-    300px auto, 360px auto, 250px auto,
-    280px auto, 330px auto, 340px auto,
-    265px auto, 290px auto, 310px auto;
+    radial-gradient(ellipse at 50% 0%, rgba(255, 255, 255, 0.4) 0%, transparent 70%),
+    linear-gradient(to bottom, #f7ebd9, #f2dfc6, #f5e7d2);
+  color: var(--color-text, #2a1a0c);
+  font-family: var(--font-family-base, 'EB Garamond', Georgia, serif);
+  font-size: var(--font-size-md, 16px);
+  line-height: var(--line-height-normal, 1.6);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
 }
 
 

@@ -1,7 +1,7 @@
 {
     "_source": "Extracted + genericized from the reference design's Home 'Direct Enquiry' small CTA section (some_styles/canehouse/priority) - distinct from cta.json (the main closing call-to-action band); this is a smaller, form-focused prompt used mid-page.",
 
-    "title": "Have A <em>Question?</em>",
-    "body": "Send us a direct enquiry and our team will get back to you shortly.",
-    "cta": { "label": "Send Enquiry", "route": "contact" }
+    "title": "Direct Enquiry",
+    "body": "Have a question or special request? We are here to help!",
+    "cta": { "label": "Make An Enquiry", "route": "contact" }
 }

@@ -1,12 +1,12 @@
 {
     "_source": "Extracted + genericized from the reference design's Home 'How We Serve You' 3-step section (some_styles/canehouse/priority) - distinct from process-steps.json's 6-step production journey. Feeds the per-step 'cta' shape process-steps.php-style components support.",
 
-    "tag": "Simple Process",
-    "title": "How We Serve <em>You</em>",
-    "sub": "Three easy ways to get started.",
+    "tag": "How It Works",
+    "title": "How We Serve You",
+    "sub": "Three simple ways to enjoy The Cane House experience.",
     "steps": [
-        { "title": "Order", "desc": "Choose your favourite item or place your order online.", "cta": { "label": "Order Now", "route": "game" } },
-        { "title": "Enquiry", "desc": "Tell us your needs - we'll get back to you within 24 hours.", "cta": { "label": "Enquire", "route": "contact" } },
-        { "title": "Partner", "desc": "Join our family and grow your own branch of the business.", "cta": { "label": "Know More", "route": "game" } }
+        { "number": "01", "title": "Order", "desc": "Choose your favourite drink or place your bulk order.", "cta": { "label": "Order Now", "route": "contact" } },
+        { "number": "02", "title": "Enquiry", "desc": "Tell us your needs. We'll get back within 24 hours.", "cta": { "label": "Enquire Now", "route": "contact" } },
+        { "number": "03", "title": "Franchise", "desc": "Join our family and grow together with The Cane House.", "cta": { "label": "Know More", "route": "franchise" } }
     ]
 }

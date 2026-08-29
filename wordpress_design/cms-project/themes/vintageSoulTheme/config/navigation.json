@@ -1,8 +1,8 @@
 {
-    "_doc": "Fallback navigation, used only if no WordPress menu is assigned to a location yet (Appearance -> Menus always wins - see NavigationService::menu()). Structure (including optional 'children' for a dropdown) extracted from traditional_template/admin/data/nav.json - header.php/footer.php read 'url' directly and don't iterate 'children' yet, so it's inert extra data for now rather than a functional dropdown, per 'preserve useful structure/relationships' without changing the PHP that already consumes this file. 'url' values match config/routes.php's raw paths for the 'home'/'about'/'game'/'contact' example routes - keep them in sync if a route's path changes, since this fallback file (unlike component code) is not read through RouteService.",
+    "_doc": "Main Navigation menu with Home, All About Cane, About Us, and Contact pages only",
 
     "header_cta": {
-        "_doc": "The persistent header action button (reference design: 'BOOK US / FOR YOUR EVENT' with a calendar icon, present on every page, not just Home - distinct from data/content/cta.json's Home-only closing CTA band). 'route' is a config/routes.php key, resolved through RouteService::url(), same rule as everywhere else - never a raw path here.",
+        "_doc": "The persistent header action button",
         "label": "Book Us",
         "sublabel": "For Your Event",
         "route": "contact"
@@ -10,26 +10,14 @@
 
     "primary": [
         { "label": "Home", "url": "/" },
-        {
-            "label": "About",
-            "url": "/about",
-            "children": [
-                { "label": "Our Story", "url": "/about" }
-            ]
-        },
-        {
-            "label": "Explore",
-            "url": "/game",
-            "children": [
-                { "label": "The Full Range", "url": "/game" }
-            ]
-        },
+        { "label": "All About Cane", "url": "/history" },
+        { "label": "About Us", "url": "/about" },
         { "label": "Contact", "url": "/contact" }
     ],
     "footer": [
         { "label": "Home", "url": "/" },
-        { "label": "About", "url": "/about" },
-        { "label": "Explore", "url": "/game" },
+        { "label": "All About Cane", "url": "/history" },
+        { "label": "About Us", "url": "/about" },
         { "label": "Contact", "url": "/contact" }
     ]
 }

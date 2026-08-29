@@ -18,6 +18,20 @@ defined( 'ABSPATH' ) || exit;
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
 
+<!-- SVG Filters for Authentic Rough Cut Button & Card Edges -->
+<svg style="position: absolute; width: 0; height: 0; overflow: hidden; pointer-events: none;" aria-hidden="true">
+	<defs>
+		<filter id="rough-button-cut" x="-10%" y="-10%" width="120%" height="120%">
+			<feTurbulence type="fractalNoise" baseFrequency="0.045 0.045" numOctaves="3" seed="33" result="noise"/>
+			<feDisplacementMap in="SourceGraphic" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G"/>
+		</filter>
+		<filter id="rough-button-cut-sm" x="-10%" y="-10%" width="120%" height="120%">
+			<feTurbulence type="fractalNoise" baseFrequency="0.06 0.06" numOctaves="3" seed="18" result="noise"/>
+			<feDisplacementMap in="SourceGraphic" in2="noise" scale="2" xChannelSelector="R" yChannelSelector="G"/>
+		</filter>
+	</defs>
+</svg>
+
 <a class="skip-link screen-reader-text" href="#main"><?php esc_html_e( 'Skip to content', 'vintagesoul' ); ?></a>
 
 <header class="site-header" role="banner">
@@ -84,13 +98,4 @@ defined( 'ABSPATH' ) || exit;
 	</div>
 </header>
 
-<?php
-$preheader_items = SettingsService::preheader();
-if ( ! empty( $preheader_items ) ) :
-	// Rendered after </header> rather than before it - a post-header
-	// marquee strip, not a pre-header one - despite the method name still
-	// being SettingsService::preheader() (config/naming untouched, only
-	// where the markup is placed).
-	View::component( 'marquee/marquee', array( 'items' => $preheader_items, 'variant' => 'b', 'class' => 'preheader' ) );
-endif;
-?>
+<main class="site-main site-canvas" id="main">
