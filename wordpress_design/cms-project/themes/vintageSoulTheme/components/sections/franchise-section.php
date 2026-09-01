@@ -2,73 +2,42 @@
 
 defined( 'ABSPATH' ) || exit;
 
+use VintageSoul\DataProviders\JsonFileProvider;
 use VintageSoul\Services\RouteService;
 use VintageSoul\Support\IconHelper;
 use VintageSoul\Support\UrlHelper;
+use VintageSoul\Support\View;
 
-$title    = (string) ( $title ?? 'FRANCHISE OPPORTUNITIES' );
-$sub      = (string) ( $sub ?? 'Own a profitable, turnkey sugarcane juice business with full brand support.' );
+$franchise_data = (array) ( JsonFileProvider::read( 'data/content/franchise-teaser.json' ) ?? array() );
 
-$franchise_pillars = array(
-	array(
-		'icon'  => 'stall',
-		'title' => 'TURNKEY MOBILE COUNTER',
-		'desc'  => 'Complete rustic wooden stall, heavy-duty commercial stainless steel extractor, and branded POS setup.',
-	),
-	array(
-		'icon'  => 'plant',
-		'title' => 'PREMIUM CANE SUPPLY',
-		'desc'  => 'Guaranteed steady supply of freshly harvested, high-yield premium sugarcane stalks delivered to your hub.',
-	),
-	array(
-		'icon'  => 'handshake',
-		'title' => 'TRAINING & CERTIFICATION',
-		'desc'  => 'Hands-on operational training, health & hygiene compliance, recipe mastery, and customer service excellence.',
-	),
-	array(
-		'icon'  => 'growth',
-		'title' => 'HIGH MARGINS & QUICK ROI',
-		'desc'  => 'Low ingredient cost, high consumer demand, zero waste byproduct utilisation, and strong event catering margins.',
-	),
-);
+$tag   = (string) ( $tag ?? ( $franchise_data['tag'] ?? 'Partner With Us' ) );
+$title = (string) ( $title ?? ( $franchise_data['title'] ?? 'FRANCHISE &amp; <em>Stall Partnerships</em>' ) );
+$sub   = (string) ( $sub ?? ( $franchise_data['sub'] ?? 'Own a profitable, turnkey sugarcane juice business with full brand support.' ) );
 
-$franchise_gallery = array(
-	array( 'image' => 'assets/images/sugarcane/story_moments.jpg', 'title' => 'Borough Market Stall', 'tag' => 'Flagship Stall' ),
-	array( 'image' => 'assets/images/sugarcane/stacks.jpg', 'title' => 'Fresh Cane Supply Hub', 'tag' => 'Raw Materials' ),
-	array( 'image' => 'assets/images/sugarcane/hero_juice.jpg', 'title' => 'Commercial Press in Action', 'tag' => 'Machinery' ),
-	array( 'image' => 'assets/images/sugarcane/combo.jpg', 'title' => 'High-Volume Serving Counter', 'tag' => 'Operations' ),
-);
-
-$franchise_steps = array(
-	array( 'num' => '01', 'title' => 'EXPRESS INTEREST', 'desc' => 'Submit your application and schedule an initial discovery call.' ),
-	array( 'num' => '02', 'title' => 'LOCATION & PLAN', 'desc' => 'Review territories, pitch locations (markets, malls, mobile event vans).' ),
-	array( 'num' => '03', 'title' => 'SETUP & TRAINING', 'desc' => 'Receive your branded machinery, stock, and complete training.' ),
-	array( 'num' => '04', 'title' => 'GRAND LAUNCH', 'desc' => 'Open your stall with our marketing support and start pouring fresh cane juice.' ),
-);
-
-$franchisee_reviews = array(
-	array(
-		'quote'  => 'Starting a Cane House franchise was the best decision. The training and cane supply chain are seamless, and customers love the fresh taste.',
-		'author' => 'Ramesh B.',
-		'city'   => 'Borough Market Partner',
-		'rating' => '★★★★★',
-	),
-	array(
-		'quote'  => 'High profit margins and the live juice theatre draws crowds every single weekend. We broke even in just four months.',
-		'author' => 'Priya & Suresh K.',
-		'city'   => 'South London Franchisee',
-		'rating' => '★★★★★',
-	),
-);
+$franchise_pillars  = (array) ( $pillars ?? ( $franchise_data['pillars'] ?? array() ) );
+$franchise_gallery  = (array) ( $gallery ?? ( $franchise_data['gallery'] ?? array() ) );
+$franchise_steps    = (array) ( $steps ?? ( $franchise_data['steps'] ?? array() ) );
+$franchisee_reviews = (array) ( $reviews ?? ( $franchise_data['reviews'] ?? array() ) );
+$cta_box            = (array) ( $franchise_data['cta'] ?? array() );
 ?>
 <section class="section section--franchise franchise-vintage-block torn-dark-block grain-dark" id="franchise">
+	<?php View::component( 'background/ambient-layer', array( 'variant' => 'dark', 'cane_positions' => array( 'top-left', 'bottom-right' ), 'bubble_count' => 12 ) ); ?>
 	<div class="container franchise-vintage__container">
 		
 		<!-- 1. Header -->
-		<div class="franchise-vintage__header">
-			<h2 class="franchise-vintage__title"><?php echo esc_html( trim( strip_tags( $title ), " -—" ) ); ?></h2>
-			<p class="franchise-vintage__sub"><?php echo esc_html( $sub ); ?></p>
-		</div>
+		<?php
+		View::component(
+			'section-header/section-header',
+			array(
+				'tag'     => 'Business Opportunity',
+				'title'   => 'BECOME A <em>Franchise Partner</em>',
+				'eyebrow' => 'Turnkey Kiosks, Retail Stalls & UK Distribution',
+				'sub'     => $sub,
+				'variant' => 'dark',
+				'ribbon'  => true,
+			)
+		);
+		?>
 
 		<!-- 2. What We Provide / 4 Pillars Grid -->
 		<div class="franchise-pillars-grid">
@@ -83,23 +52,17 @@ $franchisee_reviews = array(
 			<?php endforeach; ?>
 		</div>
 
-		<!-- 3. Franchise Operations & Stalls Photo Gallery -->
+		<!-- 3. Franchise Operations & Stalls Photo Gallery Stream (Left-to-Right) -->
 		<div class="vintage-ribbon-tag vintage-ribbon-tag--gold">
 			<span>OUR OUTLETS & MACHINERY</span>
 		</div>
-		<div class="franchise-gallery-grid">
-			<?php foreach ( $franchise_gallery as $fg ) :
-				$fg_img = UrlHelper::resolve( $fg['image'] );
-			?>
-				<div class="franchise-gallery-card frame--rough-cut">
-					<div class="franchise-gallery-card__media">
-						<img src="<?php echo esc_url( $fg_img ); ?>" alt="<?php echo esc_attr( $fg['title'] ); ?>" loading="lazy">
-						<span class="franchise-gallery-card__tag"><?php echo esc_html( $fg['tag'] ); ?></span>
-					</div>
-					<h4 class="franchise-gallery-card__title"><?php echo esc_html( $fg['title'] ); ?></h4>
-				</div>
-			<?php endforeach; ?>
-		</div>
+		<?php
+		View::component( 'card-stream/card-stream', array(
+			'items'      => $franchise_gallery,
+			'card_type'  => 'gallery',
+			'direction'  => 'ltr',
+		) );
+		?>
 
 		<!-- 4. Step-by-Step Launch Timeline -->
 		<div class="vintage-ribbon-tag vintage-ribbon-tag--gold">
@@ -115,22 +78,17 @@ $franchisee_reviews = array(
 			<?php endforeach; ?>
 		</div>
 
-		<!-- 5. Franchisee Success Stories -->
+		<!-- 5. Franchisee Success Stories Stream (Right-to-Left) -->
 		<div class="vintage-ribbon-tag">
 			<span>PARTNER EXPERIENCES</span>
 		</div>
-		<div class="franchise-reviews-grid">
-			<?php foreach ( $franchisee_reviews as $rev ) : ?>
-				<div class="franchise-review-card card--rough-cut-dark">
-					<div class="franchise-review-card__rating"><?php echo esc_html( $rev['rating'] ); ?></div>
-					<p class="franchise-review-card__quote">“<?php echo esc_html( $rev['quote'] ); ?>”</p>
-					<div class="franchise-review-card__meta">
-						<strong><?php echo esc_html( $rev['author'] ); ?></strong>
-						<span><?php echo esc_html( $rev['city'] ); ?></span>
-					</div>
-				</div>
-			<?php endforeach; ?>
-		</div>
+		<?php
+		View::component( 'card-stream/card-stream', array(
+			'items'      => $franchisee_reviews,
+			'card_type'  => 'dark-review',
+			'direction'  => 'rtl',
+		) );
+		?>
 
 		<!-- 6. Franchise Call to Action Box -->
 		<div class="franchise-cta-box card--rough-cut">
@@ -142,8 +100,8 @@ $franchisee_reviews = array(
 				<a class="btn btn--primary-vintage" href="<?php echo esc_url( RouteService::url( 'contact' ) ); ?>">
 					<span>APPLY FOR FRANCHISE</span>
 				</a>
-				<a class="btn btn--outline-vintage" href="tel:+447770461999">
-					<span>📞 CALL FRANCHISE TEAM</span>
+				<a class="btn btn--outline-vintage" href="tel:<?php echo esc_attr( preg_replace( '/[^\d+]/', '', \VintageSoul\Services\SettingsService::phone() ) ); ?>">
+					<span>📞 CALL <?php echo esc_html( \VintageSoul\Services\SettingsService::phone() ); ?></span>
 				</a>
 			</div>
 		</div>

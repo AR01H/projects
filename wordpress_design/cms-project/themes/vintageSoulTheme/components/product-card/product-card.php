@@ -23,9 +23,6 @@ if ( '' === $name ) {
 	<div class="card__body">
 		<div class="product-card__row">
 			<h3 class="card__title"><?php echo esc_html( $name ); ?></h3>
-			<?php if ( '' !== $price ) : ?>
-				<span class="product-card__price"><?php echo esc_html( $price ); ?></span>
-			<?php endif; ?>
 		</div>
 		<?php if ( '' !== $desc ) : ?>
 			<p class="product-card__desc"><?php echo esc_html( $desc ); ?></p>

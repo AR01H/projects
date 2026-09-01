@@ -1,23 +1,39 @@
 {
-    "_doc": "Main Navigation menu with Home, All About Cane, About Us, and Contact pages only",
+    "_doc": "Main Navigation menu with Home, All About Cane, About Us, Events, Franchise, Blog (with dropdown), and Contact pages",
 
     "header_cta": {
         "_doc": "The persistent header action button",
         "label": "Book Us",
         "sublabel": "For Your Event",
-        "route": "contact"
+        "route": "events"
     },
 
     "primary": [
         { "label": "Home", "url": "/" },
         { "label": "All About Cane", "url": "/history" },
         { "label": "About Us", "url": "/about" },
+        { "label": "Events", "url": "/events" },
+        { "label": "Franchise", "url": "/franchise" },
+        {
+            "label": "Blog",
+            "url": "/blog",
+            "children": [
+                { "label": "All Stories & Articles", "url": "/blog" },
+                { "label": "🌿 Botanical Nutrition", "url": "/blog/?article=why-cold-pressed-raw-cane-outperforms-synthetic-energy-drinks" },
+                { "label": "🌾 5,000-Year Heritage", "url": "/blog/?article=from-new-guinea-to-london-voyage-of-saccharum-officinarum" },
+                { "label": "🍹 Cold-Press Craft & Pairings", "url": "/blog/?article=artisanal-infusions-perfect-botanical-pairings" },
+                { "label": "🎉 Wedding & Live Bar Stories", "url": "/blog/?article=behind-the-scenes-live-sugarcane-bar-surrey-weddings" }
+            ]
+        },
         { "label": "Contact", "url": "/contact" }
     ],
     "footer": [
         { "label": "Home", "url": "/" },
         { "label": "All About Cane", "url": "/history" },
         { "label": "About Us", "url": "/about" },
+        { "label": "Events & Catering", "url": "/events" },
+        { "label": "Franchise", "url": "/franchise" },
+        { "label": "The Cane Chronicle Blog", "url": "/blog" },
         { "label": "Contact", "url": "/contact" }
     ]
 }

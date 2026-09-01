@@ -5,33 +5,26 @@
 
 /* --- Canvas & Body --- */
 body.page-template-about,
-.about-page {
+body.page-about,
+.about-page,
+.about-page.site-canvas,
+.about-page .site-canvas {
   margin: 0;
   width: 100%;
-  background-color: #112412;
-  background-image:
-    radial-gradient(circle at 50% 15%, #1d3e20 0%, #0d1e10 75%),
-    linear-gradient(to bottom, #0d1d0e, #132a15, #081309);
-  color: #2a1a0c;
-  font-family: var(--font-family-base, 'EB Garamond', Georgia, serif);
-  font-size: 15px;
-  line-height: 1.55;
-  -webkit-font-smoothing: antialiased;
-}
-
-.about-page .site-canvas,
-.page-template-about .site-canvas {
-  width: 100%;
   max-width: 100%;
-  margin: 0 auto;
-  background-color: #edd5ad;
+  background-color: #f5e6d0 !important;
   background-image:
     url("../../images/textures/paper/parchment-stained-master.svg"),
     url("../../images/textures/paper/paper-fiber-a.svg"),
-    radial-gradient(ellipse at 50% 0%, #f7e8cb 0%, #edd5ad 55%, #dfbe88 100%);
-  background-size: 600px 1200px, 300px 300px, 100% 100%;
-  background-repeat: repeat-y, repeat, no-repeat;
-  position: relative;
+    radial-gradient(ellipse at 50% 0%, #fdf8ef 0%, #f5e6d0 55%, #edd5ad 100%) !important;
+  background-size: 600px 1200px, 300px 300px, 100% 100% !important;
+  background-repeat: repeat-y, repeat, no-repeat !important;
+  color: #2a1a0c !important;
+  font-family: var(--font-family-base, 'EB Garamond', Georgia, serif) !important;
+  font-size: 15px !important;
+  line-height: 1.55 !important;
+  -webkit-font-smoothing: antialiased !important;
+  position: relative !important;
 }
 
 /* ═══════════ DECKLED SVG BORDER DIVIDERS ═══════════ */
@@ -92,7 +85,7 @@ body.page-template-about,
   align-items: center;
   justify-content: center;
   gap: 14px;
-  font-family: 'Rubik Dirt', 'Cinzel', cursive, serif;
+  font-family: 'Cinzel', 'Playfair Display', Georgia, serif;
   font-size: clamp(30px, 6vw, 48px);
   line-height: 1.12;
   font-weight: 400;
@@ -134,7 +127,7 @@ body.page-template-about,
   align-items: center;
   justify-content: center;
   gap: 14px;
-  font-family: 'Rubik Dirt', 'Cinzel', cursive, serif;
+  font-family: 'Cinzel', 'Playfair Display', Georgia, serif;
   font-size: clamp(22px, 4.5vw, 30px);
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -296,7 +289,7 @@ body.page-template-about,
   margin-bottom: 14px;
 }
 .service-card__title {
-  font-family: 'Rubik Dirt', 'Cinzel', serif;
+  font-family: 'Cinzel', 'Playfair Display', Georgia, serif;
   font-size: 13px;
   font-weight: 400;
   text-transform: uppercase;
@@ -413,7 +406,7 @@ body.page-template-about,
   border-radius: 50%;
   background: linear-gradient(180deg, #0f3b1d 0%, #092612 100%);
   color: #f3d49d;
-  font-family: 'Rubik Dirt', serif;
+  font-family: 'Cinzel', 'Playfair Display', Georgia, serif;
   font-size: 16px;
   font-weight: 400;
   border: 1.5px solid #8e622d;
@@ -421,7 +414,7 @@ body.page-template-about,
   margin-bottom: 14px;
 }
 .value-card__title {
-  font-family: 'Rubik Dirt', 'Cinzel', serif;
+  font-family: 'Cinzel', 'Playfair Display', Georgia, serif;
   font-size: 14px;
   font-weight: 400;
   text-transform: uppercase;
@@ -492,7 +485,7 @@ body.page-template-about,
   z-index: 1;
 }
 .milestone-item__year {
-  font-family: 'Rubik Dirt', serif;
+  font-family: 'Cinzel', 'Playfair Display', Georgia, serif;
   font-size: 18px;
   font-weight: 400;
   color: #0f3b1d;
@@ -517,7 +510,7 @@ body.page-template-about,
   pointer-events: none;
 }
 .milestone-item__title {
-  font-family: 'Rubik Dirt', 'Cinzel', serif;
+  font-family: 'Cinzel', 'Playfair Display', Georgia, serif;
   font-size: 13px;
   font-weight: 400;
   text-transform: uppercase;
@@ -578,7 +571,7 @@ body.page-template-about,
   object-fit: cover;
 }
 .team-card__name {
-  font-family: 'Rubik Dirt', 'Cinzel', serif;
+  font-family: 'Cinzel', 'Playfair Display', Georgia, serif;
   font-size: 14px;
   font-weight: 400;
   text-transform: uppercase;

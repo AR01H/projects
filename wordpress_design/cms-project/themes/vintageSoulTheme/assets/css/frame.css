@@ -1,16 +1,15 @@
 /* ==========================================================================
-   VintageSoulTheme - Authentic Rough Cut Frames & Shapes
-   Uses 9-Slice Handcrafted Jagged Torn Paper Cut Slices with Double Gold Lines
+   VintageSoulTheme - Clean Vintage Frames & Borders
    ========================================================================== */
 
 .frame {
   border: 1.5px solid #8e622d;
-  border-radius: 5px;
+  border-radius: 6px;
   background: linear-gradient(135deg, #fcf2e3 0%, #f6e0c3 100%);
-  box-shadow: 0 2px 6px rgba(42, 26, 12, 0.08);
+  box-shadow: inset 0 0 0 1px #caa06d, 0 4px 14px rgba(42, 26, 12, 0.1);
 }
 
-/* ═══════════ MASTER 9-SLICE ROUGH-CUT PHOTO & CARD FRAMES ═══════════ */
+/* ═══════════ CLEAN VINTAGE CARD & PHOTO FRAMES ═══════════ */
 .frame--ornate,
 .frame--rough-cut,
 .photo--rough-cut,
@@ -18,23 +17,39 @@
 .memory-card-vintage,
 .gallery-item,
 .about-gallery-item,
-.look-back-card__media,
-.event-gallery-card__media,
-.franchise-gallery-card__media,
-.order-gallery-card__media {
-  position: relative;
-  border-width: 6px 8px;
-  border-style: solid;
-  border-color: transparent;
-  border-image-source: url("../images/textures/border/photo-rough-cut-frame.svg");
-  border-image-slice: 16 18 16 18 fill;
-  border-image-repeat: stretch;
-  filter: drop-shadow(0 4px 12px rgba(42, 26, 12, 0.2));
-  transition: transform 0.25s ease, filter 0.25s ease;
-  overflow: hidden;
-  border-radius: 4px;
+.look-back-card,
+.cert-h-card,
+.order-product-card,
+.event-type-card,
+.franchise-pillar-card,
+.wholesale-card,
+.timeline-step-card,
+.variety-card,
+.mineral-card,
+.storage-step-card,
+.search-result-card,
+.feature-row__item,
+.social-card,
+.event-gallery-card,
+.franchise-gallery-card,
+.order-gallery-card,
+.sourcing-pillar-card,
+.sourcing-vintage__photo-frame {
+  position: relative !important;
+  border: 1.5px solid #8e622d !important;
+  border-radius: 6px !important;
+  background: linear-gradient(135deg, #fdf8ef 0%, #f7e6ce 60%, #eed2ae 100%) !important;
+  box-shadow:
+    inset 0 0 0 1px #caa06d,
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    0 6px 18px rgba(42, 26, 12, 0.12) !important;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease !important;
+  box-sizing: border-box !important;
+  filter: url(#rough-button-cut-sm) !important;
+  -webkit-filter: url(#rough-button-cut-sm) !important;
 }
 
+/* Hover Lift */
 .frame--ornate:hover,
 .frame--rough-cut:hover,
 .photo--rough-cut:hover,
@@ -42,69 +57,114 @@
 .memory-card-vintage:hover,
 .gallery-item:hover,
 .about-gallery-item:hover,
-.look-back-card:hover .look-back-card__media,
-.event-gallery-card:hover .event-gallery-card__media,
-.franchise-gallery-card:hover .franchise-gallery-card__media,
-.order-gallery-card:hover .order-gallery-card__media {
-  transform: translateY(-3px) scale(1.02);
-  filter: drop-shadow(0 8px 20px rgba(42, 26, 12, 0.3));
+.look-back-card:hover,
+.cert-h-card:hover,
+.order-product-card:hover,
+.event-type-card:hover,
+.franchise-pillar-card:hover,
+.wholesale-card:hover,
+.timeline-step-card:hover,
+.variety-card:hover,
+.mineral-card:hover,
+.storage-step-card:hover,
+.search-result-card:hover,
+.feature-row__item:hover,
+.social-card:hover {
+  transform: translateY(-4px) !important;
+  background: linear-gradient(135deg, #ffffff 0%, #faecd7 60%, #f3d8b6 100%) !important;
+  border-color: #d49842 !important;
+  box-shadow:
+    inset 0 0 0 1.5px #d49842,
+    0 10px 24px rgba(142, 98, 45, 0.2) !important;
 }
 
-/* Disable duplicate nested pseudo-element borders on rough-cut cards */
-.card--rough-cut::after,
-.card--rough-cut-dark::after,
-.frame--rough-cut::after,
-.photo--rough-cut::after,
-.frame--ornate::after,
-.memory-card-vintage::after,
-.about-gallery-item::after,
-.look-back-card::after,
-.event-type-card::after,
-.franchise-pillar-card::after,
-.wholesale-card::after {
-  display: none !important;
+/* ═══════════ MEDIA & THUMBNAILS ═══════════ */
+.look-back-card__media,
+.event-gallery-card__media,
+.franchise-gallery-card__media,
+.order-gallery-card__media,
+.variety-card__media,
+.search-result-card__media,
+.photo--ornate,
+.frame--ornate-sm,
+.sourcing-vintage__photo-frame {
+  border-radius: 6px !important;
+  border: 1.5px solid #8e622d !important;
+  overflow: hidden !important;
+  position: relative !important;
 }
 
-/* Inner images inside rough cut frames */
-.frame--ornate img,
-.frame--rough-cut img,
-.photo--rough-cut img,
-.memory-card-vintage img,
-.gallery-item img,
-.about-gallery-item img,
+.photo--rough-cut > img,
+.memory-card-vintage > img,
+.gallery-item > img,
+.about-gallery-item > img,
 .look-back-card__media img,
 .event-gallery-card__media img,
 .franchise-gallery-card__media img,
-.order-gallery-card__media img {
-  width: 100%;
-  height: 100%;
-  display: block;
-  object-fit: cover;
-  border-radius: 2px;
+.order-gallery-card__media img,
+.variety-card__media img,
+.search-result-card__media img,
+.sourcing-vintage__photo-frame img {
+  width: 100% !important;
+  height: 100% !important;
+  display: block !important;
+  object-fit: cover !important;
+  transition: transform 0.4s ease !important;
 }
 
-/* ═══════════ DARK ROUGH-CUT CARDS ═══════════ */
+/* ═══════════ DARK CARDS ═══════════ */
 .card--rough-cut-dark {
-  position: relative;
-  border-width: 8px 10px;
-  border-style: solid;
-  border-color: transparent;
-  border-image-source: url("../images/textures/border/card-rough-cut-dark.svg");
-  border-image-slice: 16 18 16 18 fill;
-  border-image-repeat: stretch;
-  color: #fbf2e6;
-  filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.35));
-  transition: transform 0.25s ease, filter 0.25s ease;
-  border-radius: 4px;
+  border-radius: 6px !important;
+  border: 1.5px solid #8e622d !important;
+  background-color: #11381b !important;
+  background-image:
+    url("../../images/textures/roughness/roughness-a.svg"),
+    linear-gradient(135deg, #184b25 0%, #0d2f16 100%) !important;
+  background-size: 140px 140px, 100% 100% !important;
+  color: #fbf2e6 !important;
+  box-shadow:
+    inset 0 0 0 1.5px #caa06d,
+    0 6px 18px rgba(0, 0, 0, 0.35) !important;
+  filter: url(#rough-button-cut-sm) !important;
+  -webkit-filter: url(#rough-button-cut-sm) !important;
+  transition: all 0.25s ease !important;
 }
 
 .card--rough-cut-dark:hover {
-  transform: translateY(-3px);
-  filter: drop-shadow(0 8px 22px rgba(0, 0, 0, 0.45));
+  transform: translateY(-4px) scale(1.02) !important;
+  border-color: #f6d599 !important;
+  box-shadow:
+    inset 0 0 0 1.5px #f6d599,
+    0 12px 28px rgba(0, 0, 0, 0.5) !important;
 }
 
-/* Stamp Circle */
-.stamp-circle {
+/* ═══════════ BUTTONS ═══════════ */
+.btn,
+.btn--primary-vintage,
+.btn--secondary-vintage,
+.btn--outline-vintage,
+.btn--order-now,
+.btn--consult,
+.hero-sugarcane__btn-gold,
+.hero-sugarcane__btn-green {
+  border-radius: 6px !important;
+  transition: all 0.22s ease !important;
+}
+
+.btn:hover,
+.btn--primary-vintage:hover,
+.btn--secondary-vintage:hover,
+.btn--outline-vintage:hover,
+.btn--order-now:hover,
+.btn--consult:hover,
+.hero-sugarcane__btn-gold:hover,
+.hero-sugarcane__btn-green:hover {
+  transform: translateY(-2px) !important;
+}
+
+/* ═══════════ WAX SEALS ═══════════ */
+.stamp-circle,
+.vintage-seal {
   position: absolute;
   bottom: 14px;
   right: 14px;
@@ -112,7 +172,7 @@
   height: 76px;
   border-radius: 50%;
   background: radial-gradient(circle, #6b2f18 0%, #2f200e 100%);
-  border: 2px dashed #f3d49d;
+  border: 2px dashed #f6d599;
   color: #fbf2e6;
   display: flex;
   flex-direction: column;
@@ -120,26 +180,26 @@
   justify-content: center;
   text-align: center;
   transform: rotate(-12deg);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 4px 12px rgba(42, 26, 12, 0.35);
   pointer-events: none;
   z-index: 10;
 }
-.stamp-circle__line1 {
-  font-family: 'Cinzel', serif;
-  font-size: 8px;
-  letter-spacing: 0.1em;
-  color: #f3d49d;
+
+/* ═══════════ SUBTLE CANE WATERMARK BACKGROUND LAYER ═══════════ */
+.section {
+  position: relative !important;
+  overflow: hidden !important;
 }
-.stamp-circle__line2 {
-  font-family: 'Cinzel', serif;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  color: #ffffff;
-  margin: 1px 0;
-}
-.stamp-circle__line3 {
-  font-family: 'Dancing Script', cursive, serif;
-  font-size: 12px;
-  color: #f3d49d;
+
+.section-cane-watermark {
+  position: absolute !important;
+  inset: 0 !important;
+  background-size: cover !important;
+  background-position: center 30% !important;
+  background-repeat: no-repeat !important;
+  mix-blend-mode: multiply !important;
+  opacity: 0.055 !important;
+  filter: sepia(75%) contrast(1.15) !important;
+  pointer-events: none !important;
+  z-index: 0 !important;
 }

@@ -79,8 +79,8 @@
   --scroll-cap-right: url("../images/decorative/scroll-cap-right.png");
   --scroll-mid: url("../images/decorative/scroll-mid.png");
   --texture-scroll-banner: url("../images/decorative/parchment-scroll-banner-alt.png");
-  --texture-wreath: url("../../images/decorative/cane-heart-wreath.png");
-  --texture-body-image: url("../../images/decorative/body-background.png");
+  --texture-wreath: url("../images/decorative/cane-heart-wreath.png");
+  --texture-body-image: url("../images/decorative/body-background.png");
   --ing-dew: url("../images/decorative/ingredients/sugarcane-closeup-dew.png");
   --ing-roots: url("../images/decorative/ingredients/sugarcane-plant-with-roots.png");
   --ing-cluster: url("../images/decorative/ingredients/sugarcane-stalk-cluster.png");
@@ -164,6 +164,40 @@
   --border-style: solid;
   --border-frame: var(--border-width-thick) var(--border-style) var(--color-border-strong);
   --border-hairline: var(--border-width) var(--border-style) var(--color-border);
+
+  /* ═══════════ VINTAGE HERITAGE DESIGN SYSTEM TOKENS ═══════════ */
+  --vintage-green-dark: #11381b;
+  --vintage-green-mid: #1b542a;
+  --vintage-green-deep: #0a2512;
+  --vintage-green-glow: #236836;
+
+  --vintage-bark-dark: #2b1406;
+  --vintage-bark-border: #8e622d;
+  --vintage-bark-border-subtle: #7d582c;
+  --vintage-gold-inner: #caa06d;
+  --vintage-gold-bright: #f6d599;
+  --vintage-gold-accent: #cb924d;
+
+  --vintage-parchment-light: #fbf2e6;
+  --vintage-parchment-mid: #f4dcc0;
+  --vintage-parchment-deep: #edd5ad;
+  --vintage-parchment-aged: #e2c290;
+
+  --border-vintage-outer: 2px solid var(--vintage-bark-border);
+  --border-vintage-outer-sm: 1.5px solid var(--vintage-bark-border);
+  --border-vintage-inner: 1.5px solid var(--vintage-gold-inner);
+  --border-vintage-inner-sm: 1px solid var(--vintage-gold-inner);
+  --border-vintage-gold: 1.5px solid var(--vintage-gold-bright);
+
+  --shadow-vintage-xs: 0 1px 3px rgba(42, 26, 12, 0.12);
+  --shadow-vintage-card: 0 4px 14px rgba(42, 26, 12, 0.16);
+  --shadow-vintage-float: 0 8px 24px rgba(42, 26, 12, 0.22);
+  --shadow-vintage-press: inset 0 2px 4px rgba(42, 26, 12, 0.32);
+  --shadow-vintage-inner-gold: inset 0 0 0 1.5px var(--vintage-gold-inner);
+  --shadow-vintage-inner-gold-sm: inset 0 0 0 1px var(--vintage-gold-inner);
+
+  --letterpress-light: 0 1px 0 rgba(255, 248, 235, 0.7);
+  --letterpress-dark: 0 1px 2px rgba(0, 0, 0, 0.6);
 
   --transition-fast: 150ms;
   --transition-normal: 250ms;

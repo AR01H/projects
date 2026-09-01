@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
+  <defs>
+    <radialGradient id="sealBg" cx="40%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#216132" />
+      <stop offset="65%" stop-color="#11381b" />
+      <stop offset="100%" stop-color="#071b0c" />
+    </radialGradient>
+    <linearGradient id="goldRing" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f6d599" />
+      <stop offset="50%" stop-color="#caa06d" />
+      <stop offset="100%" stop-color="#8e622d" />
+    </linearGradient>
+    <filter id="sealShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <!-- Outer Scalloped / Deckled Ring -->
+  <circle cx="100" cy="100" r="94" fill="none" stroke="url(#goldRing)" stroke-width="2" stroke-dasharray="6 2 4 1.5 8 2" />
+  <circle cx="100" cy="100" r="88" fill="url(#sealBg)" stroke="#d49842" stroke-width="2.5" filter="url(#sealShadow)"/>
+  <circle cx="100" cy="100" r="82" fill="none" stroke="#caa06d" stroke-width="1" stroke-dasharray="3 1.5" />
+
+  <!-- Crown / Heritage Crest at Top -->
+  <path d="M86 42 L92 50 L100 38 L108 50 L114 42 L112 56 L88 56 Z" fill="#f6d599" stroke="#8e622d" stroke-width="0.8"/>
+  <circle cx="86" cy="40" r="1.8" fill="#f6d599"/>
+  <circle cx="100" cy="36" r="2.2" fill="#f6d599"/>
+  <circle cx="114" cy="40" r="1.8" fill="#f6d599"/>
+
+  <!-- Center Shield -->
+  <path d="M100 60 C118 60 128 66 128 84 C128 112 100 134 100 134 C100 134 72 112 72 84 C72 66 82 60 100 60 Z" fill="#144220" stroke="#f6d599" stroke-width="1.8"/>
+
+  <!-- 5 Stars inside Shield -->
+  <text x="100" y="82" font-family="'Cinzel', Georgia, serif" font-size="11" font-weight="bold" fill="#f6d599" text-anchor="middle" letter-spacing="2">★★★★★</text>
+  
+  <!-- Central Hygiene 5 -->
+  <text x="100" y="106" font-family="'Cinzel', Georgia, serif" font-size="22" font-weight="900" fill="#f6d599" text-anchor="middle">5</text>
+
+  <!-- Accreditation Ribbon Text -->
+  <text x="100" y="122" font-family="'Cinzel', Georgia, serif" font-size="7.5" font-weight="700" fill="#ffffff" text-anchor="middle" letter-spacing="1.2">VERY GOOD</text>
+
+  <!-- Circular Curved Inscriptions -->
+  <path id="curveTop" d="M 30 100 A 70 70 0 0 1 170 100" fill="none"/>
+  <path id="curveBottom" d="M 170 100 A 70 70 0 0 1 30 100" fill="none"/>
+
+  <text font-family="'Cinzel', serif" font-size="7" font-weight="700" fill="#caa06d" letter-spacing="1.8">
+    <textPath href="#curveTop" startOffset="50%" text-anchor="middle">
+      UK FOOD STANDARDS AGENCY
+    </textPath>
+  </text>
+
+  <text font-family="'Cinzel', serif" font-size="6.8" font-weight="700" fill="#f6d599" letter-spacing="1.5">
+    <textPath href="#curveBottom" startOffset="50%" text-anchor="middle">
+      ISO 22000 • SOIL ASSOCIATION • SALSA
+    </textPath>
+  </text>
+
+  <!-- Bottom Verification Stars -->
+  <circle cx="100" cy="180" r="2.5" fill="#f6d599"/>
+  <circle cx="90" cy="179" r="1.8" fill="#caa06d"/>
+  <circle cx="110" cy="179" r="1.8" fill="#caa06d"/>
+</svg>

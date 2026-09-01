@@ -1,28 +1,28 @@
 {
-    "_source": "Extracted + genericized from traditional_template/admin/data/pricing_tiers.json. Feeds a Game/Services-style page's pricing section (see config/routes.php - 'game' is an alternate-name slot for 'shop'/'services').",
+    "_source": "Extracted + genericized from traditional_template/admin/data/pricing_tiers.json.",
 
     "tag": "Partner With Us",
     "title": "Investment <em>Plans</em>",
     "sub": "A few formats to suit different needs, every one fully supported from day one.",
     "tiers": [
         {
-            "name": "Starter",
-            "note": "Investment",
-            "price": "£15k - £25k",
-            "features": ["Compact footprint", "Ideal for smaller locations", "Fastest route to launch"]
+            "name": "Starter Cart",
+            "note": "Format",
+            "price": "Mobile Setup",
+            "features": ["Compact footprint", "Ideal for market & festival pitches", "Fastest route to launch"]
         },
         {
-            "name": "Standard",
-            "note": "Investment",
-            "price": "£30k - £55k",
+            "name": "Kiosk Bar",
+            "note": "Format",
+            "price": "Mall Kiosk",
             "badge": "Most Popular",
-            "features": ["Full setup", "Extended range", "High-traffic locations"]
+            "features": ["Full commercial counter", "Extended drink & dessert range", "High footfall locations"]
         },
         {
-            "name": "Flagship",
-            "note": "Investment",
-            "price": "£70k - £120k",
-            "features": ["Largest format available", "Events hub included", "Prime locations"]
+            "name": "Flagship Parlour",
+            "note": "Format",
+            "price": "Boutique Store",
+            "features": ["Largest format available", "Events & tasting lounge included", "Prime high street presence"]
         }
     ],
     "offer_title": "What We Offer",
@@ -32,6 +32,6 @@
         "Marketing & launch support",
         "Ongoing operational support",
         "Setup & equipment support",
-        "Proven, profitable model"
+        "Proven artisanal model"
     ]
 }

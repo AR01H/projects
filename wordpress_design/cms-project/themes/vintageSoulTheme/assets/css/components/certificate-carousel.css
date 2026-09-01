@@ -7,15 +7,13 @@
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   padding-bottom: var(--space-2xs);
-  scrollbar-width: thin;
-  scrollbar-color: var(--color-secondary) transparent;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
 }
 .certificate-carousel__track::-webkit-scrollbar {
-  height: 6px;
-}
-.certificate-carousel__track::-webkit-scrollbar-thumb {
-  background: var(--color-secondary);
-  border-radius: var(--radius-pill);
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
 }
 .certificate-carousel__track .certificate-card {
   flex: 0 0 auto;

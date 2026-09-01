@@ -1,0 +1,31 @@
+{
+  "logo_image": "assets/images/logo/logo.png",
+  "left_door_images": [
+    "assets/images/backgrounds/pure_sugarcane_forest_trees_engraving.jpg",
+    "assets/images/sugarcane/stacks.jpg",
+    "assets/images/sugarcane/sugarcane_stalks_etching.jpg"
+  ],
+  "right_door_images": [
+    "assets/images/backgrounds/vintage_coldpress_bar_catering.jpg",
+    "assets/images/sugarcane/hero_juice.jpg",
+    "assets/images/sugarcane/story_moments.jpg",
+    "assets/images/sugarcane/combo.jpg"
+  ],
+  "mobile_images": [
+    "assets/images/backgrounds/sugarcane_farm_plantation_engraving.jpg",
+    "assets/images/backgrounds/pure_sugarcane_forest_trees_engraving.jpg",
+    "assets/images/backgrounds/vintage_coldpress_bar_catering.jpg",
+    "assets/images/sugarcane/hero_juice.jpg"
+  ],
+  "left_door_image": "assets/images/backgrounds/pure_sugarcane_forest_trees_engraving.jpg",
+  "right_door_image": "assets/images/backgrounds/vintage_coldpress_bar_catering.jpg",
+  "mobile_image": "assets/images/backgrounds/sugarcane_farm_plantation_engraving.jpg",
+  "door_wood_texture": "assets/images/decorative/wooden-plank-riveted.png",
+  "door_farm_image": "assets/images/backgrounds/pure_sugarcane_forest_trees_engraving.jpg",
+  "wreath_image": "assets/images/decorative/cane-heart-wreath.png",
+  "title": "THE CANE HOUSE",
+  "tagline": "EST. LONDON • 100% PURE RAW CANE",
+  "status_text": "OPENING THE CANE GATES...",
+  "min_display_time": 950,
+  "opening_duration": 1300
+}

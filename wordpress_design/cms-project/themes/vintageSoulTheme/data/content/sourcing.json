@@ -1,14 +1,34 @@
 {
-    "_source": "Extracted + genericized from the reference design's Home 'Stacks of Sugarcane' section (some_styles/canehouse/priority) - gap, no matching file existed yet.",
-
-    "tag": "Our Sourcing",
-    "title": "Stacks of Sugarcane",
-    "body": "We source the freshest sugarcane from trusted farms. Pressed the traditional way to bring you pure, fresh and natural goodness.",
-    "sign_lines": ["FRESH CANE", "PREMIUM QUALITY", "DAILY PRESSED", "ALWAYS FRESH"],
+    "tag": "Our Heritage Sourcing",
+    "title": "ETHICAL <em>Farm-To-Press</em> SOURCING",
+    "eyebrow": "From Farm To Cold Extraction",
+    "bg_watermark": "assets/images/backgrounds/pure_sugarcane_forest_trees_engraving.jpg",
+    "body": "We hand-select only mature, sunshine-ripened sugarcane grown without chemical ripeners. Pressed the traditional way on cold brass rolls to preserve all natural vitamins, live enzymes, and authentic sweetness.",
     "image": "assets/images/sugarcane/stacks.jpg",
-    "items": [
-        { "icon": "🌾", "title": "Fresh Cane", "text": "Handpicked with care." },
-        { "icon": "⭐", "title": "Premium Cane", "text": "Rich in juice, naturally sweet." },
-        { "icon": "⚙️", "title": "Traditional Pressing", "text": "Cold pressed for maximum taste & goodness." }
+    "sign_lines": [
+        "FRESH CANE",
+        "PREMIUM QUALITY",
+        "DAILY COLD PRESSED",
+        "100% PURE & NATURAL"
+    ],
+    "pillars": [
+        {
+            "icon": "wheat",
+            "num": "01",
+            "title": "Hand-Selected Mature Stalks",
+            "desc": "Harvested at peak Brix sweetness from sustainable farms with thick juicy fibers."
+        },
+        {
+            "icon": "machine",
+            "num": "02",
+            "title": "Traditional Cold Extraction",
+            "desc": "Slow, cold mechanical brass-roller pressing to keep live enzymes and alkaline minerals alive."
+        },
+        {
+            "icon": "sparkles",
+            "num": "03",
+            "title": "100% Pure — Zero Added Sugar",
+            "desc": "Unpasteurized, unadulterated raw nectar served naturally chilled with no water dilution."
+        }
     ]
 }

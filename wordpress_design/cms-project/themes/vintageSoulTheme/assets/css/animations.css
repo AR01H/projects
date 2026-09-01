@@ -1,9 +1,9 @@
-html.js :is(.card, .feature-row__item, .product-list__item, .faq__item) {
+html.js :is(.card, .feature-row__item, .product-list__item, .faq__item, .intro-photo-card, .pillar-card, .sourcing-pillar-card, .sourcing-vintage__photo-frame, .sourcing-signboard, .cert-h-card, .certs-featured-logo-card, .order-product-card, .memory-card-vintage, .look-back-card, .variety-card, .mineral-card, .storage-step-card, .timeline-step-card, .event-type-card, .franchise-pillar-card, .franchise-step-card, .wholesale-card, .blog-card, .contact-home-info-card, .faq-accordion-item, .social-card) {
   opacity: 0;
   transform: translateY(28px);
-  transition: opacity var(--transition-slow) var(--ease-standard), transform var(--transition-slow) var(--ease-standard);
+  transition: opacity var(--transition-slow, 0.6s) var(--ease-standard, cubic-bezier(0.16, 1, 0.3, 1)), transform var(--transition-slow, 0.6s) var(--ease-standard, cubic-bezier(0.16, 1, 0.3, 1));
 }
-html.js :is(.card, .feature-row__item, .product-list__item, .faq__item).is-revealed {
+html.js :is(.card, .feature-row__item, .product-list__item, .faq__item, .intro-photo-card, .pillar-card, .sourcing-pillar-card, .sourcing-vintage__photo-frame, .sourcing-signboard, .cert-h-card, .certs-featured-logo-card, .order-product-card, .memory-card-vintage, .look-back-card, .variety-card, .mineral-card, .storage-step-card, .timeline-step-card, .event-type-card, .franchise-pillar-card, .franchise-step-card, .wholesale-card, .blog-card, .contact-home-info-card, .faq-accordion-item, .social-card).is-revealed {
   opacity: 1;
   transform: none;
 }
@@ -180,5 +180,89 @@ html.js .site-footer.is-revealed {
     opacity: 1;
     filter: none;
     transition: none;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   BOTANICAL SVG BACKGROUND ANIMATIONS (parchment pages)
+   Used by components/background/parchment-botanical-bg.php
+═══════════════════════════════════════════════════════════════ */
+
+@keyframes vst-leaf-drift-a {
+  0%, 100% { transform: translateY(0px) translateX(0px) rotate(0deg) scale(1); }
+  20%       { transform: translateY(-18px) translateX(6px) rotate(4deg) scale(1.04); }
+  45%       { transform: translateY(-8px) translateX(-5px) rotate(-3deg) scale(0.97); }
+  70%       { transform: translateY(-22px) translateX(8px) rotate(5deg) scale(1.02); }
+}
+
+@keyframes vst-leaf-drift-b {
+  0%, 100% { transform: translateY(0px) translateX(0px) rotate(0deg); }
+  30%       { transform: translateY(12px) translateX(-8px) rotate(-5deg); }
+  65%       { transform: translateY(-10px) translateX(5px) rotate(3.5deg); }
+}
+
+@keyframes vst-gold-float {
+  0%, 100% { transform: translateY(0) scale(1); opacity: 0.25; }
+  33%       { transform: translateY(-16px) scale(1.4); opacity: 0.55; }
+  66%       { transform: translateY(-6px) scale(0.9); opacity: 0.35; }
+}
+
+@keyframes vst-cane-sway {
+  0%, 100% { transform-origin: bottom center; transform: rotate(0deg); }
+  25%       { transform-origin: bottom center; transform: rotate(1.8deg); }
+  75%       { transform-origin: bottom center; transform: rotate(-1.4deg); }
+}
+
+@keyframes vst-watermark-breathe {
+  0%, 100% { opacity: 0.035; transform: scale(1); }
+  50%       { opacity: 0.06; transform: scale(1.015); }
+}
+
+/* Apply to each named element class */
+.vst-bg-cane-a { animation: vst-cane-sway 9s ease-in-out infinite; }
+.vst-bg-cane-b { animation: vst-cane-sway 11s ease-in-out infinite reverse; }
+.vst-bg-cane-c { animation: vst-cane-sway 7.5s ease-in-out infinite 2s; }
+
+.vst-bg-leaf-a  { animation: vst-leaf-drift-a 6s ease-in-out infinite; }
+.vst-bg-leaf-b  { animation: vst-leaf-drift-b 8s ease-in-out infinite 1.5s; }
+.vst-bg-leaf-c  { animation: vst-leaf-drift-a 7s ease-in-out infinite 3s; }
+.vst-bg-leaf-d  { animation: vst-leaf-drift-b 5.5s ease-in-out infinite 0.8s; }
+.vst-bg-leaf-e  { animation: vst-leaf-drift-a 9s ease-in-out infinite 2.5s; }
+
+.vst-bg-gold-1  { animation: vst-gold-float 4s ease-in-out infinite; }
+.vst-bg-gold-2  { animation: vst-gold-float 5.5s ease-in-out infinite 1s; }
+.vst-bg-gold-3  { animation: vst-gold-float 4.8s ease-in-out infinite 2.2s; }
+.vst-bg-gold-4  { animation: vst-gold-float 6.2s ease-in-out infinite 0.4s; }
+.vst-bg-gold-5  { animation: vst-gold-float 3.8s ease-in-out infinite 3.1s; }
+.vst-bg-gold-6  { animation: vst-gold-float 5.2s ease-in-out infinite 1.7s; }
+
+.vst-bg-watermark { animation: vst-watermark-breathe 12s ease-in-out infinite; }
+
+/* Wrapper positioning */
+.vst-parchment-botanical-bg {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.vst-parchment-botanical-bg svg {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+}
+
+/* Reduced motion overrides */
+@media (prefers-reduced-motion: reduce) {
+  .vst-bg-cane-a, .vst-bg-cane-b, .vst-bg-cane-c,
+  .vst-bg-leaf-a, .vst-bg-leaf-b, .vst-bg-leaf-c, .vst-bg-leaf-d, .vst-bg-leaf-e,
+  .vst-bg-gold-1, .vst-bg-gold-2, .vst-bg-gold-3,
+  .vst-bg-gold-4, .vst-bg-gold-5, .vst-bg-gold-6,
+  .vst-bg-watermark {
+    animation: none;
   }
 }

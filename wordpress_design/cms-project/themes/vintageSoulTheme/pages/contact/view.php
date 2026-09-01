@@ -22,19 +22,20 @@ $socials = (array) ( $contact_info['socials'] ?? array() );
 ?>
 
 <div class="contact-page">
-	<!-- 1. Hero Stage -->
-	<header class="contact-hero">
-		<div class="container contact-hero__inner">
-			<h1 class="contact-hero__title"><?php echo esc_html( (string) ( $hero['title'] ?? 'GET IN TOUCH' ) ); ?></h1>
-			<p class="contact-hero__tag"><?php echo esc_html( (string) ( $hero['tag'] ?? "Let's Connect" ) ); ?></p>
-			<p class="contact-hero__sub"><?php echo esc_html( (string) ( $hero['sub'] ?? 'Have questions, want to book us for an event, or looking to franchise? We would love to hear from you.' ) ); ?></p>
-		</div>
-	</header>
-
-	<!-- Deckled Edge Divider -->
-	<div class="deckled-divider" aria-hidden="true">
-		<img src="<?php echo esc_url( \VintageSoul\Support\UrlHelper::resolve( 'assets/images/textures/border/deckled-edge.svg' ) ); ?>" alt="" loading="lazy">
-	</div>
+	<?php View::component( 'background/parchment-botanical-bg', array( 'seed' => 61 ) ); ?>
+	<!-- 1. Master Subpage Hero -->
+	<?php
+	View::component(
+		'subpage-hero/subpage-hero',
+		array(
+			'id'    => 'contact-hero',
+			'tag'   => (string) ( $hero['tag'] ?? "Let's Connect" ),
+			'title' => 'GET IN <em>Touch</em>',
+			'sub'   => (string) ( $hero['sub'] ?? 'Have questions, want to book us for an event, or looking to franchise? We would love to hear from you.' ),
+			'image' => 'assets/images/backgrounds/pure_sugarcane_forest_trees_engraving.jpg',
+		)
+	);
+	?>
 
 	<!-- 2. Side-by-Side Main Contact Stage -->
 	<section class="section contact-stage-section paper-rough">
@@ -44,7 +45,7 @@ $socials = (array) ( $contact_info['socials'] ?? array() );
 				<!-- Left Column: Contact & Booking Form -->
 				<div class="contact-form-card frame--ornate">
 					<div class="contact-card-header">
-						<h2 class="contact-card-header__title">SEND US A MESSAGE</h2>
+						<h2 class="contact-card-header__title">SEND US A <em>Message</em></h2>
 						<p class="contact-card-header__sub">Fill out the form below and we will respond promptly.</p>
 					</div>
 
@@ -112,9 +113,9 @@ $socials = (array) ( $contact_info['socials'] ?? array() );
 						<ul class="side-info-list">
 							<li class="side-info-item">
 								<span class="side-info-item__icon"><?php echo IconHelper::get( 'phone', '#172b15', 18 ); // phpcs:ignore ?></span>
-								<div class="side-info-item__text">
-									<strong>Phone / WhatsApp:</strong>
-									<a href="tel:+447770461999"><?php echo esc_html( $phone ); ?></a>
+								<div class="contact-card-v2__info">
+									<span class="contact-card-v2__label">PHONE / WHATSAPP</span>
+									<a href="tel:<?php echo esc_attr( preg_replace( '/[^\d+]/', '', $phone ) ); ?>"><?php echo esc_html( $phone ); ?></a>
 								</div>
 							</li>
 							<li class="side-info-item">
@@ -143,7 +144,7 @@ $socials = (array) ( $contact_info['socials'] ?? array() );
 
 					<!-- Card 2: Live Sugarcane Bar Event Banner -->
 					<div class="event-callout-card">
-						<h3 class="event-callout-card__title"><?php echo esc_html( (string) ( $event_bar['title'] ?? '🎪 BOOK OUR LIVE CANE BAR' ) ); ?></h3>
+						<h3 class="event-callout-card__title">🎪 BOOK OUR LIVE <em>Cane Bar</em></h3>
 						<p class="event-callout-card__sub"><?php echo esc_html( (string) ( $event_bar['sub'] ?? 'Bring authentic freshly pressed sugarcane juice to your wedding, birthday, corporate event, or festival.' ) ); ?></p>
 						<ul class="event-callout-card__list">
 							<?php foreach ( (array) ( $event_bar['highlights'] ?? array() ) as $hl ) : ?>
@@ -151,7 +152,7 @@ $socials = (array) ( $contact_info['socials'] ?? array() );
 							<?php endforeach; ?>
 						</ul>
 						<div class="event-callout-card__cta">
-							<a class="btn btn--outline-vintage" href="https://wa.me/447770461999" target="_blank" rel="noopener">
+							<a class="btn btn--outline-vintage" href="<?php echo esc_url( \VintageSoul\Services\SettingsService::whatsapp_url() ); ?>" target="_blank" rel="noopener">
 								<span>CHAT ON WHATSAPP</span>
 							</a>
 						</div>
@@ -159,12 +160,12 @@ $socials = (array) ( $contact_info['socials'] ?? array() );
 
 					<!-- Card 3: Social Connect Links -->
 					<div class="social-connect-card frame--ornate-sm">
-						<h4 class="social-connect-card__title">FOLLOW OUR JOURNEY</h4>
+						<h4 class="social-connect-card__title">FOLLOW OUR <em>Journey</em></h4>
 						<p class="social-connect-card__sub">Stay updated with our weekend stall locations & seasonal juices.</p>
 						<div class="social-pills-row">
-							<a class="social-pill" href="https://facebook.com/thecanehouseuk" target="_blank" rel="noopener">Facebook</a>
-							<a class="social-pill" href="https://instagram.com/thecanehouseuk" target="_blank" rel="noopener">Instagram</a>
-							<a class="social-pill" href="https://wa.me/447770461999" target="_blank" rel="noopener">WhatsApp</a>
+							<a class="social-pill" href="<?php echo esc_url( \VintageSoul\Services\SettingsService::social_url( 'facebook', 'https://facebook.com/thecanehouseuk' ) ); ?>" target="_blank" rel="noopener">Facebook</a>
+							<a class="social-pill" href="<?php echo esc_url( \VintageSoul\Services\SettingsService::social_url( 'instagram', 'https://instagram.com/thecanehouseuk' ) ); ?>" target="_blank" rel="noopener">Instagram</a>
+							<a class="social-pill" href="<?php echo esc_url( \VintageSoul\Services\SettingsService::whatsapp_url() ); ?>" target="_blank" rel="noopener">WhatsApp</a>
 						</div>
 					</div>
 
@@ -183,16 +184,17 @@ $socials = (array) ( $contact_info['socials'] ?? array() );
 	<?php if ( ! empty( $faqs ) ) : ?>
 		<section class="section contact-faq-section paper-rough">
 			<div class="container container--narrow">
-				<h2 class="contact-faq__title">FREQUENTLY ASKED QUESTIONS</h2>
+				<h2 class="contact-faq__title">FREQUENTLY ASKED <em>Questions</em></h2>
 				<div class="faq-accordion">
 					<?php foreach ( $faqs as $idx => $f ) :
-						$q = (string) ( $f['question'] ?? '' );
-						$a = (string) ( $f['answer'] ?? '' );
+						$q      = (string) ( $f['question'] ?? '' );
+						$a      = (string) ( $f['answer'] ?? '' );
+						$faq_id = 'faq-' . sanitize_title( $q );
 					?>
-						<details class="faq-accordion__item"<?php echo 0 === $idx ? ' open' : ''; ?>>
+						<details class="faq-accordion__item frame--ornate-sm" id="<?php echo esc_attr( $faq_id ); ?>" name="contact-faq"<?php echo 0 === $idx ? ' open' : ''; ?>>
 							<summary class="faq-accordion__summary">
-								<span><?php echo esc_html( $q ); ?></span>
-								<span class="faq-accordion__icon">+</span>
+								<span class="faq-accordion__question"><?php echo esc_html( $q ); ?></span>
+								<span class="faq-accordion__icon" aria-hidden="true">+</span>
 							</summary>
 							<div class="faq-accordion__content">
 								<p><?php echo esc_html( $a ); ?></p>

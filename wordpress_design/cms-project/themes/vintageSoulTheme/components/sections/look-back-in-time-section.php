@@ -2,121 +2,81 @@
 
 defined( 'ABSPATH' ) || exit;
 
+use VintageSoul\DataProviders\JsonFileProvider;
 use VintageSoul\Services\RouteService;
+use VintageSoul\Services\SettingsService;
+use VintageSoul\Support\IconHelper;
 use VintageSoul\Support\UrlHelper;
+use VintageSoul\Support\View;
 
-$tag        = (string) ( $tag ?? 'Our Gallery' );
-$title      = (string) ( $title ?? 'A LOOK BACK IN TIME' );
-$subtitle   = (string) ( $subtitle ?? ( $sub ?? 'A few of our favourite moments capturing the heritage, stall life, and smiles over the years.' ) );
-$categories = (array) ( $categories ?? array(
-	array( 'id' => 'all', 'label' => 'ALL' ),
-	array( 'id' => 'sugarcane', 'label' => 'SUGARCANE' ),
-	array( 'id' => 'our-stall', 'label' => 'OUR STALL' ),
-	array( 'id' => 'events', 'label' => 'EVENTS' ),
-	array( 'id' => 'drinks', 'label' => 'DRINKS' ),
-	array( 'id' => 'community', 'label' => 'COMMUNITY' ),
-) );
+$gallery_data = (array) ( JsonFileProvider::read( 'data/content/gallery.json' ) ?? array() );
 
-$default_items = array(
-	array(
-		'image'    => 'assets/images/sugarcane/hero_juice.jpg',
-		'title'    => 'Fresh Extraction',
-		'caption'  => 'Pure cane juice pouring fresh at our London stall.',
-		'category' => 'sugarcane',
-		'tag'      => 'Harvest & Press',
-	),
-	array(
-		'image'    => 'assets/images/sugarcane/story_moments.jpg',
-		'title'    => 'Market Day Smiles',
-		'caption'  => 'Generations enjoying pure refreshment together.',
-		'category' => 'community',
-		'tag'      => 'Community',
-	),
-	array(
-		'image'    => 'assets/images/sugarcane/combo.jpg',
-		'title'    => 'Artisanal Flavours',
-		'caption'  => 'Ginger, lemon & mint infused cold cane mocktails.',
-		'category' => 'drinks',
-		'tag'      => 'Signature Drinks',
-	),
-	array(
-		'image'    => 'assets/images/sugarcane/stacks.jpg',
-		'title'    => 'Clean Stalks Sourcing',
-		'caption'  => 'Handpicked, pre-washed premium sugarcane stalks.',
-		'category' => 'our-stall',
-		'tag'      => 'Farm Sourced',
-	),
-	array(
-		'image'    => 'assets/images/sugarcane/drink_classic.jpg',
-		'title'    => 'The Classic Glass',
-		'caption'  => '100% natural sugarcane juice — nothing added.',
-		'category' => 'drinks',
-		'tag'      => 'Original Taste',
-	),
-	array(
-		'image'    => 'assets/images/sugarcane/drink_mint.jpg',
-		'title'    => 'Garden Mint Infusion',
-		'caption'  => 'Freshly muddled aromatic mint leaves.',
-		'category' => 'drinks',
-		'tag'      => 'Refreshing',
-	),
-	array(
-		'image'    => 'assets/images/sugarcane/drink_lemon.jpg',
-		'title'    => 'Zesty Lemon Splash',
-		'caption'  => 'A citrus twist balancing sweet sugarcane notes.',
-		'category' => 'drinks',
-		'tag'      => 'Zesty Twist',
-	),
-	array(
-		'image'    => 'assets/images/sugarcane/drink_masala.jpg',
-		'title'    => 'Chaat Masala Spice',
-		'caption'  => 'Traditional Indian spiced cane mocktail.',
-		'category' => 'events',
-		'tag'      => 'Heritage Special',
-	),
-);
+$tag        = (string) ( $tag ?? $gallery_data['tag'] ?? 'Our Gallery' );
+$title      = (string) ( $title ?? $gallery_data['title'] ?? 'LOOK BACK IN <em>Time</em>' );
+$subtitle   = (string) ( $subtitle ?? ( $sub ?? ( $gallery_data['subtitle'] ?? ( $gallery_data['body'] ?? 'A few of our favourite moments capturing the heritage, stall life, and smiles over the years.' ) ) ) );
+$categories = ! empty( $categories ) ? (array) $categories : (array) ( $gallery_data['categories'] ?? array() );
+$items      = ! empty( $items ) ? (array) $items : (array) ( $gallery_data['items'] ?? ( $gallery_data['images'] ?? array() ) );
 
-$items = (array) ( $items ?? array() );
-if ( empty( $items ) ) {
-	$items = $default_items;
-}
+$actions_cfg   = (array) ( $actions ?? ( $gallery_data['actions'] ?? array() ) );
+$primary_btn   = (array) ( $actions_cfg['primary'] ?? array( 'label' => 'VISIT OUR LIVE STALL', 'icon' => 'pin', 'route' => 'contact' ) );
+$secondary_btn = (array) ( $actions_cfg['secondary'] ?? array( 'label' => 'BOOK OUR STALL FOR EVENTS', 'icon' => 'tent', 'url' => SettingsService::whatsapp_url() ) );
+
+$primary_url = isset( $primary_btn['url'] ) ? (string) $primary_btn['url'] : RouteService::url( (string) ( $primary_btn['route'] ?? 'contact' ) );
+$secondary_url = isset( $secondary_btn['url'] ) ? (string) $secondary_btn['url'] : ( isset( $secondary_btn['route'] ) ? RouteService::url( (string) $secondary_btn['route'] ) : SettingsService::whatsapp_url() );
 ?>
 <section class="section section--gallery look-back-vintage paper-rough" id="look-back-in-time">
 	<div class="container look-back-vintage__container">
 		
 		<!-- Header -->
-		<div class="look-back-vintage__header">
-			<span class="vintage-ribbon-tag vintage-ribbon-tag--gold">
-				<span><?php echo esc_html( $tag ); ?></span>
-			</span>
-			<h2 class="look-back-vintage__title"><?php echo esc_html( trim( strip_tags( $title ), " -—" ) ); ?></h2>
-			<p class="look-back-vintage__sub"><?php echo esc_html( $subtitle ); ?></p>
-		</div>
+		<?php
+		View::component(
+			'section-header/section-header',
+			array(
+				'tag'     => $tag,
+				'title'   => $title,
+				'eyebrow' => 'Vintage Moments & Archival Memories',
+				'sub'     => $subtitle,
+				'ribbon'  => true,
+			)
+		);
+		?>
 
 		<!-- Filter Tabs -->
-		<div class="look-back-tabs">
-			<?php foreach ( $categories as $idx => $cat ) :
-				$c_id    = (string) ( $cat['id'] ?? ( is_string( $cat ) ? strtolower( str_replace( ' ', '-', $cat ) ) : 'all' ) );
-				$c_label = (string) ( $cat['label'] ?? ( is_string( $cat ) ? $cat : 'ALL' ) );
-			?>
-				<button class="gallery-tab<?php echo 0 === $idx ? ' gallery-tab--active' : ''; ?>" type="button" data-filter="<?php echo esc_attr( $c_id ); ?>">
-					<?php echo esc_html( $c_label ); ?>
-				</button>
-			<?php endforeach; ?>
-		</div>
+		<?php if ( ! empty( $categories ) ) : ?>
+			<div class="look-back-tabs">
+				<?php foreach ( $categories as $idx => $cat ) :
+					$c_id    = (string) ( $cat['id'] ?? ( is_string( $cat ) ? strtolower( str_replace( ' ', '-', $cat ) ) : 'all' ) );
+					$c_label = (string) ( $cat['label'] ?? ( is_string( $cat ) ? $cat : 'ALL' ) );
+				?>
+					<button class="gallery-tab<?php echo 0 === $idx ? ' gallery-tab--active' : ''; ?>" type="button" data-filter="<?php echo esc_attr( $c_id ); ?>">
+						<?php echo esc_html( $c_label ); ?>
+					</button>
+				<?php endforeach; ?>
+			</div>
+		<?php endif; ?>
 
 		<!-- 8-Photo Rough-Cut Gallery Grid -->
 		<div class="look-back-grid">
 			<?php foreach ( $items as $item ) :
-				$img_src  = is_array( $item ) ? (string) ( $item['image'] ?? $item['src'] ?? '' ) : (string) $item;
+				$img_src  = is_array( $item ) ? (string) ( $item['image'] ?? ( $item['src'] ?? '' ) ) : (string) $item;
 				$img_url  = UrlHelper::resolve( $img_src );
-				$img_ttl  = is_array( $item ) ? (string) ( $item['title'] ?? $item['label'] ?? 'Cane House Moment' ) : 'Cane House Moment';
-				$img_cap  = is_array( $item ) ? (string) ( $item['caption'] ?? $item['desc'] ?? '' ) : '';
+				$img_ttl  = is_array( $item ) ? (string) ( $item['title'] ?? ( $item['label'] ?? 'Cane House Moment' ) ) : 'Cane House Moment';
+				$img_cap  = is_array( $item ) ? (string) ( $item['caption'] ?? ( $item['desc'] ?? '' ) ) : '';
 				$img_cat  = is_array( $item ) ? (string) ( $item['category'] ?? 'all' ) : 'all';
 				$img_tag  = is_array( $item ) ? (string) ( $item['tag'] ?? 'Heritage' ) : 'Heritage';
 				$cat_slug = strtolower( str_replace( ' ', '-', $img_cat ) );
 			?>
-				<div class="look-back-card frame--rough-cut" data-category="<?php echo esc_attr( $cat_slug ); ?>">
+				<div class="look-back-card frame--rough-cut" 
+					 data-category="<?php echo esc_attr( $cat_slug ); ?>"
+					 tabindex="0"
+					 role="button"
+					 aria-haspopup="dialog"
+					 aria-label="<?php echo esc_attr( $img_ttl ); ?>"
+					 data-story-modal="true"
+					 data-story-title="<?php echo esc_attr( $img_ttl ); ?>"
+					 data-story-image="<?php echo esc_url( $img_url ); ?>"
+					 data-story-quote="<?php echo esc_attr( $img_cap ); ?>"
+					 data-story-meta="<?php echo esc_attr( $img_tag ); ?>">
 					<div class="look-back-card__media">
 						<img src="<?php echo esc_url( $img_url ); ?>" alt="<?php echo esc_attr( $img_ttl ); ?>" loading="lazy">
 						<span class="look-back-card__tag"><?php echo esc_html( $img_tag ); ?></span>
@@ -133,11 +93,13 @@ if ( empty( $items ) ) {
 
 		<!-- Actions -->
 		<div class="look-back-vintage__actions">
-			<a class="btn btn--primary-vintage" href="<?php echo esc_url( RouteService::url( 'contact' ) ); ?>">
-				<span>📍 VISIT OUR LIVE STALL</span>
+			<a class="btn btn--primary-vintage" href="<?php echo esc_url( $primary_url ); ?>">
+				<span class="btn__icon"><?php echo IconHelper::render( (string) ( $primary_btn['icon'] ?? 'pin' ), '#f6d599', 15 ); // phpcs:ignore ?></span>
+				<span><?php echo esc_html( (string) ( $primary_btn['label'] ?? 'VISIT OUR LIVE STALL' ) ); ?></span>
 			</a>
-			<a class="btn btn--secondary-vintage" href="https://wa.me/447770461999" target="_blank" rel="noopener">
-				<span>💬 BOOK OUR STALL FOR EVENTS</span>
+			<a class="btn btn--secondary-vintage" href="<?php echo esc_url( $secondary_url ); ?>" target="_blank" rel="noopener">
+				<span class="btn__icon"><?php echo IconHelper::render( (string) ( $secondary_btn['icon'] ?? 'tent' ), '#f6d599', 15 ); // phpcs:ignore ?></span>
+				<span><?php echo esc_html( (string) ( $secondary_btn['label'] ?? 'BOOK OUR STALL FOR EVENTS' ) ); ?></span>
 			</a>
 		</div>
 
@@ -155,18 +117,23 @@ if ( empty( $items ) ) {
 		var cards = section.querySelectorAll('.look-back-card');
 
 		tabs.forEach(function(tab) {
-			tab.addEventListener('click', function() {
+			tab.addEventListener('click', function(e) {
+				e.preventDefault();
 				tabs.forEach(function(t) { t.classList.remove('gallery-tab--active'); });
 				tab.classList.add('gallery-tab--active');
 
-				var filter = tab.getAttribute('data-filter') || 'all';
+				var filter = (tab.getAttribute('data-filter') || 'all').toLowerCase().trim();
 
 				cards.forEach(function(card) {
-					var cat = card.getAttribute('data-category') || 'all';
-					if (filter === 'all' || cat === filter || cat === 'all') {
-						card.style.display = 'block';
+					var cat = (card.getAttribute('data-category') || '').toLowerCase().trim();
+					if (filter === 'all' || cat === filter || (filter === 'drinks' && cat.indexOf('drink') !== -1) || (filter === 'sugarcane' && cat.indexOf('sugarcane') !== -1)) {
+						card.classList.remove('is-hidden');
+						card.hidden = false;
+						card.style.removeProperty('display');
 					} else {
-						card.style.display = 'none';
+						card.classList.add('is-hidden');
+						card.hidden = true;
+						card.style.setProperty('display', 'none', 'important');
 					}
 				});
 			});

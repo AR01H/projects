@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(php -v)",
+      "Bash(xargs -n1 basename)",
+      "Bash(php -r \"json_decode\\(file_get_contents\\('themes/vintageSoulTheme/data/content/lifecycle.json'\\), true\\); echo json_last_error\\(\\) === JSON_ERROR_NONE ? 'VALID' : 'INVALID: ' . json_last_error_msg\\(\\);\")",
+      "Bash(php -l pages/elements/view.php)",
+      "Bash(php -l config/routes.php)",
+      "Bash(php -l src/Bootstrap/Theme.php)",
+      "Bash(php -l src/Services/RoutePageService.php)",
+      "Bash(php -l src/Services/RouteService.php)",
+      "Bash(node -c managers.js)",
+      "Bash('/c/Program Files/Google/Chrome/Application/chrome.exe' --headless --disable-gpu --allow-file-access-from-files --window-size=420,760 --virtual-time-budget=2000 --dump-dom file:///l:/MY-GITHUB/AR01H/projects/wordpress_design/cms-project/themes/vintageSoulTheme/static/games/canerush/index.html)",
+      "Bash(tail -30 C:/Users/Akhilesh/AppData/Local/Temp/claude/l--MY-GITHUB-AR01H-projects-wordpress-design-cms-project/931da344-0063-4a8e-a32d-93d892842ea3/scratchpad/console-stderr.txt)",
+      "Bash('/c/Program Files/Google/Chrome/Application/chrome.exe' --headless --disable-gpu --allow-file-access-from-files --window-size=420,760 --screenshot=C:/Users/Akhilesh/AppData/Local/Temp/claude/l--MY-GITHUB-AR01H-projects-wordpress-design-cms-project/931da344-0063-4a8e-a32d-93d892842ea3/scratchpad/start-verify.png file:///l:/MY-GITHUB/AR01H/projects/wordpress_design/cms-project/themes/vintageSoulTheme/static/games/canerush/index.html)",
+      "Bash(echo \"---stderr---\")",
+      "Bash(cat C:/Users/Akhilesh/AppData/Local/Temp/claude/l--MY-GITHUB-AR01H-projects-wordpress-design-cms-project/931da344-0063-4a8e-a32d-93d892842ea3/scratchpad/start-verify-stderr.txt)",
+      "Bash('/c/Program Files/Google/Chrome/Application/chrome.exe' --headless --disable-gpu --allow-file-access-from-files --window-size=420,760 --virtual-time-budget=3000 --screenshot=C:/Users/Akhilesh/AppData/Local/Temp/claude/l--MY-GITHUB-AR01H-projects-wordpress-design-cms-project/931da344-0063-4a8e-a32d-93d892842ea3/scratchpad/gameplay-verify.png file:///C:/Users/Akhilesh/AppData/Local/Temp/claude/l--MY-GITHUB-AR01H-projects-wordpress-design-cms-project/931da344-0063-4a8e-a32d-93d892842ea3/scratchpad/gameplay-test.html)",
+      "Bash(cat C:/Users/Akhilesh/AppData/Local/Temp/claude/l--MY-GITHUB-AR01H-projects-wordpress-design-cms-project/931da344-0063-4a8e-a32d-93d892842ea3/scratchpad/gameplay-stderr.txt)",
+      "Bash('/c/Program Files/Google/Chrome/Application/chrome.exe' --headless --disable-gpu --allow-file-access-from-files --window-size=420,760 --user-data-dir=C:/Users/Akhilesh/AppData/Local/Temp/claude/l--MY-GITHUB-AR01H-projects-wordpress-design-cms-project/931da344-0063-4a8e-a32d-93d892842ea3/scratchpad/chrome-profile-fresh2 --screenshot=C:/Users/Akhilesh/AppData/Local/Temp/claude/l--MY-GITHUB-AR01H-projects-wordpress-design-cms-project/931da344-0063-4a8e-a32d-93d892842ea3/scratchpad/start-redesign3.png file:///l:/MY-GITHUB/AR01H/projects/wordpress_design/cms-project/themes/vintageSoulTheme/static/games/canerush/index.html)"
+    ]
+  }
+}

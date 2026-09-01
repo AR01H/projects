@@ -141,8 +141,9 @@
 }
 .vst-hero__title {
   margin: 0 0 var(--space-sm);
-  font-family: var(--font-family-blackletter);
+  font-family: 'Cinzel', 'Playfair Display', Georgia, serif;
   font-size: var(--font-size-xl);
+  font-weight: 400;
   color: var(--color-primary);
   line-height: var(--line-height-tight);
   text-wrap: balance;
@@ -460,4 +461,212 @@
   .vst-hero__card:focus-within {
     transform: none;
   }
+}
+
+/* ═══════════ COMMON LUXURY VINTAGE SUBPAGE HERO HEADER ═══════════ */
+.common-subpage-hero,
+.about-hero,
+.contact-hero,
+.page-hero {
+  position: relative !important;
+  width: 100% !important;
+  padding: 76px 20px 54px !important;
+  text-align: center !important;
+  background: linear-gradient(180deg, #fdf8ef 0%, #f7e6cf 50%, #edd3ad 100%) !important;
+  border-bottom: 2px solid #8e622d !important;
+  box-shadow:
+    inset 0 0 0 1.5px #caa06d,
+    inset 0 -8px 24px rgba(142, 98, 45, 0.12),
+    0 4px 16px rgba(42, 26, 12, 0.08) !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+}
+
+/* Subtle sugarcane forest grove watermark engraving */
+.common-subpage-hero::before,
+.about-hero::before,
+.contact-hero::before,
+.page-hero::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  background-image: url("../../images/backgrounds/pure_sugarcane_forest_trees_engraving.jpg") !important;
+  background-size: cover !important;
+  background-position: center 35% !important;
+  mix-blend-mode: multiply !important;
+  opacity: 0.14 !important;
+  filter: sepia(70%) contrast(1.1) !important;
+  pointer-events: none !important;
+  z-index: 0 !important;
+}
+
+/* Roughness texture layer */
+.common-subpage-hero::after,
+.about-hero::after,
+.contact-hero::after,
+.page-hero::after {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  background-image: url("../../images/textures/roughness/roughness-a.svg") !important;
+  background-size: 280px 280px !important;
+  mix-blend-mode: multiply !important;
+  opacity: 0.25 !important;
+  pointer-events: none !important;
+  z-index: 1 !important;
+}
+
+@media (min-width: 992px) {
+  .common-subpage-hero,
+  .about-hero,
+  .contact-hero,
+  .page-hero {
+    padding: 92px 36px 64px !important;
+  }
+}
+
+.common-subpage-hero__inner,
+.about-hero__inner,
+.contact-hero__inner,
+.page-hero__inner {
+  position: relative !important;
+  z-index: 2 !important;
+  max-width: 820px !important;
+  margin: 0 auto !important;
+}
+
+.about-hero__title,
+.contact-hero__title,
+.page-hero__title,
+.common-subpage-hero__title {
+  display: block !important;
+  text-align: center !important;
+  font-family: 'Cinzel', 'Playfair Display', Georgia, serif !important;
+  font-size: clamp(24px, 4.2vw, 38px) !important;
+  line-height: 1.25 !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+  color: #172b15 !important;
+  margin: 0 auto 10px !important;
+  max-width: 820px !important;
+}
+
+.about-hero__title em,
+.contact-hero__title em,
+.page-hero__title em,
+.common-subpage-hero__title em {
+  font-family: 'Playfair Display', 'EB Garamond', Georgia, serif !important;
+  font-style: italic !important;
+  font-weight: 700 !important;
+  color: #8e5222 !important;
+  text-transform: capitalize !important;
+  display: inline !important;
+  font-size: 1.05em !important;
+  margin-left: 6px !important;
+  letter-spacing: 0.02em !important;
+}
+
+.about-hero__title::before,
+.about-hero__title::after,
+.contact-hero__title::before,
+.contact-hero__title::after,
+.page-hero__title::before,
+.page-hero__title::after,
+.common-subpage-hero__title::before,
+.common-subpage-hero__title::after {
+  content: "" !important;
+  display: inline-block !important;
+  vertical-align: middle !important;
+  width: 36px !important;
+  height: 1.5px !important;
+  background: linear-gradient(90deg, transparent, #8e622d) !important;
+  margin: 0 12px !important;
+}
+
+.about-hero__title::after,
+.contact-hero__title::after,
+.page-hero__title::after,
+.common-subpage-hero__title::after {
+  background: linear-gradient(90deg, #8e622d, transparent) !important;
+}
+
+.about-hero__tag,
+.contact-hero__tag,
+.page-hero__tag,
+.common-subpage-hero__tag {
+  font-family: 'Dancing Script', cursive, serif !important;
+  font-size: clamp(22px, 3.5vw, 28px) !important;
+  color: #8e5f2b !important;
+  margin: 0 0 14px !important;
+  font-style: italic !important;
+}
+
+.about-hero__sub,
+.contact-hero__sub,
+.page-hero__sub,
+.common-subpage-hero__sub {
+  font-family: var(--font-family-base, 'EB Garamond', serif) !important;
+  font-size: clamp(15px, 1.8vw, 17px) !important;
+  line-height: 1.65 !important;
+  color: #463016 !important;
+  max-width: 660px !important;
+  margin: 0 auto !important;
+}
+
+/* ═══════════ MASTER SUBPAGE HERO BOTANICAL CREST ═══════════ */
+.subpage-hero__crest-wrap {
+  display: flex !important;
+  justify-content: center !important;
+  margin-bottom: 12px !important;
+}
+
+.subpage-hero__crest {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  background: rgba(254, 248, 238, 0.9) !important;
+  border: 1px solid #8e622d !important;
+  padding: 4px 14px 4px 8px !important;
+  border-radius: 20px !important;
+  box-shadow: inset 0 0 0 1px #caa06d, 0 3px 8px rgba(42, 26, 12, 0.12) !important;
+}
+
+.subpage-hero__wreath-img {
+  width: 24px !important;
+  height: 24px !important;
+  object-fit: contain !important;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.25)) !important;
+}
+
+.subpage-hero__crest-text {
+  font-family: 'Cinzel', serif !important;
+  font-size: 9.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.14em !important;
+  text-transform: uppercase !important;
+  color: #8e5f2b !important;
+}
+
+.common-subpage-hero__watermark {
+  position: absolute !important;
+  inset: 0 !important;
+  background-size: cover !important;
+  background-position: center 30% !important;
+  mix-blend-mode: multiply !important;
+  opacity: 0.04 !important;
+  filter: sepia(70%) contrast(1.1) !important;
+  pointer-events: none !important;
+  z-index: 0 !important;
+}
+
+.common-subpage-hero__texture {
+  position: absolute !important;
+  inset: 0 !important;
+  background-image: url("../../images/textures/roughness/roughness-a.svg") !important;
+  background-size: 280px 280px !important;
+  mix-blend-mode: multiply !important;
+  opacity: 0.06 !important;
+  pointer-events: none !important;
+  z-index: 1 !important;
 }

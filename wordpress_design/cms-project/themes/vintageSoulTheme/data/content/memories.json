@@ -1,12 +1,15 @@
 {
-    "_source": "Extracted + genericized from the reference design's Home 'Memories' plain photo grid (some_styles/canehouse/priority) - distinct from gallery.json (which supports filter tabs); this is a simpler, unfiltered set of captioned photos.",
-
-    "tag": "Memories",
-    "title": "Memories of Sugarcane",
+    "_source": "Memories of Sugarcane gallery and stream content.",
+    "tag": "Our Heritage Journey",
+    "title": "MEMORIES OF <em>Sugarcane</em>",
+    "bg_watermark": "assets/images/backgrounds/pure_sugarcane_forest_trees_engraving.jpg",
+    "sub": "Treasured vintage snapshots capturing laughter, market stall mornings, and genuine moments of pure connection across generations.",
     "items": [
-        { "image": "assets/images/sugarcane/story_moments.jpg", "caption": "Summer Days" },
-        { "image": "assets/images/sugarcane/hero_juice.jpg", "caption": "Family Moments" },
-        { "image": "assets/images/sugarcane/stacks.jpg", "caption": "Timeless Tradition" },
-        { "image": "assets/images/sugarcane/combo.jpg", "caption": "Simple Joys" }
+        { "image": "assets/images/sugarcane/story_moments.jpg", "caption": "Summer Days with Family", "tag": "Community" },
+        { "image": "assets/images/sugarcane/hero_juice.jpg", "caption": "First Fresh Press of the Day", "tag": "Daily Press" },
+        { "image": "assets/images/sugarcane/stacks.jpg", "caption": "Timeless Farm Tradition", "tag": "Harvest" },
+        { "image": "assets/images/sugarcane/combo.jpg", "caption": "Simple Joys & Fresh Flavours", "tag": "Craft" },
+        { "image": "assets/images/sugarcane/drink_classic.jpg", "caption": "The Purest Sips of Childhood", "tag": "Heritage" },
+        { "image": "assets/images/sugarcane/drink_mint.jpg", "caption": "Garden Fresh Gatherings", "tag": "Festival" }
     ]
 }

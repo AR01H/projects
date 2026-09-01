@@ -18,6 +18,10 @@ defined( 'ABSPATH' ) || exit;
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
 
+<?php if ( is_front_page() || is_home() ) : ?>
+	<?php View::component( 'loader/loader' ); ?>
+<?php endif; ?>
+
 <!-- SVG Filters for Authentic Rough Cut Button & Card Edges -->
 <svg style="position: absolute; width: 0; height: 0; overflow: hidden; pointer-events: none;" aria-hidden="true">
 	<defs>
@@ -32,7 +36,21 @@ defined( 'ABSPATH' ) || exit;
 	</defs>
 </svg>
 
-<a class="skip-link screen-reader-text" href="#main"><?php esc_html_e( 'Skip to content', 'vintagesoul' ); ?></a>
+<!-- Top Vintage Ticker Ribbon -->
+<div class="ribbon-ticker ribbon-ticker--green" aria-hidden="true">
+	<div class="ribbon-ticker__track">
+		<?php for ( $r = 0; $r < 4; $r++ ) : ?>
+			<span class="ribbon-ticker__heart">♥</span>
+			<span class="ribbon-ticker__text">FRESHLY PRESSED</span>
+			<span class="ribbon-ticker__heart">♥</span>
+			<span class="ribbon-ticker__text">100% NATURAL</span>
+			<span class="ribbon-ticker__heart">♥</span>
+			<span class="ribbon-ticker__text">NATURALLY REFRESHING</span>
+			<span class="ribbon-ticker__heart">♥</span>
+			<span class="ribbon-ticker__text">ALWAYS MADE WITH CARE</span>
+		<?php endfor; ?>
+	</div>
+</div>
 
 <header class="site-header" role="banner">
 	<span class="site-header__bg roughness-bottom-b" aria-hidden="true"></span>
@@ -59,8 +77,19 @@ defined( 'ABSPATH' ) || exit;
 									if ( '' === $child_label ) {
 										continue;
 									}
+									$parts = preg_split( '/(?<=\p{Emoji_Presentation}|\p{Extended_Pictographic})\s*/u', $child_label, 2 );
+									$has_icon = is_array( $parts ) && count( $parts ) > 1 && '' !== $parts[0];
+									$icon = $has_icon ? $parts[0] : '';
+									$text = $has_icon ? $parts[1] : $child_label;
 								?>
-									<li><a class="nav__submenu-link" href="<?php echo esc_url( UrlHelper::resolve( (string) ( $child['url'] ?? '#' ) ) ); ?>"><?php echo esc_html( $child_label ); ?></a></li>
+									<li>
+										<a class="nav__submenu-link" href="<?php echo esc_url( UrlHelper::resolve( (string) ( $child['url'] ?? '#' ) ) ); ?>">
+											<?php if ( '' !== $icon ) : ?>
+												<span class="nav__submenu-icon"><?php echo esc_html( $icon ); ?></span>
+											<?php endif; ?>
+											<span class="nav__submenu-text"><?php echo esc_html( $text ); ?></span>
+										</a>
+									</li>
 								<?php endforeach; ?>
 							</ul>
 						<?php endif; ?>
@@ -96,6 +125,30 @@ defined( 'ABSPATH' ) || exit;
 			?>
 		</div>
 	</div>
+	<!-- Random Deckle Rough Cut Bottom Edge -->
+	<div class="site-header__deckle-edge" aria-hidden="true"></div>
 </header>
+<script>
+(function() {
+	function updateHeaderScroll() {
+		var header = document.querySelector('.site-header');
+		if (!header) return;
+		var heroSection = document.getElementById('home-hero') || document.querySelector('.hero-sugarcane') || document.querySelector('.section--hero');
+		var triggerHeight = heroSection ? (heroSection.offsetTop + heroSection.offsetHeight - 120) : 400;
+		if (window.scrollY > triggerHeight) {
+			header.classList.add('is-scrolled');
+		} else {
+			header.classList.remove('is-scrolled');
+		}
+	}
+	window.addEventListener('scroll', updateHeaderScroll, { passive: true });
+	window.addEventListener('resize', updateHeaderScroll, { passive: true });
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', updateHeaderScroll);
+	} else {
+		updateHeaderScroll();
+	}
+})();
+</script>
 
 <main class="site-main site-canvas" id="main">

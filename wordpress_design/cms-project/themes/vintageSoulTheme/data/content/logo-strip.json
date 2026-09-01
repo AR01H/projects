@@ -1,14 +1,16 @@
 {
     "tag": "In Good Company",
     "title": "AS FEATURED & TRUSTED BY",
-    "sub": "Proudly recognized by leading culinary & cultural establishments.",
+    "sub": "Proudly recognized by leading culinary & cultural establishments across London.",
     "marquee": true,
     "items": [
+        { "name": "SUTTON MARKET", "image": "assets/images/partners/sutton-market.svg", "subtitle": "London Borough" },
+        { "name": "FOOD HYGIENE RATING", "image": "assets/images/partners/food-hygiene-5.svg", "subtitle": "5 Star Rating" },
+        { "name": "SOIL ASSOCIATION", "image": "assets/images/partners/soil-association.svg", "subtitle": "Organic Partner" },
         { "name": "BBC GOOD FOOD", "image": "assets/images/partners/bbc-good-food.svg", "subtitle": "Featured Stalls" },
         { "name": "TIME OUT LONDON", "image": "assets/images/partners/timeout-london.svg", "subtitle": "Editor's Pick" },
         { "name": "BOROUGH MARKET", "image": "assets/images/partners/borough-market.svg", "subtitle": "London" },
-        { "name": "THE GROCER", "image": "assets/images/partners/the-grocer.svg", "subtitle": "UK Food & Drink" },
         { "name": "SLOW FOOD UK", "image": "assets/images/partners/slow-food.svg", "subtitle": "Heritage Choice" },
-        { "name": "FOOD HYGIENE RATING", "image": "assets/images/partners/food-hygiene-5.svg", "subtitle": "5 Star Rating" }
+        { "name": "THE GROCER", "image": "assets/images/partners/the-grocer.svg", "subtitle": "UK Food & Drink" }
     ]
 }

@@ -58,20 +58,12 @@ $closing          = (array) ( $data['closing'] ?? array() );
 	<?php View::component( 'sections/sourcing-section', $sourcing ); ?>
 <?php endif; ?>
 
-<?php if ( ! empty( $products['items'] ) ) : ?>
-	<?php View::component( 'sections/drinks-section', $products ); ?>
-<?php endif; ?>
-
 <?php if ( ! empty( $certs['items'] ) ) : ?>
 	<?php View::component( 'sections/certifications-section', $certs ); ?>
 <?php endif; ?>
 
 <?php if ( ! empty( $benefits['items'] ) ) : ?>
 	<?php View::component( 'sections/benefits-section', $benefits ); ?>
-<?php endif; ?>
-
-<?php if ( ! empty( $serve['steps'] ) ) : ?>
-	<?php View::component( 'sections/serve-section', $serve ); ?>
 <?php endif; ?>
 
 <?php if ( ! empty( $memories['items'] ) ) : ?>
@@ -89,10 +81,12 @@ $closing          = (array) ( $data['closing'] ?? array() );
 <?php View::component( 'sections/logo-strip-section', $logo_strip ); ?>
 
 <?php View::component( 'sections/gallery-section', array(
-	'items'      => (array) ( $gallery['images'] ?? array() ),
-	'title'      => (string) ( $gallery['title'] ?? 'Gallery' ),
+	'items'      => (array) ( $gallery['items'] ?? ( $gallery['images'] ?? array() ) ),
+	'title'      => (string) ( $gallery['title'] ?? 'LOOK BACK IN <em>Time</em>' ),
 	'categories' => (array) ( $gallery['categories'] ?? array() ),
 ) ); ?>
+
+<?php View::component( 'sections/social-stream-section' ); ?>
 
 <?php View::component( 'sections/events-section', $events ); ?>
 

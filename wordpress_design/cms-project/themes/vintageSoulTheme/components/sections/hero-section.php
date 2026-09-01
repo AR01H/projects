@@ -3,6 +3,7 @@
 defined( 'ABSPATH' ) || exit;
 
 use VintageSoul\Services\RouteService;
+use VintageSoul\Support\IconHelper;
 use VintageSoul\Support\UrlHelper;
 
 $hero     = (array) ( $hero ?? array() );
@@ -98,6 +99,25 @@ $first_content = (array) ( $first_slide['content'] ?? array() );
 
 $video_url   = UrlHelper::resolve( 'assets/videos/hero_bg.mp4' );
 $poster_url  = UrlHelper::resolve( 'assets/images/sugarcane/hero_juice.jpg' );
+
+$format_hero_title = static function ( $title ) {
+	$words = explode( ' ', (string) $title );
+	$html = '';
+	$char_idx = 0;
+	foreach ( $words as $w_idx => $word ) {
+		if ( '' === $word ) {
+			continue;
+		}
+		$html .= '<span class="hero-word" style="--word-idx:' . $w_idx . ';">';
+		$chars = preg_split( '//u', $word, -1, PREG_SPLIT_NO_EMPTY );
+		foreach ( $chars as $char ) {
+			$html .= '<span class="hero-char" style="--char-idx:' . $char_idx . ';">' . esc_html( $char ) . '</span>';
+			$char_idx++;
+		}
+		$html .= '</span> ';
+	}
+	return trim( $html );
+};
 ?>
 <section class="section section--hero hero-sugarcane" id="home-hero">
 	
@@ -115,7 +135,7 @@ $poster_url  = UrlHelper::resolve( 'assets/images/sugarcane/hero_juice.jpg' );
 			
 			<!-- Left Column: Editorial Story Information -->
 			<div class="hero-sugarcane__content">
-				<h1 class="hero-sugarcane__title" id="hero-title"><?php echo esc_html( (string) ( $first_content['title'] ?? 'WATCH IT. TASTE IT. LOVE IT.' ) ); ?></h1>
+				<h1 class="hero-sugarcane__title" id="hero-title"><?php echo $format_hero_title( (string) ( $first_content['title'] ?? 'WATCH IT. TASTE IT. LOVE IT.' ) ); // phpcs:ignore ?></h1>
 				<p class="hero-sugarcane__eyebrow" id="hero-eyebrow"><?php echo esc_html( (string) ( $first_content['eyebrow'] ?? 'A Taste of Tradition' ) ); ?></p>
 
 				<ul class="hero-sugarcane__checklist" id="hero-checklist">
@@ -134,7 +154,7 @@ $poster_url  = UrlHelper::resolve( 'assets/images/sugarcane/hero_juice.jpg' );
 					?>
 						<a class="btn <?php echo esc_attr( $btn_class ); ?>" href="<?php echo esc_url( RouteService::url( $btn_route ) ); ?>">
 							<?php if ( '' !== $btn_icon ) : ?>
-								<span class="btn__icon"><?php echo esc_html( $btn_icon ); ?></span>
+								<span class="btn__icon"><?php echo IconHelper::render( $btn_icon, '#f6d599', 15 ); // phpcs:ignore ?></span>
 							<?php endif; ?>
 							<span><?php echo esc_html( $btn_label ); ?></span>
 						</a>
@@ -142,9 +162,9 @@ $poster_url  = UrlHelper::resolve( 'assets/images/sugarcane/hero_juice.jpg' );
 				</div>
 			</div>
 
-			<!-- Right Column: Framed Multi-Slide Media Stage -->
+			<!-- Right Column: 70% Width Frameless Media Stage with Seamless Left Gradient / SVG Cut Blend -->
 			<div class="hero-sugarcane__media-wrap">
-				<div class="hero-carousel-container frame--ornate" id="hero-image-carousel" data-autoplay="5000">
+				<div class="hero-carousel-container" id="hero-image-carousel" data-autoplay="5000">
 					
 					<!-- Slides Wrapper -->
 					<div class="hero-carousel-slides">
@@ -164,7 +184,7 @@ $poster_url  = UrlHelper::resolve( 'assets/images/sugarcane/hero_juice.jpg' );
 								 data-eyebrow="<?php echo esc_attr( (string) ( $slide_content['eyebrow'] ?? '' ) ); ?>"
 								 data-checklist='<?php echo esc_attr( (string) wp_json_encode( (array) ( $slide_content['checklist'] ?? array() ) ) ); ?>'>
 								<?php if ( $is_video ) : ?>
-									<video class="hero-carousel-video" autoplay muted loop playsinline poster="<?php echo esc_url( $slide_img ); ?>">
+									<video class="hero-carousel-video" autoplay muted playsinline poster="<?php echo esc_url( $slide_img ); ?>">
 										<source src="<?php echo esc_url( $slide_video_url ); ?>" type="video/mp4">
 									</video>
 								<?php else : ?>
@@ -174,11 +194,23 @@ $poster_url  = UrlHelper::resolve( 'assets/images/sugarcane/hero_juice.jpg' );
 						<?php endforeach; ?>
 					</div>
 
-					<!-- Navigation Arrows (< and >) -->
-					<button type="button" class="hero-carousel-arrow hero-carousel-arrow--prev" id="hero-prev" aria-label="<?php esc_attr_e( 'Previous Slide', 'vintagesoul' ); ?>">‹</button>
-					<button type="button" class="hero-carousel-arrow hero-carousel-arrow--next" id="hero-next" aria-label="<?php esc_attr_e( 'Next Slide', 'vintagesoul' ); ?>">›</button>
+					<!-- Bottom-Right Carousel Navigation Dots -->
+					<div class="hero-carousel-dots" id="hero-dots" role="tablist" aria-label="<?php esc_attr_e( 'Slide Indicators', 'vintagesoul' ); ?>">
+						<?php foreach ( $slides as $idx => $slide ) : ?>
+							<button type="button" 
+									class="hero-carousel-dot<?php echo 0 === $idx ? ' is-active' : ''; ?>" 
+									data-index="<?php echo esc_attr( (string) $idx ); ?>"
+									role="tab"
+									aria-selected="<?php echo 0 === $idx ? 'true' : 'false'; ?>"
+									aria-label="<?php echo esc_attr( sprintf( __( 'Slide %d', 'vintagesoul' ), $idx + 1 ) ); ?>">
+							</button>
+						<?php endforeach; ?>
+					</div>
 
 				</div>
+
+				<!-- Decorative Vintage Torn Edge Cut Shading -->
+				<div class="hero-media-cut-divider" aria-hidden="true"></div>
 			</div>
 
 		</div>
@@ -186,26 +218,47 @@ $poster_url  = UrlHelper::resolve( 'assets/images/sugarcane/hero_juice.jpg' );
 
 </section>
 
-<!-- Inline script for smooth auto-rotating Hero Carousel -->
+<!-- Inline script for smooth auto-rotating Hero Carousel (Video Completion + 4s Image Rotation) -->
 <script>
 (function() {
 	function initHeroCarousel() {
+		var heroSection = document.getElementById('home-hero');
 		var container = document.getElementById('hero-image-carousel');
 		if (!container) return;
 
 		var slides = container.querySelectorAll('.hero-carousel-slide');
-		var prevBtn = document.getElementById('hero-prev');
-		var nextBtn = document.getElementById('hero-next');
+		var dotsContainer = document.getElementById('hero-dots');
+		var dots = dotsContainer ? dotsContainer.querySelectorAll('.hero-carousel-dot') : [];
 		var currentIndex = 0;
-		var timer = null;
-		var delay = parseInt(container.getAttribute('data-autoplay') || '5000', 10);
+		var autoTimer = null;
+		var isHovered = false;
+		var IMAGE_DURATION = 4000; // 4 seconds for static images
 
 		if (slides.length <= 1) return;
 
+		function clearCurrentTimer() {
+			if (autoTimer) {
+				clearTimeout(autoTimer);
+				autoTimer = null;
+			}
+		}
+
+		function scheduleNext(delay) {
+			clearCurrentTimer();
+			if (isHovered) return;
+			autoTimer = setTimeout(function() {
+				goToSlide(currentIndex + 1);
+			}, delay);
+		}
+
 		function goToSlide(index) {
+			clearCurrentTimer();
 			if (index < 0) index = slides.length - 1;
 			if (index >= slides.length) index = 0;
 			currentIndex = index;
+
+			var activeSlide = slides[currentIndex];
+			var activeVideo = null;
 
 			slides.forEach(function(s, idx) {
 				var isActive = idx === currentIndex;
@@ -213,6 +266,8 @@ $poster_url  = UrlHelper::resolve( 'assets/images/sugarcane/hero_juice.jpg' );
 				var vid = s.querySelector('video');
 				if (vid) {
 					if (isActive) {
+						activeVideo = vid;
+						vid.currentTime = 0;
 						vid.play().catch(function() {});
 					} else {
 						vid.pause();
@@ -220,8 +275,16 @@ $poster_url  = UrlHelper::resolve( 'assets/images/sugarcane/hero_juice.jpg' );
 				}
 			});
 
-			// Synchronize Left Story Headline, Eyebrow & Checklist
-			var activeSlide = slides[currentIndex];
+			// Update dots
+			if (dots && dots.length > 0) {
+				dots.forEach(function(d, idx) {
+					var isActive = idx === currentIndex;
+					d.classList.toggle('is-active', isActive);
+					d.setAttribute('aria-selected', isActive ? 'true' : 'false');
+				});
+			}
+
+			// Synchronize Left Story Headline, Eyebrow & Checklist with smooth crossfade
 			if (activeSlide) {
 				var titleEl = document.getElementById('hero-title');
 				var eyebrowEl = document.getElementById('hero-eyebrow');
@@ -231,50 +294,103 @@ $poster_url  = UrlHelper::resolve( 'assets/images/sugarcane/hero_juice.jpg' );
 				var eyebrowText = activeSlide.getAttribute('data-eyebrow');
 				var checklistRaw = activeSlide.getAttribute('data-checklist');
 
-				if (titleEl && titleText) {
-					titleEl.textContent = titleText;
+				function formatAnimatedTitle(text) {
+					var words = text.split(/\s+/);
+					var html = '';
+					var charIdx = 0;
+					words.forEach(function(word, wIdx) {
+						if (!word) return;
+						html += '<span class="hero-word" style="--word-idx:' + wIdx + ';">';
+						var chars = word.split('');
+						chars.forEach(function(char) {
+							html += '<span class="hero-char" style="--char-idx:' + charIdx + ';">' + char + '</span>';
+							charIdx++;
+						});
+						html += '</span> ';
+					});
+					return html.trim();
 				}
-				if (eyebrowEl && eyebrowText) {
-					eyebrowEl.textContent = eyebrowText;
+
+				if (titleEl && titleText) {
+					titleEl.style.opacity = '0';
+					setTimeout(function() {
+						titleEl.innerHTML = formatAnimatedTitle(titleText);
+						titleEl.style.opacity = '1';
+					}, 200);
+				}
+				if (eyebrowEl && eyebrowText && eyebrowEl.textContent !== eyebrowText) {
+					eyebrowEl.style.opacity = '0';
+					setTimeout(function() {
+						eyebrowEl.textContent = eyebrowText;
+						eyebrowEl.style.opacity = '1';
+					}, 200);
 				}
 				if (checklistEl && checklistRaw) {
 					try {
 						var items = JSON.parse(checklistRaw);
 						if (Array.isArray(items) && items.length > 0) {
-							checklistEl.innerHTML = items.map(function(item) {
-								return '<li><span class="hero-sugarcane__check">✓</span> ' + item + '</li>';
-							}).join('');
+							checklistEl.style.opacity = '0';
+							setTimeout(function() {
+								checklistEl.innerHTML = items.map(function(item) {
+									return '<li><span class="hero-sugarcane__check">✓</span> ' + item + '</li>';
+								}).join('');
+								checklistEl.style.opacity = '1';
+							}, 200);
 						}
 					} catch(e) {}
 				}
 			}
-		}
 
-		function startTimer() {
-			// Auto-scroll disabled to prevent unwanted continuous sliding while watching video
-			stopTimer();
-		}
+			// If active slide has a video, listen for video completion ('ended')
+			if (activeVideo) {
+				var onVideoEnded = function() {
+					activeVideo.removeEventListener('ended', onVideoEnded);
+					goToSlide(currentIndex + 1);
+				};
+				activeVideo.addEventListener('ended', onVideoEnded);
 
-		function stopTimer() {
-			if (timer) {
-				clearInterval(timer);
-				timer = null;
+				// Safety fallback if video hangs or autoplay is blocked
+				var fallbackDuration = (activeVideo.duration && !isNaN(activeVideo.duration) && activeVideo.duration > 0)
+					? Math.ceil(activeVideo.duration * 1000) + 500
+					: 8500;
+				scheduleNext(fallbackDuration);
+			} else {
+				// Static image: exact 4 seconds duration
+				scheduleNext(IMAGE_DURATION);
 			}
 		}
 
-		if (prevBtn) {
-			prevBtn.addEventListener('click', function(e) {
-				e.preventDefault();
-				goToSlide(currentIndex - 1);
+		// Connect interactive dot clicks
+		if (dots && dots.length > 0) {
+			dots.forEach(function(dot) {
+				dot.addEventListener('click', function(e) {
+					e.preventDefault();
+					var idx = parseInt(this.getAttribute('data-index'), 10);
+					if (!isNaN(idx)) {
+						goToSlide(idx);
+					}
+				});
 			});
 		}
 
-		if (nextBtn) {
-			nextBtn.addEventListener('click', function(e) {
-				e.preventDefault();
-				goToSlide(currentIndex + 1);
+		// Pause auto-rotation on mouse hover over hero stage, resume on leave
+		if (heroSection) {
+			heroSection.addEventListener('mouseenter', function() {
+				isHovered = true;
+				clearCurrentTimer();
+			});
+			heroSection.addEventListener('mouseleave', function() {
+				isHovered = false;
+				var currentSlide = slides[currentIndex];
+				var currentVid = currentSlide ? currentSlide.querySelector('video') : null;
+				if (!currentVid || currentVid.ended || currentVid.paused) {
+					scheduleNext(IMAGE_DURATION);
+				}
 			});
 		}
+
+		// Start on slide 0
+		goToSlide(0);
 	}
 
 	if (document.readyState === 'loading') {

@@ -15,20 +15,24 @@ final class HistoryController {
 		$resolved = $this->resolveImages( (array) $data );
 
 		return array(
-			'hero'               => (array) ( $resolved['hero'] ?? array() ),
-			'accent'             => (array) ( $resolved['accent'] ?? array() ),
-			'intro'              => (array) ( $resolved['intro'] ?? array() ),
-			'why'                => (array) ( $resolved['why'] ?? array() ),
-			'story'              => (array) ( $resolved['story'] ?? array() ),
-			'history'            => (array) ( $resolved['history'] ?? array() ),
-			'life_cycle'         => (array) ( $resolved['life_cycle'] ?? array() ),
-			'goodness'           => (array) ( $resolved['goodness'] ?? array() ),
-			'benefits'           => (array) ( $resolved['benefits'] ?? array() ),
-			'uses'               => (array) ( $resolved['uses'] ?? array() ),
-			'culture'            => (array) ( $resolved['culture'] ?? array() ),
-			'why_everyone_loves' => (array) ( $resolved['why_everyone_loves'] ?? array() ),
-			'faq'                => (array) ( $resolved['faq'] ?? array() ),
-			'closing'            => (array) ( $resolved['closing'] ?? array() ),
+			'hero'                => (array) ( $resolved['hero'] ?? array() ),
+			'accent'              => (array) ( $resolved['accent'] ?? array() ),
+			'intro'               => (array) ( $resolved['intro'] ?? array() ),
+			'why'                 => (array) ( $resolved['why'] ?? array() ),
+			'timeline'            => (array) ( $resolved['timeline'] ?? array() ),
+			'story'               => (array) ( $resolved['story'] ?? array() ),
+			'history'             => (array) ( $resolved['history'] ?? array() ),
+			'life_cycle'          => (array) ( $resolved['life_cycle'] ?? array() ),
+			'varieties'           => (array) ( $resolved['varieties'] ?? array() ),
+			'goodness'            => (array) ( $resolved['goodness'] ?? array() ),
+			'nutritional_alchemy' => (array) ( $resolved['nutritional_alchemy'] ?? array() ),
+			'benefits'            => (array) ( $resolved['benefits'] ?? array() ),
+			'uses'                => (array) ( $resolved['uses'] ?? array() ),
+			'culture'             => (array) ( $resolved['culture'] ?? array() ),
+			'storage_guide'       => (array) ( $resolved['storage_guide'] ?? array() ),
+			'why_everyone_loves'  => (array) ( $resolved['why_everyone_loves'] ?? array() ),
+			'faq'                 => (array) ( $resolved['faq'] ?? array() ),
+			'closing'             => (array) ( $resolved['closing'] ?? array() ),
 		);
 	}
 

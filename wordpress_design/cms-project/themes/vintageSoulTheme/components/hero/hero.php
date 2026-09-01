@@ -84,6 +84,7 @@
 defined( 'ABSPATH' ) || exit;
 
 use VintageSoul\Services\RouteService;
+use VintageSoul\Support\IconHelper;
 
 $valid_content_positions = array( 'top-left', 'top-right', 'center-left', 'center-right', 'bottom-left', 'bottom-right', 'bottom-center' );
 $css_length_pattern       = '/^-?\d+(\.\d+)?(%|px|rem|em)$/';
@@ -307,7 +308,7 @@ $has_multiple_slides = $count > 1;
 										<?php foreach ( $content['buttons'] as $btn ) : ?>
 											<a class="roughness-a btn<?php echo $btn['ghost'] ? ' btn--outline' : ''; ?>" href="<?php echo esc_url( RouteService::url( $btn['route'] ) ); ?>">
 												<?php if ( '' !== $btn['icon'] ) : ?>
-													<span aria-hidden="true"><?php echo esc_html( $btn['icon'] ); ?></span>
+													<span class="btn__icon" aria-hidden="true"><?php echo IconHelper::render( $btn['icon'], '#f6d599', 15 ); // phpcs:ignore ?></span>
 												<?php endif; ?>
 												<?php echo esc_html( $btn['label'] ); ?>
 											</a>

@@ -1,13 +1,72 @@
 {
-    "_source": "Extracted from traditional_template/admin/data/certifications.json - already generic, no changes needed. Feeds a Home or About trust/certifications section.",
-
     "tag": "Trust & Standards",
     "title": "Quality / Certifications",
-    "body": "Certified and verified by leading food safety and quality institutions.",
+    "bg_watermark": "assets/images/backgrounds/sugarcane_farm_plantation_engraving.jpg",
+    "body": "Certified and verified by leading food safety and quality institutions across the UK and internationally.",
     "items": [
-        { "code": "NIFT", "title": "NIFT", "desc": "National Institute of Traditional Foods. Certified for quality and safety.", "authority": "NIFT", "action_label": "View Certificate" },
-        { "code": "ISO", "title": "ISO 22000:2018", "desc": "Food Safety Management System. Certified for safe food practices.", "authority": "ISO", "action_label": "View Certificate" },
-        { "code": "ORGANIC", "title": "Organic Source", "desc": "Organic sugarcane carefully grown without chemicals or pesticides.", "authority": "Organic UK", "action_label": "View Certificate" },
-        { "code": "QA", "title": "Quality Assured", "desc": "Premium Quality Assurance. Regularly tested for taste and purity.", "authority": "Quality Certified", "action_label": "View Certificate" }
+        {
+            "code": "5★ HYGIENE",
+            "title": "Food Hygiene Rating 5",
+            "desc": "Awarded the top 5-Star 'Very Good' rating by the UK Food Standards Agency for flawless hygiene.",
+            "authority": "UK Food Standards Agency",
+            "icon": "⭐",
+            "action_label": "Verified Rating"
+        },
+        {
+            "code": "ISO 22000",
+            "title": "ISO 22000:2018",
+            "desc": "International Food Safety Management System standard certifying our sterile cold-press chain.",
+            "authority": "ISO Standards",
+            "icon": "🛡️",
+            "action_label": "View Standard"
+        },
+        {
+            "code": "ORGANIC",
+            "title": "Soil Association Organic",
+            "desc": "100% sustainably grown sugarcane harvested without synthetic pesticides or chemical fertilizers.",
+            "authority": "Organic UK",
+            "icon": "🌿",
+            "action_label": "View Certificate"
+        },
+        {
+            "code": "SALSA",
+            "title": "SALSA Accreditation",
+            "desc": "Safe and Local Supplier Approval ensuring the highest operational integrity for UK artisans.",
+            "authority": "SALSA UK",
+            "icon": "📜",
+            "action_label": "View Certificate"
+        },
+        {
+            "code": "100% PURE",
+            "title": "Zero Additives Lab Purity",
+            "desc": "Independently lab tested for zero added water, refined sugars, artificial acids, or preservatives.",
+            "authority": "Purity Tested",
+            "icon": "🧪",
+            "action_label": "Lab Verified"
+        },
+        {
+            "code": "HACCP",
+            "title": "HACCP Certified Protocol",
+            "desc": "Hazard Analysis Critical Control Point protocol applied at every stage of extraction and serving.",
+            "authority": "Food Safety UK",
+            "icon": "✅",
+            "action_label": "View Protocol"
+        },
+        {
+            "code": "ECO GREEN",
+            "title": "Circular Zero-Waste Cane",
+            "desc": "100% of residual cane bagasse is repurposed into biodegradable tableware and clean bio-energy.",
+            "authority": "Sustainability UK",
+            "icon": "🌱",
+            "action_label": "Eco Verified"
+        },
+        {
+            "code": "ARTISAN",
+            "title": "London Craft Guild Standard",
+            "desc": "Accredited member of London's artisanal producers celebrating authentic heritage beverages.",
+            "authority": "Artisan Guild UK",
+            "icon": "🏆",
+            "action_label": "Guild Certified"
+        }
     ]
 }

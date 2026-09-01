@@ -1,22 +1,66 @@
 {
     "tag": "Partner With Us",
-    "title": "FRANCHISE OPPORTUNITIES",
-    "sub": "Be a part of The Cane House family. Grow with us.",
-    "benefits": [
-        { "icon": "🏪", "title": "BRAND RECOGNITION", "text": "Established brand with a loyal customer base." },
-        { "icon": "🌿", "title": "PROVEN BUSINESS MODEL", "text": "Tested and profitable business model." },
-        { "icon": "🤝", "title": "TRAINING & SUPPORT", "text": "Comprehensive training and ongoing support." },
-        { "icon": "📈", "title": "HIGH RETURN POTENTIAL", "text": "Attractive returns with long-term growth." }
+    "title": "FRANCHISE &amp; <em>Stall Partnerships</em>",
+    "sub": "Own a profitable, turnkey sugarcane juice business with full brand training and farm supply support.",
+    "pillars": [
+        {
+            "icon": "stall",
+            "title": "TURNKEY MOBILE COUNTER",
+            "desc": "Complete rustic wooden stall, heavy-duty commercial stainless steel extractor, and branded POS setup."
+        },
+        {
+            "icon": "plant",
+            "title": "PREMIUM CANE SUPPLY",
+            "desc": "Guaranteed steady supply of freshly harvested, high-yield premium sugarcane stalks delivered to your hub."
+        },
+        {
+            "icon": "handshake",
+            "title": "TRAINING & CERTIFICATION",
+            "desc": "Hands-on operational training, health & hygiene compliance, recipe mastery, and customer service excellence."
+        },
+        {
+            "icon": "growth",
+            "title": "HIGH MARGINS & QUICK ROI",
+            "desc": "Low ingredient cost, high consumer demand, zero waste byproduct utilisation, and strong event catering margins."
+        }
     ],
-    "franchisees": [
-        { "city": "BENGALURU, KA", "owner": "Owner: Ramesh B.", "rating": 5, "image": "assets/images/sugarcane/story_moments.jpg", "route": "contact" },
-        { "city": "HYDERABAD, TG", "owner": "Owner: Suresh K.", "rating": 5, "image": "assets/images/sugarcane/stacks.jpg", "route": "contact" },
-        { "city": "PUNE, MH", "owner": "Owner: Priya M.", "rating": 5, "image": "assets/images/sugarcane/hero_juice.jpg", "route": "contact" },
-        { "city": "CHENNAI, TN", "owner": "Owner: Arvind S.", "rating": 5, "image": "assets/images/sugarcane/combo.jpg", "route": "contact" }
+    "gallery": [
+        { "image": "assets/images/sugarcane/story_moments.jpg", "title": "Borough Market Stall", "tag": "Flagship Stall" },
+        { "image": "assets/images/sugarcane/stacks.jpg", "title": "Fresh Cane Supply Hub", "tag": "Raw Materials" },
+        { "image": "assets/images/sugarcane/hero_juice.jpg", "title": "Commercial Press in Action", "tag": "Machinery" },
+        { "image": "assets/images/sugarcane/combo.jpg", "title": "High-Volume Serving Counter", "tag": "Operations" }
     ],
-    "quotes": [
-        { "quote": "The Cane House is more than a brand, it's a family that supports your growth.", "author": "Ramesh B.", "avatar": "assets/images/sugarcane/hero_juice.jpg" },
-        { "quote": "Great support, excellent training and a profitable business opportunity.", "author": "Priya M.", "avatar": "assets/images/sugarcane/story_moments.jpg" },
-        { "quote": "Proud to be part of The Cane House journey. Highly recommended!", "author": "Arvind S.", "avatar": "assets/images/sugarcane/stacks.jpg" }
-    ]
+    "steps": [
+        { "num": "01", "title": "EXPRESS INTEREST", "desc": "Submit your application and schedule an initial discovery call." },
+        { "num": "02", "title": "LOCATION & PLAN", "desc": "Review territories, pitch locations (markets, malls, mobile event vans)." },
+        { "num": "03", "title": "SETUP & TRAINING", "desc": "Receive your branded machinery, stock, and complete training." },
+        { "num": "04", "title": "GRAND LAUNCH", "desc": "Open your stall with our marketing support and start pouring fresh cane juice." }
+    ],
+    "reviews": [
+        {
+            "quote": "Starting a Cane House franchise was the best decision. The training and cane supply chain are seamless, and customers love the fresh taste.",
+            "author": "Ramesh B.",
+            "city": "Borough Market Partner",
+            "rating": "★★★★★",
+            "image": "assets/images/sugarcane/story_moments.jpg"
+        },
+        {
+            "quote": "High profit margins and the live juice theatre draws crowds every single weekend. We broke even in just four months.",
+            "author": "Priya & Suresh K.",
+            "city": "South London Franchisee",
+            "rating": "★★★★★",
+            "image": "assets/images/backgrounds/vintage_coldpress_bar_catering.jpg"
+        },
+        {
+            "quote": "The support from head office has been incredible. From opening day marketing to weekly fresh stalk deliveries, we felt backed at every step.",
+            "author": "Arvind S.",
+            "city": "Camden Lock Market Stall",
+            "rating": "★★★★★",
+            "image": "assets/images/sugarcane/stacks.jpg"
+        }
+    ],
+    "cta": {
+        "title": "REQUEST YOUR FRANCHISE PROSPECTUS",
+        "text": "Join the UK's fastest-growing fresh sugarcane juice movement. Limited territorial rights available for 2025."
+    }
 }

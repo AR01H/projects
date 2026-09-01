@@ -1,18 +1,83 @@
 {
-    "_source": "Extracted + genericized from traditional_template/admin/data/gallery.json. Feeds a Home or About Gallery section. 'categories' + per-image 'category' already support filter-tab UI, if a future Gallery component adds one.",
-
-    "tag": "Gallery",
-    "title": "A Look Back In Time",
-    "body": "A few of our favourite moments.",
-    "categories": ["All", "On Location", "Behind The Scenes", "Events", "Community"],
-    "images": [
-        { "src": "https://images.unsplash.com/photo-1560493676-04071c5f467b?auto=format&fit=crop&w=600&q=80", "category": "On Location", "label": "Early Morning", "desc": "The site at sunrise" },
-        { "src": "https://images.unsplash.com/photo-1600271886742-f049cd451bba?auto=format&fit=crop&w=600&q=80", "category": "Behind The Scenes", "label": "In Progress", "desc": "Work happening in real time" },
-        { "src": "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600&q=80", "category": "Events", "label": "Summer Wedding", "desc": "Serving at a summer wedding" },
-        { "src": "https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&w=600&q=80", "category": "Community", "label": "Happy Regulars", "desc": "Friends sharing the moment" },
-        { "src": "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=600&q=80", "category": "On Location", "label": "Natural Materials", "desc": "Only the freshest to start with" },
-        { "src": "https://images.unsplash.com/photo-1544145945-f90425340c7e?auto=format&fit=crop&w=600&q=80", "category": "Behind The Scenes", "label": "Our Range", "desc": "Signature seasonal offerings" },
-        { "src": "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&w=600&q=80", "category": "Events", "label": "Festival Day", "desc": "A festival crowd enjoying the day" },
-        { "src": "https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=600&q=80", "category": "Community", "label": "Behind Every Detail", "desc": "The team behind the work" }
-    ]
+    "tag": "Our Gallery",
+    "title": "LOOK BACK IN <em>Time</em>",
+    "subtitle": "A few of our favourite moments capturing the heritage, stall life, and smiles over the years.",
+    "categories": [
+        { "id": "all", "label": "ALL" },
+        { "id": "sugarcane", "label": "SUGARCANE" },
+        { "id": "our-stall", "label": "OUR STALL" },
+        { "id": "events", "label": "EVENTS" },
+        { "id": "drinks", "label": "DRINKS" },
+        { "id": "community", "label": "COMMUNITY" }
+    ],
+    "items": [
+        {
+            "image": "assets/images/sugarcane/hero_juice.jpg",
+            "title": "Fresh Extraction",
+            "caption": "Pure cane juice pouring fresh at our London stall.",
+            "category": "sugarcane",
+            "tag": "Harvest & Press"
+        },
+        {
+            "image": "assets/images/sugarcane/story_moments.jpg",
+            "title": "Market Day Smiles",
+            "caption": "Generations enjoying pure refreshment together.",
+            "category": "community",
+            "tag": "Community"
+        },
+        {
+            "image": "assets/images/sugarcane/combo.jpg",
+            "title": "Artisanal Flavours",
+            "caption": "Ginger, lemon & mint infused cold cane mocktails.",
+            "category": "drinks",
+            "tag": "Signature Drinks"
+        },
+        {
+            "image": "assets/images/sugarcane/stacks.jpg",
+            "title": "Clean Stalks Sourcing",
+            "caption": "Handpicked, pre-washed premium sugarcane stalks.",
+            "category": "our-stall",
+            "tag": "Farm Sourced"
+        },
+        {
+            "image": "assets/images/sugarcane/drink_classic.jpg",
+            "title": "The Classic Glass",
+            "caption": "100% natural sugarcane juice — nothing added.",
+            "category": "drinks",
+            "tag": "Original Taste"
+        },
+        {
+            "image": "assets/images/sugarcane/drink_mint.jpg",
+            "title": "Garden Mint Infusion",
+            "caption": "Freshly muddled aromatic mint leaves.",
+            "category": "drinks",
+            "tag": "Refreshing"
+        },
+        {
+            "image": "assets/images/sugarcane/drink_lemon.jpg",
+            "title": "Zesty Lemon Splash",
+            "caption": "A citrus twist balancing sweet sugarcane notes.",
+            "category": "drinks",
+            "tag": "Zesty Twist"
+        },
+        {
+            "image": "assets/images/sugarcane/drink_masala.jpg",
+            "title": "Chaat Masala Spice",
+            "caption": "Traditional Indian spiced cane mocktail.",
+            "category": "events",
+            "tag": "Heritage Special"
+        }
+    ],
+    "actions": {
+        "primary": {
+            "label": "VISIT OUR LIVE STALL",
+            "icon": "pin",
+            "route": "contact"
+        },
+        "secondary": {
+            "label": "BOOK OUR STALL FOR EVENTS",
+            "icon": "tent",
+            "route": "contact"
+        }
+    }
 }

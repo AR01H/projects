@@ -4,12 +4,13 @@
  * Renders a compact side-by-side contact form + quick info card.
  */
 
+use VintageSoul\Services\SettingsService;
 use VintageSoul\Support\UrlHelper;
 
 defined( 'ABSPATH' ) || exit;
 
-$phone = (string) ( $phone ?? '+44 7770 461 999' );
-$email = (string) ( $email ?? 'thecanehouseuk@gmail.com' );
+$phone = (string) ( $phone ?? SettingsService::phone() );
+$email = (string) ( $email ?? SettingsService::email() );
 ?>
 
 <section class="section contact-home-section" id="connect">
@@ -53,15 +54,24 @@ $email = (string) ( $email ?? 'thecanehouseuk@gmail.com' );
 						<textarea class="form-textarea" id="home-contact-message" name="message" rows="3" placeholder="Tell us about your event, question, or enquiry..." required></textarea>
 					</div>
 
+					<div class="form-group form-group--agree">
+						<label class="form-checkbox-label" for="home-contact-agree">
+							<input type="checkbox" class="form-checkbox" id="home-contact-agree" name="agree" required checked>
+							<span class="form-checkbox-text">
+								I agree to the <a href="<?php echo esc_url( home_url( '/privacy' ) ); ?>" target="_blank" rel="noopener">Privacy Policy</a> &amp; consent to The Cane House contacting me regarding my enquiry.
+							</span>
+						</label>
+					</div>
+
 					<div class="form-actions">
 						<button class="btn btn--submit-inquiry" type="submit">
 							<span class="btn__text">SEND YOUR MESSAGE</span>
 							<span class="btn__arrow" aria-hidden="true">→</span>
 						</button>
-						<span class="form-note">
-							<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#caa06d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px; margin-right: 4px;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-							We never share your details. Zero spam.
-						</span>
+						<div class="form-note">
+							<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#caa06d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+							<span>We never share your details. Zero spam.</span>
+						</div>
 					</div>
 				</form>
 			</div>
@@ -80,7 +90,7 @@ $email = (string) ( $email ?? 'thecanehouseuk@gmail.com' );
 							</div>
 							<div class="contact-info-item__body">
 								<span class="contact-info-item__label">CALL &amp; WHATSAPP</span>
-								<a class="contact-info-item__val" href="tel:+447770461999"><?php echo esc_html( $phone ); ?></a>
+								<a class="contact-info-item__val" href="tel:<?php echo esc_attr( preg_replace( '/[^\d+]/', '', $phone ) ); ?>"><?php echo esc_html( $phone ); ?></a>
 							</div>
 						</div>
 						<div class="contact-info-item">
@@ -124,9 +134,18 @@ $email = (string) ( $email ?? 'thecanehouseuk@gmail.com' );
 				</div>
 
 				<div class="contact-home-social-row">
-					<a class="social-pill" href="https://facebook.com/thecanehouseuk" target="_blank" rel="noopener">Facebook</a>
-					<a class="social-pill" href="https://instagram.com/thecanehouseuk" target="_blank" rel="noopener">Instagram</a>
-					<a class="social-pill" href="https://wa.me/447770461999" target="_blank" rel="noopener">WhatsApp</a>
+					<a class="social-pill" href="<?php echo esc_url( SettingsService::social_url( 'facebook', 'https://facebook.com/thecanehouseuk' ) ); ?>" target="_blank" rel="noopener" aria-label="Facebook">
+						<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+						<span>Facebook</span>
+					</a>
+					<a class="social-pill" href="<?php echo esc_url( SettingsService::social_url( 'instagram', 'https://instagram.com/thecanehouseuk' ) ); ?>" target="_blank" rel="noopener" aria-label="Instagram">
+						<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+						<span>Instagram</span>
+					</a>
+					<a class="social-pill" href="<?php echo esc_url( SettingsService::whatsapp_url() ); ?>" target="_blank" rel="noopener" aria-label="WhatsApp">
+						<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+						<span>WhatsApp</span>
+					</a>
 				</div>
 			</div>
 		</div>

@@ -2,12 +2,10 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$steps = (array) ( $steps ?? array(
-	array( 'icon' => '🍹', 'title' => 'Choose your juice' ),
-	array( 'icon' => '🔢', 'title' => 'Select quantity' ),
-	array( 'icon' => '📍', 'title' => 'Confirm address' ),
-	array( 'icon' => '🚚', 'title' => 'We deliver fresh!' ),
-) );
+use VintageSoul\DataProviders\JsonFileProvider;
+
+$order_steps_data = (array) ( JsonFileProvider::read( 'data/content/order-steps.json' ) ?? array() );
+$steps            = (array) ( $steps ?? ( $order_steps_data['steps'] ?? array() ) );
 ?>
 <section class="section section--order-steps order-steps-vintage">
 	<div class="container container--narrow order-steps-vintage__container">

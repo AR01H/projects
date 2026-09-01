@@ -1,8 +1,13 @@
 <?php
+/**
+ * VintageSoulTheme - Interactive Video & YouTube Showcase Section
+ * Supports live YouTube embedded playback, direct video streaming, and smooth horizontal scrolling playlist.
+ */
 
 defined( 'ABSPATH' ) || exit;
 
 use VintageSoul\Services\RouteService;
+use VintageSoul\Support\IconHelper;
 use VintageSoul\Support\UrlHelper;
 
 $showcase_data = (array) ( $showcase_data ?? array() );
@@ -12,11 +17,12 @@ if ( empty( $videos ) ) {
 	return;
 }
 
-$first_vid = (array) $videos[0];
-$first_poster = UrlHelper::resolve( (string) ( $first_vid['poster'] ?? 'assets/images/sugarcane/hero_juice.jpg' ) );
-$first_src    = (string) ( $first_vid['src'] ?? '' );
+$first_vid     = (array) $videos[0];
+$first_poster  = UrlHelper::resolve( (string) ( $first_vid['poster'] ?? 'assets/images/sugarcane/hero_juice.jpg' ) );
+$first_src     = (string) ( $first_vid['src'] ?? '' );
 $first_src_url = '' !== $first_src ? UrlHelper::resolve( $first_src ) : '';
 $first_youtube = (string) ( $first_vid['youtube_id'] ?? '' );
+$is_first_yt   = '' !== $first_youtube;
 ?>
 <section class="section section--video-showcase video-showcase-vintage torn-dark-block grain-dark" id="video-showcase">
 	<div class="container video-showcase__container">
@@ -24,20 +30,27 @@ $first_youtube = (string) ( $first_vid['youtube_id'] ?? '' );
 		<!-- Main 2-Column Balanced Showcase -->
 		<div class="video-showcase__top-grid">
 			
-			<!-- Left: Video Player Area -->
+			<!-- Left: Video Player Stage -->
 			<div class="video-showcase__player-wrap">
-				<div class="video-showcase__player-card frame--ornate" id="video-showcase-player-box">
+				<div class="video-showcase__player-card frame--rough-cut frame--ornate" id="video-showcase-player-box">
 					
 					<!-- Direct Video Element -->
-					<video id="video-showcase-video" class="video-showcase__video" controls playsinline poster="<?php echo esc_url( $first_poster ); ?>">
+					<video id="video-showcase-video" class="video-showcase__video" controls playsinline poster="<?php echo esc_url( $first_poster ); ?>" style="<?php echo $is_first_yt ? 'display:none;' : ''; ?>">
 						<?php if ( '' !== $first_src_url ) : ?>
 							<source src="<?php echo esc_url( $first_src_url ); ?>" type="video/mp4">
 						<?php endif; ?>
 					</video>
 
 					<!-- YouTube Iframe Container -->
-					<div id="video-showcase-youtube-wrap" class="video-showcase__youtube-wrap" style="display: none;">
-						<iframe id="video-showcase-iframe" class="video-showcase__iframe" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+					<div id="video-showcase-youtube-wrap" class="video-showcase__youtube-wrap" style="<?php echo $is_first_yt ? 'display:block;' : 'display:none;'; ?>">
+						<iframe 
+							id="video-showcase-iframe" 
+							class="video-showcase__iframe" 
+							src="<?php echo $is_first_yt ? esc_url( 'https://www.youtube-nocookie.com/embed/' . rawurlencode( $first_youtube ) . '?rel=0&enablejsapi=1' ) : ''; ?>" 
+							frameborder="0" 
+							allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+							allowfullscreen
+						></iframe>
 					</div>
 
 				</div>
@@ -56,13 +69,20 @@ $first_youtube = (string) ( $first_vid['youtube_id'] ?? '' );
 
 				<ul class="video-showcase__highlights" id="video-showcase-highlights">
 					<?php foreach ( (array) ( $first_vid['highlights'] ?? array() ) as $hl ) : ?>
-						<li><span class="video-showcase__check">✓</span> <?php echo esc_html( (string) $hl ); ?></li>
+						<li>
+							<span class="video-showcase__check">
+								<?php echo IconHelper::render( 'check', '#caa06d', 14 ); // phpcs:ignore ?>
+							</span>
+							<span><?php echo esc_html( (string) $hl ); ?></span>
+						</li>
 					<?php endforeach; ?>
 				</ul>
 
 				<div class="video-showcase__cta-wrap">
 					<a class="btn btn--primary-vintage btn--order-now" id="video-showcase-btn" href="<?php echo esc_url( RouteService::url( (string) ( $first_vid['cta']['route'] ?? 'contact' ) ) ); ?>">
-						<span class="btn__icon" id="video-showcase-btn-icon"><?php echo esc_html( (string) ( $first_vid['cta']['icon'] ?? '📍' ) ); ?></span>
+						<span class="btn__icon" id="video-showcase-btn-icon">
+							<?php echo IconHelper::render( (string) ( $first_vid['cta']['icon'] ?? 'pin' ), '#f6d599', 15 ); // phpcs:ignore ?>
+						</span>
 						<span id="video-showcase-btn-label"><?php echo esc_html( (string) ( $first_vid['cta']['label'] ?? 'VISIT OUR STALL' ) ); ?></span>
 					</a>
 				</div>
@@ -71,7 +91,7 @@ $first_youtube = (string) ( $first_vid['youtube_id'] ?? '' );
 		</div>
 
 		<!-- Bottom 100% Full-Width Horizontal Scrollable Playlist Bar (15 Videos) -->
-		<div class="video-showcase__playlist-bar">
+		<div class="video-showcase__playlist-bar card--rough-cut-dark">
 			<div class="video-showcase__playlist-container">
 				<button type="button" class="playlist-nav-btn playlist-nav-btn--prev" id="video-scroll-prev" aria-label="<?php esc_attr_e( 'Scroll Left', 'vintagesoul' ); ?>">‹</button>
 				<div class="video-showcase__playlist-track-wrap">
@@ -81,11 +101,13 @@ $first_youtube = (string) ( $first_vid['youtube_id'] ?? '' );
 							$v_src      = (string) ( $v_item['src'] ?? '' );
 							$v_src_url  = '' !== $v_src ? UrlHelper::resolve( $v_src ) : '';
 							$v_yt       = (string) ( $v_item['youtube_id'] ?? '' );
+							$v_type     = '' !== $v_yt ? 'youtube' : 'video';
+							$c_icon     = (string) ( $v_item['cta']['icon'] ?? 'pin' );
 						?>
 							<button type="button" 
-									class="video-playlist-item<?php echo 0 === $v_idx ? ' is-active' : ''; ?>"
+									class="video-playlist-item card--rough-cut-dark<?php echo 0 === $v_idx ? ' is-active' : ''; ?>"
 									data-video-idx="<?php echo esc_attr( (string) $v_idx ); ?>"
-									data-video-type="<?php echo esc_attr( '' !== $v_yt ? 'youtube' : 'video' ); ?>"
+									data-video-type="<?php echo esc_attr( $v_type ); ?>"
 									data-video-src="<?php echo esc_attr( $v_src_url ); ?>"
 									data-video-poster="<?php echo esc_attr( $v_poster ); ?>"
 									data-video-youtube="<?php echo esc_attr( $v_yt ); ?>"
@@ -96,10 +118,12 @@ $first_youtube = (string) ( $first_vid['youtube_id'] ?? '' );
 									data-video-highlights='<?php echo esc_attr( (string) wp_json_encode( (array) ( $v_item['highlights'] ?? array() ) ) ); ?>'
 									data-video-cta-label="<?php echo esc_attr( (string) ( $v_item['cta']['label'] ?? 'LEARN MORE' ) ); ?>"
 									data-video-cta-route="<?php echo esc_attr( (string) ( $v_item['cta']['route'] ?? 'contact' ) ); ?>"
-									data-video-cta-icon="<?php echo esc_attr( (string) ( $v_item['cta']['icon'] ?? '👉' ) ); ?>">
-								<div class="video-playlist-item__thumb">
+									data-video-cta-icon="<?php echo esc_attr( $c_icon ); ?>">
+								<div class="video-playlist-item__thumb frame--rough-cut">
 									<img src="<?php echo esc_url( $v_poster ); ?>" alt="<?php echo esc_attr( (string) ( $v_item['title'] ?? '' ) ); ?>" loading="lazy">
-									<span class="video-playlist-item__play-icon">▶</span>
+									<span class="video-playlist-item__play-icon">
+										<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+									</span>
 									<span class="video-playlist-item__duration"><?php echo esc_html( (string) ( $v_item['duration'] ?? '1:00' ) ); ?></span>
 								</div>
 								<div class="video-playlist-item__info">
@@ -117,7 +141,7 @@ $first_youtube = (string) ( $first_vid['youtube_id'] ?? '' );
 	</div>
 </section>
 
-<!-- Interactive Video Switching & Horizontal Scroll Logic -->
+<!-- Interactive Video & YouTube Switching Logic -->
 <script>
 (function() {
 	function initVideoShowcase() {
@@ -182,7 +206,7 @@ $first_youtube = (string) ( $first_vid['youtube_id'] ?? '' );
 				var ctaRoute = item.getAttribute('data-video-cta-route');
 				var ctaIcon = item.getAttribute('data-video-cta-icon');
 
-				// Update Video Player
+				// Update Video Player (YouTube or HTML5 Video)
 				if (type === 'youtube' && ytId) {
 					if (videoEl) {
 						videoEl.pause();
@@ -222,14 +246,13 @@ $first_youtube = (string) ( $first_vid['youtube_id'] ?? '' );
 						var parsedHl = JSON.parse(highlightsRaw);
 						if (Array.isArray(parsedHl)) {
 							highlightsEl.innerHTML = parsedHl.map(function(h) {
-								return '<li><span class="video-showcase__check">✓</span> ' + h + '</li>';
+								return '<li><span class="video-showcase__check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#caa06d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span> <span>' + h + '</span></li>';
 							}).join('');
 						}
 					} catch(e) {}
 				}
 
 				if (btnLabelEl && ctaLabel) btnLabelEl.textContent = ctaLabel;
-				if (btnIconEl && ctaIcon) btnIconEl.textContent = ctaIcon;
 			});
 		});
 	}

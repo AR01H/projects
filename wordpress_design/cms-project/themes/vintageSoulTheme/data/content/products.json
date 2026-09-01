@@ -1,13 +1,73 @@
 {
-    "tag": "Our Range",
-    "title": "OUR JUICES",
-    "sub": "Pure, natural and freshly pressed sugarcane juice — served chilled.",
+    "tag": "Our Artisanal Menu",
+    "title": "OUR FRESH JUICES",
+    "sub": "Cold-pressed live to order from hand-selected whole sugarcane stalks — unpasteurized, zero added sugar, 100% pure botanical vitality.",
     "items": [
-        { "name": "CLASSIC CANE JUICE", "desc": "Pure & Natural", "price": "₹ 50.00", "image": "assets/images/sugarcane/drink_classic.jpg", "button": { "label": "ORDER NOW", "route": "contact" } },
-        { "name": "LEMON CANE JUICE", "desc": "With a twist of lemon", "price": "₹ 60.00", "image": "assets/images/sugarcane/drink_lemon.jpg", "button": { "label": "ORDER NOW", "route": "contact" } },
-        { "name": "GINGER CANE JUICE", "desc": "With natural ginger", "price": "₹ 60.00", "image": "assets/images/sugarcane/drink_pineapple.jpg", "button": { "label": "ORDER NOW", "route": "contact" } },
-        { "name": "MINT CANE JUICE", "desc": "Refreshing mint flavor", "price": "₹ 60.00", "image": "assets/images/sugarcane/drink_mint.jpg", "button": { "label": "ORDER NOW", "route": "contact" } },
-        { "name": "MASALA CANE JUICE", "desc": "Indian masala twist", "price": "₹ 60.00", "image": "assets/images/sugarcane/drink_masala.jpg", "button": { "label": "ORDER NOW", "route": "contact" } },
-        { "name": "MIX FRUIT CANE JUICE", "desc": "Healthy & Delicious", "price": "₹ 70.00", "image": "assets/images/sugarcane/drink_mixfruit.jpg", "button": { "label": "ORDER NOW", "route": "contact" } }
+        {
+            "id": "classic-cane",
+            "name": "CLASSIC ORIGINAL CANE",
+            "tag": "100% PURE BOTANICAL",
+            "badge": "SIGNATURE",
+            "desc": "Single-pass cold pressed raw sugarcane nectar with natural notes of honey, floral meadow, and caramel.",
+            "ingredients": ["100% Raw Single-Pass Sugarcane", "Crushed Ice", "Live Natural Electrolytes"],
+            "serving": "Freshly Cold-Pressed Daily",
+            "image": "assets/images/sugarcane/drink_classic.jpg",
+            "button": { "label": "ORDER FRESH", "route": "contact" }
+        },
+        {
+            "id": "lemon-ginger-cane",
+            "name": "ZESTY LEMON & GINGER CANE",
+            "tag": "IMMUNITY & ENERGY",
+            "badge": "BESTSELLER",
+            "desc": "Cold-pressed cane infused with fiery crushed root ginger, fresh Sicilian lemon, and a touch of mineral salt.",
+            "ingredients": ["Raw Sugarcane", "Cold-Crushed Ginger Root", "Sicilian Amalfi Lemon", "Pink Himalayan Salt"],
+            "serving": "Freshly Cold-Pressed Daily",
+            "image": "assets/images/sugarcane/drink_lemon.jpg",
+            "button": { "label": "ORDER FRESH", "route": "contact" }
+        },
+        {
+            "id": "mint-cooling-cane",
+            "name": "CRUSHED GARDEN MINT CANE",
+            "tag": "DIGESTIVE & COOLING",
+            "badge": "SUPER COOLING",
+            "desc": "Crisp bruised garden spearmint and zesty Persian lime married with sweet soothing cane nectar.",
+            "ingredients": ["Raw Sugarcane", "Fresh Garden Mint Leaves", "Persian Lime Juice", "Crushed Ice"],
+            "serving": "Freshly Cold-Pressed Daily",
+            "image": "assets/images/sugarcane/drink_mint.jpg",
+            "button": { "label": "ORDER FRESH", "route": "contact" }
+        },
+        {
+            "id": "masala-spiced-cane",
+            "name": "ROYAL MASALA SPICED CANE",
+            "tag": "AYURVEDIC DIGESTION",
+            "badge": "HERITAGE RECIPE",
+            "desc": "Ancient street-stall recipe blended with roasted cumin, black salt, fresh lime, and aromatic warming spices.",
+            "ingredients": ["Raw Sugarcane", "Roasted Cumin Seeds", "Kala Namak (Black Salt)", "Crushed Ginger", "Lemon"],
+            "serving": "Freshly Cold-Pressed Daily",
+            "image": "assets/images/sugarcane/drink_masala.jpg",
+            "button": { "label": "ORDER FRESH", "route": "contact" }
+        },
+        {
+            "id": "golden-pineapple-cane",
+            "name": "GOLDEN PINEAPPLE CANE",
+            "tag": "TROPICAL ENZYMES",
+            "badge": "FRUIT INFUSION",
+            "desc": "Cold-extracted ripe golden pineapple pulp and whole raw cane delivering a sweet-tangy bromelain super-punch.",
+            "ingredients": ["Raw Sugarcane", "Ripe Golden Pineapple", "Lime Zest", "Mineral Electrolytes"],
+            "serving": "Freshly Cold-Pressed Daily",
+            "image": "assets/images/sugarcane/drink_pineapple.jpg",
+            "button": { "label": "ORDER FRESH", "route": "contact" }
+        },
+        {
+            "id": "tropical-berry-cane",
+            "name": "TROPICAL PASSION & BERRY CANE",
+            "tag": "ANTIOXIDANT BLEND",
+            "badge": "LIMITED CRAFT",
+            "desc": "Vibrant blend of seasonal berries, exotic passion fruit pulp, and cold-pressed pure sugarcane nectar.",
+            "ingredients": ["Raw Sugarcane", "Crushed Wild Berries", "Passion Fruit Nectar", "Fresh Lime"],
+            "serving": "Freshly Cold-Pressed Daily",
+            "image": "assets/images/sugarcane/drink_mixfruit.jpg",
+            "button": { "label": "ORDER FRESH", "route": "contact" }
+        }
     ]
 }

@@ -1,0 +1,325 @@
+/* ==========================================================================
+   VintageSoulTheme - Cinematic Sugarcane Plantation Double Doors Page Loader
+   ========================================================================== */
+
+.plantation-loader {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 999999 !important;
+  background-color: transparent !important;
+  overflow: hidden !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  perspective: 1400px !important;
+  pointer-events: auto !important;
+  transition: opacity 0.75s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.75s ease !important;
+}
+
+.plantation-loader.is-loaded {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+/* ═══════════ 1. GRAND PLANTATION DOUBLE DOORS ═══════════ */
+.plantation-loader__doors-stage {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: 10 !important;
+  display: flex !important;
+  perspective: 1600px !important;
+  pointer-events: none !important;
+}
+
+.plantation-loader__door {
+  position: relative !important;
+  width: 50.1% !important;
+  height: 100% !important;
+  background-color: #231206 !important;
+  background-size: cover, 100% 100% !important;
+  background-position: center center !important;
+  background-repeat: no-repeat, no-repeat !important;
+  box-shadow:
+    inset 0 0 90px rgba(0, 0, 0, 0.85),
+    0 0 50px rgba(0, 0, 0, 0.95) !important;
+  overflow: hidden !important;
+  transform-style: preserve-3d !important;
+  transition: transform 1.35s cubic-bezier(0.76, 0, 0.24, 1), box-shadow 1.35s ease !important;
+}
+
+.plantation-loader__door--left {
+  border-right: 3.5px solid #8e622d !important;
+  transform-origin: left center !important;
+}
+
+.plantation-loader__door--right {
+  border-left: 3.5px solid #8e622d !important;
+  transform-origin: right center !important;
+}
+
+/* Direct Website Revelation: Doors Swing Open to Left and Right */
+.plantation-loader.is-opening .plantation-loader__door--left {
+  transform: translateX(-105%) rotateY(-24deg) !important;
+  box-shadow: 25px 0 70px rgba(0, 0, 0, 0.95) !important;
+}
+
+.plantation-loader.is-opening .plantation-loader__door--right {
+  transform: translateX(105%) rotateY(24deg) !important;
+  box-shadow: -25px 0 70px rgba(0, 0, 0, 0.95) !important;
+}
+
+.plantation-loader__door-overlay {
+  position: absolute !important;
+  inset: 0 !important;
+  background: radial-gradient(circle at 50% 50%, rgba(30, 15, 6, 0.15) 0%, rgba(12, 5, 2, 0.72) 100%) !important;
+  pointer-events: none !important;
+}
+
+/* Door Panels & High-Definition Sugarcane Farm Plantation Inlay */
+.plantation-loader__door-frame {
+  position: absolute !important;
+  inset: 20px !important;
+  border: 2px solid #8e622d !important;
+  border-radius: 4px !important;
+  box-shadow:
+    inset 0 0 0 2px #caa06d,
+    inset 0 0 50px rgba(0, 0, 0, 0.7) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  padding: 16px !important;
+  overflow: hidden !important;
+}
+
+.plantation-loader__door-farm {
+  position: absolute !important;
+  inset: 0 !important;
+  background-size: cover !important;
+  background-repeat: no-repeat !important;
+  opacity: 0.52 !important;
+  mix-blend-mode: luminosity !important;
+  filter: contrast(1.18) sepia(20%) !important;
+  pointer-events: none !important;
+  transition: transform 1.35s cubic-bezier(0.76, 0, 0.24, 1) !important;
+}
+
+.plantation-loader__door-farm--left {
+  background-image: var(--loader-left-img) !important;
+  background-position: center center !important;
+}
+
+.plantation-loader__door-farm--right {
+  background-image: var(--loader-right-img) !important;
+  background-position: center center !important;
+}
+
+/* Ornate Brass Door Handles */
+.plantation-loader__door-handle {
+  position: absolute !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  width: 48px !important;
+  height: 120px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  z-index: 5 !important;
+}
+
+.handle-left {
+  right: 14px !important;
+}
+
+.handle-right {
+  left: 14px !important;
+}
+
+.handle-plate {
+  width: 18px !important;
+  height: 90px !important;
+  background: linear-gradient(180deg, #f6d599 0%, #caa06d 25%, #8e622d 75%, #44220c 100%) !important;
+  border: 1.5px solid #f6d599 !important;
+  border-radius: 4px !important;
+  box-shadow:
+    0 6px 14px rgba(0, 0, 0, 0.8),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6) !important;
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.handle-ring {
+  width: 36px !important;
+  height: 36px !important;
+  border-radius: 50% !important;
+  border: 4px solid #caa06d !important;
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.85),
+    inset 0 1px 2px rgba(255, 255, 255, 0.4) !important;
+  position: absolute !important;
+  top: 26px !important;
+}
+
+.handle-bracket {
+  width: 24px !important;
+  height: 8px !important;
+  background: #caa06d !important;
+  border: 1px solid #8e622d !important;
+  border-radius: 2px !important;
+}
+
+/* ═══════════ 2. CENTER EMBLEM CREST & BOTANICAL PROGRESS (LARGE LOGO) ═══════════ */
+.plantation-loader__center-emblem {
+  position: relative !important;
+  z-index: 20 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  transition: transform 0.95s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.85s ease !important;
+}
+
+.plantation-loader.is-opening .plantation-loader__center-emblem {
+  transform: scale(1.12) translateY(-24px) !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+.plantation-loader__crest-glow {
+  position: absolute !important;
+  width: 440px !important;
+  height: 440px !important;
+  border-radius: 50% !important;
+  background: radial-gradient(circle, rgba(246, 213, 153, 0.45) 0%, rgba(142, 98, 45, 0.2) 55%, transparent 75%) !important;
+  animation: crest-breathe 3s ease-in-out infinite alternate !important;
+  pointer-events: none !important;
+  z-index: 1 !important;
+}
+
+@keyframes crest-breathe {
+  from { transform: scale(0.94); opacity: 0.55; }
+  to { transform: scale(1.08); opacity: 0.95; }
+}
+
+.plantation-loader__crest-frame {
+  position: relative !important;
+  z-index: 2 !important;
+  background: linear-gradient(180deg, #184224 0%, #0c2613 60%, #051308 100%) !important;
+  border: 2.5px solid #8e622d !important;
+  border-radius: 16px !important;
+  padding: 34px 56px 28px !important;
+  box-shadow:
+    inset 0 0 0 2px #caa06d,
+    0 16px 48px rgba(0, 0, 0, 0.92) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  max-width: 480px !important;
+}
+
+.plantation-loader__logo-wrap {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin-bottom: 16px !important;
+}
+
+.plantation-loader__logo-icon {
+  width: 210px !important;
+  height: 210px !important;
+  max-width: 100% !important;
+  object-fit: contain !important;
+  filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.65)) !important;
+  animation: logo-glow 2.5s ease-in-out infinite alternate !important;
+}
+
+@keyframes logo-glow {
+  from { filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.65)); }
+  to { filter: drop-shadow(0 0 22px rgba(246, 213, 153, 0.9)); }
+}
+
+.plantation-loader__seal-text {
+  font-family: 'Cinzel', serif !important;
+  font-size: 12.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.18em !important;
+  color: #caa06d !important;
+  margin-bottom: 14px !important;
+  text-transform: uppercase !important;
+}
+
+/* Botanical Progress Bar */
+.plantation-loader__progress-track {
+  width: 300px !important;
+  height: 7px !important;
+  background: #081a0e !important;
+  border: 1px solid #8e622d !important;
+  border-radius: 4px !important;
+  overflow: hidden !important;
+  margin-bottom: 12px !important;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.8) !important;
+}
+
+.plantation-loader__progress-bar {
+  width: 0% !important;
+  height: 100% !important;
+  background: linear-gradient(90deg, #8e622d 0%, #caa06d 50%, #f6d599 100%) !important;
+  box-shadow: 0 0 10px #f6d599 !important;
+  animation: loader-fill 1.4s cubic-bezier(0.2, 0.8, 0.4, 1) forwards !important;
+}
+
+@keyframes loader-fill {
+  0% { width: 0%; }
+  50% { width: 70%; }
+  100% { width: 100%; }
+}
+
+.plantation-loader__status-text {
+  font-family: 'Cinzel', 'Playfair Display', serif !important;
+  font-size: 11.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.16em !important;
+  color: #f6d599 !important;
+  text-transform: uppercase !important;
+  margin: 0 !important;
+  animation: text-glow 1.5s ease-in-out infinite alternate !important;
+}
+
+@keyframes text-glow {
+  from { opacity: 0.7; }
+  to { opacity: 1; text-shadow: 0 0 8px rgba(246, 213, 153, 0.6); }
+}
+
+@media (max-width: 768px) {
+  .plantation-loader__door-farm--left {
+    background-image: var(--loader-mobile-img, var(--loader-left-img)) !important;
+    background-position: left center !important;
+  }
+  .plantation-loader__door-farm--right {
+    background-image: var(--loader-mobile-img, var(--loader-right-img)) !important;
+    background-position: right center !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .plantation-loader__crest-frame {
+    padding: 24px 30px 20px !important;
+    max-width: 340px !important;
+  }
+  .plantation-loader__logo-icon {
+    width: 150px !important;
+    height: 150px !important;
+  }
+  .plantation-loader__progress-track {
+    width: 220px !important;
+  }
+}

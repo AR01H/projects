@@ -1,0 +1,136 @@
+/* ══════════════════════════════════════════════════════════════════════════
+   VINTAGESOUL - FLOATING WHATSAPP ACTION WIDGET (CIRCULAR ICON ONLY)
+   ══════════════════════════════════════════════════════════════════════════ */
+
+.floating-whatsapp-widget {
+  position: fixed !important;
+  bottom: 24px !important;
+  left: 20px !important;
+  z-index: 9999 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.floating-whatsapp-btn {
+  position: relative !important;
+  width: 52px !important;
+  height: 52px !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: radial-gradient(circle at 40% 30%, #1c582c 0%, #0d2f16 65%, #05180b 100%) !important;
+  border: 2px dashed #d49842 !important;
+  box-shadow:
+    inset 0 0 0 2px #0d2f16,
+    inset 0 0 0 3.5px #caa06d,
+    inset 0 1px 0 rgba(246, 213, 153, 0.4),
+    0 6px 20px rgba(0, 0, 0, 0.4) !important;
+  color: #f6d599 !important;
+  text-decoration: none !important;
+  transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  cursor: pointer !important;
+  filter: url(#rough-button-cut-sm) !important;
+  -webkit-filter: url(#rough-button-cut-sm) !important;
+}
+
+.floating-whatsapp-btn:hover {
+  transform: translateY(-3px) scale(1.08) !important;
+  background: radial-gradient(circle at 40% 30%, #246a36 0%, #123e1e 65%, #082410 100%) !important;
+  border-color: #f6d599 !important;
+  border-style: dashed !important;
+  box-shadow:
+    inset 0 0 0 2px #123e1e,
+    inset 0 0 0 3.5px #f6d599,
+    0 10px 24px rgba(0, 0, 0, 0.45),
+    0 0 14px rgba(246, 213, 153, 0.5) !important;
+}
+
+.floating-whatsapp-icon {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.floating-whatsapp-icon svg {
+  width: 26px !important;
+  height: 26px !important;
+  display: block !important;
+  stroke: #f6d599 !important;
+  transition: stroke 0.2s ease, transform 0.2s ease !important;
+}
+
+.floating-whatsapp-btn:hover .floating-whatsapp-icon svg {
+  stroke: #ffffff !important;
+  transform: scale(1.05) !important;
+}
+
+/* Online Status Dot (Top-Right Badge) */
+.floating-whatsapp-online-dot {
+  position: absolute !important;
+  top: 2px !important;
+  right: 2px !important;
+  width: 10px !important;
+  height: 10px !important;
+  border-radius: 50% !important;
+  background: #25d366 !important;
+  border: 1.5px solid #0d2f16 !important;
+  box-shadow: 0 0 6px rgba(37, 211, 102, 0.8) !important;
+  display: inline-block !important;
+  animation: waDotGlow 2s infinite ease-in-out !important;
+}
+
+/* Radar Pulse Ripple */
+.floating-whatsapp-pulse {
+  position: absolute !important;
+  inset: -4px !important;
+  border-radius: 50% !important;
+  border: 1.5px solid rgba(202, 160, 109, 0.6) !important;
+  animation: waCircularPulse 2.4s infinite cubic-bezier(0.25, 1, 0.5, 1) !important;
+  pointer-events: none !important;
+  z-index: -1 !important;
+}
+
+@keyframes waCircularPulse {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.9;
+  }
+  70% {
+    transform: scale(1.22);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.3);
+    opacity: 0;
+  }
+}
+
+@keyframes waDotGlow {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(0.85);
+  }
+}
+
+@media (max-width: 640px) {
+  .floating-whatsapp-widget {
+    bottom: 18px !important;
+    left: 14px !important;
+  }
+  
+  .floating-whatsapp-btn {
+    width: 46px !important;
+    height: 46px !important;
+  }
+  
+  .floating-whatsapp-icon svg {
+    width: 23px !important;
+    height: 23px !important;
+  }
+}

@@ -2,16 +2,33 @@
 
 defined( 'ABSPATH' ) || exit;
 
+use VintageSoul\DataProviders\JsonFileProvider;
 use VintageSoul\Services\RouteService;
 use VintageSoul\Support\UrlHelper;
 
-$tag       = (string) ( $tag ?? 'Our Heritage' );
-$title     = (string) ( $title ?? 'MORE THAN JUST A DRINK.' );
-$subtitle  = (string) ( $subtitle ?? "It's a memory." );
-$body      = (string) ( $body ?? 'Before supermarkets. Before energy drinks. Before everything became instant—there was sugarcane juice. Freshly pressed right before your eyes. Shared with friends and family. Enjoyed together under the summer sun.' );
-$cta_label = (string) ( $cta_label ?? 'DISCOVER OUR STORY' );
-$cta_route = (string) ( $cta_route ?? 'about' );
-$image     = UrlHelper::resolve( (string) ( $image ?? 'assets/images/sugarcane/story_moments.jpg' ) );
+$intro_data = (array) ( JsonFileProvider::read( 'data/content/intro.json' ) ?? array() );
+
+$tag       = (string) ( $tag ?? ( $intro_data['tag'] ?? 'Our Heritage' ) );
+$title     = (string) ( $title ?? ( $intro_data['title'] ?? 'MORE THAN JUST A DRINK.' ) );
+$subtitle  = (string) ( $subtitle ?? ( $intro_data['subtitle'] ?? "It's a memory." ) );
+$body      = (string) ( $body ?? ( $intro_data['body'] ?? 'Before supermarkets. Before energy drinks. Before everything became instant—there was sugarcane juice. Freshly pressed right before your eyes. Shared with friends and family. Enjoyed together under the summer sun.' ) );
+$cta_label = (string) ( $cta_label ?? ( $intro_data['cta_label'] ?? 'DISCOVER OUR STORY' ) );
+$cta_route = (string) ( $cta_route ?? ( $intro_data['cta_route'] ?? 'about' ) );
+$images    = (array) ( $images ?? ( $intro_data['images'] ?? array() ) );
+if ( empty( $images ) ) {
+	$images = array(
+		array(
+			'image'       => 'assets/images/sugarcane/story_moments.jpg',
+			'title'       => 'Traditional Street Stall Heritage',
+			'caption'     => 'Generations sharing freshly pressed sugarcane under the warm summer sunshine with authentic family hospitality.',
+			'author'      => 'The Cane House Heritage',
+			'meta'        => 'Traditional Roadside Stall · 1950s',
+			'tag'         => 'Heritage Stall',
+			'rotation'    => '-2.5deg',
+			'is_featured' => true,
+		),
+	);
+}
 ?>
 <section class="section section--intro intro-vintage paper-rough" id="intro-story">
 	<div class="container intro-vintage__container">
@@ -21,7 +38,7 @@ $image     = UrlHelper::resolve( (string) ( $image ?? 'assets/images/sugarcane/s
 			<span class="vintage-ribbon-tag">
 				<span><?php echo esc_html( $tag ); ?></span>
 			</span>
-			<h2 class="intro-vintage__title"><?php echo esc_html( trim( strip_tags( $title ), " -—" ) ); ?></h2>
+			<h2 class="intro-vintage__title">MORE THAN JUST A <em>Drink</em></h2>
 			<p class="section-eyebrow"><?php echo esc_html( strip_tags( $subtitle ) ); ?></p>
 		</div>
 
@@ -75,17 +92,43 @@ $image     = UrlHelper::resolve( (string) ( $image ?? 'assets/images/sugarcane/s
 				<?php endif; ?>
 			</div>
 
-			<!-- Right: Framed Heritage Archival Photo with Stamp Badge -->
+			<!-- Right: Interactive Vintage Heritage Archival Photo Stack -->
 			<div class="intro-vintage__media-col">
-				<div class="intro-vintage__frame-card frame--rough-cut">
-					<div class="intro-vintage__image-box">
-						<img src="<?php echo esc_url( $image ); ?>" alt="<?php echo esc_attr( $title ); ?>" loading="lazy">
-						<div class="intro-vintage__stamp">
-							<span class="stamp-icon">🌾</span>
-							<span class="stamp-text">AUTHENTIC CANE PRESS</span>
-							<span class="stamp-sub">EST. 2014 · LONDON</span>
+				<div class="intro-vintage__photo-stack">
+					<?php foreach ( $images as $idx => $img_item ) :
+						$img_url     = UrlHelper::resolve( (string) ( $img_item['image'] ?? 'assets/images/sugarcane/story_moments.jpg' ) );
+						$img_title   = (string) ( $img_item['title'] ?? 'Heritage Moment' );
+						$img_caption = (string) ( $img_item['caption'] ?? '' );
+						$img_author  = (string) ( $img_item['author'] ?? 'The Cane House' );
+						$img_meta    = (string) ( $img_item['meta'] ?? 'Archival Snapshot' );
+						$img_tag     = (string) ( $img_item['tag'] ?? 'Heritage' );
+						$img_rot     = (string) ( $img_item['rotation'] ?? '0deg' );
+						$is_feat     = ! empty( $img_item['is_featured'] ) || 0 === $idx;
+					?>
+						<div class="intro-photo-card card--rough-cut <?php echo $is_feat ? 'intro-photo-card--featured' : 'intro-photo-card--secondary intro-photo-card--sub-' . ( $idx ); ?>"
+						     style="--intro-rot: <?php echo esc_attr( $img_rot ); ?>;"
+						     role="button"
+						     tabindex="0"
+						     data-story-modal="true"
+						     data-story-image="<?php echo esc_url( $img_url ); ?>"
+						     data-story-quote="<?php echo esc_attr( $img_caption ); ?>"
+						     data-story-author="<?php echo esc_attr( $img_author ); ?>"
+						     data-story-meta="<?php echo esc_attr( $img_meta ); ?>"
+						     data-story-badge="<?php echo esc_attr( $img_tag ); ?>"
+						     data-story-title="<?php echo esc_attr( $img_title ); ?>"
+						     aria-label="<?php echo esc_attr( $img_title ); ?>">
+							
+							<div class="intro-photo-card__image-box">
+								<img src="<?php echo esc_url( $img_url ); ?>" alt="<?php echo esc_attr( $img_title ); ?>" loading="lazy">
+							</div>
+
+							<div class="intro-photo-card__label-bar">
+								<span class="intro-photo-card__tag"><?php echo esc_html( $img_tag ); ?></span>
+								<span class="intro-photo-card__title"><?php echo esc_html( $img_title ); ?></span>
+								<span class="intro-photo-card__action" aria-hidden="true">✦</span>
+							</div>
 						</div>
-					</div>
+					<?php endforeach; ?>
 				</div>
 			</div>
 		</div>

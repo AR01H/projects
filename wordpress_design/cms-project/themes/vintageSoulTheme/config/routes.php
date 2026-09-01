@@ -17,7 +17,13 @@ return array(
 	),
 	'game'    => array(
 		'path'       => '/game',
-		'alternates' => array( 'play', 'timepass', 'shop', 'portfolio', 'gallery', 'services', 'blog' ),
+		'alternates' => array( 'play', 'timepass', 'shop', 'portfolio', 'gallery', 'services' ),
+		'styles'     => array(),
+		'scripts'    => array(),
+	),
+	'blog'    => array(
+		'path'       => '/blog',
+		'alternates' => array( 'articles', 'journal', 'news', 'stories', 'posts' ),
 		'styles'     => array(),
 		'scripts'    => array(),
 	),
@@ -38,6 +44,13 @@ return array(
 	'franchise' => array(
 		'path'       => '/franchise',
 		'alternates' => array( 'partner', 'franchise-opportunities', 'become-a-partner' ),
+		'styles'     => array(),
+		'scripts'    => array(),
+	),
+
+	'events' => array(
+		'path'       => '/events',
+		'alternates' => array( 'catering', 'weddings', 'parties', 'corporate-events', 'live-bar' ),
 		'styles'     => array(),
 		'scripts'    => array(),
 	),

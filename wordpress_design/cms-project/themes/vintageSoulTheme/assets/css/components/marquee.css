@@ -95,3 +95,86 @@
   background-size: 110px 110px;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><filter id='mqdp'><feTurbulence type='fractalNoise' baseFrequency='0.025' numOctaves='3' seed='93' stitchTiles='stitch' result='n'/><feColorMatrix in='n' type='matrix' values='0 0 0 0 0.1  0 0 0 0 0.08  0 0 0 0 0.04  0 0 0 1 0' result='tinted'/><feComponentTransfer in='tinted'><feFuncA type='discrete' tableValues='0 0 0 0.3 0.3 0.6 0.6 1'/></feComponentTransfer></filter><rect width='100%25' height='100%25' filter='url(%23mqdp)'/></svg>");
 }
+
+/* ═══════════ REUSABLE VINTAGE RIBBON TICKER BANNERS ═══════════ */
+.ribbon-ticker {
+  background: linear-gradient(180deg, var(--vintage-bark-dark, #2b1406) 0%, #1a0b03 100%);
+  color: var(--vintage-gold-bright, #f6d599);
+  padding: 4px 0 !important;
+  margin: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  border-top: 1px solid #8e622d;
+  border-bottom: 1px solid #8e622d;
+  position: relative;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.25);
+  z-index: 2;
+}
+.ribbon-ticker::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("../../images/textures/grain/grain-a.svg");
+  background-size: 240px 240px;
+  mix-blend-mode: screen;
+  opacity: 0.12;
+  pointer-events: none;
+}
+.ribbon-ticker__track {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  animation: marquee-slide 28s linear infinite;
+}
+.ribbon-ticker__heart {
+  color: var(--vintage-gold-accent, #cb924d);
+  font-size: 9px !important;
+}
+.ribbon-ticker__text {
+  font-family: var(--font-family-heading, 'Cinzel', 'Playfair Display', serif);
+  font-size: 10px !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--vintage-gold-bright, #f6d599);
+}
+
+.ribbon-ticker--green {
+  background: linear-gradient(180deg, var(--vintage-green-dark, #11381b) 0%, var(--vintage-green-deep, #091f0f) 100%);
+  border-color: var(--vintage-bark-border, #8e622d);
+  box-shadow: inset 0 1px 0 var(--vintage-gold-inner, #caa06d), inset 0 -1px 0 var(--vintage-gold-inner, #caa06d), 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+.ribbon-ticker--green .ribbon-ticker__heart {
+  color: var(--vintage-gold-bright, #f6d599);
+}
+
+.ribbon-ticker--dark {
+  background: linear-gradient(180deg, #321c10 0%, #201108 100%);
+}
+
+@keyframes marquee-slide {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* ═══════════ AUTHENTIC DECKLE ROUGH CUT MARQUEES & TICKERS ═══════════ */
+.marquee,
+.ribbon-ticker,
+.trust-ribbon,
+.ribbon-ticker--green,
+.ribbon-ticker--dark {
+  filter: url(#rough-button-cut-sm) !important;
+  -webkit-filter: url(#rough-button-cut-sm) !important;
+}
+
+.marquee span,
+.marquee__track,
+.ribbon-ticker__track,
+.ribbon-ticker__text,
+.ribbon-ticker__heart {
+  filter: none !important;
+  -webkit-filter: none !important;
+  text-rendering: optimizeLegibility !important;
+  -webkit-font-smoothing: antialiased !important;
+}
+

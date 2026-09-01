@@ -1,0 +1,141 @@
+{
+    "hero": {
+        "tag": "Live Stalls • Weddings • Private Galas",
+        "title": "Bespoke Sugarcane <em>Bar Catering</em>",
+        "sub": "Transform your special occasion with our live vintage cold-press sugarcane bar. Freshly extracted organic cane nectar, custom botanical blends, and authentic London craft.",
+        "image": "assets/images/backgrounds/vintage_coldpress_bar_catering.jpg",
+        "stamp": { "top": "Live Cold-Press", "center": "5★ Hygiene", "bottom": "London & Beyond" }
+    },
+
+    "event_types": [
+        {
+            "icon": "🎪",
+            "title": "WEDDINGS & RECEPTIONS",
+            "tag": "Popular Choice",
+            "desc": "A live sugarcane juice counter that charms guests with fresh, bespoke mocktails and traditional sugarcane theatre.",
+            "features": [ "Customised rustic cane bar setup", "Unlimited fresh pressings", "Fresh mint, ginger & lime infusions" ]
+        },
+        {
+            "icon": "🏢",
+            "title": "CORPORATE & BRAND EVENTS",
+            "tag": "Wellness & Energy",
+            "desc": "Boost workplace wellness and celebrate milestones with a 100% natural, energising live juice station.",
+            "features": [ "Fast professional service", "Branded cups & bar signage", "Zero artificial sugars or syrups" ]
+        },
+        {
+            "icon": "🎉",
+            "title": "BIRTHDAYS & PRIVATE PARTIES",
+            "tag": "All Ages Favourite",
+            "desc": "Fun, interactive live pressing that kids and adults adore. Sweet memories crafted right before their eyes.",
+            "features": [ "Compact mobile setup", "Kids friendly mocktails", "Full hygiene certified team" ]
+        },
+        {
+            "icon": "🌾",
+            "title": "FESTIVALS & COMMUNITY MEETS",
+            "tag": "High Volume Capacity",
+            "desc": "High-throughput commercial extractors ready to serve hundreds of festival-goers with icy, refreshing cane juice.",
+            "features": [ "High-speed twin rollers", "Eco-friendly recyclable cups", "Trained event crew" ]
+        }
+    ],
+
+    "packages": {
+        "tag": "Artisanal Event Packages",
+        "title": "Catering <em>Packages & Setups</em>",
+        "sub": "From intimate garden celebrations to grand multi-day cultural weddings and corporate wellness popups.",
+        "items": [
+            {
+                "name": "The Heritage Wedding Bar",
+                "tagline": "Unforgettable Celebration Experience",
+                "guests": "100 – 500+ Guests",
+                "features": [
+                    "Live Cold-Press Extraction Bar with Master Pressers",
+                    "Unlimited Signature Blends (Classic, Ginger, Mint, Masala)",
+                    "Customized Wooden Signage & Vintage Brass Accents",
+                    "4 Hours of Continuous Live Pouring Service"
+                ],
+                "badge": "Most Popular"
+            },
+            {
+                "name": "Corporate Wellness Lounge",
+                "tagline": "Nutrient-Dense Natural Energy",
+                "guests": "50 – 300 Guests",
+                "features": [
+                    "Compact Mobile Stalk Bar for Office & Conferences",
+                    "Low-GI Hydration Shots & Wellness Informational Cards",
+                    "Eco-Friendly Compostable Glassware & Biodegradable Straws",
+                    "Zero Added Sugar • 100% Raw Whole-Plant Tonic"
+                ],
+                "badge": "Corporate Choice"
+            },
+            {
+                "name": "Festival & Private Party Pop-Up",
+                "tagline": "Vibrant Botanical Street Craft",
+                "guests": "30 – 200 Guests",
+                "features": [
+                    "Rustic Sugarcane Stalk Display & Crushed Ice Presentation",
+                    "Fresh Lemon & Kaffir Lime Infusions Poured on Demand",
+                    "Full Setup, Teardown & Pristine Waste Management",
+                    "Available across Greater London & Surrey"
+                ],
+                "badge": "Artisanal Craft"
+            }
+        ]
+    },
+
+    "process": {
+        "tag": "Seamless Concierge Planning",
+        "title": "How Event <em>Booking Works</em>",
+        "items": [
+            { "number": "1", "label": "Initial Consultation", "desc": "Share your date, venue location, and estimated guest count." },
+            { "number": "2", "label": "Custom Menu Selection", "desc": "Choose your custom botanical flavors, lemon ginger zest, or spiced blends." },
+            { "number": "3", "label": "Farm Harvest Lock-In", "desc": "We reserve prime mature organic sugarcane harvested specifically for your event." },
+            { "number": "4", "label": "Live On-Site Pouring", "desc": "Our team arrives early with our polished press to delight your guests." }
+        ]
+    },
+
+    "gallery": {
+        "tag": "Moments in Action",
+        "title": "Recent Event <em>Celebrations</em>",
+        "items": [
+            { "image": "assets/images/sugarcane/story_moments.jpg", "title": "Summer Festival Market", "label": "London Stalls" },
+            { "image": "assets/images/sugarcane/hero_juice.jpg", "title": "Botanical Wedding Bar", "label": "Surrey Estate" },
+            { "image": "assets/images/sugarcane/stacks.jpg", "title": "Fresh Farm Deliveries", "label": "Dawn Harvest" },
+            { "image": "assets/images/sugarcane/combo.jpg", "title": "Corporate Wellness Day", "label": "Canary Wharf" }
+        ]
+    },
+
+    "reviews": [
+        {
+            "quote": "The Cane House live bar was the biggest hit at our wedding reception! Guests are still talking about the ginger-mint sugarcane juice.",
+            "author": "Priya & Rahul M.",
+            "event": "Wedding Reception, London",
+            "rating": "★★★★★",
+            "image": "assets/images/sugarcane/story_moments.jpg"
+        },
+        {
+            "quote": "Super professional team, immaculate setup, and deliciously refreshing juice. Perfect addition to our summer corporate picnic.",
+            "author": "David K.",
+            "event": "Corporate Summer Gala",
+            "rating": "★★★★★",
+            "image": "assets/images/sugarcane/combo.jpg"
+        },
+        {
+            "quote": "Brought back so many childhood memories. Freshly pressed right in front of us. Highly recommended for any event!",
+            "author": "Ananya S.",
+            "event": "50th Birthday Celebration",
+            "rating": "★★★★★",
+            "image": "assets/images/backgrounds/vintage_coldpress_bar_catering.jpg"
+        }
+    ],
+
+    "faqs": {
+        "tag": "Common Inquiries",
+        "title": "Event Catering <em>FAQs</em>",
+        "items": [
+            { "question": "What power and space do you need at the venue?", "answer": "Our specialized commercial cold-press bars only require a standard 13A UK plug socket and a 2m x 2m flat floor space. We bring our own water supply and waste containers." },
+            { "question": "Can you cater outdoor weddings and garden parties?", "answer": "Yes! We operate indoor and outdoor events with all-weather vintage market canopies." },
+            { "question": "How far in advance should we book?", "answer": "We recommend booking 2 to 6 weeks in advance to guarantee fresh cane allocation, though we do accommodate short-notice bookings based on schedule." },
+            { "question": "Are your pressers hygiene certified?", "answer": "All our event artisans hold Level 2 Food Safety certification and adhere strictly to our 5-Star Food Hygiene rating." }
+        ]
+    }
+}

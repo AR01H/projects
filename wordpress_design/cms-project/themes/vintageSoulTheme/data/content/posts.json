@@ -1,0 +1,72 @@
+{
+    "hero": {
+        "tag": "The Cane Chronicle • Journal & Insights",
+        "title": "Articles & <em>Heritage Stories</em>",
+        "sub": "Explore our latest writings on ancient sugarcane cultivation, raw cold-press nutrition, London market life, and botanical recipe pairings."
+    },
+    "categories": [
+        "All Articles",
+        "Cold-Press Craft",
+        "Botanical Nutrition",
+        "Farm & Heritage",
+        "Event Stories"
+    ],
+    "items": [
+        {
+            "id": 1,
+            "title": "Why Cold-Pressed Raw Cane Juice Outperforms Synthetic Energy Drinks",
+            "slug": "why-cold-pressed-raw-cane-outperforms-synthetic-energy-drinks",
+            "category": "Botanical Nutrition",
+            "date": "28 August 2026",
+            "author": "Priya Patel",
+            "role": "Master Nutritionist",
+            "reading_time": 4,
+            "excerpt": "Discover how 420mg of bioavailable potassium, magnesium, and natural sucrose nodes provide sustained cellular energy without synthetic sugar crashes.",
+            "image": "assets/images/sugarcane/hero_juice.jpg",
+            "featured": true,
+            "content": "<p>When you take a sip of 100% pure cold-pressed sugarcane juice, you are tasting a living botanical nectar that has sustained civilizations across the globe for millennia. Unlike commercial isotonic sports drinks that rely on laboratory-synthesized dextrose, artificial acidity regulators, and chemical preservatives, raw sugarcane juice is a complete, unrefined whole-plant beverage.</p><h3>The Electrolyte Symphony</h3><p>A single 330ml serving of fresh sugarcane juice delivers over 420mg of natural potassium and 65mg of bioavailable magnesium. These vital intracellular electrolytes work in harmony to restore hydration balance after strenuous physical exertion or warm summer afternoons.</p><blockquote><p>“Nature does not create empty calories. Whole raw sugarcane juice carries the exact mineral co-factors required for smooth cellular metabolism.”</p></blockquote><p>Because the natural sucrose in sugarcane is bound to living plant fiber, flavonoids, and polyphenols, it boasts a low glycemic index of approximately 43. This ensures a slow, sustained energy release without the sudden insulin spikes and subsequent fatigue crashes associated with processed table sugars.</p>"
+        },
+        {
+            "id": 2,
+            "title": "From New Guinea to London: The 5,000-Year Voyage of Saccharum Officinarum",
+            "slug": "from-new-guinea-to-london-voyage-of-saccharum-officinarum",
+            "category": "Farm & Heritage",
+            "date": "15 August 2026",
+            "author": "Ravi Sharma",
+            "role": "Founder & Master Presser",
+            "reading_time": 6,
+            "excerpt": "Trace the incredible botanical migration of sugarcane through ancient trade routes, medieval spice galleys, and into our modern London market stall.",
+            "image": "assets/images/sugarcane/story_moments.jpg",
+            "featured": false,
+            "content": "<p>The story of sugarcane is inextricably woven into the tapestry of human history. First domesticated in the lush river valleys of New Guinea around 8,000 BCE, ancient cultivators discovered that chewing the fibrous sweet stalks yielded instant vitality and clean energy.</p><h3>The Spice Galleys & Caravan Trails</h3><p>By 500 BCE, Sanskrit texts in ancient India referred to the plant as <em>Ikshu</em>, developing the earliest known stone mortar-and-pestle pressing techniques to extract pure juice and dry it into unrefined golden jaggery cakes (<em>Guda</em>).</p><p>Today in London, The Cane House preserves this unbroken lineage of artisanal cold extraction, bringing the purest heirloom stalks straight from sustainable ethical farms to our city market stalls.</p>"
+        },
+        {
+            "id": 3,
+            "title": "Artisanal Infusions: The Perfect Botanical Pairings with Fresh Cane Nectar",
+            "slug": "artisanal-infusions-perfect-botanical-pairings",
+            "category": "Cold-Press Craft",
+            "date": "02 August 2026",
+            "author": "Amina Yusuf",
+            "role": "Head of Sourcing",
+            "reading_time": 5,
+            "excerpt": "How cold-crushed root ginger, Sicilian kaffir lime, crushed garden mint, and Himalayan rock salt elevate the natural sweetness of raw cane.",
+            "image": "assets/images/sugarcane/drink_lemon.jpg",
+            "featured": false,
+            "content": "<p>While pure raw sugarcane juice is exceptionally delicious on its own, its delicate caramel-honey undertones serve as an extraordinary canvas for aromatic botanical infusions.</p><h3>The Golden Zest Triad</h3><p>Our most popular blend combines three elemental ingredients: fiery cold-crushed ginger root, fragrant kaffir lime juice, and a pinch of mineral-rich Himalayan pink salt. The natural citric acid cuts through the lush sweetness, while the gingerols stimulate digestion and invigorate the senses.</p>"
+        },
+        {
+            "id": 4,
+            "title": "Behind the Scenes: Setting Up a Live Sugarcane Bar for Surrey Summer Weddings",
+            "slug": "behind-the-scenes-live-sugarcane-bar-surrey-weddings",
+            "category": "Event Stories",
+            "date": "20 July 2026",
+            "author": "Tom Whitfield",
+            "role": "Live Events Director",
+            "reading_time": 4,
+            "excerpt": "A glimpse into our wedding concierge team as we transport freshly harvested cane and polished brass rollers to an idyllic countryside marquee.",
+            "image": "assets/images/backgrounds/vintage_coldpress_bar_catering.jpg",
+            "featured": false,
+            "content": "<p>There is an undeniable theater to live cold-pressing. As guests arrive at a sunlit summer wedding, the visual spectacle of tall green cane stalks arranged in rustic wicker baskets and the gentle hum of our polished press creates instant wonder.</p><p>Guests gather around to watch their customized botanical drinks pressed right before their eyes, garnished with fresh mint and citrus wheels for an unforgettable toast.</p>"
+        }
+    ]
+}

@@ -8,6 +8,9 @@ final class RoutePageService {
 	private const HASH_OPTION = 'vintagesoul_routes_hash';
 
 	public static function sync(): void {
+		// Clean up unwanted default starter dummy posts
+		self::cleanup_starter_content();
+
 		$routes = RouteService::all();
 		$hash   = md5( (string) wp_json_encode( $routes ) );
 
@@ -27,6 +30,16 @@ final class RoutePageService {
 		}
 
 		update_option( self::HASH_OPTION, $hash );
+	}
+
+	private static function cleanup_starter_content(): void {
+		$dummy_slugs = array( 'sample-page' );
+		foreach ( $dummy_slugs as $slug ) {
+			$page = get_page_by_path( $slug, OBJECT, 'page' );
+			if ( $page instanceof \WP_Post ) {
+				wp_delete_post( $page->ID, true );
+			}
+		}
 	}
 
 	private static function ensure_page( string $key, string $slug ): void {

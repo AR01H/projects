@@ -1,0 +1,49 @@
+{
+    "tag": "Fresh Orders & Bulk Supply",
+    "title": "ORDER FRESH JUICE &amp; <em>Bulk Catering</em>",
+    "sub": "Pressed fresh to order from premium whole sugarcane. Available for live takeaway, party kegs, and London home deliveries.",
+    "gallery": [
+        { "image": "assets/images/sugarcane/hero_juice.jpg", "title": "Fresh Cold Extraction", "tag": "Made to Order" },
+        { "image": "assets/images/sugarcane/combo.jpg", "title": "Artisanal Flavor Blends", "tag": "Botanical Mix" },
+        { "image": "assets/images/sugarcane/stacks.jpg", "title": "Clean Farm Stalks", "tag": "Raw Sourcing" },
+        { "image": "assets/images/sugarcane/story_moments.jpg", "title": "Chilled Delivery Crates", "tag": "Fast Dispatch" }
+    ],
+    "wholesale_options": [
+        {
+            "icon": "pack",
+            "title": "EVENT KEGS & DISPENSERS",
+            "desc": "5L & 10L sealed stainless steel beverage kegs for catering, weddings, and private dinner parties.",
+            "tag": "Catering Favourite"
+        },
+        {
+            "icon": "leaf",
+            "title": "WHOLESALE RAW STALKS",
+            "desc": "Pre-washed, peeled, and graded premium sugarcane stalks for juice bars, restaurants, and grocers.",
+            "tag": "Commercial Supply"
+        },
+        {
+            "icon": "delivery",
+            "title": "WEEKLY HOME DELIVERY",
+            "desc": "Chilled 500ml & 1L glass bottles delivered fresh to your door in London every Friday & Saturday.",
+            "tag": "Subscription"
+        }
+    ],
+    "reviews": [
+        {
+            "quote": "Ordered a 10L keg for our Eid family garden party. Everyone loved how icy, sweet and completely natural it tasted!",
+            "author": "Zainab A.",
+            "city": "London Home Delivery",
+            "rating": "★★★★★"
+        },
+        {
+            "quote": "We buy wholesale stalks weekly for our restaurant. Top tier sweetness and super clean preparation.",
+            "author": "Marcus T.",
+            "city": "Soho Restaurant Partner",
+            "rating": "★★★★★"
+        }
+    ],
+    "banner": {
+        "title": "NEED FRESH JUICE OR BULK SUPPLY?",
+        "text": "We press fresh on demand and deliver across Sutton and Greater London. Message us on WhatsApp for fast orders and instant delivery confirmation."
+    }
+}

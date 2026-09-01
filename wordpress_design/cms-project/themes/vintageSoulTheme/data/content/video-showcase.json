@@ -1,5 +1,5 @@
 {
-    "_source": "15 interactive showcase videos with horizontal scrolling playlist and live playback",
+    "_source": "15 interactive showcase videos with horizontal scrolling playlist and live YouTube & MP4 playback",
     "enabled": true,
     "videos": [
         {
@@ -8,17 +8,17 @@
             "eyebrow": "Watch It In Action",
             "title": "THE ART OF LIVE CANE PRESSING",
             "duration": "1:45",
-            "type": "video",
+            "type": "youtube",
             "src": "assets/videos/hero_bg.mp4",
             "poster": "assets/images/sugarcane/hero_juice.jpg",
-            "youtube_id": "",
+            "youtube_id": "C0DPdy98e4c",
             "description": "Experience the captivating moment as pure, fresh sugarcane stalks are cold-pressed right before your eyes. No added sugar, no dilution, just 100% pure raw botanical sweetness.",
             "highlights": [
                 "Cold-pressed on order in under 30 seconds.",
                 "100% Raw sugarcane nectar with all live nutrients intact.",
                 "Authentic brass roll extraction mechanism."
             ],
-            "cta": { "label": "VISIT OUR STALL", "route": "contact", "icon": "📍" }
+            "cta": { "label": "VISIT OUR STALL", "route": "contact", "icon": "pin" }
         },
         {
             "id": "vid-2",
@@ -26,17 +26,17 @@
             "eyebrow": "From Soil to Sip",
             "title": "ETHICAL HARVESTING & SOURCING",
             "duration": "2:10",
-            "type": "image",
+            "type": "youtube",
             "src": "assets/images/sugarcane/stacks.jpg",
             "poster": "assets/images/sugarcane/stacks.jpg",
-            "youtube_id": "dQw4w9WgXcQ",
+            "youtube_id": "7s_w2c4mDfs",
             "description": "We hand-select only mature, sunshine-ripened sugarcane grown without chemical ripeners. Every stalk is harvested sustainably and cold-shipped for ultimate crispness.",
             "highlights": [
                 "Hand-cut mature cane stalks selected at peak brix.",
                 "Zero chemical preservatives or artificial ripening.",
                 "Rich in alkaline minerals: iron, potassium, and magnesium."
             ],
-            "cta": { "label": "ALL ABOUT CANE", "route": "history", "icon": "🌾" }
+            "cta": { "label": "ALL ABOUT CANE", "route": "history", "icon": "sugarcane" }
         },
         {
             "id": "vid-3",
@@ -44,17 +44,17 @@
             "eyebrow": "Artisan Mixology",
             "title": "SIGNATURE GINGER & MINT INFUSIONS",
             "duration": "1:30",
-            "type": "image",
+            "type": "youtube",
             "src": "assets/images/sugarcane/combo.jpg",
             "poster": "assets/images/sugarcane/combo.jpg",
-            "youtube_id": "",
+            "youtube_id": "Wb5HwYn_sVw",
             "description": "Discover our signature craft recipes combining freshly crushed ginger root, garden mint, freshly squeezed lime, and aromatic Himalayan black salt.",
             "highlights": [
                 "Fresh ginger root pressed alongside cane for deep zest.",
                 "Garden mint leaves crushed on the spot for aroma.",
                 "Chaat masala & black salt for a tangy digestive twist."
             ],
-            "cta": { "label": "EXPLORE OUR DRINKS", "route": "history", "icon": "🥤" }
+            "cta": { "label": "EXPLORE OUR DRINKS", "route": "history", "icon": "drink" }
         },
         {
             "id": "vid-4",
@@ -62,17 +62,17 @@
             "eyebrow": "Live Experience",
             "title": "LIVE EVENT BARS & FESTIVALS",
             "duration": "2:40",
-            "type": "image",
+            "type": "youtube",
             "src": "assets/images/sugarcane/story_moments.jpg",
             "poster": "assets/images/sugarcane/story_moments.jpg",
-            "youtube_id": "",
+            "youtube_id": "K4TOrB7at0Y",
             "description": "Bringing the vintage live juice bar spectacle to London weddings, private parties, corporate events, and weekend food festivals with custom mobile setups.",
             "highlights": [
                 "Full live pressing mobile bar setup with trained team.",
                 "Serving hundreds of fresh glasses per hour with zero waste.",
                 "Loved by thousands at London's premier food markets."
             ],
-            "cta": { "label": "BOOK YOUR EVENT", "route": "contact", "icon": "🎪" }
+            "cta": { "label": "BOOK YOUR EVENT", "route": "contact", "icon": "calendar" }
         },
         {
             "id": "vid-5",
@@ -80,17 +80,17 @@
             "eyebrow": "Heavy Brass Mechanism",
             "title": "VINTAGE EXTRACTION MACHINERY",
             "duration": "1:15",
-            "type": "image",
+            "type": "youtube",
             "src": "assets/images/sugarcane/hero_juice.jpg",
             "poster": "assets/images/sugarcane/hero_juice.jpg",
-            "youtube_id": "",
+            "youtube_id": "60ItHLz5WEA",
             "description": "A close-up look at our precision-calibrated stainless steel and food-grade rollers designed to squeeze maximum botanical nectar in a single gentle pass.",
             "highlights": [
                 "One-pass slow cold-press technology.",
                 "No heat generation to protect fragile natural vitamins.",
                 "Hygienic easy-clean food-grade brass construction."
             ],
-            "cta": { "label": "OUR PROCESS", "route": "history", "icon": "⚙️" }
+            "cta": { "label": "OUR PROCESS", "route": "history", "icon": "clock" }
         },
         {
             "id": "vid-6",
@@ -98,17 +98,17 @@
             "eyebrow": "Borough Market Stalls",
             "title": "WEEKEND MARKET MORNINGS",
             "duration": "3:05",
-            "type": "image",
+            "type": "youtube",
             "src": "assets/images/sugarcane/stacks.jpg",
             "poster": "assets/images/sugarcane/stacks.jpg",
-            "youtube_id": "",
+            "youtube_id": "kJQP7kiw5Fk",
             "description": "Watch how we prep fresh cane bundles at the break of dawn before opening our bustling London market counters to eager sugarcane enthusiasts.",
             "highlights": [
                 "Fresh shipments received every Thursday & Saturday.",
                 "Stalks peeled and washed by hand before dawn.",
                 "Over 800 happy visitors served every weekend."
             ],
-            "cta": { "label": "FIND LOCATIONS", "route": "contact", "icon": "📍" }
+            "cta": { "label": "FIND LOCATIONS", "route": "contact", "icon": "pin" }
         },
         {
             "id": "vid-7",
@@ -116,17 +116,17 @@
             "eyebrow": "Natural Electrolytes",
             "title": "THE SCIENCE OF RAW CANE NECTAR",
             "duration": "2:20",
-            "type": "image",
+            "type": "youtube",
             "src": "assets/images/sugarcane/combo.jpg",
             "poster": "assets/images/sugarcane/combo.jpg",
-            "youtube_id": "",
+            "youtube_id": "fJ9rUzIMcZQ",
             "description": "Why pure sugarcane juice is nature's ultimate hydration beverage: low glycemic load, rich in soluble plant fiber, and bursting with vital antioxidants.",
             "highlights": [
                 "Natural complex carbohydrates for steady energy.",
                 "Alkalizing properties that support healthy digestion.",
                 "Zero refined sugar, additives or synthetic sweeteners."
             ],
-            "cta": { "label": "HEALTH BENEFITS", "route": "history", "icon": "🌿" }
+            "cta": { "label": "HEALTH BENEFITS", "route": "history", "icon": "star" }
         },
         {
             "id": "vid-8",
@@ -134,17 +134,17 @@
             "eyebrow": "Spiced Perfection",
             "title": "MASALA CANE FIZZ MOCKTAIL",
             "duration": "1:55",
-            "type": "image",
+            "type": "youtube",
             "src": "assets/images/sugarcane/story_moments.jpg",
             "poster": "assets/images/sugarcane/story_moments.jpg",
-            "youtube_id": "",
+            "youtube_id": "3JZ_D3ELwOQ",
             "description": "Our head barista crafts the award-winning Masala Cane Fizz: freshly pressed cane nectar, roasted cumin, lime, and crushed ice.",
             "highlights": [
                 "Hand-roasted cumin & Himalayan pink salt blend.",
                 "Zesty cold-pressed lime juice splash.",
                 "Perfect summer refresher for hot afternoon markets."
             ],
-            "cta": { "label": "VIEW MENU", "route": "history", "icon": "🍹" }
+            "cta": { "label": "VIEW MENU", "route": "history", "icon": "drink" }
         },
         {
             "id": "vid-9",
@@ -152,17 +152,17 @@
             "eyebrow": "From Farm to Stall",
             "title": "WASHING & PEELING THE CANE",
             "duration": "1:40",
-            "type": "image",
+            "type": "youtube",
             "src": "assets/images/sugarcane/hero_juice.jpg",
             "poster": "assets/images/sugarcane/hero_juice.jpg",
-            "youtube_id": "",
+            "youtube_id": "dQw4w9WgXcQ",
             "description": "Step behind the counter to see our thorough sanitization and peeling procedure that guarantees pristine, crystalline juice every single time.",
             "highlights": [
                 "Triple-wash filtration with purified botanical rinse.",
                 "Precision outer bark trimming for clean flavor profile.",
                 "Strict hygiene standards certified by London food inspectors."
             ],
-            "cta": { "label": "HYGIENE STANDARDS", "route": "history", "icon": "✨" }
+            "cta": { "label": "HYGIENE STANDARDS", "route": "history", "icon": "star" }
         },
         {
             "id": "vid-10",
@@ -170,17 +170,17 @@
             "eyebrow": "Bespoke Celebrations",
             "title": "WEDDING RECEPTION LIVE CANE BAR",
             "duration": "3:15",
-            "type": "image",
+            "type": "youtube",
             "src": "assets/images/sugarcane/stacks.jpg",
             "poster": "assets/images/sugarcane/stacks.jpg",
-            "youtube_id": "",
+            "youtube_id": "2Z4m4lnjxkY",
             "description": "Creating an unforgettable sensory centerpiece for couples on their big day with our bespoke rustic brass live sugarcane pressing station.",
             "highlights": [
                 "Customized cocktail & mocktail drink menu for guests.",
                 "Vintage wooden bar counter with brass floral accents.",
                 "Professional bartenders in heritage vintage attire."
             ],
-            "cta": { "label": "ENQUIRE FOR WEDDINGS", "route": "contact", "icon": "💍" }
+            "cta": { "label": "ENQUIRE FOR WEDDINGS", "route": "contact", "icon": "tent" }
         },
         {
             "id": "vid-11",
@@ -188,17 +188,17 @@
             "eyebrow": "Autumn Infusion",
             "title": "SPICED GINGER & CARDAMOM CANE",
             "duration": "1:50",
-            "type": "image",
+            "type": "youtube",
             "src": "assets/images/sugarcane/combo.jpg",
             "poster": "assets/images/sugarcane/combo.jpg",
-            "youtube_id": "",
+            "youtube_id": "L_LUpnjgPso",
             "description": "A cozy seasonal twist incorporating green cardamom pods and warm ginger root pressed fresh into autumn sugarcane juice.",
             "highlights": [
                 "Crushed green cardamom pods for floral warmth.",
                 "Double-strength ginger root kick.",
                 "Loved by market visitors during cool London mornings."
             ],
-            "cta": { "label": "TRY IN AUTUMN", "route": "history", "icon": "🍂" }
+            "cta": { "label": "TRY IN AUTUMN", "route": "history", "icon": "sugarcane" }
         },
         {
             "id": "vid-12",
@@ -206,17 +206,17 @@
             "eyebrow": "Pure & Wholesome",
             "title": "NATURE'S HEALTHIEST SWEET TREAT",
             "duration": "1:25",
-            "type": "image",
+            "type": "youtube",
             "src": "assets/images/sugarcane/story_moments.jpg",
             "poster": "assets/images/sugarcane/story_moments.jpg",
-            "youtube_id": "",
+            "youtube_id": "fRh_vgS2dFE",
             "description": "Why parents love introducing their little ones to our 100% natural, unadulterated sugarcane juice as a wholesome alternative to soda.",
             "highlights": [
                 "Zero added artificial sugar or high-fructose syrup.",
                 "Naturally sweet and rich in calcium for strong teeth & bones.",
                 "Fun interactive watch-it-pressed experience for children."
             ],
-            "cta": { "label": "FAMILY FRIENDLY", "route": "history", "icon": "👨‍👩‍👧" }
+            "cta": { "label": "FAMILY FRIENDLY", "route": "history", "icon": "star" }
         },
         {
             "id": "vid-13",
@@ -224,17 +224,17 @@
             "eyebrow": "Zero Waste Philosophy",
             "title": "UPCYCLING CANE BAGASSE FIBER",
             "duration": "2:05",
-            "type": "image",
+            "type": "youtube",
             "src": "assets/images/sugarcane/hero_juice.jpg",
             "poster": "assets/images/sugarcane/hero_juice.jpg",
-            "youtube_id": "",
+            "youtube_id": "kXYiU_JCYtU",
             "description": "How 100% of our crushed sugarcane fiber (bagasse) is collected and donated to local London urban gardens and composting initiatives.",
             "highlights": [
                 "Zero organic waste sent to landfills.",
                 "Biodegradable plant fiber repurposed as garden mulch.",
                 "100% compostable cups and paper straws used at all stalls."
             ],
-            "cta": { "label": "ECO COMMITMENT", "route": "history", "icon": "🌱" }
+            "cta": { "label": "ECO COMMITMENT", "route": "history", "icon": "sugarcane" }
         },
         {
             "id": "vid-14",
@@ -242,17 +242,17 @@
             "eyebrow": "Summer Street Food",
             "title": "LONDON STREET FOOD FESTIVAL RUSH",
             "duration": "2:50",
-            "type": "image",
+            "type": "youtube",
             "src": "assets/images/sugarcane/stacks.jpg",
             "poster": "assets/images/sugarcane/stacks.jpg",
-            "youtube_id": "",
+            "youtube_id": "JGwWNGJdvx8",
             "description": "High-octane energy at the summer festival grounds with non-stop cane crushing, laughing crowds, and ice-cold refreshments.",
             "highlights": [
                 "Over 1,200 fresh glasses served in a single festival day.",
                 "Live music, vibrant atmosphere, and authentic street vibe.",
                 "Refreshing festival-goers with pure botanical hydration."
             ],
-            "cta": { "label": "SEE EVENT CALENDAR", "route": "contact", "icon": "🎪" }
+            "cta": { "label": "SEE EVENT CALENDAR", "route": "contact", "icon": "calendar" }
         },
         {
             "id": "vid-15",
@@ -260,17 +260,17 @@
             "eyebrow": "The Art of Cane",
             "title": "HOW TO TASTE SUGARCANE LIKE A PRO",
             "duration": "3:30",
-            "type": "image",
+            "type": "youtube",
             "src": "assets/images/sugarcane/combo.jpg",
             "poster": "assets/images/sugarcane/combo.jpg",
-            "youtube_id": "",
+            "youtube_id": "9bZkp7q19f0",
             "description": "Join our founder for an educational tasting session breaking down brix levels, grassy top notes, terroir differences, and pairing combos.",
             "highlights": [
                 "Understanding terroir & brix sweetness grades.",
                 "Pairing sugarcane juice with savory street food.",
                 "Top tips for brewing and infusing fresh cane at home."
             ],
-            "cta": { "label": "OUR STORY", "route": "history", "icon": "📖" }
+            "cta": { "label": "OUR STORY", "route": "history", "icon": "book" }
         }
     ]
 }

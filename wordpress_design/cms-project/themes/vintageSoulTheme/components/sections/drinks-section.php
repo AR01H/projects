@@ -2,26 +2,32 @@
 
 defined( 'ABSPATH' ) || exit;
 
+use VintageSoul\DataProviders\JsonFileProvider;
 use VintageSoul\Services\RouteService;
 use VintageSoul\Support\UrlHelper;
+use VintageSoul\Support\View;
 
-$tag    = (string) ( $tag ?? 'Our Range' );
-$title  = (string) ( $title ?? 'OUR DRINKS' );
-$sub    = (string) ( $sub ?? 'Pure, natural and freshly pressed sugarcane juice — served chilled.' );
-$items  = (array) ( $items ?? array() );
+$products_data = (array) ( JsonFileProvider::read( 'data/content/products.json' ) ?? array() );
+
+$tag   = (string) ( $tag ?? ( $products_data['tag'] ?? '' ) );
+$title = (string) ( $title ?? ( $products_data['title'] ?? '' ) );
+$sub   = (string) ( $sub ?? ( $products_data['sub'] ?? '' ) );
+$items = (array) ( $items ?? ( $products_data['items'] ?? array() ) );
 ?>
 <section class="section section--drinks drinks-vintage paper-rough" id="our-drinks">
 	<div class="container container--narrow drinks-vintage__container">
-		<div class="drinks-vintage__header">
-			<span class="vintage-ribbon-tag">
-				<span><?php echo esc_html( $tag ); ?></span>
-			</span>
-			<h2 class="drinks-vintage__title"><?php echo esc_html( trim( strip_tags( $title ), " -—" ) ); ?></h2>
-			<p class="section-eyebrow">A Taste of Tradition</p>
-			<?php if ( '' !== $sub ) : ?>
-				<p class="drinks-vintage__sub"><?php echo esc_html( $sub ); ?></p>
-			<?php endif; ?>
-		</div>
+		<?php
+		View::component(
+			'section-header/section-header',
+			array(
+				'tag'     => $tag,
+				'title'   => 'SIGNATURE CANE <em>Creations</em>',
+				'eyebrow' => 'A Taste of Tradition',
+				'sub'     => $sub,
+				'ribbon'  => true,
+			)
+		);
+		?>
 
 		<div class="drinks-vintage__list">
 			<?php foreach ( $items as $item ) :
@@ -33,7 +39,7 @@ $items  = (array) ( $items ?? array() );
 				$btn_label = (string) ( $item['button']['label'] ?? 'ORDER NOW' );
 				$btn_route = (string) ( $item['button']['route'] ?? 'contact' );
 			?>
-				<div class="drink-row-card">
+				<div class="drink-row-card card--cut">
 					<div class="drink-row-card__media">
 						<img src="<?php echo esc_url( $img ); ?>" alt="<?php echo esc_attr( $name ); ?>" loading="lazy">
 					</div>

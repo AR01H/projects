@@ -31,7 +31,13 @@
 		var dialog = getDialog(id);
 		if (!dialog) return;
 
+		// Ensure dialog is a direct child of document.body so it is never trapped in any transformed or filtered parent
+		if (dialog.parentElement !== document.body) {
+			document.body.appendChild(dialog);
+		}
+
 		dialog.hidden = false;
+		dialog.style.display = 'flex';
 		dialog.dataset.vsLastFocus = 'true';
 		dialog._lastFocused = document.activeElement;
 		openDialogs.push(dialog);
@@ -49,6 +55,17 @@
 		var dialog = getDialog(id);
 		if (!dialog) return;
 
+		// Stop any playing video or audio on close
+		var videoEl = dialog.querySelector('#vsm-video');
+		var iframeEl = dialog.querySelector('#vsm-iframe');
+		if (videoEl) {
+			try { videoEl.pause(); videoEl.currentTime = 0; } catch(e) {}
+			videoEl.src = '';
+		}
+		if (iframeEl) {
+			iframeEl.src = '';
+		}
+
 		dialog.hidden = true;
 		openDialogs = openDialogs.filter(function (d) {
 			return d !== dialog;
@@ -63,6 +80,199 @@
 		events.emit('dialog:close', { id: id });
 	}
 
+	function openStoryModal(el) {
+		var modal = document.getElementById('vintage-story-modal');
+		if (!modal) return;
+
+		var quote = el.getAttribute('data-story-quote') || '';
+		var author = el.getAttribute('data-story-author') || '';
+		var meta = el.getAttribute('data-story-meta') || '';
+		var rating = el.getAttribute('data-story-rating') || '';
+		var badge = el.getAttribute('data-story-badge') || '';
+		var title = el.getAttribute('data-story-title') || '';
+		var img = el.getAttribute('data-story-image') || '';
+		var video = el.getAttribute('data-story-video') || '';
+		var platform = el.getAttribute('data-story-platform') || '';
+		var link = el.getAttribute('data-story-link') || '';
+		var likes = el.getAttribute('data-story-likes') || '';
+		var comments = el.getAttribute('data-story-comments') || '';
+
+		// Fallbacks from child elements if data attributes are missing
+		if (!quote) {
+			var quoteNode = el.querySelector('.review-box__quote, .event-review-card__quote, .franchise-review-card__quote, .memory-card-vintage__caption, .social-card__caption, p');
+			if (quoteNode) quote = quoteNode.textContent.trim();
+		}
+		if (!author) {
+			var authorNode = el.querySelector('.review-box__name, .event-review-card__meta strong, .franchise-review-card__author, .social-card__handle, strong');
+			if (authorNode) author = authorNode.textContent.trim().replace(/^[—\-–]\s*/, '');
+		}
+		if (!meta) {
+			var metaNode = el.querySelector('.review-box__location, .event-review-card__meta span, .franchise-review-card__city, .event-gallery-card__tag');
+			if (metaNode) meta = metaNode.textContent.trim();
+		}
+		if (!title) {
+			var titleNode = el.querySelector('.event-gallery-card__title, .franchise-gallery-card__title, h3, h4');
+			if (titleNode) title = titleNode.textContent.trim();
+		}
+		if (!badge) {
+			var badgeNode = el.querySelector('.social-card__platform-badge, .review-box__badge');
+			if (badgeNode) badge = badgeNode.textContent.trim();
+		}
+		if (!rating && !video && !platform) {
+			var starsNode = el.querySelector('.review-box__stars, .event-review-card__rating, .franchise-review-card__rating');
+			if (starsNode) rating = starsNode.textContent.trim();
+			else rating = '★★★★★';
+		}
+		if (!img) {
+			var imgNode = el.querySelector('img');
+			if (imgNode && imgNode.src) {
+				img = imgNode.src;
+			} else {
+				var bgVar = el.style.getPropertyValue('--card-bg-img');
+				if (bgVar) {
+					var match = bgVar.match(/url\(['"]?([^'"]+)['"]?\)/);
+					if (match) img = match[1];
+				}
+			}
+		}
+
+		var quoteEl = document.getElementById('vsm-quote');
+		var authorEl = document.getElementById('vsm-author-name');
+		var metaEl = document.getElementById('vsm-meta');
+		var starsEl = document.getElementById('vsm-stars');
+		var badgeEl = document.getElementById('vsm-badge');
+		var titleEl = document.getElementById('vsm-title');
+		var imgEl = document.getElementById('vsm-img');
+		var mediaContainer = document.getElementById('vsm-media-container');
+		var videoContainer = document.getElementById('vsm-video-container');
+		var videoEl = document.getElementById('vsm-video');
+		var iframeEl = document.getElementById('vsm-iframe');
+		var socialStatsEl = document.getElementById('vsm-social-stats');
+		var likesEl = document.getElementById('vsm-likes');
+		var commentsEl = document.getElementById('vsm-comments');
+		var platformLink = document.getElementById('vsm-platform-link');
+		var platformText = document.getElementById('vsm-platform-btn-text');
+
+		var quoteIconEl = modal.querySelector('.vintage-story-panel__quote-icon');
+
+		// 1. Handle Video / Media Embed
+		if (video) {
+			if (mediaContainer) mediaContainer.style.display = 'none';
+			if (videoContainer) videoContainer.style.display = 'block';
+
+			if (video.includes('youtube') || video.includes('youtu.be') || video.includes('embed')) {
+				if (iframeEl) {
+					iframeEl.src = video;
+					iframeEl.style.display = 'block';
+				}
+				if (videoEl) {
+					videoEl.style.display = 'none';
+					videoEl.src = '';
+				}
+			} else {
+				if (iframeEl) {
+					iframeEl.style.display = 'none';
+					iframeEl.src = '';
+				}
+				if (videoEl) {
+					videoEl.src = video;
+					videoEl.style.display = 'block';
+					var playPromise = videoEl.play();
+					if (playPromise && playPromise.catch) playPromise.catch(function() {});
+				}
+			}
+		} else {
+			if (videoContainer) videoContainer.style.display = 'none';
+			if (iframeEl) { iframeEl.src = ''; iframeEl.style.display = 'none'; }
+			if (videoEl) { try { videoEl.pause(); } catch(e){} videoEl.src = ''; videoEl.style.display = 'none'; }
+
+			if (mediaContainer && imgEl) {
+				if (img) {
+					imgEl.src = img;
+					mediaContainer.style.display = 'block';
+				} else {
+					imgEl.src = '';
+					mediaContainer.style.display = 'none';
+				}
+			}
+		}
+
+		// 2. Handle Text & Quotes
+		if (quoteEl) {
+			if (quote) {
+				quoteEl.textContent = '“' + quote.replace(/^[“"']+|[”"']+$/g, '') + '”';
+				quoteEl.style.display = 'block';
+				if (quoteIconEl) quoteIconEl.style.display = 'block';
+			} else {
+				quoteEl.textContent = '';
+				quoteEl.style.display = 'none';
+				if (quoteIconEl) quoteIconEl.style.display = 'none';
+			}
+		}
+
+		if (authorEl) {
+			authorEl.textContent = author ? (author.startsWith('@') ? author : '— ' + author) : '';
+			authorEl.style.display = author ? 'block' : 'none';
+		}
+		if (metaEl) {
+			metaEl.textContent = meta;
+			metaEl.style.display = meta ? 'block' : 'none';
+		}
+
+		if (starsEl) {
+			if (rating && rating !== 'none') {
+				starsEl.textContent = rating;
+				starsEl.style.display = 'block';
+			} else {
+				starsEl.style.display = 'none';
+			}
+		}
+
+		if (badgeEl) {
+			if (badge) {
+				badgeEl.textContent = badge;
+				badgeEl.style.display = 'inline-block';
+			} else {
+				badgeEl.style.display = 'none';
+			}
+		}
+
+		if (titleEl) {
+			if (title && title !== author) {
+				titleEl.textContent = title;
+				titleEl.style.display = 'block';
+			} else {
+				titleEl.style.display = 'none';
+			}
+		}
+
+		// 3. Handle Social Engagement Stats
+		if (socialStatsEl) {
+			if (likes || comments || link) {
+				socialStatsEl.style.display = 'flex';
+				if (likesEl) {
+					var spanL = likesEl.querySelector('span');
+					if (spanL) spanL.textContent = likes || '1.5k';
+				}
+				if (commentsEl) {
+					var spanC = commentsEl.querySelector('span');
+					if (spanC) spanC.textContent = comments || '80';
+				}
+				if (platformLink && link) {
+					platformLink.href = link;
+					if (platformText) {
+						var platName = platform ? platform.toUpperCase() : 'SOCIAL';
+						platformText.textContent = 'OPEN ON ' + platName + ' ↗';
+					}
+				}
+			} else {
+				socialStatsEl.style.display = 'none';
+			}
+		}
+
+		open('vintage-story-modal');
+	}
+
 	function init() {
 		dom.on(document, 'click', '[data-vs-dialog-open]', function (event) {
 			event.preventDefault();
@@ -72,6 +282,18 @@
 		dom.on(document, 'click', '[data-vs-dialog-close]', function () {
 			var dialog = this.closest('[data-vs-dialog]');
 			if (dialog) close(dialog.id);
+		});
+
+		dom.on(document, 'click', '[data-story-modal]', function (event) {
+			event.preventDefault();
+			openStoryModal(this);
+		});
+
+		dom.on(document, 'keydown', '[data-story-modal]', function (event) {
+			if (event.key === 'Enter' || event.key === ' ') {
+				event.preventDefault();
+				openStoryModal(this);
+			}
 		});
 
 		document.addEventListener('keydown', function (event) {
@@ -167,6 +389,6 @@
 		return id;
 	}
 
-	window.VintageSoul.dialog = { open: open, close: close, create: create };
+	window.VintageSoul.dialog = { open: open, close: close, create: create, openStoryModal: openStoryModal };
 	window.VintageSoul.app.register('dialog', init);
 })(window, document);

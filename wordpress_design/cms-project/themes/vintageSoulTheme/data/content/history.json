@@ -46,6 +46,49 @@
         ]
     },
 
+    "timeline": {
+        "tag": "Chronicles of Sweetness • 8,000 BC to Present",
+        "title": "The Ancient <em>Odyssey</em> Of Cane",
+        "sub": "Trace how a wild Pacific grass became the world's most cherished botanical elixir across six millennia of human civilization.",
+        "milestones": [
+            {
+                "era": "8,000 BC",
+                "location": "New Guinea Highlands",
+                "title": "Domestication of Saccharum",
+                "desc": "Indigenous farmers in Papua New Guinea first cultivate wild Saccharum robustum, chewing raw stalks for pure natural sustenance.",
+                "icon": "🌱"
+            },
+            {
+                "era": "350 AD",
+                "location": "Gupta Empire, India",
+                "title": "First Crystal Sugar & Ayurveda",
+                "desc": "Indian scholars discover how to crystallize cane juice into 'Khanda' (the origin of the word candy) and document its cooling digestive benefits in Ayurvedic texts.",
+                "icon": "📜"
+            },
+            {
+                "era": "800 AD",
+                "location": "Islamic Agricultural Era",
+                "title": "The Golden Age of Cane Mills",
+                "desc": "Persian and Arab agronomists engineer sophisticated water-powered crushing mills, introducing cold sugarcane extraction to Egypt, Sicily, and Spain.",
+                "icon": "⚙️"
+            },
+            {
+                "era": "1493",
+                "location": "The Caribbean & Americas",
+                "title": "Global Maritime Expansion",
+                "desc": "Sugarcane seedlings cross the Atlantic, flourishing in fertile volcanic soils and becoming the cornerstone of international botanical trade.",
+                "icon": "⛵"
+            },
+            {
+                "era": "Present",
+                "location": "London, United Kingdom",
+                "title": "The Cane House Renaissance",
+                "desc": "We revive the forgotten art of raw, cold-pressed sugarcane juice — unadulterated, unpasteurized, and freshly poured for London's communities.",
+                "icon": "👑"
+            }
+        ]
+    },
+
     "history": {
         "tag": "Rooted In History",
         "title": "History Of Sugarcane",
@@ -55,16 +98,66 @@
     },
 
     "life_cycle": {
-        "tag": "From Field To Glass",
-        "title": "Life Cycle Of Sugarcane",
+        "tag": "Botanical Journey • Field To Glass",
+        "title": "Life Cycle Of <em>Sugarcane</em>",
+        "sub": "From fertile volcanic soils to the final fresh-pressed London pour — explore every biological stage of the ancient Saccharum officinarum plant.",
         "items": [
-            { "number": "1", "label": "Planting", "desc": "Healthy setts planted in rich, fertile soil.", "image": "assets/images/sugarcane/sugarcane_stalks_etching.jpg" },
-            { "number": "2", "label": "Growth", "desc": "Grows strong under sunlight, water & care.", "image": "assets/images/sugarcane/stacks.jpg" },
-            { "number": "3", "label": "Maturation", "desc": "Over 10-14 months, it reaches full maturity.", "image": "assets/images/sugarcane/sugarcane_stalks_etching.jpg" },
-            { "number": "4", "label": "Harvesting", "desc": "Hand-cut with care at the perfect time.", "image": "assets/images/sugarcane/stacks.jpg" },
-            { "number": "5", "label": "Transport", "desc": "Cane is carried fresh to the mill.", "image": "assets/images/sugarcane/story_moments.jpg" },
-            { "number": "6", "label": "Extraction", "desc": "Juice is pressed fresh from the cane.", "image": "assets/images/sugarcane/hero_juice.jpg" },
-            { "number": "7", "label": "Our Juice", "desc": "Pure, fresh, naturally delicious.", "image": "assets/images/sugarcane/drink_classic.jpg" }
+            {
+                "number": "1",
+                "label": "Sett Planting & Sprouting",
+                "duration": "Months 1 – 2",
+                "fact": "Selected 2-3 eye cuttings in fertile furrows",
+                "desc": "Prime mature cane cuttings (setts) are planted horizontally in deep, nutrient-rich compost beds, sprouting tender roots and vigorous green shoots.",
+                "image": "assets/images/sugarcane/sugarcane_stalks_etching.jpg"
+            },
+            {
+                "number": "2",
+                "label": "Tillering & Canopy Growth",
+                "duration": "Months 3 – 5",
+                "fact": "6 to 8 healthy secondary shoots per plant",
+                "desc": "Under abundant rainfall and tropical sunlight, dense emerald foliage unfurls, creating a natural soil-shading canopy that conserves moisture.",
+                "image": "assets/images/sugarcane/stacks.jpg"
+            },
+            {
+                "number": "3",
+                "label": "Grand Growth & Jointing",
+                "duration": "Months 6 – 9",
+                "fact": "Reaches 3 to 5 metres with thick sucrose nodes",
+                "desc": "The fibrous stalks surge upward, developing segmented bamboo-like nodes that synthesize and store pure sweet sucrose through natural photosynthesis.",
+                "image": "assets/images/sugarcane/sugarcane_stalks_etching.jpg"
+            },
+            {
+                "number": "4",
+                "label": "Ripening & Sucrose Peak",
+                "duration": "Months 10 – 14",
+                "fact": "Peak 18°–22° Brix natural sweetness reading",
+                "desc": "As vegetative growth subsides in the cooler season, the stalks concentrate natural complex sugars, iron, magnesium, potassium, and active antioxidants.",
+                "image": "assets/images/sugarcane/stacks.jpg"
+            },
+            {
+                "number": "5",
+                "label": "Sustainable Hand Harvest",
+                "duration": "Dawn Harvest Hours",
+                "fact": "Hand-cut at soil level to preserve root ratoon",
+                "desc": "Skilled farmers hand-harvest only prime stalks at soil level, allowing the living ratoon root system to regrow organically for the next cycle.",
+                "image": "assets/images/sugarcane/story_moments.jpg"
+            },
+            {
+                "number": "6",
+                "label": "Cold-Press & Micro-Filtration",
+                "duration": "Within 24 Hours",
+                "fact": "Chilled single-pass heavy stainless steel press",
+                "desc": "Stalks are washed in pure filtered water and cold-pressed through heavy calibrated rollers, extracting vibrant green raw juice with zero heat friction.",
+                "image": "assets/images/sugarcane/hero_juice.jpg"
+            },
+            {
+                "number": "7",
+                "label": "Pure London Pour",
+                "duration": "Instant Fresh Serve",
+                "fact": "100% pure raw botanical nectar • 0% additives",
+                "desc": "Poured straight over ice with crushed organic ginger and zesty lemon for an unadulterated, mineral-rich superfood beverage.",
+                "image": "assets/images/sugarcane/drink_classic.jpg"
+            }
         ]
     },
 
@@ -103,16 +196,48 @@
 
     "uses": {
         "tag": "One Plant, Every Purpose",
-        "title": "Uses Of Sugarcane",
+        "title": "Uses Of <em>Sugarcane</em>",
+        "sub": "From whole-plant nutrition to zero-waste circular products, sugarcane is among nature's most versatile botanical gifts.",
         "items": [
-            "Food & Beverages",
-            "Natural Sweetener",
-            "Medicinal Uses",
-            "Biofuel (Ethanol)",
-            "Animal Feed",
-            "Industrial Uses"
+            {
+                "title": "Food & Beverages",
+                "desc": "Fresh cold-pressed cane juice, handcrafted natural refreshments, and culinary syrups.",
+                "icon": "drink",
+                "tag": "Primary"
+            },
+            {
+                "title": "Natural Sweetener",
+                "desc": "Unrefined artisan jaggery, raw turbinado crystals, and whole mineral-rich molasses.",
+                "icon": "sugarcane",
+                "tag": "Traditional"
+            },
+            {
+                "title": "Medicinal & Ayurveda",
+                "desc": "Hydrating electrolyte elixir celebrated in Eastern botanical wellness traditions.",
+                "icon": "leaf",
+                "tag": "Wellness"
+            },
+            {
+                "title": "Biofuel & Energy",
+                "desc": "Renewable sugarcane bio-ethanol delivering clean green sustainable power.",
+                "icon": "growth",
+                "tag": "Eco-Fuel"
+            },
+            {
+                "title": "Livestock Fodder",
+                "desc": "Nutrient-dense green cane leaves and tops providing high-energy organic cattle feed.",
+                "icon": "plant",
+                "tag": "Agricultural"
+            },
+            {
+                "title": "Bagasse & Fibre",
+                "desc": "Biodegradable eco-packaging, tableware, and pulp paper from residual plant fibres.",
+                "icon": "machine",
+                "tag": "Zero Waste"
+            }
         ],
-        "image": "assets/images/sugarcane/stacks.jpg"
+        "image": "assets/images/sugarcane/stacks.jpg",
+        "stamp": { "top": "EST. 2014", "center": "100% PURE", "bottom": "CIRCULAR CANE" }
     },
 
     "culture": {
@@ -121,6 +246,92 @@
         "sub": "A part of festivals, traditions, rituals and celebrations. It connects generations and brings people together.",
         "image": "assets/images/sugarcane/story_moments.jpg",
         "stamp": { "top": "From Our Fields", "center": "Tradition", "bottom": "To Your Glass" }
+    },
+
+    "varieties": {
+        "tag": "Botanical Cultivars • Heirloom Strains",
+        "title": "Heirloom Cane <em>Varieties</em>",
+        "sub": "Different soils and climates produce distinct cane cultivars, each with unique mineral profiles, sweetness indices, and pressing characteristics.",
+        "items": [
+            {
+                "name": "Noble Cane",
+                "species": "Saccharum officinarum",
+                "origin": "New Guinea & South Pacific",
+                "brix": "20°–22° Brix Sweetness",
+                "profile": "Crisp honey-caramel with floral undertones and high natural juice volume.",
+                "image": "assets/images/sugarcane/sugarcane_stalks_etching.jpg",
+                "badge": "Prime Extraction"
+            },
+            {
+                "name": "Ribbon Stripe Cane",
+                "species": "Saccharum barberi",
+                "origin": "Subtropical Foothills",
+                "brix": "18°–20° Brix Sweetness",
+                "profile": "Aromatic grassy sweetness with rich herbaceous complexity and refreshing acidity.",
+                "image": "assets/images/sugarcane/stacks.jpg",
+                "badge": "Aromatic Blend"
+            },
+            {
+                "name": "Wild Purple Cane",
+                "species": "Saccharum spontaneum",
+                "origin": "Volcanic River Basins",
+                "brix": "16°–19° Brix Sweetness",
+                "profile": "Deep earthy richness packed with natural anthocyanins, polyphenols, and iron.",
+                "image": "assets/images/sugarcane/story_moments.jpg",
+                "badge": "Antioxidant Rich"
+            },
+            {
+                "name": "Golden Bamboo Cane",
+                "species": "Saccharum sinense",
+                "origin": "Ancient Asian Highlands",
+                "brix": "19°–21° Brix Sweetness",
+                "profile": "Silky smooth, low-fiber tender stalks that yield a vibrant lime-tinted nectar.",
+                "image": "assets/images/sugarcane/hero_juice.jpg",
+                "badge": "Super Silky"
+            }
+        ]
+    },
+
+    "nutritional_alchemy": {
+        "tag": "Nature's Electrolyte Elixir",
+        "title": "The Mineral <em>Alchemy</em> Of Cane",
+        "sub": "Unlike refined white sugar which is chemically stripped of all nutrients, 100% raw cold-pressed cane juice is an unrefined whole-plant tonic rich in vital electrolytes.",
+        "minerals": [
+            { "symbol": "K", "name": "Potassium", "amount": "420 mg", "benefit": "Restores intracellular electrolyte balance and supports cardiovascular endurance." },
+            { "symbol": "Mg", "name": "Magnesium", "amount": "65 mg", "benefit": "Eases muscular tension, accelerates recovery, and aids nervous system calm." },
+            { "symbol": "Ca", "name": "Calcium", "amount": "80 mg", "benefit": "Fortifies bone density, enamel protection, and vital enzymatic reactions." },
+            { "symbol": "Fe", "name": "Bio-Iron", "amount": "2.8 mg", "benefit": "Enhances cellular oxygenation, hemoglobin production, and sustained energy." },
+            { "symbol": "Zn", "name": "Zinc", "amount": "1.2 mg", "benefit": "Strengthens immune defense mechanisms and stimulates cellular repair." },
+            { "symbol": "GI", "name": "Low Glycemic", "amount": "GI ~ 43", "benefit": "Natural fiber-bound sucrose digests slowly without synthetic sugar spikes." }
+        ]
+    },
+
+    "storage_guide": {
+        "tag": "Connoisseur's Guide • Freshness & Storage",
+        "title": "How To Store & <em>Enjoy</em>",
+        "sub": "Cold-pressed raw sugarcane juice contains live botanical enzymes. Follow our artisanal handling rules for peak flavour.",
+        "tips": [
+            {
+                "step": "01",
+                "title": "Keep Strictly Chilled",
+                "desc": "Store between 2°C and 5°C. Raw cane contains zero thermal pasteurization, so chill immediately."
+            },
+            {
+                "step": "02",
+                "title": "Gentle Shake Before Pour",
+                "desc": "Natural micro-plant fiber and mineral salts settle at the bottom. A gentle swirl reunites the full body."
+            },
+            {
+                "step": "03",
+                "title": "Enjoy Within 48 Hours",
+                "desc": "Best consumed within 24–48 hours of pressing for peak enzymatic vibrancy and crisp botanical aroma."
+            },
+            {
+                "step": "04",
+                "title": "Pair With Citrus & Spice",
+                "desc": "Enhance with a squeeze of fresh lime, crushed ginger, or a sprig of garden mint for an authentic London pour."
+            }
+        ]
     },
 
     "why_everyone_loves": {

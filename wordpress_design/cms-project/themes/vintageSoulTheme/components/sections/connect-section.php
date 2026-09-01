@@ -2,10 +2,12 @@
 
 defined( 'ABSPATH' ) || exit;
 
+use VintageSoul\Services\SettingsService;
+
 $title   = (string) ( $title ?? "LET'S CONNECT" );
-$address = (string) ( $address ?? 'Sutton, London, United Kingdom' );
-$phone   = (string) ( $phone ?? '+44 7770 461 999' );
-$email   = (string) ( $email ?? 'thecanehouseuk@gmail.com' );
+$address = (string) ( $address ?? SettingsService::address() );
+$phone   = (string) ( $phone ?? SettingsService::phone() );
+$email   = (string) ( $email ?? SettingsService::email() );
 $website = (string) ( $website ?? 'www.thecanehouse.com' );
 $hours   = (string) ( $hours ?? 'Mon - Sun 9:00 AM - 9:00 PM' );
 $socials = (array) ( $socials ?? array() );
@@ -13,7 +15,7 @@ $socials = (array) ( $socials ?? array() );
 <section class="section section--connect connect-vintage" id="connect">
 	<div class="container container--narrow connect-vintage__container frame--ornate">
 		<div class="connect-vintage__header">
-			<h2 class="connect-vintage__title">— <?php echo esc_html( $title ); ?> —</h2>
+			<h2 class="connect-vintage__title">— CONNECT WITH <em>The Cane House</em> —</h2>
 		</div>
 
 		<ul class="connect-vintage__list">

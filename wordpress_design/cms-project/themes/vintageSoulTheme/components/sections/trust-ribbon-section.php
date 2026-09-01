@@ -2,13 +2,19 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$badges = (array) ( $badges ?? array(
-	'FRESHLY PRESSED',
-	'100% NATURAL',
-	'NATURALLY REFRESHING',
-	'MADE WITH CARE',
-	'TRADITION IN EVERY GLASS',
-) );
+use VintageSoul\DataProviders\JsonFileProvider;
+use VintageSoul\Services\SettingsService;
+
+$feature_badges = (array) ( JsonFileProvider::read( 'data/content/feature-badges.json' ) ?? array() );
+$badge_items    = (array) ( $feature_badges['items'] ?? array() );
+
+if ( ! empty( $badge_items ) ) {
+	$badges = array_map( function( $item ) {
+		return is_array( $item ) ? (string) ( $item['label'] ?? '' ) : (string) $item;
+	}, $badge_items );
+} else {
+	$badges = SettingsService::preheader();
+}
 ?>
 <div class="trust-ribbon torn-dark-block grain-dark">
 	<div class="container trust-ribbon__container">

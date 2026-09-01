@@ -1,28 +1,26 @@
 .card {
   display: flex;
   flex-direction: column;
-  background-color: var(--color-surface);
-  border: var(--border-width) var(--border-style) var(--color-border);
-  border-radius: 0;
-  box-shadow: var(--shadow-xs);
+  background-color: var(--color-surface, #f4dcc0);
+  border: var(--border-vintage-outer, 2px solid #8e622d);
+  border-radius: var(--radius-lg, 4px);
+  box-shadow:
+    var(--shadow-vintage-inner-gold, inset 0 0 0 1.5px #caa06d),
+    var(--shadow-vintage-card, 0 4px 14px rgba(42, 26, 12, 0.16));
   overflow: hidden;
+  position: relative;
   transition:
-    box-shadow var(--transition-normal) var(--ease-settle),
-    border-color var(--transition-normal) var(--ease-settle),
-    transform var(--transition-normal) var(--ease-settle);
-  -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 60' preserveAspectRatio='none'><filter id='r'><feTurbulence type='fractalNoise' baseFrequency='0.029 0.08' numOctaves='3' seed='53' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='3.9' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='4' y='4' width='192' height='52' rx='3' fill='%23fff' filter='url(%23r)'/></svg>");
-          mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 60' preserveAspectRatio='none'><filter id='r'><feTurbulence type='fractalNoise' baseFrequency='0.029 0.08' numOctaves='3' seed='53' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='3.9' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='4' y='4' width='192' height='52' rx='3' fill='%23fff' filter='url(%23r)'/></svg>");
-  -webkit-mask-repeat: no-repeat;
-          mask-repeat: no-repeat;
-  -webkit-mask-size: 100% 100%;
-          mask-size: 100% 100%;
-
+    box-shadow var(--transition-normal, 0.2s) var(--ease-settle, ease),
+    border-color var(--transition-normal, 0.2s) var(--ease-settle, ease),
+    transform var(--transition-normal, 0.2s) var(--ease-settle, ease);
 }
 
 .card:hover {
-  border-color: var(--color-border-strong);
-  box-shadow: var(--shadow-paper);
-  transform: translateY(-2px);
+  border-color: var(--vintage-gold-bright, #f6d599);
+  box-shadow:
+    inset 0 0 0 1.5px var(--vintage-gold-bright, #f6d599),
+    var(--shadow-vintage-float, 0 8px 24px rgba(42, 26, 12, 0.24));
+  transform: translateY(-3px);
 }
 .card:focus-within {
   outline: var(--focus-ring-width) solid var(--focus-ring-color);
@@ -33,20 +31,20 @@
   display: block;
   aspect-ratio: 16 / 10;
   overflow: hidden;
-  border-bottom: var(--border-width) var(--border-style) var(--color-border);
+  border-bottom: 1.5px solid var(--vintage-bark-border, #8e622d);
 }
 .card__media img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: sepia(14%) saturate(94%);
+  filter: sepia(12%) saturate(94%);
   transition:
-    transform var(--transition-slow) var(--ease-settle),
-    filter var(--transition-slow) var(--ease-settle);
+    transform var(--transition-slow, 0.4s) var(--ease-settle, ease),
+    filter var(--transition-slow, 0.4s) var(--ease-settle, ease);
 }
 .card:hover .card__media img {
   transform: scale(1.03);
-  filter: sepia(4%) saturate(100%);
+  filter: sepia(2%) saturate(100%);
 }
 .card__header {
   padding: var(--space-sm) var(--space-sm) 0;
@@ -57,9 +55,9 @@
 }
 .card__title {
   margin: 0 0 var(--space-3xs);
-  font-family: var(--font-family-heading);
-  font-size: var(--font-size-lg);
-  color: var(--color-text-strong);
+  font-family: var(--font-family-heading, 'Cinzel', serif);
+  font-size: var(--font-size-lg, 1.125rem);
+  color: var(--color-text-strong, #241809);
   letter-spacing: var(--tracking-tight);
 }
 .card__footer {
@@ -67,19 +65,33 @@
 }
 
 .card--flat {
-  background-color: var(--color-bg-alt);
-  border-color: var(--color-border-subtle);
+  background-color: var(--color-bg-alt, #eccaa2);
+  border-color: var(--color-border-subtle, #f4dcc0);
   box-shadow: none;
 }
 .card--flat:hover {
-  box-shadow: var(--shadow-xs);
+  box-shadow: var(--shadow-vintage-xs);
   transform: none;
 }
 .card--elevated {
-  box-shadow: var(--shadow-paper);
+  box-shadow:
+    var(--shadow-vintage-inner-gold, inset 0 0 0 1.5px #caa06d),
+    var(--shadow-vintage-float, 0 8px 24px rgba(42, 26, 12, 0.22));
 }
 .card--elevated:hover {
-  box-shadow: var(--shadow-lg);
+  box-shadow:
+    inset 0 0 0 1.5px var(--vintage-gold-bright, #f6d599),
+    0 12px 28px rgba(42, 26, 12, 0.3);
+}
+
+/* ═══════════ VINTAGE PARCHMENT CARD ═══════════ */
+.vintage-card,
+.card--vintage {
+  background-color: var(--vintage-parchment-mid, #f4dcc0);
+  background-image:
+    url("../../images/textures/roughness/roughness-a.svg"),
+    linear-gradient(180deg, var(--vintage-parchment-light, #fbf2e6) 0%, var(--vintage-parchment-mid, #f4dcc0) 100%);
+  background-size: 240px 240px, 100% 100%;
 }
 
 .card--horizontal {
@@ -92,8 +104,8 @@
   flex-shrink: 0;
   width: 80px;
   aspect-ratio: 1 / 1;
-  border: var(--border-width) var(--border-style) var(--color-border);
-  border-radius: var(--radius-sm);
+  border: var(--border-vintage-outer-sm, 1.5px solid #8e622d);
+  border-radius: var(--radius-sm, 2px);
   margin: var(--space-sm) 0 var(--space-sm) var(--space-sm);
 }
 .card--horizontal .card__body {
@@ -110,31 +122,131 @@
   }
 }
 
+/* ═══════════ VINTAGE CUT & TICKET CARDS ═══════════ */
+.card--cut,
+.vintage-card--cut,
 .product-card {
-  background-color: var(--color-surface-paper);
+  position: relative;
+  clip-path: polygon(
+    10px 0%,
+    calc(100% - 10px) 0%,
+    100% 10px,
+    100% calc(100% - 10px),
+    calc(100% - 10px) 100%,
+    10px 100%,
+    0% calc(100% - 10px),
+    0% 10px
+  );
+  border: 1.5px solid var(--vintage-bark-border, #8e622d);
+}
+
+.card--cut::before,
+.vintage-card--cut::before,
+.product-card::before {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  clip-path: polygon(
+    8px 0%,
+    calc(100% - 8px) 0%,
+    100% 8px,
+    100% calc(100% - 8px),
+    calc(100% - 8px) 100%,
+    8px 100%,
+    0% calc(100% - 8px),
+    0% 8px
+  );
+  border: 1px solid var(--vintage-gold-inner, #caa06d);
+  pointer-events: none;
+  z-index: 2;
+  transition: border-color var(--transition-normal, 0.2s) ease;
+}
+
+.card--cut:hover::before,
+.product-card:hover::before {
+  border-color: var(--vintage-gold-bright, #f6d599);
+}
+
+.card--ticket,
+.vintage-card--ticket {
+  position: relative;
+  clip-path: polygon(
+    0% 0%,
+    100% 0%,
+    100% calc(50% - 10px),
+    calc(100% - 8px) 50%,
+    100% calc(50% + 10px),
+    100% 100%,
+    0% 100%,
+    0% calc(50% + 10px),
+    8px 50%,
+    0% calc(50% - 10px)
+  );
+  border: 1.5px solid var(--vintage-bark-border, #8e622d);
+}
+.card--ticket::before,
+.vintage-card--ticket::before {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  clip-path: polygon(
+    0% 0%,
+    100% 0%,
+    100% calc(50% - 9px),
+    calc(100% - 7px) 50%,
+    100% calc(50% + 9px),
+    100% 100%,
+    0% 100%,
+    0% calc(50% + 9px),
+    7px 50%,
+    0% calc(50% - 9px)
+  );
+  border: 1px solid var(--vintage-gold-inner, #caa06d);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.product-card {
+  background-color: var(--vintage-parchment-light, #fbf2e6);
+  background-image: url("../../images/textures/roughness/roughness-a.svg");
+  background-size: 220px 220px;
+  box-shadow: var(--shadow-vintage-card, 0 4px 12px rgba(42, 26, 12, 0.14));
 }
 .product-card__row {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
   gap: var(--space-sm);
+  position: relative;
+  z-index: 3;
 }
 .product-card__price {
   flex-shrink: 0;
-  font-family: var(--font-family-ui);
+  font-family: var(--font-family-heading, 'Cinzel', serif);
   font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-md, 1rem);
   letter-spacing: var(--tracking-wide);
-  color: var(--color-primary);
+  color: var(--vintage-bark-dark, #2b1406);
+  padding: 2px 8px;
+  background: var(--vintage-gold-bright, #f6d599);
+  border: 1px solid var(--vintage-bark-border, #8e622d);
+  clip-path: polygon(4px 0, calc(100% - 4px) 0, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 0 calc(100% - 4px), 0 4px);
 }
 .product-card__desc {
   margin: var(--space-3xs) 0 0;
-  color: var(--color-text-muted);
+  color: var(--color-text-muted, #7d582c);
   font-size: var(--font-size-sm);
+  position: relative;
+  z-index: 3;
 }
 
 .certificate-card {
   position: relative;
-  background-color: var(--color-surface-paper);
+  background-color: var(--vintage-parchment-light, #fbf2e6);
+  border: var(--border-vintage-outer, 2px solid #8e622d);
+  box-shadow:
+    var(--shadow-vintage-inner-gold, inset 0 0 0 1.5px #caa06d),
+    var(--shadow-vintage-card, 0 4px 12px rgba(42, 26, 12, 0.14));
 }
 .certificate-card .card__media::after {
   content: "";
@@ -229,4 +341,399 @@
   .card:hover .card__media img {
     transform: none;
   }
+}
+
+/* ═══════════ UNIVERSAL DECKLE ROUGH CUT CARDS (ALL PAGES) ═══════════ */
+.card,
+.card--vintage,
+.card--rough-cut,
+.frame--rough-cut,
+.contact-card,
+.contact-form-card,
+.booking-wizard-card,
+.booking-form-card,
+.about-hero__card,
+.about-story-card,
+.cane-pillar-card,
+.process-step-card,
+.history-timeline__card,
+.memory-card,
+.faq-accordion__item,
+.contact-info-card,
+.contact-home-info-card,
+.contact-home-form-card,
+.drink-row-card,
+.feature-box-vintage,
+.craft-story-card {
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+.card::before,
+.card--vintage::before,
+.card--rough-cut::before,
+.frame--rough-cut::before,
+.contact-card::before,
+.contact-form-card::before,
+.booking-wizard-card::before,
+.booking-form-card::before,
+.about-hero__card::before,
+.about-story-card::before,
+.cane-pillar-card::before,
+.process-step-card::before,
+.history-timeline__card::before,
+.memory-card::before,
+.faq-accordion__item::before,
+.contact-info-card::before,
+.contact-home-info-card::before,
+.contact-home-form-card::before,
+.drink-row-card::before,
+.feature-box-vintage::before,
+.craft-story-card::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  border: 1.5px solid var(--vintage-bark-border, #8e622d) !important;
+  border-radius: 6px !important;
+  box-shadow:
+    inset 0 0 0 1.5px var(--vintage-gold-inner, #caa06d),
+    var(--shadow-vintage-card, 0 6px 20px rgba(42, 26, 12, 0.16)) !important;
+  filter: url(#rough-button-cut-sm) !important;
+  -webkit-filter: url(#rough-button-cut-sm) !important;
+  z-index: -1 !important;
+  pointer-events: none !important;
+  transition: all 0.25s ease !important;
+}
+
+.card:hover::before,
+.card--vintage:hover::before,
+.contact-card:hover::before,
+.contact-form-card:hover::before,
+.about-story-card:hover::before,
+.cane-pillar-card:hover::before,
+.history-timeline__card:hover::before,
+.memory-card:hover::before,
+.contact-home-info-card:hover::before,
+.contact-home-form-card:hover::before,
+.drink-row-card:hover::before,
+.feature-box-vintage:hover::before,
+.craft-story-card:hover::before {
+  border-color: #f6d599 !important;
+  box-shadow:
+    inset 0 0 0 1.5px #f6d599,
+    0 10px 28px rgba(42, 26, 12, 0.25) !important;
+  transform: translateY(-2px) !important;
+}
+
+/* Ensure all text children inside cards are 100% crisp, razor-sharp and readable */
+p, h1, h2, h3, h4, h5, h6, span, a, label, input, textarea, select, button,
+.faq-accordion__question, .faq-accordion__content, .faq-vintage__title, .faq-accordion__summary,
+.card__title, .card__body, .intro-vintage__lead, .section-eyebrow,
+.card > *,
+.card--vintage > *,
+.contact-card > *,
+.about-story-card > *,
+.cane-pillar-card > *,
+.history-timeline__card > *,
+.memory-card > *,
+.faq-accordion__item > * {
+  filter: none !important;
+  -webkit-filter: none !important;
+  text-rendering: optimizeLegibility !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+}
+
+/* ═══════════ MASTER SINGLE-ROW CARD CAROUSEL SLIDER ═══════════ */
+.vintage-carousel-wrapper {
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  width: 100% !important;
+  margin: 20px 0 !important;
+}
+
+.vintage-card-carousel {
+  display: flex !important;
+  align-items: stretch !important;
+  gap: 20px !important;
+  overflow-x: auto !important;
+  scroll-snap-type: x mandatory !important;
+  scroll-behavior: smooth !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+  padding: 12px 6px 16px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+.vintage-card-carousel::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* Individual Carousel Cards */
+.vintage-carousel-card,
+.team-card,
+.lifecycle-carousel-card,
+.goodness-carousel-card {
+  flex: 0 0 280px !important;
+  max-width: 280px !important;
+  scroll-snap-align: start !important;
+  display: flex !important;
+  flex-direction: column !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 18px 16px !important;
+  position: relative !important;
+  z-index: 1 !important;
+  box-sizing: border-box !important;
+  transition: transform 0.25s ease !important;
+}
+
+.vintage-carousel-card::before,
+.team-card::before,
+.lifecycle-carousel-card::before,
+.goodness-carousel-card::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  background: linear-gradient(135deg, #fdf8ef 0%, #f7e6cf 50%, #f1d7b3 100%) !important;
+  border: 1.5px solid #8e622d !important;
+  border-radius: 6px !important;
+  box-shadow:
+    inset 0 0 0 1.5px #caa06d,
+    0 6px 20px rgba(42, 26, 12, 0.15) !important;
+  filter: url(#rough-button-cut-sm) !important;
+  -webkit-filter: url(#rough-button-cut-sm) !important;
+  z-index: -1 !important;
+  pointer-events: none !important;
+  transition: all 0.25s ease !important;
+}
+
+.section--dark-botanical .team-card::before,
+.section--dark-botanical .vintage-carousel-card::before {
+  background: linear-gradient(180deg, #102d18 0%, #07170b 100%) !important;
+  border-color: #8e622d !important;
+  box-shadow: inset 0 0 0 1.5px #caa06d, 0 8px 24px rgba(0, 0, 0, 0.45) !important;
+}
+
+.vintage-carousel-card:hover,
+.team-card:hover,
+.lifecycle-carousel-card:hover,
+.goodness-carousel-card:hover {
+  transform: translateY(-8px) rotate(0deg) scale(1.025) !important;
+  z-index: 10 !important;
+}
+
+/* ═══════════ Random Vintage Tilts / Angles for Carousel Cards ═══════════ */
+.vintage-card-carousel > :nth-child(6n+1) {
+  transform: rotate(-1.4deg) !important;
+}
+
+.vintage-card-carousel > :nth-child(6n+2) {
+  transform: rotate(1.2deg) !important;
+}
+
+.vintage-card-carousel > :nth-child(6n+3) {
+  transform: rotate(-0.8deg) !important;
+}
+
+.vintage-card-carousel > :nth-child(6n+4) {
+  transform: rotate(1.5deg) !important;
+}
+
+.vintage-card-carousel > :nth-child(6n+5) {
+  transform: rotate(-1.1deg) !important;
+}
+
+.vintage-card-carousel > :nth-child(6n+6) {
+  transform: rotate(0.9deg) !important;
+}
+
+.vintage-card-carousel > :hover {
+  transform: translateY(-8px) rotate(0deg) scale(1.025) !important;
+  z-index: 10 !important;
+}
+
+.vintage-carousel-card:hover::before,
+.team-card:hover::before,
+.lifecycle-carousel-card:hover::before,
+.goodness-carousel-card:hover::before {
+  border-color: #f6d599 !important;
+  box-shadow:
+    inset 0 0 0 1.5px #f6d599,
+    0 12px 30px rgba(42, 26, 12, 0.25) !important;
+}
+
+.team-card__photo,
+.lifecycle-carousel-card__photo,
+.goodness-carousel-card__photo {
+  width: 100% !important;
+  height: 180px !important;
+  border-radius: 4px !important;
+  overflow: hidden !important;
+  margin-bottom: 14px !important;
+  border: 1.5px solid #8e622d !important;
+  box-shadow: inset 0 0 0 1px #caa06d !important;
+  position: relative !important;
+}
+
+.team-card__photo img,
+.lifecycle-carousel-card__photo img,
+.goodness-carousel-card__photo img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  transition: transform 0.35s ease !important;
+}
+
+.team-card:hover .team-card__photo img,
+.lifecycle-carousel-card:hover .lifecycle-carousel-card__photo img,
+.goodness-carousel-card:hover .goodness-carousel-card__photo img {
+  transform: scale(1.06) !important;
+}
+
+.team-card__body,
+.lifecycle-carousel-card__body,
+.goodness-carousel-card__body {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  text-align: left !important;
+  gap: 4px !important;
+}
+
+.team-card__name,
+.lifecycle-carousel-card__title,
+.goodness-carousel-card__title {
+  font-family: 'Cinzel', serif !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  color: #172b15 !important;
+  margin: 0 !important;
+  letter-spacing: 0.04em !important;
+}
+
+.section--dark-botanical .team-card__name {
+  color: #f6d599 !important;
+}
+
+.team-card__role,
+.lifecycle-carousel-card__step {
+  font-family: 'Cinzel', serif !important;
+  font-size: 10.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase !important;
+  color: #8e5f2b !important;
+}
+
+.section--dark-botanical .team-card__role {
+  color: #caa06d !important;
+}
+
+.team-card__bio,
+.lifecycle-carousel-card__desc {
+  font-family: var(--font-family-base, 'EB Garamond', serif) !important;
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+  color: #4a3319 !important;
+  margin: 4px 0 0 !important;
+}
+
+.lifecycle-carousel-card {
+  flex: 0 0 310px !important;
+  max-width: 310px !important;
+}
+
+.lifecycle-carousel-card__badge {
+  position: absolute !important;
+  top: 8px !important;
+  right: 8px !important;
+  background: linear-gradient(135deg, #f6d599 0%, #d49842 100%) !important;
+  border: 1px solid #ffffff !important;
+  border-radius: 3px !important;
+  color: #0c2b14 !important;
+  font-family: 'Cinzel', serif !important;
+  font-size: 9.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.1em !important;
+  padding: 3px 7px !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35) !important;
+  z-index: 2 !important;
+}
+
+.lifecycle-carousel-card__duration {
+  display: inline-block !important;
+  font-family: 'Cinzel', serif !important;
+  font-size: 10.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  color: #8e5f2b !important;
+  margin-bottom: 2px !important;
+}
+
+.lifecycle-carousel-card__fact {
+  display: inline-block !important;
+  font-family: var(--font-family-base, 'EB Garamond', serif) !important;
+  font-size: 12.5px !important;
+  font-style: italic !important;
+  font-weight: 600 !important;
+  color: #11381b !important;
+  background: rgba(202, 160, 109, 0.18) !important;
+  border: 1px dashed #caa06d !important;
+  border-radius: 3px !important;
+  padding: 3px 8px !important;
+  margin: 4px 0 !important;
+  line-height: 1.35 !important;
+}
+
+.section--dark-botanical .team-card__bio {
+  color: #d6b88b !important;
+}
+
+/* Vintage Carousel Arrow Controls */
+.vintage-carousel-ctrl {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 42px !important;
+  height: 42px !important;
+  border-radius: 50% !important;
+  background: linear-gradient(180deg, #184b25 0%, #0d2f16 100%) !important;
+  border: 1.5px solid #8e622d !important;
+  box-shadow: inset 0 0 0 1px #caa06d, 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+  color: #f6d599 !important;
+  font-size: 24px !important;
+  line-height: 1 !important;
+  cursor: pointer !important;
+  filter: url(#rough-button-cut-sm) !important;
+  -webkit-filter: url(#rough-button-cut-sm) !important;
+  flex-shrink: 0 !important;
+  z-index: 10 !important;
+  transition: all 0.22s ease !important;
+  position: absolute !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+}
+
+.vintage-carousel-ctrl--prev {
+  left: -16px !important;
+}
+
+.vintage-carousel-ctrl--next {
+  right: -16px !important;
+}
+
+.vintage-carousel-ctrl:hover {
+  background: linear-gradient(180deg, #0d2f16 0%, #061a0c 100%) !important;
+  border-color: #f6d599 !important;
+  color: #ffffff !important;
+  box-shadow: inset 0 0 0 1.5px #f6d599, 0 6px 16px rgba(0, 0, 0, 0.55), 0 0 10px rgba(246, 213, 153, 0.5) !important;
+  transform: translateY(-50%) scale(1.1) !important;
 }

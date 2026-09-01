@@ -4,34 +4,27 @@
 
 /* --- Canvas & Body Container --- */
 body.page-template-contact,
-.contact-page {
+body.page-contact,
+.contact-page,
+.contact-canvas,
+.contact-page.site-canvas,
+.contact-page .site-canvas {
   margin: 0;
   width: 100%;
-  background-color: #112412;
-  background-image:
-    radial-gradient(circle at 50% 15%, #1d3e20 0%, #0d1e10 75%),
-    linear-gradient(to bottom, #0d1d0e, #132a15, #081309);
-  color: #2a1a0c;
-  font-family: var(--font-family-base, 'EB Garamond', Georgia, serif);
-  font-size: 15px;
-  line-height: 1.55;
-  -webkit-font-smoothing: antialiased;
-}
-
-.contact-canvas,
-.contact-page .site-canvas,
-.page-template-contact .site-canvas {
-  width: 100%;
   max-width: 100%;
-  margin: 0 auto;
-  background-color: #edd5ad;
+  background-color: #f5e6d0 !important;
   background-image:
     url("../../images/textures/paper/parchment-stained-master.svg"),
     url("../../images/textures/paper/paper-fiber-a.svg"),
-    radial-gradient(ellipse at 50% 0%, #f7e8cb 0%, #edd5ad 55%, #dfbe88 100%);
-  background-size: 600px 1200px, 300px 300px, 100% 100%;
-  background-repeat: repeat-y, repeat, no-repeat;
-  position: relative;
+    radial-gradient(ellipse at 50% 0%, #fdf8ef 0%, #f5e6d0 55%, #edd5ad 100%) !important;
+  background-size: 600px 1200px, 300px 300px, 100% 100% !important;
+  background-repeat: repeat-y, repeat, no-repeat !important;
+  color: #2a1a0c !important;
+  font-family: var(--font-family-base, 'EB Garamond', Georgia, serif) !important;
+  font-size: 15px !important;
+  line-height: 1.55 !important;
+  -webkit-font-smoothing: antialiased !important;
+  position: relative !important;
 }
 
 /* --- Hero Section --- */
@@ -75,7 +68,7 @@ body.page-template-contact,
   align-items: center;
   justify-content: center;
   gap: 14px;
-  font-family: 'Rubik Dirt', 'Cinzel', cursive, serif;
+  font-family: 'Cinzel', 'Playfair Display', Georgia, serif;
   font-size: clamp(26px, 5.5vw, 42px);
   line-height: 1.15;
   font-weight: 400;
@@ -166,7 +159,7 @@ body.page-template-contact,
   margin-bottom: 24px;
 }
 .contact-card-header__title {
-  font-family: 'Rubik Dirt', 'Cinzel', serif;
+  font-family: 'Cinzel', 'Playfair Display', Georgia, serif;
   font-size: clamp(18px, 4vw, 24px);
   text-transform: uppercase;
   color: #172b15;
@@ -283,7 +276,7 @@ body.page-template-contact,
   pointer-events: none;
 }
 .side-info-card__title {
-  font-family: 'Rubik Dirt', 'Cinzel', serif;
+  font-family: 'Cinzel', 'Playfair Display', Georgia, serif;
   font-size: 14px;
   font-weight: 400;
   text-transform: uppercase;
@@ -363,7 +356,7 @@ body.page-template-contact,
 }
 .event-callout-card > * { position: relative; z-index: 1; }
 .event-callout-card__title {
-  font-family: 'Rubik Dirt', serif;
+  font-family: 'Cinzel', 'Playfair Display', Georgia, serif;
   font-size: 15px;
   color: #f3d49d;
   margin: 0 0 6px;
@@ -413,7 +406,7 @@ body.page-template-contact,
   pointer-events: none;
 }
 .social-connect-card__title {
-  font-family: 'Rubik Dirt', 'Cinzel', serif;
+  font-family: 'Cinzel', 'Playfair Display', Georgia, serif;
   font-size: 13px;
   text-transform: uppercase;
   color: #172b15;
@@ -435,7 +428,7 @@ body.page-template-contact,
   justify-content: center;
   background: linear-gradient(180deg, #2a180c 0%, #1a0e05 100%);
   color: #f3d49d !important;
-  font-family: 'Rubik Dirt', serif;
+  font-family: 'Cinzel', 'Playfair Display', Georgia, serif;
   font-size: 10px;
   font-weight: 400;
   padding: 6px 16px;
@@ -476,7 +469,7 @@ body.page-template-contact,
   align-items: center;
   justify-content: center;
   gap: 14px;
-  font-family: 'Rubik Dirt', 'Cinzel', cursive, serif;
+  font-family: 'Cinzel', 'Playfair Display', Georgia, serif;
   font-size: clamp(20px, 4.5vw, 28px);
   text-transform: uppercase;
   letter-spacing: 0.06em;

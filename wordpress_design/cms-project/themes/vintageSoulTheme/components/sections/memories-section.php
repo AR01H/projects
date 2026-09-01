@@ -2,30 +2,43 @@
 
 defined( 'ABSPATH' ) || exit;
 
-use VintageSoul\Support\UrlHelper;
+use VintageSoul\DataProviders\JsonFileProvider;
+use VintageSoul\Support\View;
 
-$title = (string) ( $title ?? 'Memories of Sugarcane' );
-$items = (array) ( $items ?? array() );
+$memories_data = (array) ( JsonFileProvider::read( 'data/content/memories.json' ) ?? array() );
+
+$tag   = (string) ( $tag ?? ( $memories_data['tag'] ?? 'Our Heritage Journey' ) );
+$title = (string) ( $title ?? ( $memories_data['title'] ?? 'MEMORIES OF <em>Sugarcane</em>' ) );
+$sub   = (string) ( $sub ?? ( $memories_data['sub'] ?? 'Treasured vintage snapshots capturing laughter, market stall mornings, and genuine moments of pure connection across generations.' ) );
+$items        = (array) ( $items ?? ( $memories_data['items'] ?? array() ) );
+$bg_watermark = (string) ( $bg_watermark ?? ( $memories_data['bg_watermark'] ?? '' ) );
 ?>
 <section class="section section--memories memories-vintage paper-rough" id="memories">
+	<?php if ( '' !== $bg_watermark ) : ?>
+		<div class="section-cane-watermark" style="background-image: url('<?php echo esc_url( \VintageSoul\Support\UrlHelper::resolve( $bg_watermark ) ); ?>');" aria-hidden="true"></div>
+	<?php endif; ?>
 	<div class="container memories-vintage__container">
-		<div class="memories-vintage__header">
-			<h2 class="memories-vintage__title"><?php echo esc_html( trim( strip_tags( $title ), " -—" ) ); ?></h2>
-		</div>
+		<?php
+		View::component(
+			'section-header/section-header',
+			array(
+				'tag'     => $tag,
+				'title'   => $title,
+				'eyebrow' => 'Treasured Heritage Journey',
+				'sub'     => $sub,
+				'ribbon'  => true,
+			)
+		);
+		?>
 
-		<div class="memories-vintage__grid">
-			<?php foreach ( $items as $item ) :
-				$caption = (string) ( $item['caption'] ?? '' );
-				$img_raw = (string) ( $item['image'] ?? 'assets/images/sugarcane/story_moments.jpg' );
-				$img     = UrlHelper::resolve( $img_raw );
+		<?php if ( ! empty( $items ) ) : ?>
+			<?php
+			View::component( 'card-stream/card-stream', array(
+				'items'     => $items,
+				'card_type' => 'memory',
+				'direction' => 'ltr',
+			) );
 			?>
-				<div class="memory-card-vintage frame--ornate">
-					<div class="memory-card-vintage__media">
-						<img src="<?php echo esc_url( $img ); ?>" alt="<?php echo esc_attr( $caption ); ?>" loading="lazy">
-					</div>
-					<div class="memory-card-vintage__caption"><?php echo esc_html( $caption ); ?></div>
-				</div>
-			<?php endforeach; ?>
-		</div>
+		<?php endif; ?>
 	</div>
 </section>

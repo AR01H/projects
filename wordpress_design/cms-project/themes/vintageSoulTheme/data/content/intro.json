@@ -5,5 +5,37 @@
     "body": "Before supermarkets and everything became instant, there was something simple. Freshly made. Shared with friends. Enjoyed together under the summer sun.",
     "cta_label": "Discover Our Story",
     "cta_route": "about",
-    "image": "assets/images/sugarcane/story_moments.jpg"
+    "image": "assets/images/sugarcane/story_moments.jpg",
+    "images": [
+        {
+            "image": "assets/images/sugarcane/story_moments.jpg",
+            "title": "Traditional Street Stall Heritage",
+            "caption": "Generations sharing freshly pressed sugarcane under the warm summer sunshine with authentic family hospitality.",
+            "author": "The Cane House Heritage",
+            "meta": "Traditional Roadside Stall · 1950s",
+            "tag": "Heritage Stall",
+            "rotation": "-2.5deg",
+            "is_featured": true
+        },
+        {
+            "image": "assets/images/sugarcane/hero_juice.jpg",
+            "title": "Cold-Pressed Raw Nectar",
+            "caption": "Extracted on cold brass rollers in seconds with garden-fresh mint and sun-ripened Sicilian lemon.",
+            "author": "Artisanal Pressing",
+            "meta": "Daily Cold Extract · London Craft",
+            "tag": "Cold Pressed",
+            "rotation": "3deg",
+            "is_featured": false
+        },
+        {
+            "image": "assets/images/sugarcane/stacks.jpg",
+            "title": "Sun-Ripened Farm Harvest",
+            "caption": "Hand-selected mature sugarcane stalks grown sustainably without chemical ripeners or artificial feeds.",
+            "author": "Ethical Farm Sourcing",
+            "meta": "Sutton & London Markets · Farm Direct",
+            "tag": "Farm Direct",
+            "rotation": "-3.5deg",
+            "is_featured": false
+        }
+    ]
 }

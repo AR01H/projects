@@ -1,148 +1,245 @@
-.banner {
-  position: relative;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: center;
-  gap: var(--space-xl);
+/* ==========================================================================
+   VintageSoulTheme - Master Editorial Banner & Feature Showcase System
+   ========================================================================== */
 
-  background-color: var(--color-surface-paper);
-  border: var(--border-width) var(--border-style) var(--color-border);
-  border-radius: var(--radius-sm);
-  box-shadow: var(--shadow-xs);
-  overflow: hidden;
+.banner,
+.banner--vintage {
+  position: relative !important;
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 32px !important;
+  align-items: center !important;
+  margin: 24px auto !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  overflow: visible !important;
 }
+
+@media (min-width: 992px) {
+  .banner,
+  .banner--vintage {
+    grid-template-columns: 1.15fr 0.85fr !important;
+    gap: 40px !important;
+  }
+  .banner--reverse {
+    grid-template-columns: 0.85fr 1.15fr !important;
+  }
+  .banner--reverse .banner__media-wrap {
+    order: -1 !important;
+  }
+}
+
+/* ═══════════ LEFT EDITORIAL CONTENT ═══════════ */
 .banner__content {
-  padding: var(--space-xl);
-}
-.banner__media {
-  position: relative;
-  align-self: stretch;
-  overflow: hidden;
-}
-.banner__media img,
-.banner__media video {
-  display: block;
-  width: 100%;
-  height: 100%;
-  min-height: 260px;
-  object-fit: cover;
-
-  filter: sepia(35%) saturate(1.15) contrast(1.1) brightness(0.97);
+  padding: 0 !important;
+  position: relative !important;
+  z-index: 2 !important;
 }
 
-.banner__media::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  background-image: url("../../images/textures/grain/grain-c.svg");
-  background-repeat: repeat;
-  background-size: 300px 300px;
-  mix-blend-mode: multiply;
-  opacity: 0.7;
+.banner__tag.section-eyebrow {
+  margin: 0 0 8px 0 !important;
+  justify-content: flex-start !important;
+  text-align: left !important;
 }
 
-.banner__tag {
-  display: inline-block;
-  margin-bottom: var(--space-2xs);
-  font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-bold);
-  font-family: var(--font-family-ui);
-  letter-spacing: var(--tracking-wider);
-  text-transform: uppercase;
-  color: var(--color-primary);
-}
 .banner__title {
-  margin: 0 0 var(--space-sm);
+  font-family: var(--font-family-heading, 'Cinzel', 'Playfair Display', Georgia, serif) !important;
+  font-size: 26px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.04em !important;
+  text-transform: uppercase !important;
+  color: #172b15 !important;
+  margin: 0 0 10px 0 !important;
+  line-height: 1.25 !important;
+}
+
+@media (min-width: 768px) {
+  .banner__title {
+    font-size: 32px !important;
+  }
 }
 
 .banner__title em {
-  color: var(--color-accent-alt);
-  font-style: italic;
+  font-family: 'Playfair Display', 'EB Garamond', Georgia, serif !important;
+  font-style: italic !important;
+  font-weight: 700 !important;
+  color: #8e5222 !important;
+  text-transform: none !important;
 }
+
 .banner__sub {
-  margin: 0 0 var(--space-md);
-  color: var(--color-text-muted);
+  font-family: var(--font-family-base, 'EB Garamond', Georgia, serif) !important;
+  font-size: 15px !important;
+  line-height: 1.45 !important;
+  color: #5a4225 !important;
+  margin: 0 0 20px 0 !important;
+  max-width: 600px !important;
 }
+
 .banner__body {
-  margin: 0 0 var(--space-sm);
-  color: var(--color-text-muted);
-  line-height: var(--line-height-relaxed);
+  font-family: var(--font-family-base, 'EB Garamond', Georgia, serif) !important;
+  font-size: 15px !important;
+  line-height: 1.5 !important;
+  color: #4a361c !important;
+  margin: 0 0 14px 0 !important;
 }
-.banner__list-label {
-  display: flex;
-  flex-direction: column;
+
+/* ═══════════ 2-COLUMN USES & FEATURE CARDS GRID ═══════════ */
+.banner__cards-grid {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 12px !important;
+  margin: 18px 0 22px 0 !important;
 }
-.banner__list-note {
-  font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-regular);
-  color: var(--color-text-muted);
+
+@media (min-width: 600px) {
+  .banner__cards-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 14px !important;
+  }
 }
-.banner__list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2xs);
-  margin: 0 0 var(--space-md);
-  padding: 0;
-  list-style: none;
+
+.banner-card {
+  background: linear-gradient(135deg, #fdf8ef 0%, #f7e7d2 50%, #f1d8b6 100%) !important;
+  border: 1.5px solid #8e622d !important;
+  border-radius: 6px !important;
+  padding: 12px 14px !important;
+  position: relative !important;
+  box-shadow:
+    inset 0 0 0 1px #caa06d,
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    0 3px 8px rgba(42, 26, 12, 0.08) !important;
+  transition: transform 0.25s ease, box-shadow 0.25s ease !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-start !important;
 }
-.banner__list-item {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2xs);
-  font-weight: var(--font-weight-medium);
+
+.banner-card::after {
+  content: "" !important;
+  position: absolute !important;
+  inset: 3px !important;
+  border: 1px dashed rgba(142, 98, 45, 0.3) !important;
+  border-radius: 4px !important;
+  pointer-events: none !important;
 }
-.banner__list-bullet {
-  flex-shrink: 0;
-  color: var(--color-secondary);
-  font-size: var(--font-size-sm);
+
+.banner-card:hover {
+  transform: translateY(-3px) scale(1.01) !important;
+  box-shadow:
+    inset 0 0 0 1px #d49842,
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 6px 16px rgba(42, 26, 12, 0.14) !important;
 }
-.banner__list-icon {
-  flex-shrink: 0;
+
+.banner-card__header {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  margin-bottom: 6px !important;
+  position: relative !important;
+  z-index: 2 !important;
 }
+
+.banner-card__icon {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 28px !important;
+  height: 28px !important;
+  border-radius: 50% !important;
+  background: #11381b !important;
+  color: #f6d599 !important;
+  border: 1px solid #caa06d !important;
+  box-shadow: inset 0 0 0 1px rgba(246, 213, 153, 0.3) !important;
+}
+
+.banner-card__tag {
+  display: inline-block !important;
+  font-family: 'Cinzel', serif !important;
+  font-size: 9px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase !important;
+  color: #8e5222 !important;
+  background: rgba(142, 82, 34, 0.1) !important;
+  border: 1px solid #caa06d !important;
+  padding: 2px 8px !important;
+  border-radius: 3px !important;
+}
+
+.banner-card__title {
+  font-family: 'Cinzel', 'Playfair Display', Georgia, serif !important;
+  font-size: 13.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.03em !important;
+  text-transform: uppercase !important;
+  color: #172b15 !important;
+  margin: 0 0 4px 0 !important;
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+.banner-card__desc {
+  font-family: var(--font-family-base, 'EB Garamond', Georgia, serif) !important;
+  font-size: 12.5px !important;
+  line-height: 1.35 !important;
+  color: #4a361c !important;
+  margin: 0 !important;
+  position: relative !important;
+  z-index: 2 !important;
+}
+
 .banner__actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-sm);
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 12px !important;
+  margin-top: 14px !important;
 }
 
-.banner--reverse {
-  grid-template-columns: 1fr 1fr;
-}
-.banner--reverse .banner__media {
-  order: -1;
+/* ═══════════ RIGHT ORNATE PHOTO FRAME ═══════════ */
+.banner__media-wrap {
+  position: relative !important;
+  width: 100% !important;
 }
 
+.banner__photo-frame {
+  position: relative !important;
+  border-width: 12px 14px !important;
+  border-style: solid !important;
+  border-color: transparent !important;
+  border-image-source: url("../../images/textures/border/photo-rough-cut-frame.svg") !important;
+  border-image-slice: 24 28 24 28 fill !important;
+  border-image-repeat: stretch !important;
+  overflow: hidden !important;
+  border-radius: 4px !important;
+  background: #000 !important;
+}
+
+.banner__img {
+  display: block !important;
+  width: 100% !important;
+  height: auto !important;
+  aspect-ratio: 4/3 !important;
+  object-fit: cover !important;
+  transition: transform 0.4s ease !important;
+}
+
+.banner__photo-frame:hover .banner__img {
+  transform: scale(1.03) !important;
+}
+
+/* Stamp Circle in Banner */
 .banner__stamp {
-  position: absolute;
-  top: 0;
-  right: calc(50% + var(--space-sm));
-  z-index: 2;
-  pointer-events: none;
-}
-.banner__stamp--reverse {
-  right: auto;
-  left: calc(50% + var(--space-sm));
+  position: absolute !important;
+  bottom: -16px !important;
+  right: -12px !important;
+  z-index: 10 !important;
+  pointer-events: none !important;
 }
 
-@media (max-width: 768px) {
-  .banner,
-  .banner--reverse {
-    grid-template-columns: 1fr;
-  }
-  .banner--reverse .banner__media {
-    order: 0;
-  }
-  .banner__media img {
-    min-height: 200px;
-  }
-  .banner__content {
-    padding: var(--space-lg);
-  }
-  .banner__stamp,
-  .banner__stamp--reverse {
-    right: var(--space-sm);
-    left: auto;
-  }
+.banner--reverse .banner__stamp {
+  right: auto !important;
+  left: -12px !important;
 }

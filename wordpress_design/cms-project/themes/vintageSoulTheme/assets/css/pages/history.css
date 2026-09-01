@@ -4,34 +4,27 @@
 
 /* --- Body Canvas & Board Container --- */
 body.page-template-history,
-.history-page {
+body.page-history,
+.history-page,
+.history-canvas,
+.history-page.site-canvas,
+.history-page .site-canvas {
   margin: 0;
   width: 100%;
-  background-color: #112412;
-  background-image:
-    radial-gradient(circle at 50% 15%, #1d3e20 0%, #0d1e10 75%),
-    linear-gradient(to bottom, #0d1d0e, #132a15, #081309);
-  color: #2a1a0c;
-  font-family: var(--font-family-base, 'EB Garamond', Georgia, serif);
-  font-size: 15px;
-  line-height: 1.55;
-  -webkit-font-smoothing: antialiased;
-}
-
-.history-canvas,
-.history-page .site-canvas,
-.page-template-history .site-canvas {
-  width: 100%;
   max-width: 100%;
-  margin: 0 auto;
-  background-color: #edd5ad;
+  background-color: #f5e6d0 !important;
   background-image:
     url("../../images/textures/paper/parchment-stained-master.svg"),
     url("../../images/textures/paper/paper-fiber-a.svg"),
-    radial-gradient(ellipse at 50% 0%, #f7e8cb 0%, #edd5ad 55%, #dfbe88 100%);
-  background-size: 600px 1200px, 300px 300px, 100% 100%;
-  background-repeat: repeat-y, repeat, no-repeat;
-  position: relative;
+    radial-gradient(ellipse at 50% 0%, #fdf8ef 0%, #f5e6d0 55%, #edd5ad 100%) !important;
+  background-size: 600px 1200px, 300px 300px, 100% 100% !important;
+  background-repeat: repeat-y, repeat, no-repeat !important;
+  color: #2a1a0c !important;
+  font-family: var(--font-family-base, 'EB Garamond', Georgia, serif) !important;
+  font-size: 15px !important;
+  line-height: 1.55 !important;
+  -webkit-font-smoothing: antialiased !important;
+  position: relative !important;
 }
 
 /* Inner Container for full-width sections */
@@ -108,7 +101,7 @@ body.page-template-history,
   align-items: center;
   justify-content: center;
   gap: 14px;
-  font-family: 'Rubik Dirt', 'Cinzel', cursive, serif;
+  font-family: 'Cinzel', 'Playfair Display', Georgia, serif;
   font-size: clamp(26px, 5.5vw, 42px);
   line-height: 1.15;
   font-weight: 400;
@@ -151,7 +144,7 @@ body.page-template-history,
   align-items: center;
   justify-content: center;
   gap: 14px;
-  font-family: 'Rubik Dirt', 'Cinzel', cursive, serif;
+  font-family: 'Cinzel', 'Playfair Display', Georgia, serif;
   font-size: clamp(22px, 4.5vw, 32px);
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -200,23 +193,62 @@ body.page-template-history,
 .feature-row,
 .step-chain__step,
 .testimonial-card {
-  background: linear-gradient(135deg, #fcf2e3 0%, #f6e0c3 100%);
-  border: 1.5px solid #8e622d;
-  border-radius: 4px;
-  padding: 14px 12px;
-  position: relative;
-  box-shadow: 0 1px 5px rgba(42, 26, 12, 0.08);
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 14px 14px !important;
+  position: relative !important;
+  z-index: 1 !important;
+  transition: transform 0.25s ease !important;
 }
-.history-card::after,
-.feature-row::after,
-.step-chain__step::after,
-.testimonial-card::after {
-  content: "";
-  position: absolute;
-  inset: 2.5px;
-  border: 1px solid #caa06d;
-  border-radius: 2px;
-  pointer-events: none;
+
+.history-card::before,
+.feature-row::before,
+.step-chain__step::before,
+.testimonial-card::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  background: linear-gradient(135deg, #fcf2e3 0%, #f6e0c3 100%) !important;
+  border: 1.5px solid #8e622d !important;
+  border-radius: 4px !important;
+  box-shadow:
+    inset 0 0 0 1.5px #caa06d,
+    0 4px 12px rgba(42, 26, 12, 0.1) !important;
+  filter: url(#rough-button-cut-sm) !important;
+  -webkit-filter: url(#rough-button-cut-sm) !important;
+  z-index: -1 !important;
+  pointer-events: none !important;
+  transition: all 0.25s ease !important;
+}
+
+.history-card:hover,
+.feature-row:hover,
+.step-chain__step:hover,
+.testimonial-card:hover {
+  transform: translateY(-2px) !important;
+}
+
+.history-card:hover::before,
+.feature-row:hover::before,
+.step-chain__step:hover::before,
+.testimonial-card:hover::before {
+  border-color: #f6d599 !important;
+  box-shadow:
+    inset 0 0 0 1.5px #f6d599,
+    0 8px 20px rgba(42, 26, 12, 0.18) !important;
+}
+
+.history-card > *,
+.feature-row > *,
+.step-chain__step > *,
+.testimonial-card > * {
+  position: relative !important;
+  z-index: 2 !important;
+  filter: none !important;
+  -webkit-filter: none !important;
+  text-rendering: optimizeLegibility !important;
+  -webkit-font-smoothing: antialiased !important;
 }
 
 /* --- Dark Botanical Sections on History --- */
@@ -286,7 +318,7 @@ body.page-template-history,
 .step-chain__number {
   background: #0f3b1d;
   color: #f3d49d;
-  font-family: 'Rubik Dirt', serif;
+  font-family: 'Cinzel', 'Playfair Display', Georgia, serif;
   font-weight: 400;
   font-size: 15px;
   width: 40px;
@@ -300,7 +332,7 @@ body.page-template-history,
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 .step-chain__title {
-  font-family: 'Rubik Dirt', 'Cinzel', serif;
+  font-family: 'Cinzel', 'Playfair Display', Georgia, serif;
   font-size: 13px;
   font-weight: 400;
   text-transform: uppercase;
@@ -336,7 +368,7 @@ body.page-template-history,
   margin: 0 auto;
 }
 .back-home__title {
-  font-family: 'Rubik Dirt', 'Cinzel', serif;
+  font-family: 'Cinzel', 'Playfair Display', Georgia, serif;
   font-size: 22px;
   color: #f3d49d;
   text-transform: uppercase;
@@ -349,40 +381,809 @@ body.page-template-history,
   line-height: 1.55;
 }
 
-/* ═══════════ FOOTER ═══════════ */
-.site-footer {
-  width: 100%;
-  background: linear-gradient(180deg, #143d1e 0%, #0c2b15 50%, #06170b 100%) !important;
+/* ═══════════ HEIRLOOM VARIETIES & MINERAL ALCHEMY SECTIONS ═══════════ */
+.varieties-carousel-card {
+  flex: 0 0 300px !important;
+  max-width: 300px !important;
+  scroll-snap-align: start !important;
+  display: flex !important;
+  flex-direction: column !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 18px 16px !important;
+  position: relative !important;
+  z-index: 1 !important;
+  box-sizing: border-box !important;
+  transition: transform 0.25s ease !important;
+}
+
+.varieties-carousel-card::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  background: linear-gradient(135deg, #fdf8ef 0%, #f7e6cf 50%, #f1d7b3 100%) !important;
+  border: 1.5px solid #8e622d !important;
+  border-radius: 6px !important;
+  box-shadow: inset 0 0 0 1.5px #caa06d, 0 6px 20px rgba(42, 26, 12, 0.15) !important;
+  filter: url(#rough-button-cut-sm) !important;
+  -webkit-filter: url(#rough-button-cut-sm) !important;
+  z-index: -1 !important;
+  pointer-events: none !important;
+  transition: all 0.25s ease !important;
+}
+
+.varieties-carousel-card:hover {
+  transform: translateY(-4px) !important;
+}
+
+.varieties-carousel-card:hover::before {
+  border-color: #f6d599 !important;
+  box-shadow: inset 0 0 0 1.5px #f6d599, 0 12px 30px rgba(42, 26, 12, 0.25) !important;
+}
+
+.varieties-carousel-card__species {
+  font-family: var(--font-family-base, 'EB Garamond', serif) !important;
+  font-size: 13.5px !important;
+  font-style: italic !important;
+  color: #8e5222 !important;
+  margin-bottom: 2px !important;
+}
+
+.varieties-carousel-card__origin {
+  font-family: 'Cinzel', serif !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  color: #5c3e1c !important;
+  text-transform: uppercase !important;
+}
+
+.varieties-carousel-card__brix {
+  display: inline-block !important;
+  font-family: 'Cinzel', serif !important;
+  font-size: 10.5px !important;
+  font-weight: 700 !important;
+  color: #11381b !important;
+  background: rgba(246, 213, 153, 0.45) !important;
+  border: 1px solid #caa06d !important;
+  border-radius: 3px !important;
+  padding: 2px 7px !important;
+  margin: 6px 0 !important;
+}
+
+/* ═══════════ MINERAL ALCHEMY GRID ═══════════ */
+.mineral-alchemy-section {
+  position: relative !important;
+  background: linear-gradient(180deg, #102d18 0%, #081a0e 100%) !important;
   color: #fbf2e6 !important;
-  border-top: 2px solid #8e622d;
-  box-shadow: inset 0 2px 0 #caa06d, 0 -6px 20px rgba(0, 0, 0, 0.4);
-  padding-top: 36px;
-  position: relative;
-  overflow: hidden;
+  border-top: 2px solid #8e622d !important;
+  border-bottom: 2px solid #8e622d !important;
+  box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.5) !important;
 }
-.site-footer::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image:
-    url("../../images/textures/grain/grain-a.svg"),
-    url("../../images/textures/roughness/roughness-a.svg");
-  background-size: 240px 240px, 320px 320px;
-  background-repeat: repeat;
-  mix-blend-mode: screen;
-  opacity: 0.18;
-  pointer-events: none;
+
+.mineral-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)) !important;
+  gap: 18px !important;
+  margin-top: 28px !important;
 }
-.site-footer a {
-  color: #e5cfb3 !important;
-  transition: color 0.2s ease;
+
+.mineral-card {
+  position: relative !important;
+  z-index: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  text-align: center !important;
+  padding: 24px 16px !important;
+  border-radius: 6px !important;
+  background: transparent !important;
+  border: none !important;
+  box-sizing: border-box !important;
+  transition: transform 0.25s ease !important;
 }
-.site-footer a:hover {
+
+.mineral-card::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  background: linear-gradient(180deg, rgba(20, 60, 30, 0.85) 0%, rgba(10, 30, 15, 0.95) 100%) !important;
+  border: 1.5px solid #8e622d !important;
+  border-radius: 6px !important;
+  box-shadow: inset 0 0 0 1px #caa06d, 0 6px 18px rgba(0, 0, 0, 0.35) !important;
+  filter: url(#rough-button-cut-sm) !important;
+  -webkit-filter: url(#rough-button-cut-sm) !important;
+  z-index: -1 !important;
+  pointer-events: none !important;
+  transition: all 0.25s ease !important;
+}
+
+.mineral-card:hover {
+  transform: translateY(-4px) !important;
+}
+
+.mineral-card:hover::before {
+  border-color: #f6d599 !important;
+  box-shadow: inset 0 0 0 1.5px #f6d599, 0 10px 24px rgba(0, 0, 0, 0.55), 0 0 12px rgba(246, 213, 153, 0.3) !important;
+}
+
+.mineral-card__symbol {
+  width: 52px !important;
+  height: 52px !important;
+  border-radius: 50% !important;
+  background: linear-gradient(135deg, #f6d599 0%, #d49842 100%) !important;
+  border: 1.5px solid #ffffff !important;
+  box-shadow: 0 0 12px rgba(246, 213, 153, 0.6) !important;
+  color: #0c2b14 !important;
+  font-family: 'Cinzel', serif !important;
+  font-size: 20px !important;
+  font-weight: 700 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin-bottom: 12px !important;
+}
+
+.mineral-card__name {
+  font-family: 'Cinzel', serif !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.05em !important;
   color: #f6d599 !important;
-  text-shadow: 0 0 8px rgba(246, 213, 153, 0.4);
+  margin: 0 0 2px !important;
+  text-transform: uppercase !important;
 }
-.site-footer__bottom {
-  background: #06150a;
-  border-top: 1px solid rgba(142, 98, 45, 0.4);
+
+.mineral-card__amount {
+  font-family: 'Cinzel', serif !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  color: #ffffff !important;
+  margin-bottom: 8px !important;
 }
+
+.mineral-card__benefit {
+  font-family: var(--font-family-base, 'EB Garamond', serif) !important;
+  font-size: 13.5px !important;
+  line-height: 1.45 !important;
+  color: #d6b88b !important;
+  margin: 0 !important;
+}
+
+/* ═══════════ ARTISANAL STORAGE GUIDE ═══════════ */
+.storage-steps-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)) !important;
+  gap: 20px !important;
+  margin-top: 28px !important;
+}
+
+.storage-step-card {
+  position: relative !important;
+  z-index: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  padding: 22px 18px !important;
+  background: transparent !important;
+  border: none !important;
+  box-sizing: border-box !important;
+  transition: transform 0.25s ease !important;
+}
+
+.storage-step-card::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  background: linear-gradient(135deg, #fdf8ef 0%, #f7e6cf 50%, #f1d7b3 100%) !important;
+  border: 1.5px solid #8e622d !important;
+  border-radius: 6px !important;
+  box-shadow: inset 0 0 0 1.5px #caa06d, 0 6px 18px rgba(42, 26, 12, 0.12) !important;
+  filter: url(#rough-button-cut-sm) !important;
+  -webkit-filter: url(#rough-button-cut-sm) !important;
+  z-index: -1 !important;
+  pointer-events: none !important;
+  transition: all 0.25s ease !important;
+}
+
+.storage-step-card:hover {
+  transform: translateY(-3px) !important;
+}
+
+.storage-step-card:hover::before {
+  border-color: #f6d599 !important;
+  box-shadow: inset 0 0 0 1.5px #f6d599, 0 10px 24px rgba(42, 26, 12, 0.2) !important;
+}
+
+.storage-step-card__num {
+  font-family: 'Cinzel', serif !important;
+  font-size: 26px !important;
+  font-weight: 700 !important;
+  color: #8e5f2b !important;
+  line-height: 1 !important;
+  margin-bottom: 8px !important;
+}
+
+.storage-step-card__title {
+  font-family: 'Cinzel', serif !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.04em !important;
+  text-transform: uppercase !important;
+  color: #172b15 !important;
+  margin: 0 0 6px !important;
+}
+
+.storage-step-card__desc {
+  font-family: var(--font-family-base, 'EB Garamond', serif) !important;
+  font-size: 14.5px !important;
+  line-height: 1.5 !important;
+  color: #4a3319 !important;
+  margin: 0 !important;
+}
+
+/* ═══════════ VINTAGE TIMELINE GRID ═══════════ */
+.vintage-timeline-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
+  gap: 20px !important;
+  margin-top: 28px !important;
+}
+
+.timeline-step-card {
+  display: flex !important;
+  flex-direction: column !important;
+  background: linear-gradient(135deg, #fdf8ef 0%, #f7e6cf 60%, #eed2ae 100%) !important;
+  border: 1.5px solid #8e622d !important;
+  border-radius: 8px !important;
+  padding: 22px 20px !important;
+  box-shadow:
+    inset 0 0 0 1px #caa06d,
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    0 6px 18px rgba(42, 26, 12, 0.12) !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  box-sizing: border-box !important;
+  position: relative !important;
+}
+
+.timeline-step-card:hover {
+  transform: translateY(-4px) scale(1.01) !important;
+  background: linear-gradient(135deg, #ffffff 0%, #faecd7 60%, #f3d8b6 100%) !important;
+  border-color: #d49842 !important;
+  box-shadow:
+    inset 0 0 0 1.5px #d49842,
+    0 10px 24px rgba(142, 98, 45, 0.22) !important;
+}
+
+.timeline-step-card__header {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  margin-bottom: 12px !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+}
+
+.timeline-step-card__badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  background: linear-gradient(180deg, #184b25 0%, #0d2a14 100%) !important;
+  border: 1px solid #caa06d !important;
+  border-radius: 20px !important;
+  padding: 4px 12px !important;
+  color: #f6d599 !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25) !important;
+}
+
+.timeline-step-card__icon {
+  font-size: 14px !important;
+}
+
+.timeline-step-card__era {
+  font-family: 'Cinzel', serif !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase !important;
+}
+
+.timeline-step-card__loc {
+  font-family: 'Cinzel', serif !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  color: #8e5f2b !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+}
+
+.timeline-step-card__title {
+  font-family: 'Cinzel', 'Playfair Display', Georgia, serif !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.03em !important;
+  color: #172b15 !important;
+  margin: 0 0 8px !important;
+  text-transform: uppercase !important;
+  line-height: 1.25 !important;
+}
+
+.timeline-step-card__desc {
+  font-family: var(--font-family-base, 'EB Garamond', Georgia, serif) !important;
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+  color: #4a3824 !important;
+  margin: 0 !important;
+}
+
+/* ═══════════ HEIRLOOM VARIETIES SHOWCASE ═══════════ */
+.varieties-showcase-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)) !important;
+  gap: 20px !important;
+  margin-top: 28px !important;
+}
+
+.variety-card {
+  display: flex !important;
+  flex-direction: column !important;
+  background: linear-gradient(135deg, #fdf8ef 0%, #f7e6cf 60%, #eed2ae 100%) !important;
+  border: 1.5px solid #8e622d !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+  box-shadow:
+    inset 0 0 0 1px #caa06d,
+    0 6px 20px rgba(42, 26, 12, 0.12) !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  cursor: pointer !important;
+  box-sizing: border-box !important;
+}
+
+.variety-card:hover {
+  transform: translateY(-4px) scale(1.02) !important;
+  border-color: #d49842 !important;
+  box-shadow:
+    inset 0 0 0 1.5px #d49842,
+    0 12px 28px rgba(142, 98, 45, 0.22) !important;
+}
+
+.variety-card__media {
+  position: relative !important;
+  width: 100% !important;
+  height: 170px !important;
+  background: #0d2815 !important;
+  overflow: hidden !important;
+  border-bottom: 1.5px solid #8e622d !important;
+}
+
+.variety-card__media img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  display: block !important;
+  transition: transform 0.4s ease !important;
+}
+
+.variety-card:hover .variety-card__media img {
+  transform: scale(1.08) !important;
+}
+
+.variety-card__badge {
+  position: absolute !important;
+  top: 10px !important;
+  right: 10px !important;
+  background: linear-gradient(180deg, #184b25 0%, #0d2a14 100%) !important;
+  color: #f6d599 !important;
+  border: 1px solid #caa06d !important;
+  border-radius: 3px !important;
+  padding: 3px 8px !important;
+  font-family: 'Cinzel', serif !important;
+  font-size: 8.5px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35) !important;
+}
+
+.variety-card__body {
+  padding: 16px 18px 20px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 4px !important;
+  flex: 1 !important;
+}
+
+.variety-card__origin {
+  font-family: 'Cinzel', serif !important;
+  font-size: 9.5px !important;
+  font-weight: 700 !important;
+  color: #8e5f2b !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+}
+
+.variety-card__title {
+  font-family: 'Cinzel', 'Playfair Display', Georgia, serif !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  color: #172b15 !important;
+  margin: 0 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.04em !important;
+}
+
+.variety-card__species {
+  font-family: var(--font-family-base, 'EB Garamond', Georgia, serif) !important;
+  font-size: 13px !important;
+  font-style: italic !important;
+  color: #7a5024 !important;
+}
+
+.variety-card__brix-tag {
+  display: inline-flex !important;
+  align-items: center !important;
+  margin: 4px 0 6px !important;
+}
+
+.variety-card__brix-tag span {
+  background: rgba(24, 75, 37, 0.1) !important;
+  border: 1px solid rgba(202, 160, 109, 0.6) !important;
+  border-radius: 3px !important;
+  padding: 2px 8px !important;
+  font-family: 'Cinzel', serif !important;
+  font-size: 9.5px !important;
+  font-weight: 800 !important;
+  color: #11381b !important;
+  letter-spacing: 0.06em !important;
+}
+
+.variety-card__desc {
+  font-family: var(--font-family-base, 'EB Garamond', Georgia, serif) !important;
+  font-size: 13.5px !important;
+  line-height: 1.45 !important;
+  color: #4a3824 !important;
+  margin: 0 !important;
+}
+
+/* ═══════════ CIRCULAR ZERO-WASTE USES ═══════════ */
+.uses-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)) !important;
+  gap: 20px !important;
+  margin-top: 28px !important;
+}
+
+.use-card {
+  display: flex !important;
+  flex-direction: column !important;
+  background: linear-gradient(135deg, #fdf8ef 0%, #f7e6cf 60%, #eed2ae 100%) !important;
+  border: 1.5px solid #8e622d !important;
+  border-radius: 8px !important;
+  padding: 20px 18px !important;
+  box-shadow:
+    inset 0 0 0 1px #caa06d,
+    0 4px 14px rgba(42, 26, 12, 0.1) !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  box-sizing: border-box !important;
+}
+
+.use-card:hover {
+  transform: translateY(-4px) !important;
+  background: linear-gradient(135deg, #ffffff 0%, #faecd7 60%, #f3d8b6 100%) !important;
+  border-color: #d49842 !important;
+  box-shadow:
+    inset 0 0 0 1.5px #d49842,
+    0 10px 24px rgba(142, 98, 45, 0.2) !important;
+}
+
+.use-card__top {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  margin-bottom: 10px !important;
+}
+
+.use-card__tag {
+  font-family: 'Cinzel', serif !important;
+  font-size: 9px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.12em !important;
+  color: #8e5f2b !important;
+  text-transform: uppercase !important;
+  border: 1px solid rgba(142, 98, 45, 0.4) !important;
+  border-radius: 20px !important;
+  padding: 2px 10px !important;
+}
+
+.use-card__icon-box {
+  width: 38px !important;
+  height: 38px !important;
+  border-radius: 50% !important;
+  background: linear-gradient(145deg, #184b25 0%, #0d2a14 100%) !important;
+  border: 1.5px solid #caa06d !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25) !important;
+}
+
+.use-card__title {
+  font-family: 'Cinzel', 'Playfair Display', Georgia, serif !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.04em !important;
+  color: #172b15 !important;
+  margin: 0 0 6px !important;
+  text-transform: uppercase !important;
+}
+
+.use-card__desc {
+  font-family: var(--font-family-base, 'EB Garamond', Georgia, serif) !important;
+  font-size: 13.5px !important;
+  line-height: 1.45 !important;
+  color: #4a3824 !important;
+  margin: 0 !important;
+}
+
+/* ═══════════ MINERAL ALCHEMY & NUTRITIONAL SCIENCE ═══════════ */
+.mineral-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)) !important;
+  gap: 16px !important;
+  margin-top: 28px !important;
+}
+
+.mineral-card {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  text-align: center !important;
+  background: linear-gradient(135deg, #fdf8ef 0%, #f7e6cf 60%, #eed2ae 100%) !important;
+  border: 1.5px solid #8e622d !important;
+  border-radius: 8px !important;
+  padding: 20px 14px !important;
+  box-shadow: inset 0 0 0 1px #caa06d, 0 4px 14px rgba(42, 26, 12, 0.1) !important;
+  transition: transform 0.25s ease, box-shadow 0.25s ease !important;
+  box-sizing: border-box !important;
+}
+
+.mineral-card:hover {
+  transform: translateY(-4px) scale(1.02) !important;
+  border-color: #d49842 !important;
+  box-shadow: inset 0 0 0 1.5px #d49842, 0 10px 24px rgba(142, 98, 45, 0.2) !important;
+}
+
+.mineral-card__symbol {
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 50% !important;
+  background: linear-gradient(145deg, #184b25 0%, #0d2a14 100%) !important;
+  border: 1.5px solid #caa06d !important;
+  color: #f6d599 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-family: 'Cinzel', serif !important;
+  font-size: 15px !important;
+  font-weight: 800 !important;
+  margin-bottom: 10px !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25) !important;
+}
+
+.mineral-card__name {
+  font-family: 'Cinzel', serif !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  color: #172b15 !important;
+  margin: 0 0 4px !important;
+  letter-spacing: 0.04em !important;
+}
+
+.mineral-card__amount {
+  font-family: 'Cinzel', serif !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+  color: #8e5f2b !important;
+  margin-bottom: 6px !important;
+  display: block !important;
+}
+
+.mineral-card__benefit {
+  font-family: var(--font-family-base, 'EB Garamond', serif) !important;
+  font-size: 13px !important;
+  line-height: 1.4 !important;
+  color: #5d3d1a !important;
+  margin: 0 !important;
+}
+
+/* ═══════════ CONNOISSEUR STORAGE & HANDLING GUIDE ═══════════ */
+.storage-steps-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)) !important;
+  gap: 18px !important;
+  margin-top: 28px !important;
+}
+
+.storage-step-card {
+  display: flex !important;
+  flex-direction: column !important;
+  background: linear-gradient(135deg, #fdf8ef 0%, #f7e6cf 60%, #eed2ae 100%) !important;
+  border: 1.5px solid #8e622d !important;
+  border-radius: 8px !important;
+  padding: 22px 18px !important;
+  box-shadow: inset 0 0 0 1px #caa06d, 0 4px 14px rgba(42, 26, 12, 0.1) !important;
+  transition: transform 0.25s ease, box-shadow 0.25s ease !important;
+  box-sizing: border-box !important;
+}
+
+.storage-step-card:hover {
+  transform: translateY(-4px) !important;
+  border-color: #d49842 !important;
+  box-shadow: inset 0 0 0 1.5px #d49842, 0 10px 24px rgba(142, 98, 45, 0.2) !important;
+}
+
+.storage-step-card__num {
+  font-family: 'Cinzel', serif !important;
+  font-size: 24px !important;
+  font-weight: 800 !important;
+  color: #caa06d !important;
+  line-height: 1 !important;
+  margin-bottom: 8px !important;
+  display: block !important;
+}
+
+.storage-step-card__title {
+  font-family: 'Cinzel', serif !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  color: #172b15 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.04em !important;
+  margin: 0 0 6px !important;
+}
+
+.storage-step-card__desc {
+  font-family: var(--font-family-base, 'EB Garamond', serif) !important;
+  font-size: 13.5px !important;
+  line-height: 1.45 !important;
+  color: #4a3824 !important;
+  margin: 0 !important;
+}
+
+/* ═══════════ 7-STAGE LIFE CYCLE CAROUSEL ═══════════ */
+.vintage-carousel-wrapper {
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  margin-top: 28px !important;
+  gap: 12px !important;
+}
+
+.vintage-card-carousel {
+  display: flex !important;
+  gap: 18px !important;
+  overflow-x: auto !important;
+  scroll-behavior: smooth !important;
+  padding: 12px 4px !important;
+  scrollbar-width: thin !important;
+  scrollbar-color: #caa06d transparent !important;
+  width: 100% !important;
+}
+
+.lifecycle-carousel-card {
+  flex: 0 0 270px !important;
+  width: 270px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  background: linear-gradient(135deg, #fdf8ef 0%, #f7e6ce 60%, #eed2ae 100%) !important;
+  border: 1.5px solid #8e622d !important;
+  border-radius: 8px !important;
+  padding: 10px !important;
+  box-shadow: inset 0 0 0 1px #caa06d, 0 4px 14px rgba(42, 26, 12, 0.1) !important;
+  cursor: pointer !important;
+  box-sizing: border-box !important;
+}
+
+.lifecycle-carousel-card:hover {
+  transform: translateY(-4px) !important;
+  border-color: #d49842 !important;
+  box-shadow: inset 0 0 0 1.5px #d49842, 0 10px 24px rgba(142, 98, 45, 0.2) !important;
+}
+
+.lifecycle-carousel-card__photo {
+  position: relative !important;
+  width: 100% !important;
+  height: 160px !important;
+  border-radius: 4px !important;
+  overflow: hidden !important;
+  border: 1px solid #8e622d !important;
+  margin-bottom: 8px !important;
+}
+
+.lifecycle-carousel-card__photo img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  display: block !important;
+}
+
+.lifecycle-carousel-card__badge {
+  position: absolute !important;
+  top: 8px !important;
+  left: 8px !important;
+  background: linear-gradient(180deg, #184b25 0%, #0d2a14 100%) !important;
+  color: #f6d599 !important;
+  font-family: 'Cinzel', serif !important;
+  font-size: 8px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.1em !important;
+  padding: 2px 8px !important;
+  border-radius: 3px !important;
+  border: 1px solid #caa06d !important;
+}
+
+.lifecycle-carousel-card__body {
+  padding: 4px 4px 8px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 3px !important;
+}
+
+.lifecycle-carousel-card__duration {
+  font-family: 'Cinzel', serif !important;
+  font-size: 9.5px !important;
+  font-weight: 700 !important;
+  color: #8e5f2b !important;
+  text-transform: uppercase !important;
+}
+
+.lifecycle-carousel-card__title {
+  font-family: 'Cinzel', serif !important;
+  font-size: 14.5px !important;
+  font-weight: 700 !important;
+  color: #172b15 !important;
+  margin: 0 !important;
+  text-transform: uppercase !important;
+}
+
+.lifecycle-carousel-card__fact {
+  font-family: var(--font-family-base, 'EB Garamond', serif) !important;
+  font-size: 12.5px !important;
+  font-style: italic !important;
+  color: #184b25 !important;
+  margin: 2px 0 !important;
+}
+
+.lifecycle-carousel-card__desc {
+  font-family: var(--font-family-base, 'EB Garamond', serif) !important;
+  font-size: 13px !important;
+  line-height: 1.4 !important;
+  color: #4a3824 !important;
+  margin: 0 !important;
+}
+
+.vintage-carousel-ctrl {
+  width: 36px !important;
+  height: 36px !important;
+  border-radius: 50% !important;
+  background: linear-gradient(180deg, #184b25 0%, #0d2a14 100%) !important;
+  color: #f6d599 !important;
+  border: 1.5px solid #caa06d !important;
+  font-size: 20px !important;
+  font-weight: bold !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  flex-shrink: 0 !important;
+  transition: all 0.2s ease !important;
+}
+
+.vintage-carousel-ctrl:hover {
+  background: #0d2a14 !important;
+  color: #ffffff !important;
+  transform: scale(1.08) !important;
+}
+
 

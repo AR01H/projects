@@ -1,13 +1,43 @@
 {
-    "_source": "Extracted + genericized from traditional_template/admin/data/benefits_items.json. Feeds a Home 'why choose us' section.",
-
-    "tag": "Why Us",
-    "title": "The Benefits",
-    "body": "What sets us apart.",
+    "tag": "Wellness & Vitality",
+    "title": "PURE BOTANICAL <em>Wellness</em>",
+    "sub": "Nature's Pure Botanical Elixir",
     "items": [
-        { "icon": "🌿", "title": "Roots Of Tradition", "text": "Made the way it always has been, preserving something honest from a simpler time.", "stat": "Generations old" },
-        { "icon": "🕰️", "title": "Timeless Craft", "text": "Care taken at every step, the kind that gives you a reason to slow down.", "stat": "Pure vitality" },
-        { "icon": "💧", "title": "Familiar Comfort", "text": "The kind of thing that quietly takes you back to somewhere good.", "stat": "Pure nostalgia" },
-        { "icon": "❤️", "title": "Made With Love", "text": "No shortcuts, no tricks. Just unhurried care, done properly.", "stat": "Honest recipe" }
+        {
+            "icon": "zap",
+            "title": "INSTANT NATURAL ENERGY",
+            "text": "Raw natural sucrose delivers a clean, revitalizing energy boost without sugar crashes or caffeine jitters.",
+            "stat": "100% Raw"
+        },
+        {
+            "icon": "shield",
+            "title": "IMMUNITY & ANTIOXIDANTS",
+            "text": "Packed with bioavailable flavonoids, phenolic compounds, and essential minerals to support vitality.",
+            "stat": "Antioxidants"
+        },
+        {
+            "icon": "droplet",
+            "title": "DEEP CELLULAR HYDRATION",
+            "text": "Packed with natural electrolytes to quench thirst and rapidly rehydrate the body naturally.",
+            "stat": "Electrolytes"
+        },
+        {
+            "icon": "leaf",
+            "title": "NO ADDED REFINED SUGAR",
+            "text": "Pure plant nectar straight from the stalk — zero processed syrups, additives, or preservatives.",
+            "stat": "Zero Syrups"
+        },
+        {
+            "icon": "clock",
+            "title": "DIGESTION & GUT BALANCE",
+            "text": "Naturally high in potassium, soluble fiber, and active enzymes that support digestion.",
+            "stat": "Active Enzymes"
+        },
+        {
+            "icon": "star",
+            "title": "AYURVEDIC TRADITION",
+            "text": "Revered in ancient holistic traditions for its cooling restorative properties and natural cleansing benefits.",
+            "stat": "Heritage"
+        }
     ]
 }

@@ -373,7 +373,7 @@
   background-size: 320px 320px;
   background-repeat: repeat;
   mix-blend-mode: multiply;
-  opacity: 0.25;
+  opacity: 0.08;
   pointer-events: none;
   z-index: 0;
 }

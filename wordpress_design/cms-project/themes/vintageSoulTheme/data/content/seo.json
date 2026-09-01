@@ -1,0 +1,61 @@
+﻿{
+  "global": {
+    "site_name": "The Cane House",
+    "separator": " | ",
+    "default_description": "The Cane House — Freshly Pressed Sugarcane Juice. 100% Natural, No Additives. Live Bar Catering, Franchise Opportunities and Wholesale Supply across London, UK.",
+    "og_image": "assets/images/backgrounds/og-image.jpg",
+    "twitter_handle": "@thecanehouseuk",
+    "locale": "en_GB",
+    "author": "The Cane House"
+  },
+  "pages": {
+    "home": {
+      "title": "The Cane House — Freshly Pressed Sugarcane Juice, London",
+      "description": "Premium cold-pressed sugarcane juice, live bar catering for weddings and events, franchise opportunities and wholesale supply. 100% natural, no additives. London, UK.",
+      "keywords": "sugarcane juice London, freshly pressed cane juice, live juice bar catering, sugarcane franchise UK, natural juice London",
+      "og_title": "The Cane House — Freshly Pressed Sugarcane Juice",
+      "og_description": "Premium cold-pressed sugarcane juice. Live bar catering, franchise and wholesale across London."
+    },
+    "about": {
+      "title": "About Us — The Cane House Story and Heritage",
+      "description": "Discover the story behind The Cane House. From humble sugarcane fields to London streets — our heritage, mission, values, and the passionate team behind every glass.",
+      "keywords": "about The Cane House, sugarcane juice brand story, UK natural juice company, cane juice heritage London",
+      "og_title": "About The Cane House — Our Story and Values"
+    },
+    "history": {
+      "title": "The Story of Sugarcane — History and Heritage | The Cane House",
+      "description": "Explore the rich history of sugarcane from ancient civilisations to modern wellness. Discover varieties, cultivation, and the botanical journey that makes every glass exceptional.",
+      "keywords": "history of sugarcane, sugarcane cultivation history, cane juice heritage, botanical wellness drink",
+      "og_title": "The Story of Sugarcane — History and Heritage"
+    },
+    "events": {
+      "title": "Events and Live Cane Bar Catering | The Cane House",
+      "description": "Book our premium live sugarcane juice bar for weddings, corporate events, festivals and private parties. 100-500+ guests. Fully managed from setup to clean down.",
+      "keywords": "sugarcane juice bar hire London, live juice bar wedding, cane bar catering events, corporate juice bar",
+      "og_title": "Live Sugarcane Bar Catering — Events and Weddings"
+    },
+    "franchise": {
+      "title": "Franchise and Business Partnership | The Cane House",
+      "description": "Own a profitable, turnkey sugarcane juice business. The Cane House franchise offers full brand support, training, equipment, and exclusive territory across the UK.",
+      "keywords": "sugarcane juice franchise UK, juice bar franchise London, cane house business opportunity, franchise kiosk UK",
+      "og_title": "The Cane House Franchise — Own Your Juice Business"
+    },
+    "contact": {
+      "title": "Contact and Enquiries | The Cane House",
+      "description": "Get in touch with The Cane House for event bookings, franchise enquiries, wholesale orders, or general questions. London-based, serving across the UK.",
+      "keywords": "contact The Cane House, book sugarcane bar, franchise enquiry, juice wholesale enquiry London",
+      "og_title": "Contact The Cane House — Event Bookings and Enquiries"
+    },
+    "blog": {
+      "title": "The Cane Chronicle — Sugarcane News and Wellness Tips",
+      "description": "The Cane House blog covering sugarcane wellness, juice recipes, event stories, franchise tips, and botanical lifestyle content.",
+      "keywords": "sugarcane wellness blog, cane juice benefits, juice recipes, natural drink blog UK",
+      "og_title": "The Cane Chronicle — News, Wellness and Stories"
+    },
+    "404": {
+      "title": "Page Not Found — The Cane House",
+      "description": "The page you are looking for has moved or no longer exists. Return home to discover our freshly pressed sugarcane juice, events and franchise opportunities.",
+      "og_title": "Page Not Found | The Cane House"
+    }
+  }
+}

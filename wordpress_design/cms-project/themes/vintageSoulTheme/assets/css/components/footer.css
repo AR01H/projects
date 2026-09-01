@@ -20,20 +20,47 @@
   z-index: 2;
 }
 
+/* Sugarcane Stalk Botanical Watermark on Right Edge */
+.site-footer__cane-watermark {
+  position: absolute !important;
+  right: -10px !important;
+  bottom: 0 !important;
+  width: 380px !important;
+  height: 100% !important;
+  background-size: cover !important;
+  background-position: center right !important;
+  mix-blend-mode: screen !important;
+  opacity: 0.18 !important;
+  filter: sepia(40%) contrast(1.15) !important;
+  pointer-events: none !important;
+  z-index: 0 !important;
+  mask-image: linear-gradient(to left, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.4) 60%, transparent 100%) !important;
+  -webkit-mask-image: linear-gradient(to left, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.4) 60%, transparent 100%) !important;
+}
+
 .site-footer__container {
-  max-width: 1100px !important;
+  max-width: 1380px !important;
   margin: 0 auto !important;
-  padding: 0 0 36px !important;
+  padding: 0 20px 40px !important;
   width: 100% !important;
   box-sizing: border-box !important;
 }
 
 .site-footer__grid {
   display: grid;
-  grid-template-columns: 1.4fr 0.8fr 1.2fr;
-  gap: 32px;
+  grid-template-columns: 1.4fr 1fr 1.15fr 1.45fr;
+  gap: clamp(24px, 3.5vw, 56px);
+  justify-content: space-between;
+  align-items: start;
   position: relative;
   z-index: 1;
+}
+
+@media (max-width: 1100px) {
+  .site-footer__grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 32px 24px;
+  }
 }
 
 /* Brand Column */
@@ -60,23 +87,43 @@
   margin-top: 4px;
 }
 .site-footer__social-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: #184b25;
-  border: 1.5px solid #8e622d;
-  box-shadow: inset 0 0 0 1px #caa06d, 0 2px 6px rgba(0, 0, 0, 0.25);
-  transition: all 0.2s ease;
-  text-decoration: none;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 42px !important;
+  height: 42px !important;
+  border-radius: 50% !important;
+  background: radial-gradient(circle at 40% 30%, #1e5c2f 0%, #123e1d 65%, #08210f 100%) !important;
+  border: 2px dashed #d49842 !important;
+  box-shadow:
+    inset 0 0 0 1.5px #0d2f16,
+    inset 0 0 0 3px #caa06d,
+    0 4px 10px rgba(0, 0, 0, 0.4) !important;
+  transition: all 0.25s ease !important;
+  text-decoration: none !important;
+  filter: url(#rough-button-cut-sm) !important;
+  -webkit-filter: url(#rough-button-cut-sm) !important;
+}
+.site-footer__social-btn svg {
+  width: 18px !important;
+  height: 18px !important;
+  stroke: #f6d599 !important;
+  fill: none !important;
+  transition: transform 0.2s ease, stroke 0.2s ease !important;
 }
 .site-footer__social-btn:hover {
-  background: #256b37;
-  border-color: #f6d599;
-  transform: translateY(-2px);
-  box-shadow: inset 0 0 0 1px #f6d599, 0 4px 10px rgba(0, 0, 0, 0.35);
+  background: radial-gradient(circle at 40% 30%, #256b37 0%, #184b25 65%, #0d2f16 100%) !important;
+  border-color: #f6d599 !important;
+  transform: translateY(-3px) scale(1.1) !important;
+  box-shadow:
+    inset 0 0 0 1.5px #184b25,
+    inset 0 0 0 3px #f6d599,
+    0 8px 18px rgba(0, 0, 0, 0.5),
+    0 0 12px rgba(246, 213, 153, 0.45) !important;
+}
+.site-footer__social-btn:hover svg {
+  stroke: #ffffff !important;
+  transform: scale(1.1) !important;
 }
 
 /* Headings */
@@ -149,6 +196,114 @@
   justify-content: center;
 }
 
+/* Column 4: Food Hygiene & Standards (Right Side) */
+.site-footer__col--standards {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.footer-hygiene-badge {
+  background: #081d0f !important;
+  border: 1.5px solid #8e622d !important;
+  border-radius: 6px !important;
+  padding: 10px 14px !important;
+  box-shadow: inset 0 0 0 1px #caa06d, 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+  width: 100% !important;
+  max-width: 260px !important;
+  box-sizing: border-box !important;
+  margin-bottom: 12px !important;
+  transition: transform 0.2s ease, border-color 0.2s ease !important;
+}
+
+.footer-hygiene-badge:hover {
+  transform: translateY(-2px);
+  border-color: #f6d599 !important;
+}
+
+.footer-hygiene-badge__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.fsa-title {
+  font-family: 'Cinzel', serif !important;
+  font-size: 9.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  color: #caa06d !important;
+}
+
+.footer-hygiene-badge__score-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 6px;
+}
+
+.fsa-num {
+  flex: 1;
+  text-align: center;
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.08);
+  padding: 3px 0;
+  border-radius: 3px;
+  border: 1px solid rgba(142, 98, 45, 0.3);
+}
+
+.fsa-num--active {
+  background: linear-gradient(180deg, #1c7a36 0%, #114e21 100%) !important;
+  color: #ffffff !important;
+  border: 1.5px solid #55e67e !important;
+  box-shadow: 0 0 8px rgba(85, 230, 126, 0.6) !important;
+  font-size: 13px !important;
+  font-weight: 900 !important;
+}
+
+.footer-hygiene-badge__verdict {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px dashed rgba(202, 160, 109, 0.3);
+  padding-top: 4px;
+}
+
+.fsa-rating-text {
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: #55e67e;
+  letter-spacing: 0.06em;
+}
+
+.fsa-star-icon {
+  font-size: 11px;
+  color: #f6d599;
+  letter-spacing: 1px;
+}
+
+.footer-accreditations-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+}
+
+.footer-cert-pill {
+  font-family: var(--font-family-base, 'EB Garamond', serif);
+  font-size: 12.5px;
+  color: #d6b88b;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
 /* Bottom Legal Bar */
 .site-footer__bottom {
   background: #06150a;
@@ -157,8 +312,9 @@
   box-sizing: border-box;
 }
 .site-footer__bottom-inner {
-  max-width: 1100px;
+  max-width: 1380px;
   margin: 0 auto;
+  padding: 0 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;

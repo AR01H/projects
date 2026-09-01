@@ -2,49 +2,42 @@
 
 defined( 'ABSPATH' ) || exit;
 
+use VintageSoul\DataProviders\JsonFileProvider;
 use VintageSoul\Services\RouteService;
+use VintageSoul\Support\IconHelper;
 use VintageSoul\Support\UrlHelper;
+use VintageSoul\Support\View;
 
-$tag        = (string) ( $tag ?? 'Our Heritage Sourcing' );
-$title      = (string) ( $title ?? 'STACKS OF SUGARCANE' );
-$eyebrow    = (string) ( $eyebrow ?? 'From Farm To Cold Extraction' );
-$body       = (string) ( $body ?? 'We hand-select only mature, sunshine-ripened sugarcane grown without chemical ripeners. Pressed the traditional way on cold brass rolls to preserve all natural vitamins, live enzymes, and authentic sweetness.' );
-$image      = UrlHelper::resolve( (string) ( $image ?? 'assets/images/sugarcane/stacks.jpg' ) );
-$sign_lines = (array) ( $sign_lines ?? array( 'FRESH CANE', 'PREMIUM QUALITY', 'DAILY COLD PRESSED', '100% PURE & NATURAL' ) );
+$sourcing_data = (array) ( JsonFileProvider::read( 'data/content/sourcing.json' ) ?? array() );
 
-$pillars    = array(
-	array(
-		'icon'  => '🌾',
-		'num'   => '01',
-		'title' => 'Hand-Selected Mature Stalks',
-		'desc'  => 'Harvested at peak Brix sweetness from sustainable farms with thick juicy fibers.',
-	),
-	array(
-		'icon'  => '⚙️',
-		'num'   => '02',
-		'title' => 'Traditional Cold Extraction',
-		'desc'  => 'Slow, cold mechanical brass-roller pressing to keep live enzymes and alkaline minerals alive.',
-	),
-	array(
-		'icon'  => '✨',
-		'num'   => '03',
-		'title' => '100% Pure — Zero Added Sugar',
-		'desc'  => 'Unpasteurized, unadulterated raw nectar served naturally chilled with no water dilution.',
-	),
-);
+$tag        = (string) ( $tag ?? ( $sourcing_data['tag'] ?? 'Our Heritage Sourcing' ) );
+$title      = (string) ( $title ?? ( $sourcing_data['title'] ?? 'ETHICAL <em>Farm-To-Press</em> SOURCING' ) );
+$eyebrow    = (string) ( $eyebrow ?? ( $sourcing_data['eyebrow'] ?? 'From Farm To Cold Extraction' ) );
+$body       = (string) ( $body ?? ( $sourcing_data['body'] ?? 'We hand-select only mature, sunshine-ripened sugarcane grown without chemical ripeners. Pressed the traditional way on cold brass rolls to preserve all natural vitamins, live enzymes, and authentic sweetness.' ) );
+$image      = UrlHelper::resolve( (string) ( $image ?? ( $sourcing_data['image'] ?? 'assets/images/sugarcane/stacks.jpg' ) ) );
+$sign_lines   = (array) ( $sign_lines ?? ( $sourcing_data['sign_lines'] ?? array( 'FRESH CANE', 'PREMIUM QUALITY', 'DAILY COLD PRESSED', '100% PURE & NATURAL' ) ) );
+$pillars      = (array) ( $pillars ?? ( $sourcing_data['pillars'] ?? array() ) );
+$bg_watermark = (string) ( $bg_watermark ?? ( $sourcing_data['bg_watermark'] ?? '' ) );
 ?>
 <section class="section section--sourcing sourcing-vintage paper-rough" id="sourcing">
+	<?php if ( '' !== $bg_watermark ) : ?>
+		<div class="section-cane-watermark" style="background-image: url('<?php echo esc_url( UrlHelper::resolve( $bg_watermark ) ); ?>');" aria-hidden="true"></div>
+	<?php endif; ?>
 	<div class="container sourcing-vintage__container">
 		
 		<!-- Section Header -->
-		<div class="sourcing-vintage__header">
-			<span class="vintage-ribbon-tag">
-				<span><?php echo esc_html( $tag ); ?></span>
-			</span>
-			<h2 class="sourcing-vintage__title"><?php echo esc_html( trim( strip_tags( $title ), " -—" ) ); ?></h2>
-			<p class="section-eyebrow"><?php echo esc_html( $eyebrow ); ?></p>
-			<p class="sourcing-vintage__body"><?php echo esc_html( $body ); ?></p>
-		</div>
+		<?php
+		View::component(
+			'section-header/section-header',
+			array(
+				'tag'     => $tag,
+				'title'   => 'ETHICAL <em>Farm-To-Press</em> SOURCING',
+				'eyebrow' => $eyebrow,
+				'body'    => $body,
+				'ribbon'  => true,
+			)
+		);
+		?>
 
 		<!-- 2-Column Traditional Layout -->
 		<div class="sourcing-vintage__grid">
@@ -55,7 +48,7 @@ $pillars    = array(
 					<div class="sourcing-pillar-card frame--ornate">
 						<div class="sourcing-pillar-card__icon-box">
 							<span class="sourcing-pillar-card__num"><?php echo esc_html( $pillar['num'] ); ?></span>
-							<span class="sourcing-pillar-card__emoji"><?php echo esc_html( $pillar['icon'] ); ?></span>
+							<span class="sourcing-pillar-card__icon"><?php echo IconHelper::render( (string) $pillar['icon'], '#f6d599', 18 ); // phpcs:ignore ?></span>
 						</div>
 						<div class="sourcing-pillar-card__content">
 							<h3 class="sourcing-pillar-card__title"><?php echo esc_html( $pillar['title'] ); ?></h3>
@@ -67,11 +60,11 @@ $pillars    = array(
 				<!-- Action Buttons -->
 				<div class="sourcing-vintage__actions">
 					<a class="btn btn--primary-vintage btn--order-now" href="<?php echo esc_url( RouteService::url( 'history' ) ); ?>">
-						<span class="btn__icon">🌾</span>
+						<span class="btn__icon"><?php echo IconHelper::render( 'sugarcane', '#f6d599', 15 ); // phpcs:ignore ?></span>
 						<span>ALL ABOUT CANE</span>
 					</a>
 					<a class="btn btn--secondary-vintage btn--outline-vintage" href="<?php echo esc_url( RouteService::url( 'contact' ) ); ?>">
-						<span class="btn__icon">📍</span>
+						<span class="btn__icon"><?php echo IconHelper::render( 'pin', '#f6d599', 15 ); // phpcs:ignore ?></span>
 						<span>FIND OUR STALL</span>
 					</a>
 				</div>

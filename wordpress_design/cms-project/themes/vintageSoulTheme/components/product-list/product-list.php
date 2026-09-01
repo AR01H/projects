@@ -55,9 +55,6 @@ $edge_shapes = array( 'tex-edge-a', 'tex-edge-rough-a' );
 					<?php if ( '' !== $item['desc'] ) : ?>
 						<p class="product-list__desc"><?php echo esc_html( $item['desc'] ); ?></p>
 					<?php endif; ?>
-					<?php if ( '' !== $item['price'] ) : ?>
-						<span class="product-list__price"><?php echo esc_html( $item['price'] ); ?></span>
-					<?php endif; ?>
 					<?php if ( '' !== $item['button']['label'] && '' !== $item['button']['route'] ) : ?>
 						<a class="btn btn--sm product-list__cta" href="<?php echo esc_url( RouteService::url( $item['button']['route'] ) ); ?>"><?php echo esc_html( $item['button']['label'] ); ?></a>
 					<?php endif; ?>

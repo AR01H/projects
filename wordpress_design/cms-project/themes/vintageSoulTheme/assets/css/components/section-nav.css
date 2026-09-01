@@ -1,0 +1,248 @@
+/* ═══════════ FLOATING MINI VERTICAL SECTION NAVIGATION RAIL ═══════════ */
+.vintage-section-nav {
+  position: fixed !important;
+  right: 0 !important;
+  top: 50% !important;
+  max-height: 70vh !important;
+  transform: translateY(-50%) translateX(100%) !important;
+  z-index: 99 !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.vintage-section-nav.is-visible {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  transform: translateY(-50%) translateX(0) !important;
+}
+
+/* Auto-collapsed / Idle state after 5 seconds of inactivity */
+.vintage-section-nav.is-visible.is-collapsed {
+  transform: translateY(-50%) translateX(calc(100% - 10px)) !important;
+  opacity: 0.85 !important;
+  cursor: pointer !important;
+}
+
+/* Hover or focus immediately expands the rail back */
+.vintage-section-nav.is-visible.is-collapsed:hover,
+.vintage-section-nav.is-visible.is-collapsed:focus-within {
+  transform: translateY(-50%) translateX(0) !important;
+  opacity: 1 !important;
+}
+
+.vintage-section-nav__track {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 5px !important;
+  max-height: 70vh !important;
+  overflow-y: auto !important;
+  overflow-x: visible !important;
+  scroll-behavior: smooth !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+  background-color: var(--vintage-green-deep, #091f0f) !important;
+  background-image:
+    url("../../images/textures/roughness/roughness-a.svg"),
+    linear-gradient(180deg, var(--vintage-green-mid, #1b542a) 0%, var(--vintage-green-dark, #11381b) 50%, var(--vintage-green-deep, #07170b) 100%) !important;
+  background-size: 100px 100px, 100% 100% !important;
+  border: 1.5px solid var(--vintage-bark-border, #8e622d) !important;
+  border-right: none !important;
+  border-radius: 16px 0 0 16px !important;
+  padding: 8px 4px 8px 6px !important;
+  box-shadow:
+    inset 1px 1px 0 0 var(--vintage-gold-inner, #caa06d),
+    inset 0 -1px 0 0 var(--vintage-gold-inner, #caa06d),
+    -4px 6px 18px rgba(0, 0, 0, 0.45) !important;
+  position: relative !important;
+  transition: box-shadow 0.3s ease !important;
+}
+
+.vintage-section-nav__track::-webkit-scrollbar {
+  display: none !important;
+}
+
+/* Mini glowing edge handle when collapsed */
+.vintage-section-nav__track::after {
+  content: "" !important;
+  position: absolute !important;
+  left: 2px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  width: 3px !important;
+  height: 28px !important;
+  border-radius: 3px !important;
+  background: var(--vintage-gold-bright, #f6d599) !important;
+  box-shadow: 0 0 8px rgba(246, 213, 153, 0.9) !important;
+  opacity: 0 !important;
+  transition: opacity 0.3s ease !important;
+  pointer-events: none !important;
+}
+
+.vintage-section-nav.is-collapsed .vintage-section-nav__track::after {
+  opacity: 1 !important;
+}
+
+/* Connecting hairline rail behind dots */
+.vintage-section-nav__track::before {
+  content: "" !important;
+  position: absolute !important;
+  top: 14px !important;
+  bottom: 14px !important;
+  left: 50% !important;
+  width: 1px !important;
+  transform: translateX(-50%) !important;
+  background: linear-gradient(180deg, transparent, rgba(202, 160, 109, 0.45) 15%, rgba(202, 160, 109, 0.45) 85%, transparent) !important;
+  pointer-events: none !important;
+  z-index: 0 !important;
+}
+
+/* Individual Section Navigation Item */
+.vintage-section-nav__item {
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  z-index: 1 !important;
+}
+
+/* Layer-Isolated Rough Cut Navigation Button */
+.vintage-section-nav__btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 24px !important;
+  height: 24px !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  color: var(--vintage-gold-inner, #caa06d) !important;
+  cursor: pointer !important;
+  padding: 0 !important;
+  outline: none !important;
+  position: relative !important;
+  z-index: 1 !important;
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.vintage-section-nav__btn::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  border-radius: 50% !important;
+  background: var(--vintage-green-dark, #11381b) !important;
+  border: 1.5px solid var(--vintage-bark-border, #8e622d) !important;
+  box-shadow:
+    inset 0 0 0 1px rgba(202, 160, 109, 0.4),
+    0 1px 4px rgba(0, 0, 0, 0.35) !important;
+  filter: url(#rough-button-cut-sm) !important;
+  -webkit-filter: url(#rough-button-cut-sm) !important;
+  z-index: -1 !important;
+  pointer-events: none !important;
+  transition: all 0.22s ease !important;
+}
+
+.vintage-section-nav__btn svg {
+  position: relative !important;
+  z-index: 2 !important;
+  width: 12px !important;
+  height: 12px !important;
+  stroke: currentColor !important;
+  filter: none !important;
+  -webkit-filter: none !important;
+  transition: transform 0.22s ease, stroke 0.22s ease !important;
+}
+
+.vintage-section-nav__btn:hover {
+  transform: scale(1.2) !important;
+}
+
+.vintage-section-nav__btn:hover::before {
+  background: var(--vintage-gold-bright, #f6d599) !important;
+  border-color: #ffffff !important;
+  box-shadow: 0 0 10px rgba(246, 213, 153, 0.85) !important;
+}
+
+.vintage-section-nav__btn:hover svg {
+  stroke: var(--vintage-green-deep, #0a2512) !important;
+}
+
+/* Active Section Indicator */
+.vintage-section-nav__item.is-active .vintage-section-nav__btn {
+  width: 26px !important;
+  height: 26px !important;
+  transform: scale(1.15) !important;
+}
+
+.vintage-section-nav__item.is-active .vintage-section-nav__btn::before {
+  background: linear-gradient(135deg, #f6d599 0%, #d49842 100%) !important;
+  border-color: #ffffff !important;
+  box-shadow:
+    0 0 12px rgba(246, 213, 153, 0.95),
+    inset 0 0 0 1px #8e5f2b !important;
+}
+
+.vintage-section-nav__item.is-active .vintage-section-nav__btn svg {
+  stroke: var(--vintage-green-deep, #0a2512) !important;
+}
+
+/* Floating Tooltip with Deckle Roughness */
+.vintage-section-nav__tooltip {
+  position: absolute !important;
+  right: calc(100% + 12px) !important;
+  top: 50% !important;
+  transform: translateY(-50%) translateX(6px) !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  white-space: nowrap !important;
+  font-family: var(--font-family-heading, 'Cinzel', serif) !important;
+  font-size: 10.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase !important;
+  color: var(--vintage-gold-bright, #f6d599) !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 5px 12px !important;
+  z-index: 1 !important;
+  transition: opacity 0.2s ease, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.vintage-section-nav__tooltip::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  background: var(--vintage-green-dark, #11381b) !important;
+  border: 1.5px solid var(--vintage-gold-inner, #caa06d) !important;
+  border-radius: 3px !important;
+  box-shadow:
+    inset 0 0 0 1px rgba(142, 98, 45, 0.4),
+    0 4px 12px rgba(0, 0, 0, 0.4) !important;
+  filter: url(#rough-button-cut-sm) !important;
+  -webkit-filter: url(#rough-button-cut-sm) !important;
+  z-index: -1 !important;
+  pointer-events: none !important;
+}
+
+.vintage-section-nav__tooltip > * {
+  position: relative !important;
+  z-index: 2 !important;
+  filter: none !important;
+  -webkit-filter: none !important;
+  text-rendering: optimizeLegibility !important;
+  -webkit-font-smoothing: antialiased !important;
+}
+
+.vintage-section-nav__item:hover .vintage-section-nav__tooltip {
+  opacity: 1 !important;
+  transform: translateY(-50%) translateX(0) !important;
+}
+
+/* Hide on mobile devices to preserve screen estate */
+@media (max-width: 991px) {
+  .vintage-section-nav {
+    display: none !important;
+  }
+}
