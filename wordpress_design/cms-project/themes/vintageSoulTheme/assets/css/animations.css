@@ -261,6 +261,30 @@ html.js .site-footer.is-revealed {
   display: block !important;
 }
 
+/* 0. Slowly & Randomly Shifting Background Grain Texture */
+.vst-parchment-botanical-bg::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: -60px !important;
+  background-image: url("../images/textures/grain/grain-a.svg") !important;
+  background-size: 240px 240px !important;
+  mix-blend-mode: multiply !important;
+  opacity: 0.12 !important;
+  pointer-events: none !important;
+  animation: vst-grain-slow-drift 18s ease-in-out infinite alternate !important;
+  will-change: transform;
+  z-index: 0;
+}
+
+@keyframes vst-grain-slow-drift {
+  0%   { transform: translate(0, 0) scale(1); }
+  20%  { transform: translate(-25px, 15px) scale(1.02); }
+  40%  { transform: translate(18px, -28px) scale(0.99); }
+  60%  { transform: translate(-30px, -18px) scale(1.03); }
+  80%  { transform: translate(22px, 25px) scale(1.01); }
+  100% { transform: translate(-12px, 35px) scale(0.98); }
+}
+
 .vst-breeze-canvas {
   width: 100% !important;
   height: 100% !important;
@@ -269,184 +293,267 @@ html.js .site-footer.is-revealed {
 }
 
 /* --- 1. Grass Tufts Natural Wind Sway --- */
-.vst-grass-sway-left {
-  transform-origin: 20px 1000px;
-  animation: vst-grass-sway-anim-left 6s ease-in-out infinite alternate;
+.vst-grass-stalk-left {
+  transform-box: view-box !important;
+  transform-origin: 0px 1000px !important;
+  animation: vst-grass-stalk-sway-left 5.5s ease-in-out infinite alternate !important;
+  will-change: transform;
 }
 
-.vst-grass-sway-right {
-  transform-origin: 1580px 1000px;
-  animation: vst-grass-sway-anim-right 7.5s ease-in-out infinite alternate 1s;
+.vst-grass-stalk-right {
+  transform-box: view-box !important;
+  transform-origin: 1600px 1000px !important;
+  animation: vst-grass-stalk-sway-right 6.8s ease-in-out infinite alternate 0.8s !important;
+  will-change: transform;
 }
 
-@keyframes vst-grass-sway-anim-left {
+@keyframes vst-grass-stalk-sway-left {
   0%   { transform: rotate(0deg) skewX(0deg); }
-  50%  { transform: rotate(2.2deg) skewX(1.8deg); }
-  100% { transform: rotate(-1.2deg) skewX(-0.8deg); }
+  50%  { transform: rotate(4.8deg) skewX(3.5deg); }
+  100% { transform: rotate(-2.8deg) skewX(-2deg); }
 }
 
-@keyframes vst-grass-sway-anim-right {
+@keyframes vst-grass-stalk-sway-right {
   0%   { transform: rotate(0deg) skewX(0deg); }
-  50%  { transform: rotate(-2.6deg) skewX(-2deg); }
-  100% { transform: rotate(1.4deg) skewX(1deg); }
+  50%  { transform: rotate(-5.2deg) skewX(-3.8deg); }
+  100% { transform: rotate(3deg) skewX(2.2deg); }
 }
 
-/* --- 2. Drifting Air-Flow Leaves --- */
+/* --- 2. Ambient In-Place Swaying & Floating Leaves --- */
+.vst-ambient-leaf {
+  transform-box: view-box !important;
+  will-change: transform, opacity;
+}
+
+.vst-ambient-leaf--1 {
+  animation: vst-ambient-leaf-anim-1 7.5s ease-in-out infinite alternate !important;
+}
+.vst-ambient-leaf--2 {
+  animation: vst-ambient-leaf-anim-2 9s ease-in-out infinite alternate 0.8s !important;
+}
+.vst-ambient-leaf--3 {
+  animation: vst-ambient-leaf-anim-3 10.5s ease-in-out infinite alternate 1.5s !important;
+}
+.vst-ambient-leaf--4 {
+  animation: vst-ambient-leaf-anim-4 8.2s ease-in-out infinite alternate 2.2s !important;
+}
+.vst-ambient-leaf--5 {
+  animation: vst-ambient-leaf-anim-5 9.8s ease-in-out infinite alternate 0.5s !important;
+}
+.vst-ambient-leaf--6 {
+  animation: vst-ambient-leaf-anim-6 11s ease-in-out infinite alternate 1.8s !important;
+}
+
+@keyframes vst-ambient-leaf-anim-1 {
+  0% {
+    transform: translate(140px, 90px) rotate(-22deg) scale(0.9);
+    opacity: 0.85;
+  }
+  50% {
+    transform: translate(195px, 60px) rotate(-8deg) scale(0.95);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(110px, 125px) rotate(-34deg) scale(0.88);
+    opacity: 0.8;
+  }
+}
+
+@keyframes vst-ambient-leaf-anim-2 {
+  0% {
+    transform: translate(820px, 75px) rotate(32deg) scale(0.8);
+    opacity: 0.85;
+  }
+  50% {
+    transform: translate(875px, 115px) rotate(48deg) scale(0.85);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(780px, 45px) rotate(20deg) scale(0.78);
+    opacity: 0.8;
+  }
+}
+
+@keyframes vst-ambient-leaf-anim-3 {
+  0% {
+    transform: translate(1380px, 130px) rotate(-42deg) scale(0.95);
+    opacity: 0.85;
+  }
+  50% {
+    transform: translate(1430px, 95px) rotate(-28deg) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(1340px, 165px) rotate(-54deg) scale(0.92);
+    opacity: 0.8;
+  }
+}
+
+@keyframes vst-ambient-leaf-anim-4 {
+  0% {
+    transform: translate(95px, 480px) rotate(52deg) scale(0.75);
+    opacity: 0.85;
+  }
+  50% {
+    transform: translate(145px, 440px) rotate(68deg) scale(0.82);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(65px, 520px) rotate(38deg) scale(0.72);
+    opacity: 0.8;
+  }
+}
+
+@keyframes vst-ambient-leaf-anim-5 {
+  0% {
+    transform: translate(1440px, 450px) rotate(-18deg) scale(0.85);
+    opacity: 0.85;
+  }
+  50% {
+    transform: translate(1400px, 410px) rotate(-4deg) scale(0.9);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(1485px, 490px) rotate(-30deg) scale(0.82);
+    opacity: 0.8;
+  }
+}
+
+@keyframes vst-ambient-leaf-anim-6 {
+  0% {
+    transform: translate(680px, 520px) rotate(15deg) scale(0.7);
+    opacity: 0.75;
+  }
+  50% {
+    transform: translate(740px, 470px) rotate(32deg) scale(0.78);
+    opacity: 0.95;
+  }
+  100% {
+    transform: translate(630px, 565px) rotate(-2deg) scale(0.68);
+    opacity: 0.7;
+  }
+}
+
+/* --- 3. Drifting Air-Flow Leaves Crossing Canvas --- */
 .vst-drifting-leaf {
   position: absolute;
+  transform-box: view-box !important;
   transform-origin: center center;
   will-change: transform;
 }
 
 /* Leaf 1: High altitude gentle diagonal wind stream */
 .vst-drifting-leaf--1 {
-  animation: vst-wind-leaf-drift-1 22s cubic-bezier(0.25, 0.1, 0.25, 1) infinite;
+  animation: vst-wind-leaf-drift-1 15s cubic-bezier(0.25, 0.1, 0.25, 1) infinite !important;
 }
 
 @keyframes vst-wind-leaf-drift-1 {
   0% {
-    transform: translate(-150px, 80px) rotate(12deg) scale(0.7);
+    transform: translate(-120px, 120px) rotate(10deg) scale(0.8);
     opacity: 0;
   }
-  10% { opacity: 0.85; }
+  10% { opacity: 0.95; }
   45% {
-    transform: translate(750px, 240px) rotate(65deg) scale(0.78);
+    transform: translate(750px, 280px) rotate(70deg) scale(0.88);
   }
-  85% { opacity: 0.85; }
+  85% { opacity: 0.95; }
   100% {
-    transform: translate(1750px, 420px) rotate(140deg) scale(0.65);
+    transform: translate(1750px, 450px) rotate(150deg) scale(0.75);
     opacity: 0;
   }
 }
 
 /* Leaf 2: Mid-air swirling glide */
 .vst-drifting-leaf--2 {
-  animation: vst-wind-leaf-drift-2 26s cubic-bezier(0.3, 0.15, 0.3, 1) infinite 5s;
+  animation: vst-wind-leaf-drift-2 18s cubic-bezier(0.3, 0.15, 0.3, 1) infinite 2.5s !important;
 }
 
 @keyframes vst-wind-leaf-drift-2 {
   0% {
-    transform: translate(-120px, 280px) rotate(-15deg) scale(0.8);
+    transform: translate(-100px, 320px) rotate(-18deg) scale(0.9);
     opacity: 0;
   }
-  12% { opacity: 0.9; }
+  10% { opacity: 1; }
   40% {
-    transform: translate(600px, 190px) rotate(45deg) scale(0.85);
+    transform: translate(620px, 210px) rotate(48deg) scale(0.95);
   }
   70% {
-    transform: translate(1100px, 350px) rotate(-20deg) scale(0.8);
+    transform: translate(1140px, 380px) rotate(-22deg) scale(0.9);
   }
-  88% { opacity: 0.9; }
+  85% { opacity: 1; }
   100% {
-    transform: translate(1800px, 260px) rotate(80deg) scale(0.75);
+    transform: translate(1800px, 290px) rotate(85deg) scale(0.82);
     opacity: 0;
   }
 }
 
 /* Leaf 3: Golden cane leaf fluttering downwards */
 .vst-drifting-leaf--3 {
-  animation: vst-wind-leaf-drift-3 19s cubic-bezier(0.2, 0.2, 0.35, 1) infinite 11s;
+  animation: vst-wind-leaf-drift-3 13s cubic-bezier(0.2, 0.2, 0.35, 1) infinite 6s !important;
 }
 
 @keyframes vst-wind-leaf-drift-3 {
   0% {
-    transform: translate(200px, -80px) rotate(-35deg) scale(0.65);
+    transform: translate(220px, -60px) rotate(-38deg) scale(0.75);
     opacity: 0;
   }
-  15% { opacity: 0.85; }
+  12% { opacity: 0.95; }
   50% {
-    transform: translate(850px, 380px) rotate(40deg) scale(0.7);
+    transform: translate(880px, 400px) rotate(45deg) scale(0.8);
   }
-  85% { opacity: 0.85; }
+  85% { opacity: 0.95; }
   100% {
-    transform: translate(1550px, 850px) rotate(-15deg) scale(0.6);
+    transform: translate(1580px, 880px) rotate(-18deg) scale(0.7);
     opacity: 0;
   }
 }
 
 /* Leaf 4: Low-level breeze flutter */
 .vst-drifting-leaf--4 {
-  animation: vst-wind-leaf-drift-4 24s ease-in-out infinite 8s;
+  animation: vst-wind-leaf-drift-4 16s ease-in-out infinite 4s !important;
 }
 
 @keyframes vst-wind-leaf-drift-4 {
   0% {
-    transform: translate(-100px, 620px) rotate(20deg) scale(0.6);
+    transform: translate(-80px, 660px) rotate(22deg) scale(0.7);
     opacity: 0;
   }
-  10% { opacity: 0.8; }
+  10% { opacity: 0.9; }
   50% {
-    transform: translate(780px, 510px) rotate(-30deg) scale(0.65);
+    transform: translate(800px, 540px) rotate(-32deg) scale(0.75);
   }
-  90% { opacity: 0.8; }
+  88% { opacity: 0.9; }
   100% {
-    transform: translate(1700px, 680px) rotate(55deg) scale(0.55);
+    transform: translate(1720px, 720px) rotate(60deg) scale(0.65);
     opacity: 0;
   }
 }
 
-/* Leaf 5: Micro leaf rapid air drift */
-.vst-drifting-leaf--5 {
-  animation: vst-wind-leaf-drift-5 17s linear infinite 2s;
-}
-
-@keyframes vst-wind-leaf-drift-5 {
-  0% {
-    transform: translate(-80px, 140px) rotate(-50deg) scale(0.5);
-    opacity: 0;
-  }
-  10% { opacity: 0.75; }
-  90% { opacity: 0.75; }
-  100% {
-    transform: translate(1750px, 320px) rotate(160deg) scale(0.48);
-    opacity: 0;
-  }
-}
-
-/* Leaf 6: Golden fragment soft air dance */
-.vst-drifting-leaf--6 {
-  animation: vst-wind-leaf-drift-6 28s ease-in-out infinite 14s;
-}
-
-@keyframes vst-wind-leaf-drift-6 {
-  0% {
-    transform: translate(-100px, 450px) rotate(10deg) scale(0.55);
-    opacity: 0;
-  }
-  15% { opacity: 0.8; }
-  55% {
-    transform: translate(820px, 340px) rotate(-45deg) scale(0.6);
-  }
-  85% { opacity: 0.8; }
-  100% {
-    transform: translate(1750px, 520px) rotate(70deg) scale(0.5);
-    opacity: 0;
-  }
-}
-
-/* --- 3. Sunlit Golden Pollen Particles --- */
-.vst-pollen-1 { animation: vst-pollen-drift 12s ease-in-out infinite; }
-.vst-pollen-2 { animation: vst-pollen-drift 15s ease-in-out infinite 2s; }
-.vst-pollen-3 { animation: vst-pollen-drift 14s ease-in-out infinite 5s; }
-.vst-pollen-4 { animation: vst-pollen-drift 16s ease-in-out infinite 1s; }
-.vst-pollen-5 { animation: vst-pollen-drift 13s ease-in-out infinite 7s; }
-.vst-pollen-6 { animation: vst-pollen-drift 17s ease-in-out infinite 4s; }
+/* --- 4. Sunlit Golden Pollen Particles --- */
+.vst-pollen-1 { animation: vst-pollen-drift 10s ease-in-out infinite; }
+.vst-pollen-2 { animation: vst-pollen-drift 13s ease-in-out infinite 1.5s; }
+.vst-pollen-3 { animation: vst-pollen-drift 12s ease-in-out infinite 4s; }
+.vst-pollen-4 { animation: vst-pollen-drift 14s ease-in-out infinite 0.8s; }
+.vst-pollen-5 { animation: vst-pollen-drift 11s ease-in-out infinite 6s; }
+.vst-pollen-6 { animation: vst-pollen-drift 15s ease-in-out infinite 3s; }
 
 @keyframes vst-pollen-drift {
   0%, 100% {
     transform: translateY(0) translateX(0);
-    opacity: 0.18;
+    opacity: 0.22;
   }
   50% {
-    transform: translateY(-24px) translateX(18px);
-    opacity: 0.45;
+    transform: translateY(-28px) translateX(22px);
+    opacity: 0.55;
   }
 }
 
 /* Reduced motion overrides */
 @media (prefers-reduced-motion: reduce) {
+  .vst-parchment-botanical-bg::before,
   .vst-grass-sway-left,
   .vst-grass-sway-right,
+  .vst-ambient-leaf,
   .vst-drifting-leaf,
   .vst-pollen-1, .vst-pollen-2, .vst-pollen-3,
   .vst-pollen-4, .vst-pollen-5, .vst-pollen-6 {

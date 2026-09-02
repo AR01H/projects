@@ -33,6 +33,8 @@ View::component(
 );
 ?>
 
+<?php View::component( 'background/parchment-botanical-bg', array( 'seed' => 52 ) ); ?>
+
 <!-- ═══════════ 2. WHAT IS INCLUDED WITH EVERY BOOKING ═══════════ -->
 <section class="section" id="inclusions">
 	<div class="container">
@@ -143,6 +145,3 @@ View::component(
 	);
 	?>
 <?php endif; ?>
-
-<!-- ═══════════ 8. TRUST RIBBON BOTTOM ═══════════ -->
-<?php View::component( 'sections/trust-ribbon-section' ); ?>

@@ -212,61 +212,68 @@ body.page-about,
 }
 
 /* ═══════════ SERVICES SECTION ═══════════ */
+/* ═══════════ CORE OFFERINGS & SERVICES SECTION ═══════════ */
 .about-services-section {
-  padding: 36px 20px;
+  padding: 42px 20px 48px;
   position: relative;
 }
 @media (min-width: 992px) {
   .about-services-section {
-    padding: 48px 32px;
+    padding: 54px 32px 64px;
   }
 }
+.about-offerings-grid,
 .about-services-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 16px;
-  max-width: 1100px;
+  gap: 22px;
+  max-width: 1240px;
   margin: 0 auto;
 }
-@media (min-width: 600px) {
+@media (min-width: 640px) {
+  .about-offerings-grid,
   .about-services-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 18px;
+    gap: 22px;
   }
 }
-@media (min-width: 992px) {
+@media (min-width: 1060px) {
+  .about-offerings-grid,
   .about-services-grid {
     grid-template-columns: repeat(4, 1fr);
     gap: 20px;
   }
 }
+
+.about-offering-card,
 .service-card {
   position: relative !important;
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
-  border-radius: 8px !important;
-  padding: 24px 18px !important;
-  text-align: center !important;
+  border-radius: 10px !important;
+  padding: 24px 20px 22px !important;
   display: flex !important;
   flex-direction: column !important;
-  align-items: center !important;
-  transition: transform 0.25s ease !important;
+  align-items: flex-start !important;
+  text-align: left !important;
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1) !important;
   box-sizing: border-box !important;
 }
 
+.about-offering-card::before,
 .service-card::before {
   content: "" !important;
   position: absolute !important;
   inset: 0 !important;
-  border-radius: 8px !important;
+  border-radius: 10px !important;
   background:
     url("../../images/textures/paper/paper-fiber-a.svg"),
-    linear-gradient(135deg, #fdf8ef 0%, #f7e6cf 55%, #edd2ae 100%) !important;
+    linear-gradient(145deg, #fdf9f1 0%, #f6e6d1 60%, #edcfad 100%) !important;
   border: 1.5px solid #8e622d !important;
   box-shadow:
     inset 0 0 0 1.5px #caa06d,
-    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
     0 6px 18px rgba(42, 26, 12, 0.12) !important;
   filter: url(#rough-button-cut-sm) !important;
   -webkit-filter: url(#rough-button-cut-sm) !important;
@@ -275,49 +282,130 @@ body.page-about,
   transition: all 0.25s ease !important;
 }
 
+.about-offering-card:hover,
 .service-card:hover {
-  transform: translateY(-4px) !important;
+  transform: translateY(-5px) !important;
 }
 
+.about-offering-card:hover::before,
 .service-card:hover::before {
   border-color: #caa06d !important;
   box-shadow:
     inset 0 0 0 2px #f6d599,
-    0 10px 24px rgba(142, 98, 45, 0.28) !important;
+    0 12px 28px rgba(142, 98, 45, 0.3) !important;
 }
 
+.about-offering-card > *,
 .service-card > * {
   position: relative !important;
   z-index: 1 !important;
+  width: 100%;
 }
+
+.about-offering-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.about-offering-card__icon-box,
 .service-card__icon-wrap {
-  width: 52px;
-  height: 52px;
+  width: 50px;
+  height: 50px;
+  min-width: 50px;
   border-radius: 50%;
-  background: linear-gradient(180deg, #0f3b1d 0%, #092612 100%);
+  background: radial-gradient(circle at 35% 30%, #1e5c2f 0%, #123e1d 65%, #08210f 100%);
   border: 1.5px solid #8e622d;
   box-shadow: inset 0 0 0 1px #caa06d, 0 3px 8px rgba(0, 0, 0, 0.25);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 14px;
 }
+
+.about-offering-card__badge {
+  font-family: 'Cinzel', serif;
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #174b25;
+  background: rgba(24, 75, 37, 0.1);
+  border: 1px solid rgba(142, 98, 45, 0.45);
+  padding: 3px 8px;
+  border-radius: 12px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.about-offering-card__title,
 .service-card__title {
-  font-family: 'Cinzel', 'Playfair Display', Georgia, serif;
-  font-size: 13px;
-  font-weight: 400;
+  font-family: 'Cinzel', serif;
+  font-size: 14.5px;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: #172b15;
-  margin: 0 0 8px;
+  margin: 0 0 3px;
+  line-height: 1.25;
 }
+
+.about-offering-card__tagline {
+  font-family: var(--font-family-base, 'EB Garamond', serif);
+  font-size: 13px;
+  font-style: italic;
+  color: #8e622d;
+  margin: 0 0 10px;
+  line-height: 1.3;
+}
+
+.about-offering-card__desc,
 .service-card__desc {
-  font-size: 12.5px;
-  line-height: 1.55;
-  color: #6a4a24;
+  font-family: var(--font-family-base, 'EB Garamond', serif);
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: #4a341e;
   margin: 0 0 14px;
-  flex-grow: 1;
 }
+
+.about-offering-card__features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border-top: 1px dashed rgba(202, 160, 109, 0.5);
+  padding-top: 10px;
+}
+
+.about-offering-card__features li {
+  font-size: 12px;
+  color: #3b2815;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  line-height: 1.3;
+}
+
+.about-offering-card__features .chk {
+  color: #184b25;
+  font-weight: 700;
+  font-size: 11px;
+}
+
+.about-offering-card__cta {
+  margin-top: auto;
+  padding-top: 6px;
+  width: 100%;
+}
+
+.about-offering-card__cta .btn {
+  width: 100% !important;
+  justify-content: center !important;
+  text-align: center !important;
+}
+
 .btn--sm {
   padding: 7px 16px !important;
   font-size: 11px !important;
@@ -523,12 +611,14 @@ body.page-about,
   z-index: 1;
 }
 .milestone-item__year {
-  font-family: 'Cinzel', 'Playfair Display', Georgia, serif;
-  font-size: 18px;
-  font-weight: 400;
+  font-family: 'Cinzel', serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
   color: #0f3b1d;
   flex-shrink: 0;
-  min-width: 50px;
+  min-width: 82px;
+  text-transform: uppercase;
 }
 .milestone-item__content {
   background: linear-gradient(135deg, #fcf2e3 0%, #f6e0c3 100%);

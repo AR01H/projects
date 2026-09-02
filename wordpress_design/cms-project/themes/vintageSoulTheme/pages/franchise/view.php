@@ -36,6 +36,8 @@ View::component(
 );
 ?>
 
+<?php View::component( 'background/parchment-botanical-bg', array( 'seed' => 45 ) ); ?>
+
 <!-- ═══════════ 2. WHY PARTNER WITH US (4 Pillars Grid) ═══════════ -->
 <section class="section section--alt" id="why-partner">
 	<div class="container">
@@ -147,6 +149,3 @@ View::component(
 	);
 	?>
 <?php endif; ?>
-
-<!-- ═══════════ 8. TRUST RIBBON BOTTOM ═══════════ -->
-<?php View::component( 'sections/trust-ribbon-section' ); ?>

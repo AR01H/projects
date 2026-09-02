@@ -63,6 +63,16 @@
   --color-warning: #b07d1e;
   --color-info: #3f5a6b;
 
+  /* ═══════════ MARQUEE / RIBBON TICKER THEME VARIABLES ═══════════ */
+  --marquee-bg: linear-gradient(180deg, #7a1f1d 0%, #4a0e0c 100%);
+  --marquee-bg-red: linear-gradient(180deg, #852220 0%, #4e0f0d 100%);
+  --marquee-bg-green: linear-gradient(180deg, #11381b 0%, #091f0f 100%);
+  --marquee-bg-bark: linear-gradient(180deg, #2b1406 0%, #1a0b03 100%);
+  --marquee-border-color: #8e622d;
+  --marquee-border-gold: #caa06d;
+  --marquee-text-color: #f6d599;
+  --marquee-accent-color: #f6d599;
+
   --color-success-surface: color-mix(in srgb, var(--color-success) 12%, var(--paper-50));
   --color-danger-surface: color-mix(in srgb, var(--color-danger) 12%, var(--paper-50));
   --color-warning-surface: color-mix(in srgb, var(--color-warning) 14%, var(--paper-50));
@@ -209,11 +219,11 @@
   --ease-smooth: cubic-bezier(0.25, 1, 0.5, 1);
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 
-  --z-header: 100;
-  --z-dropdown: 200;
-  --z-overlay: 300;
-  --z-modal: 400;
-  --z-toast: 500;
+  --z-header: 1000;
+  --z-dropdown: 10000;
+  --z-overlay: 20000;
+  --z-modal: 30000;
+  --z-toast: 40000;
 
   --focus-ring-width: 2px;
   --focus-ring-offset: 2px;

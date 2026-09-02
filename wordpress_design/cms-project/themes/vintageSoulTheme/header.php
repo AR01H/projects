@@ -29,6 +29,10 @@ defined( 'ABSPATH' ) || exit;
 			<feTurbulence type="fractalNoise" baseFrequency="0.06 0.06" numOctaves="3" seed="18" result="noise"/>
 			<feDisplacementMap in="SourceGraphic" in2="noise" scale="2" xChannelSelector="R" yChannelSelector="G"/>
 		</filter>
+		<filter id="rough-ribbon-cut" x="-5%" y="-20%" width="110%" height="140%">
+			<feTurbulence type="fractalNoise" baseFrequency="0.08 0.04" numOctaves="3" seed="55" result="noise"/>
+			<feDisplacementMap in="SourceGraphic" in2="noise" scale="3.2" xChannelSelector="R" yChannelSelector="G"/>
+		</filter>
 	</defs>
 </svg>
 
@@ -37,7 +41,7 @@ defined( 'ABSPATH' ) || exit;
 <?php endif; ?>
 
 <!-- Top Vintage Ticker Ribbon -->
-<div class="ribbon-ticker ribbon-ticker--green" aria-hidden="true">
+<div class="ribbon-ticker ribbon-ticker--red" aria-hidden="true">
 	<div class="ribbon-ticker__track">
 		<?php for ( $r = 0; $r < 4; $r++ ) : ?>
 			<span class="ribbon-ticker__heart">♥</span>

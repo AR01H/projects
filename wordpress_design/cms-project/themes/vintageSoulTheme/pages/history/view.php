@@ -307,7 +307,4 @@ $deckled_edge_url    = UrlHelper::resolve( 'assets/images/textures/border/deckle
 		<?php View::component( 'cta-banner/cta-banner', (array) $closing ); ?>
 	<?php endif; ?>
 
-	<!-- Trust Accreditation Ribbon -->
-	<?php View::component( 'sections/trust-ribbon-section' ); ?>
-
 </div>

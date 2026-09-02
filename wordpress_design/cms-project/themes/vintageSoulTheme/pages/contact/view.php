@@ -43,7 +43,7 @@ $socials = (array) ( $contact_info['socials'] ?? array() );
 			<div class="contact-stage-grid">
 				
 				<!-- Left Column: Contact & Booking Form -->
-				<div class="contact-form-card frame--ornate">
+				<div class="contact-form-card frame--rough-cut">
 					<div class="contact-card-header">
 						<h2 class="contact-card-header__title">SEND US A <em>Message</em></h2>
 						<p class="contact-card-header__sub">Fill out the form below and we will respond promptly.</p>
@@ -78,15 +78,9 @@ $socials = (array) ( $contact_info['socials'] ?? array() );
 							</div>
 						</div>
 
-						<div class="form-row form-row--duo">
-							<div class="form-group">
-								<label class="form-label" for="contact-date">EVENT DATE (IF APPLICABLE)</label>
-								<input class="form-input" type="date" id="contact-date" name="event_date">
-							</div>
-							<div class="form-group">
-								<label class="form-label" for="contact-guests">ESTIMATED GUESTS / CUPS</label>
-								<input class="form-input" type="number" id="contact-guests" name="guests" min="10" placeholder="e.g. 150">
-							</div>
+						<div class="form-group">
+							<label class="form-label" for="contact-date">EVENT DATE (IF APPLICABLE)</label>
+							<input class="form-input" type="date" id="contact-date" name="event_date">
 						</div>
 
 						<div class="form-group">
@@ -108,29 +102,43 @@ $socials = (array) ( $contact_info['socials'] ?? array() );
 				<div class="contact-details-col">
 					
 					<!-- Card 1: Direct Contact Info -->
-					<div class="side-info-card frame--ornate-sm">
+					<div class="side-info-card frame--rough-cut">
 						<h3 class="side-info-card__title">🌿 DIRECT CONTACT DETAILS</h3>
 						<ul class="side-info-list">
-							<?php if ( '' !== $phone ) : ?>
+							<?php
+							$clean_phone = preg_replace( '/[^\d+]/', '', $phone );
+							$wa_num      = (string) ( $contact_info['whatsapp'] ?? $phone );
+							$clean_wa    = preg_replace( '/[^\d+]/', '', $wa_num );
+							$wa_url      = (string) ( $contact_info['whatsapp_url'] ?? \VintageSoul\Services\SettingsService::whatsapp_url() );
+							$is_same_num = ( '' !== $clean_phone && $clean_phone === $clean_wa );
+							?>
+							<?php if ( $is_same_num ) : ?>
 								<li class="side-info-item">
 									<span class="side-info-item__icon"><?php echo IconHelper::get( 'phone', '#172b15', 18 ); // phpcs:ignore ?></span>
-									<div class="contact-card-v2__info">
-										<span class="contact-card-v2__label">DIRECT PHONE</span>
-										<a href="tel:<?php echo esc_attr( preg_replace( '/[^\d+]/', '', $phone ) ); ?>"><?php echo esc_html( $phone ); ?></a>
+									<div class="side-info-item__text">
+										<strong>Phone &amp; WhatsApp:</strong>
+										<a href="tel:<?php echo esc_attr( $clean_phone ); ?>"><?php echo esc_html( $phone ); ?></a>
 									</div>
 								</li>
-							<?php endif; ?>
-							<?php
-							$wa_num = (string) ( $contact_info['whatsapp'] ?? $phone );
-							$wa_url = (string) ( $contact_info['whatsapp_url'] ?? \VintageSoul\Services\SettingsService::whatsapp_url() );
-							if ( '' !== $wa_num ) : ?>
-								<li class="side-info-item">
-									<span class="side-info-item__icon"><?php echo IconHelper::get( 'whatsapp', '#172b15', 18 ); // phpcs:ignore ?></span>
-									<div class="contact-card-v2__info">
-										<span class="contact-card-v2__label">WHATSAPP CHAT</span>
-										<a href="<?php echo esc_url( $wa_url ); ?>" target="_blank" rel="noopener"><?php echo esc_html( $wa_num ); ?></a>
-									</div>
-								</li>
+							<?php else : ?>
+								<?php if ( '' !== $phone ) : ?>
+									<li class="side-info-item">
+										<span class="side-info-item__icon"><?php echo IconHelper::get( 'phone', '#172b15', 18 ); // phpcs:ignore ?></span>
+										<div class="side-info-item__text">
+											<strong>Direct Phone:</strong>
+											<a href="tel:<?php echo esc_attr( $clean_phone ); ?>"><?php echo esc_html( $phone ); ?></a>
+										</div>
+									</li>
+								<?php endif; ?>
+								<?php if ( '' !== $wa_num ) : ?>
+									<li class="side-info-item">
+										<span class="side-info-item__icon"><?php echo IconHelper::get( 'whatsapp', '#172b15', 18 ); // phpcs:ignore ?></span>
+										<div class="side-info-item__text">
+											<strong>WhatsApp Chat:</strong>
+											<a href="<?php echo esc_url( $wa_url ); ?>" target="_blank" rel="noopener"><?php echo esc_html( $wa_num ); ?></a>
+										</div>
+									</li>
+								<?php endif; ?>
 							<?php endif; ?>
 							<?php if ( '' !== $email ) : ?>
 								<li class="side-info-item">
@@ -162,24 +170,8 @@ $socials = (array) ( $contact_info['socials'] ?? array() );
 						</ul>
 					</div>
 
-					<!-- Card 2: Live Sugarcane Bar Event Banner -->
-					<div class="event-callout-card">
-						<h3 class="event-callout-card__title"><?php echo wp_kses_post( (string) ( $event_bar['title'] ?? '🎪 BOOK OUR LIVE <em>Cane Bar</em>' ) ); ?></h3>
-						<p class="event-callout-card__sub"><?php echo esc_html( (string) ( $event_bar['sub'] ?? '' ) ); ?></p>
-						<ul class="event-callout-card__list">
-							<?php foreach ( (array) ( $event_bar['highlights'] ?? array() ) as $hl ) : ?>
-								<li><span class="check-icon">✓</span> <?php echo esc_html( (string) $hl ); ?></li>
-							<?php endforeach; ?>
-						</ul>
-						<div class="event-callout-card__cta">
-							<a class="btn btn--outline-vintage" href="<?php echo esc_url( \VintageSoul\Services\SettingsService::whatsapp_url() ); ?>" target="_blank" rel="noopener">
-								<span>CHAT ON WHATSAPP</span>
-							</a>
-						</div>
-					</div>
-
-					<!-- Card 3: Social Connect Links -->
-					<div class="social-connect-card frame--ornate-sm">
+					<!-- Card 2: Social Connect Links -->
+					<div class="social-connect-card frame--rough-cut">
 						<h4 class="social-connect-card__title">FOLLOW OUR <em>Journey</em></h4>
 						<p class="social-connect-card__sub">Stay updated with our weekend stall locations & seasonal juices.</p>
 						<div class="social-pills-row">
@@ -225,7 +217,4 @@ $socials = (array) ( $contact_info['socials'] ?? array() );
 			</div>
 		</section>
 	<?php endif; ?>
-
-	<!-- 4. Trust Ribbon -->
-	<?php View::component( 'sections/trust-ribbon-section' ); ?>
 </div>

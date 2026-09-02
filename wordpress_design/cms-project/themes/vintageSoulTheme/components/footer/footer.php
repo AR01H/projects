@@ -29,7 +29,7 @@ $year              = gmdate( 'Y' );
 ?>
 <!-- Pre-Footer Ticker Ribbon -->
 <?php if ( ! empty( $ticker_items ) ) : ?>
-	<div class="ribbon-ticker ribbon-ticker--green" aria-hidden="true">
+	<div class="ribbon-ticker ribbon-ticker--red" aria-hidden="true">
 		<div class="ribbon-ticker__track">
 			<?php for ( $r = 0; $r < 4; $r++ ) : ?>
 				<?php foreach ( $ticker_items as $t_item ) : ?>

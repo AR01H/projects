@@ -57,9 +57,6 @@ $milestone_items = (array) ( $milestones['items'] ?? array() );
 	<!-- ═══════════ 4. FOUR PILLARS (Dark Botanical) ═══════════ -->
 	<?php View::component( 'sections/pillars-section', array( 'story' => $story ) ); ?>
 
-	<!-- ═══════════ 5. OUR CORE VALUES ═══════════ -->
-	<?php View::component( 'sections/values-section', array( 'values' => $values ) ); ?>
-
 	<!-- Gold Wave Divider -->
 	<div class="gold-wave-divider" aria-hidden="true">
 		<img src="<?php echo esc_url( UrlHelper::resolve( 'assets/images/textures/border/gold-wave.svg' ) ); ?>" alt="" loading="lazy">
@@ -140,7 +137,4 @@ $milestone_items = (array) ( $milestones['items'] ?? array() );
 	<?php if ( ! empty( $intro['closing'] ) ) : ?>
 		<?php View::component( 'cta-banner/cta-banner', (array) $intro['closing'] ); ?>
 	<?php endif; ?>
-
-	<!-- ═══════════ 12. TRUST RIBBON ═══════════ -->
-	<?php View::component( 'sections/trust-ribbon-section' ); ?>
 </div>

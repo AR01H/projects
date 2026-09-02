@@ -37,16 +37,16 @@
   display: none !important;
 }
 
-/* Clean Vintage Bottom Underline Indicator */
+/* Clean Vintage Bottom Underline Indicator with Smooth Transitions */
 .nav__link::after {
   content: "" !important;
   position: absolute !important;
-  left: 0 !important;
-  right: 0 !important;
-  bottom: 0 !important;
+  left: 6px !important;
+  right: 6px !important;
+  bottom: 0px !important;
   height: 2.5px !important;
   background: linear-gradient(90deg, #8e622d 0%, #caa06d 50%, #8e622d 100%) !important;
-  border-radius: 2px !important;
+  border-radius: 99px !important;
   box-shadow: 0 1px 4px rgba(202, 160, 109, 0.6) !important;
   transform: scaleX(0) !important;
   transform-origin: center center !important;
@@ -56,25 +56,26 @@
 }
 
 .nav__link:hover {
-  color: #8e5f2b !important;
+  color: #0c6434 !important;
 }
 
 .nav__link:hover::after {
-  transform: scaleX(0.7) !important;
-  opacity: 0.85 !important;
+  transform: scaleX(0.85) !important;
+  opacity: 0.9 !important;
+  background: linear-gradient(90deg, #8e622d 0%, #caa06d 50%, #8e622d 100%) !important;
 }
 
 .nav__link.is-active,
 .nav__item.is-active > .nav__link {
-  color: #11381b !important;
+  color: #0c6434 !important;
 }
 
 .nav__link.is-active::after,
 .nav__item.is-active > .nav__link::after {
   transform: scaleX(1) !important;
   opacity: 1 !important;
-  background: linear-gradient(90deg, #11381b 0%, #caa06d 50%, #11381b 100%) !important;
-  box-shadow: 0 1px 6px rgba(17, 56, 27, 0.4) !important;
+  background: linear-gradient(90deg, #0c6434 0%, #caa06d 50%, #0c6434 100%) !important;
+  box-shadow: 0 2px 6px rgba(12, 100, 52, 0.4) !important;
 }
 
 .nav__link:focus-visible {
@@ -122,30 +123,52 @@
 }
 
 .nav__item--has-children:hover .nav__chevron,
+.nav__item--has-children {
+  position: relative !important;
+  z-index: 10001 !important;
+}
+
 .nav__item--has-children:focus-within .nav__chevron {
   transform: rotate(180deg);
 }
 
-/* ═══════════ REFINED VINTAGE DROPDOWN SUBMENU ═══════════ */
+/* ═══════════ REFINED VINTAGE DROPDOWN SUBMENU WITH ROUGH CUT EDGES ═══════════ */
 .nav__submenu {
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  min-width: 270px !important;
-  margin: 12px 0 0 !important;
-  padding: 8px 6px !important;
-  background: linear-gradient(180deg, #fdf8ef 0%, #f7e6cf 100%) !important;
-  border: 1.5px solid #8e622d !important;
-  border-radius: 6px !important;
-  box-shadow:
-    inset 0 0 0 1px #caa06d,
-    0 12px 32px rgba(35, 18, 5, 0.3) !important;
+  position: absolute !important;
+  top: 100% !important;
+  left: 50% !important;
+  min-width: 275px !important;
+  margin: 14px 0 0 !important;
+  padding: 10px 8px !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
   transform: translate(-50%, 8px);
   transition: opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1), transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), visibility 0s linear 0.22s;
-  z-index: 1000 !important;
+  z-index: 10002 !important;
+}
+
+/* Layer-isolated deckle rough cut background on ::before */
+.nav__submenu::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  border-radius: 8px !important;
+  background:
+    url("../../images/textures/paper/paper-fiber-a.svg"),
+    linear-gradient(180deg, #fefaf2 0%, #f6e6ce 100%) !important;
+  border: 1.5px solid #8e622d !important;
+  box-shadow:
+    inset 0 0 0 1.5px #caa06d,
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 16px 40px rgba(35, 18, 5, 0.42) !important;
+  filter: url(#rough-button-cut-sm) !important;
+  -webkit-filter: url(#rough-button-cut-sm) !important;
+  z-index: 0 !important;
+  pointer-events: none !important;
 }
 
 /* Hover Safety Buffer to avoid flicker */
@@ -155,24 +178,9 @@
   bottom: 100% !important;
   left: 0 !important;
   right: 0 !important;
-  height: 16px !important;
+  height: 20px !important;
   background: transparent !important;
-}
-
-/* Pointer Arrow */
-.nav__submenu::before {
-  content: "" !important;
-  position: absolute !important;
-  bottom: 100% !important;
-  left: 50% !important;
-  width: 12px !important;
-  height: 12px !important;
-  background: #fdf8ef !important;
-  border-top: 1.5px solid #8e622d !important;
-  border-left: 1.5px solid #8e622d !important;
-  box-shadow: -1px -1px 0 #caa06d !important;
-  transform: translateX(-50%) translateY(6.5px) rotate(45deg) !important;
-  z-index: 1001 !important;
+  z-index: 10001 !important;
 }
 
 .nav__item--has-children:hover .nav__submenu,
@@ -188,6 +196,8 @@
   list-style: none !important;
   margin: 0 !important;
   padding: 0 !important;
+  position: relative !important;
+  z-index: 1 !important;
 }
 
 .nav__submenu-link {

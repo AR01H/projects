@@ -132,25 +132,40 @@ body.page-contact,
 
 /* --- Left Column: Contact Form Card --- */
 .contact-form-card {
-  background: linear-gradient(135deg, #fcf2e3 0%, #f6e0c3 100%);
-  border: 1.5px solid #8e622d;
-  border-radius: 6px;
-  padding: 24px 20px;
-  position: relative;
-  box-shadow: 0 4px 16px rgba(42, 26, 12, 0.12);
+  position: relative !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 8px !important;
+  padding: 24px 20px !important;
+  box-sizing: border-box !important;
 }
 @media (min-width: 768px) {
   .contact-form-card {
-    padding: 32px 28px;
+    padding: 32px 28px !important;
   }
 }
-.contact-form-card::after {
-  content: "";
-  position: absolute;
-  inset: 3px;
-  border: 1.5px solid #caa06d;
-  border-radius: 4px;
-  pointer-events: none;
+.contact-form-card::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  border-radius: 8px !important;
+  background:
+    url("../../images/textures/paper/paper-fiber-a.svg"),
+    linear-gradient(135deg, #fdf9f1 0%, #f7e6cf 55%, #edd2ae 100%) !important;
+  border: 1.5px solid #8e622d !important;
+  box-shadow:
+    inset 0 0 0 1.5px #caa06d,
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    0 8px 24px rgba(42, 26, 12, 0.12) !important;
+  filter: url(#rough-button-cut-sm) !important;
+  -webkit-filter: url(#rough-button-cut-sm) !important;
+  z-index: 0 !important;
+  pointer-events: none !important;
+}
+.contact-form-card > * {
+  position: relative !important;
+  z-index: 1 !important;
 }
 
 .contact-card-header {
@@ -306,20 +321,35 @@ body.page-contact,
 
 /* Direct Contact Info Card */
 .side-info-card {
-  background: linear-gradient(135deg, #fcf2e3 0%, #f6e0c3 100%);
-  border: 1.5px solid #8e622d;
-  border-radius: 6px;
-  padding: 20px 18px;
-  position: relative;
-  box-shadow: 0 2px 8px rgba(42, 26, 12, 0.08);
+  position: relative !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 8px !important;
+  padding: 24px 20px !important;
+  box-sizing: border-box !important;
 }
-.side-info-card::after {
-  content: "";
-  position: absolute;
-  inset: 2.5px;
-  border: 1px solid #caa06d;
-  border-radius: 4px;
-  pointer-events: none;
+.side-info-card::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  border-radius: 8px !important;
+  background:
+    url("../../images/textures/paper/paper-fiber-a.svg"),
+    linear-gradient(135deg, #fdf9f1 0%, #f7e6cf 55%, #edd2ae 100%) !important;
+  border: 1.5px solid #8e622d !important;
+  box-shadow:
+    inset 0 0 0 1.5px #caa06d,
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    0 6px 18px rgba(42, 26, 12, 0.1) !important;
+  filter: url(#rough-button-cut-sm) !important;
+  -webkit-filter: url(#rough-button-cut-sm) !important;
+  z-index: 0 !important;
+  pointer-events: none !important;
+}
+.side-info-card > * {
+  position: relative !important;
+  z-index: 1 !important;
 }
 .side-info-card__title {
   font-family: 'Cinzel', 'Playfair Display', Georgia, serif;
@@ -436,20 +466,36 @@ body.page-contact,
 
 /* Social Connect Card */
 .social-connect-card {
-  background: linear-gradient(135deg, #fcf2e3 0%, #f6e0c3 100%);
-  border: 1.5px solid #8e622d;
-  border-radius: 6px;
-  padding: 18px;
-  text-align: center;
-  position: relative;
+  position: relative !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 8px !important;
+  padding: 22px 18px !important;
+  text-align: center !important;
+  box-sizing: border-box !important;
 }
-.social-connect-card::after {
-  content: "";
-  position: absolute;
-  inset: 2.5px;
-  border: 1px solid #caa06d;
-  border-radius: 4px;
-  pointer-events: none;
+.social-connect-card::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  border-radius: 8px !important;
+  background:
+    url("../../images/textures/paper/paper-fiber-a.svg"),
+    linear-gradient(135deg, #fdf9f1 0%, #f7e6cf 55%, #edd2ae 100%) !important;
+  border: 1.5px solid #8e622d !important;
+  box-shadow:
+    inset 0 0 0 1.5px #caa06d,
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    0 6px 18px rgba(42, 26, 12, 0.1) !important;
+  filter: url(#rough-button-cut-sm) !important;
+  -webkit-filter: url(#rough-button-cut-sm) !important;
+  z-index: 0 !important;
+  pointer-events: none !important;
+}
+.social-connect-card > * {
+  position: relative !important;
+  z-index: 1 !important;
 }
 .social-connect-card__title {
   font-family: 'Cinzel', 'Playfair Display', Georgia, serif;

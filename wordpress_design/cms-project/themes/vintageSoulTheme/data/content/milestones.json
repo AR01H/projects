@@ -1,14 +1,34 @@
 {
-    "_source": "Extracted + genericized from traditional_template/admin/data/milestones.json. Feeds an About-page Timeline section.",
+    "_source": "Milestones and sequential growth stages for The Cane House. Feeds About-page Timeline component.",
 
-    "tag": "Our Timeline",
-    "title": "Milestones Over The <em>Years</em>",
-    "sub": "From a small beginning to where we are today.",
+    "tag": "Our Growth Journey",
+    "title": "HOW WE GREW &amp; <em>Our Milestones</em>",
+    "sub": "From our first live press in Sutton to multi-event catering, official 5-star certification, and nationwide franchise expansion.",
     "items": [
-        { "year": "1985", "title": "The Beginning", "desc": "One idea, one place, one busy corner." },
-        { "year": "1995", "title": "First Location", "desc": "A permanent home and our first regulars." },
-        { "year": "2005", "title": "Growing Reach", "desc": "Several locations and a growing team." },
-        { "year": "2015", "title": "New Format", "desc": "A new way to bring it straight to your door." },
-        { "year": "2026", "title": "Looking Ahead", "desc": "Partners taking things further together." }
+        { 
+            "step": "STAGE 01", 
+            "title": "The First Fresh Press", 
+            "desc": "Opened our signature fresh cold-pressed sugarcane juice stall in Sutton, bringing raw, 100% natural cane juice to London." 
+        },
+        { 
+            "step": "STAGE 02", 
+            "title": "Official 5★ Certification", 
+            "desc": "Earned our official 5-Star Food Hygiene rating and full compliance registration with Sutton Council & NCASS." 
+        },
+        { 
+            "step": "STAGE 03", 
+            "title": "Live Event Cane Bars", 
+            "desc": "Launched mobile live-pressing setups for weddings, birthdays, corporate popups, and large multicultural festivals." 
+        },
+        { 
+            "step": "STAGE 04", 
+            "title": "Community Love & Regulars", 
+            "desc": "Crossed thousands of happy customers with a 4.9★ community satisfaction score and loyal repeat juice lovers." 
+        },
+        { 
+            "step": "STAGE 05", 
+            "title": "Franchise Expansion", 
+            "desc": "Rolled out turnkey franchise partnership packages and wholesale supply across London and the UK." 
+        }
     ]
 }

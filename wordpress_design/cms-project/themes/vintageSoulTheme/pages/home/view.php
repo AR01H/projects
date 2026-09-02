@@ -74,10 +74,6 @@ $deckled_edge_url = UrlHelper::resolve( 'assets/images/textures/border/deckled-e
 	</div>
 <?php endif; ?>
 
-<?php View::component( 'sections/trust-ribbon-section' ); ?>
-<div class="deckled-divider" aria-hidden="true">
-	<img src="<?php echo esc_url( $deckled_edge_url ); ?>" alt="" loading="lazy">
-</div>
 
 <?php
 // ══════════════════════════════════════════════════════════════════════════

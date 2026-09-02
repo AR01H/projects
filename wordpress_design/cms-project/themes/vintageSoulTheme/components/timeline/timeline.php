@@ -39,12 +39,12 @@ if ( empty( $items ) ) {
 
 		<div class="milestone-timeline">
 			<?php foreach ( $items as $idx => $ms ) :
-				$year  = (string) ( $ms['year'] ?? ( $ms['era'] ?? sprintf( '%02d', $idx + 1 ) ) );
-				$m_ttl = (string) ( $ms['title'] ?? '' );
-				$m_dsc = (string) ( $ms['desc'] ?? ( $ms['text'] ?? '' ) );
+				$step_badge = (string) ( $ms['step'] ?? ( $ms['badge'] ?? ( $ms['phase'] ?? sprintf( 'STAGE %02d', $idx + 1 ) ) ) );
+				$m_ttl      = (string) ( $ms['title'] ?? '' );
+				$m_dsc      = (string) ( $ms['desc'] ?? ( $ms['text'] ?? '' ) );
 			?>
 				<div class="milestone-item">
-					<div class="milestone-item__year"><?php echo esc_html( $year ); ?></div>
+					<div class="milestone-item__year"><?php echo esc_html( $step_badge ); ?></div>
 					<div class="milestone-item__content frame--rough-cut">
 						<?php if ( '' !== $m_ttl ) : ?>
 							<h4 class="milestone-item__title"><?php echo esc_html( $m_ttl ); ?></h4>

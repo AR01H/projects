@@ -1,0 +1,73 @@
+{
+    "_source": "Services and core offerings for The Cane House. Feeds About-page Services / Offerings component.",
+
+    "tag": "What We Provide",
+    "title": "OUR SERVICES &amp; <em>Core Offerings</em>",
+    "sub": "Everything we do at The Cane House — from live mobile event bars and turnkey franchises to daily fresh stall orders and wholesale.",
+    "items": [
+        {
+            "id": "franchise",
+            "icon": "handshake",
+            "badge": "BUSINESS OPPORTUNITY",
+            "title": "Franchise Partnerships",
+            "tagline": "Turnkey Outlets & Mentorship",
+            "desc": "Join The Cane House family with our complete franchise blueprint. We provide bespoke commercial cold-pressing machinery, brand assets, certified staff training, supply logistics, and continuous operational mentorship.",
+            "cta_label": "EXPLORE FRANCHISE",
+            "cta_link": "franchise",
+            "features": [
+                "Commercial Machinery & Setup",
+                "Full Operational & Barista Training",
+                "Marketing, Branding & POS Assets",
+                "Exclusive Territory Rights"
+            ]
+        },
+        {
+            "id": "events",
+            "icon": "stall",
+            "badge": "LIVE MOBILE BAR",
+            "title": "Events & Live Catering",
+            "tagline": "Weddings, Birthdays & Corporate",
+            "desc": "Bring the theatrical aroma and freshness of live cane pressing to your celebration. Our uniformed 5-star hygiene artisans press fresh raw sugarcane juice right before your guests.",
+            "cta_label": "BOOK LIVE BAR",
+            "cta_link": "events",
+            "features": [
+                "Weddings & Sangeet Ceremonies",
+                "Corporate Popups & Brand Activations",
+                "Birthdays & Family Celebrations",
+                "Customized Mocktail & Herb Mixes"
+            ]
+        },
+        {
+            "id": "store_orders",
+            "icon": "leaf",
+            "badge": "FRESH ON DEMAND",
+            "title": "Fresh Stall & Shop Orders",
+            "tagline": "Daily Pressed in Sutton, London",
+            "desc": "Experience 100% natural, unpasteurized cold-pressed cane juice made fresh on the spot. Available in Classic, Ginger Zing, Garden Mint, Chaat Masala, and Tropical blends.",
+            "cta_label": "CONTACT & VISIT US",
+            "cta_link": "contact",
+            "features": [
+                "Zero Added Sugar or Preservatives",
+                "Cold-Pressed Fresh in Seconds",
+                "6 Artisanal Flavor Profiles",
+                "Takeaway Bottles & Cups"
+            ]
+        },
+        {
+            "id": "wholesale",
+            "icon": "growth",
+            "badge": "COMMERCIAL SUPPLY",
+            "title": "Wholesale & Bulk Supply",
+            "tagline": "Cafes, Restaurants & Caterers",
+            "desc": "Reliable bulk delivery of raw, chilled sugarcane stalks and freshly extracted juice for restaurants, cocktail bars, and wellness centers across Greater London.",
+            "cta_label": "ENQUIRE WHOLESALE",
+            "cta_link": "contact",
+            "features": [
+                "Consistent Daily Supply Schedule",
+                "Strict HACCP & Temperature Control",
+                "Food Hygiene 5-Star Compliant",
+                "Competitive B2B Volume Pricing"
+            ]
+        }
+    ]
+}

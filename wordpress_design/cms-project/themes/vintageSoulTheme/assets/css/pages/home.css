@@ -1230,50 +1230,7 @@ body {
   transform: rotate(-8deg);
 }
 
-/* --- Ticker Ribbon --- */
-.ribbon-ticker {
-  background: linear-gradient(180deg, #321c10 0%, #201108 100%) !important;
-  color: #f6d599 !important;
-  padding: 8px 0 !important;
-  margin: 0 !important;
-  overflow: hidden !important;
-  white-space: nowrap !important;
-  border-top: 1.5px solid #8e622d !important;
-  border-bottom: 1.5px solid #8e622d !important;
-  position: relative !important;
-}
-.ribbon-ticker::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image: url("../../images/textures/grain/grain-a.svg");
-  background-size: 240px 240px;
-  mix-blend-mode: screen;
-  opacity: 0.1;
-  pointer-events: none;
-}
-.ribbon-ticker__track {
-  display: inline-flex;
-  align-items: center;
-  gap: 18px;
-  animation: marquee-slide 25s linear infinite;
-}
-.ribbon-ticker__heart {
-  color: #d49842;
-  font-size: 13px;
-}
-.ribbon-ticker__text {
-  font-family: 'Cinzel', 'Playfair Display', serif !important;
-  font-size: 11.5px !important;
-  letter-spacing: 0.14em !important;
-  text-transform: uppercase !important;
-  font-weight: 700 !important;
-  color: #f6d599 !important;
-}
-@keyframes marquee-slide {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
+
 
 /* --- Intro Section --- */
 .intro-vintage {

@@ -42,21 +42,18 @@ if ( '' !== $requested_slug ) {
 	);
 	?>
 
+	<?php View::component( 'background/parchment-botanical-bg', array( 'seed' => 67 ) ); ?>
+
 	<div class="section">
-		<div class="container single-article-view">
-			<div class="single-article__featured-img">
-				<img src="<?php echo esc_url( (string) $current_article['image'] ); ?>" alt="<?php echo esc_attr( (string) $current_article['title'] ); ?>">
-			</div>
-
-			<div class="single-article__content">
-				<?php echo wp_kses_post( (string) $current_article['content'] ); ?>
-			</div>
-
-			<div class="single-article__nav-bar" style="margin-top: 36px; text-align: center;">
-				<a href="<?php echo esc_url( RouteService::url( 'blog' ) ); ?>" class="btn btn--secondary-vintage" style="font-size:12px; padding:10px 24px;">
-					<span>← BACK TO ALL CHRONICLES</span>
-				</a>
-			</div>
+		<div class="container container--narrow">
+			<article class="blog-single">
+				<div class="blog-single__body">
+					<?php echo wp_kses_post( $current_article['content'] ); ?>
+				</div>
+				<footer class="blog-single__footer">
+					<a href="<?php echo esc_url( \VintageSoul\Services\RouteService::url( 'blog' ) ); ?>" class="btn btn--outline-vintage">← Back to Articles</a>
+				</footer>
+			</article>
 		</div>
 	</div>
 
@@ -75,6 +72,8 @@ if ( '' !== $requested_slug ) {
 		)
 	);
 	?>
+
+	<?php View::component( 'background/parchment-botanical-bg', array( 'seed' => 67 ) ); ?>
 
 	<div class="section">
 		<div class="container">
@@ -151,6 +150,3 @@ if ( '' !== $requested_slug ) {
 
 <!-- Featured Trust Strip -->
 <?php View::component( 'sections/logo-strip-section' ); ?>
-
-<!-- Trust Ribbon Bottom -->
-<?php View::component( 'sections/trust-ribbon-section' ); ?>

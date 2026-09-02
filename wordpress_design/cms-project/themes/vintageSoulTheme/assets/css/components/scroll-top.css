@@ -66,28 +66,23 @@
   transform: translateY(0) scale(0.95) !important;
 }
 
-.scroll-top__arrow,
+.scroll-top__svg,
 .scroll-top svg {
   position: relative !important;
   z-index: 2 !important;
-  width: 20px !important;
-  height: 20px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  font-size: 18px !important;
-  font-weight: bold !important;
-  line-height: 1 !important;
+  width: 22px !important;
+  height: 22px !important;
+  display: block !important;
   color: #f6d599 !important;
-  filter: none !important;
-  -webkit-filter: none !important;
-  transition: color 0.2s ease, transform 0.2s ease !important;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5)) !important;
+  -webkit-filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5)) !important;
+  transition: color 0.22s ease, transform 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
-.scroll-top:hover .scroll-top__arrow,
+.scroll-top:hover .scroll-top__svg,
 .scroll-top:hover svg {
-  color: #ffffff !important;
-  transform: translateY(-2px) !important;
+  color: #fff4d9 !important;
+  transform: translateY(-3px) scale(1.08) !important;
 }
 
 @media (prefers-reduced-motion: reduce) {
