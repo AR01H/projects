@@ -1,0 +1,20 @@
+{
+    "tag": "Get In Touch",
+    "title": "DIRECT ENQUIRY",
+    "eyebrow": "Have a question or special request?",
+    "body": "We are here to help! Whether you need live sugarcane pressing for your wedding, festival stall bookings, or fresh delivery, our team is ready.",
+    "cta": {
+        "label": "MAKE AN ENQUIRY",
+        "route": "contact"
+    },
+    "secondary_cta": {
+        "label": "CALL US DIRECTLY",
+        "route": "contact"
+    },
+    "image": "assets/images/sugarcane/hero_juice.jpg",
+    "pills": [
+        "📍 London, UK",
+        "⏱️ Response within 24h",
+        "🎪 Events & Markets"
+    ]
+}

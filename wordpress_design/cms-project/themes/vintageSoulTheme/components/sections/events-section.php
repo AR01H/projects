@@ -1,28 +1,40 @@
 <?php
+/**
+ * Master Events & Live Cane Bar Catering Homepage Section
+ * Structurally identical to Franchise Section with Dark Botanical Luxury Aesthetic
+ */
 
 defined( 'ABSPATH' ) || exit;
 
 use VintageSoul\DataProviders\JsonFileProvider;
 use VintageSoul\Services\RouteService;
+use VintageSoul\Services\SettingsService;
 use VintageSoul\Support\IconHelper;
 use VintageSoul\Support\UrlHelper;
 use VintageSoul\Support\View;
 
-$events_data = (array) ( JsonFileProvider::read( 'data/content/events.json' ) ?? array() );
+$events_data = (array) ( JsonFileProvider::read( 'data/content/events-features.json' ) ?? array() );
 
-$tag   = (string) ( $tag ?? ( $events_data['hero']['tag'] ?? 'Live Stalls • Weddings • Private Galas' ) );
-$title = (string) ( $title ?? ( $events_data['hero']['title'] ?? 'EVENTS &amp; LIVE <em>Cane Bar Catering</em>' ) );
-$sub   = (string) ( $sub ?? ( $events_data['hero']['sub'] ?? 'Bring the theatrical experience of freshly pressed sugarcane juice to your special occasion.' ) );
+$tag   = (string) ( $tag ?? ( $events_data['tag'] ?? '' ) );
+$title = (string) ( $title ?? ( $events_data['title'] ?? '' ) );
+$sub   = (string) ( $sub ?? ( $events_data['sub'] ?? '' ) );
 
-$event_types   = (array) ( $upcoming ?? ( $events_data['event_types'] ?? array() ) );
-$event_gallery = (array) ( $gallery ?? ( $events_data['gallery']['items'] ?? array() ) );
-$event_reviews = (array) ( $reviews ?? ( $events_data['reviews'] ?? array() ) );
+$gallery_ribbon = (string) ( $events_data['gallery_ribbon'] ?? '' );
+$steps_ribbon   = (string) ( $events_data['steps_ribbon'] ?? '' );
+$reviews_ribbon = (string) ( $events_data['reviews_ribbon'] ?? '' );
+
+$events_pillars = (array) ( $pillars ?? ( $events_data['pillars'] ?? array() ) );
+$events_gallery = (array) ( $gallery ?? ( $events_data['gallery'] ?? array() ) );
+$events_steps   = (array) ( $steps ?? ( $events_data['steps'] ?? array() ) );
+$events_reviews = (array) ( $reviews ?? ( $events_data['reviews'] ?? array() ) );
+$cta_box        = (array) ( $events_data['cta'] ?? array() );
+$cta_buttons    = (array) ( $cta_box['buttons'] ?? array() );
 ?>
-<section class="section section--events events-vintage paper-rough" id="events">
-	<?php View::component( 'background/ambient-layer', array( 'variant' => 'light', 'cane_positions' => array( 'top-right', 'bottom-left' ), 'bubble_count' => 12 ) ); ?>
-	<div class="container events-vintage__container">
+<section class="section section--events events-vintage-block torn-dark-block grain-dark" id="events">
+	<?php View::component( 'background/ambient-layer', array( 'variant' => 'dark', 'cane_positions' => array( 'top-right', 'bottom-left' ), 'bubble_count' => 12 ) ); ?>
+	<div class="container events-vintage__container franchise-vintage__container">
 		
-		<!-- 1. Header & Overview -->
+		<!-- 1. Header -->
 		<?php
 		View::component(
 			'section-header/section-header',
@@ -30,144 +42,115 @@ $event_reviews = (array) ( $reviews ?? ( $events_data['reviews'] ?? array() ) );
 				'tag'     => $tag,
 				'title'   => $title,
 				'sub'     => $sub,
+				'variant' => 'dark',
 				'ribbon'  => true,
 			)
 		);
 		?>
 
-		<!-- 2. Event Types & Packages Grid -->
-		<div class="events-types-grid">
-			<?php foreach ( $event_types as $evt ) :
-				$e_icon     = (string) ( $evt['icon'] ?? '🌿' );
-				$e_tag      = (string) ( $evt['tag'] ?? ( $evt['date'] ?? '' ) );
-				$e_title    = (string) ( $evt['title'] ?? '' );
-				$e_desc     = (string) ( $evt['desc'] ?? '' );
-				$e_features = (array) ( $evt['features'] ?? array() );
-			?>
-				<div class="event-type-card card--rough-cut">
-					<div class="event-type-card__head">
-						<span class="event-type-card__icon"><?php echo IconHelper::render( $e_icon, '#8e622d', 26 ); // phpcs:ignore ?></span>
-						<?php if ( '' !== $e_tag ) : ?>
-							<span class="event-type-card__tag"><?php echo esc_html( $e_tag ); ?></span>
-						<?php endif; ?>
-					</div>
-					<h3 class="event-type-card__title"><?php echo esc_html( $e_title ); ?></h3>
-					<?php if ( '' !== $e_desc ) : ?>
-						<p class="event-type-card__desc"><?php echo esc_html( $e_desc ); ?></p>
-					<?php endif; ?>
-					<?php if ( ! empty( $e_features ) ) : ?>
-						<ul class="event-type-card__features">
-							<?php foreach ( $e_features as $feat ) : ?>
-								<li>✓ <?php echo esc_html( (string) $feat ); ?></li>
-							<?php endforeach; ?>
-						</ul>
-					<?php endif; ?>
-				</div>
-			<?php endforeach; ?>
-		</div>
-
-		<!-- 3. Catering Packages & Setups Full-Width Showcase -->
-		<?php
-		$pkg_data  = (array) ( $events_data['packages'] ?? array() );
-		$pkg_items = (array) ( $pkg_data['items'] ?? array() );
-		if ( ! empty( $pkg_items ) ) :
-		?>
-			<div class="vintage-ribbon-tag vintage-ribbon-tag--gold" style="margin-top: 36px !important;">
-				<span>CATERING PACKAGES &amp; SETUPS</span>
-			</div>
-			<div class="events-packages-grid">
-				<?php foreach ( $pkg_items as $pkg ) :
-					$pkg_name     = (string) ( $pkg['name'] ?? '' );
-					$pkg_tag      = (string) ( $pkg['tagline'] ?? '' );
-					$pkg_guest    = (string) ( $pkg['guests'] ?? '' );
-					$pkg_badge    = (string) ( $pkg['badge'] ?? '' );
-					$pkg_duration = (string) ( $pkg['duration'] ?? '3 Hours' );
-					$pkg_servings = (string) ( $pkg['servings'] ?? 'Unlimited' );
-					$pkg_foot     = (string) ( $pkg['footprint'] ?? 'Live Bar' );
-					$pkg_feats    = (array) ( $pkg['features'] ?? array() );
+		<!-- 2. 4 Event Service Pillars Grid -->
+		<?php if ( ! empty( $events_pillars ) ) : ?>
+			<div class="franchise-pillars-grid">
+				<?php foreach ( $events_pillars as $pillar ) :
+					$icon_svg = IconHelper::get( (string) ( $pillar['icon'] ?? 'stall' ), '#f6d599', 30 );
 				?>
-					<div class="event-package-card card--rough-cut">
-						<div class="event-package-card__badge-row">
-							<?php if ( '' !== $pkg_badge ) : ?>
-								<span class="event-package-card__badge"><?php echo esc_html( $pkg_badge ); ?></span>
-							<?php endif; ?>
-							<span class="event-package-card__guest-tag">👥 <?php echo esc_html( $pkg_guest ); ?></span>
-						</div>
-						
-						<h3 class="event-package-card__title"><?php echo esc_html( $pkg_name ); ?></h3>
-						<p class="event-package-card__tagline"><?php echo esc_html( $pkg_tag ); ?></p>
-						
-						<div class="event-package-card__specs">
-							<div class="event-package-card__spec-item">
-								<span class="event-package-card__spec-lbl">Service Duration</span>
-								<strong class="event-package-card__spec-val"><?php echo esc_html( $pkg_duration ); ?></strong>
-							</div>
-							<div class="event-package-card__spec-item">
-								<span class="event-package-card__spec-lbl">Serving Capacity</span>
-								<strong class="event-package-card__spec-val"><?php echo esc_html( $pkg_servings ); ?></strong>
-							</div>
-							<div class="event-package-card__spec-item">
-								<span class="event-package-card__spec-lbl">Bar Footprint</span>
-								<strong class="event-package-card__spec-val"><?php echo esc_html( $pkg_foot ); ?></strong>
-							</div>
-						</div>
-
-						<div class="event-package-card__features-title">Package Inclusions:</div>
-						<ul class="event-package-card__features-list">
-							<?php foreach ( $pkg_feats as $feat ) : ?>
-								<li>✓ <?php echo esc_html( (string) $feat ); ?></li>
-							<?php endforeach; ?>
-						</ul>
-
-						<a href="<?php echo esc_url( RouteService::url( 'contact' ) ); ?>" class="btn btn--primary-vintage event-package-card__btn">
-							<span>BOOK THIS PACKAGE ✦</span>
-						</a>
+					<div class="franchise-pillar-card card--rough-cut-dark">
+						<span class="franchise-pillar-card__icon"><?php echo $icon_svg; // phpcs:ignore ?></span>
+						<h3 class="franchise-pillar-card__title"><?php echo esc_html( (string) ( $pillar['title'] ?? '' ) ); ?></h3>
+						<p class="franchise-pillar-card__desc"><?php echo esc_html( (string) ( $pillar['desc'] ?? '' ) ); ?></p>
 					</div>
 				<?php endforeach; ?>
 			</div>
 		<?php endif; ?>
 
-		<!-- 4. Real Live Event Photo Stream (Left-to-Right) -->
-		<div class="vintage-ribbon-tag vintage-ribbon-tag--gold" style="margin-top: 36px !important;">
-			<span>LIVE EVENTS IN ACTION</span>
-		</div>
-		<?php
-		View::component( 'card-stream/card-stream', array(
-			'items'      => $event_gallery,
-			'card_type'  => 'gallery',
-			'direction'  => 'ltr',
-		) );
-		?>
+		<!-- 3. Our Live Events & Machinery Photo Gallery Stream (Left-to-Right) -->
+		<?php if ( ! empty( $events_gallery ) ) : ?>
+			<?php if ( '' !== $gallery_ribbon ) : ?>
+				<div class="vintage-ribbon-tag vintage-ribbon-tag--gold">
+					<span><?php echo esc_html( $gallery_ribbon ); ?></span>
+				</div>
+			<?php endif; ?>
+			<?php
+			View::component( 'card-stream/card-stream', array(
+				'items'      => $events_gallery,
+				'card_type'  => 'gallery',
+				'direction'  => 'ltr',
+				'aria_label' => $gallery_ribbon,
+			) );
+			?>
+		<?php endif; ?>
 
-		<!-- 4. Client Experiences & Reviews Stream (Right-to-Left) -->
-		<div class="vintage-ribbon-tag">
-			<span>CLIENT EXPERIENCES</span>
-		</div>
-		<?php
-		View::component( 'card-stream/card-stream', array(
-			'items'      => $event_reviews,
-			'card_type'  => 'review',
-			'direction'  => 'rtl',
-		) );
-		?>
+		<!-- 4. Step-by-Step Booking Timeline -->
+		<?php if ( ! empty( $events_steps ) ) : ?>
+			<?php if ( '' !== $steps_ribbon ) : ?>
+				<div class="vintage-ribbon-tag vintage-ribbon-tag--gold">
+					<span><?php echo esc_html( $steps_ribbon ); ?></span>
+				</div>
+			<?php endif; ?>
+			<div class="franchise-steps-grid">
+				<?php foreach ( $events_steps as $st ) : ?>
+					<div class="franchise-step-card card--rough-cut-dark">
+						<span class="franchise-step-card__badge"><?php echo esc_html( (string) ( $st['num'] ?? '' ) ); ?></span>
+						<h4 class="franchise-step-card__title"><?php echo esc_html( (string) ( $st['title'] ?? '' ) ); ?></h4>
+						<p class="franchise-step-card__desc"><?php echo esc_html( (string) ( $st['desc'] ?? '' ) ); ?></p>
+					</div>
+				<?php endforeach; ?>
+			</div>
+		<?php endif; ?>
 
-		<!-- Quick Booking Banner -->
-		<div class="events-booking-banner card--rough-cut-dark">
-			<div class="events-booking-banner__content">
-				<h3 class="events-booking-banner__title">READY TO BOOK OUR LIVE CANE BAR?</h3>
-				<p class="events-booking-banner__text">Dates fill up fast for weekends & summer wedding seasons. Contact us today to check availability and get a tailored quote.</p>
+		<!-- 5. Client Event Experiences Stream (Right-to-Left) -->
+		<?php if ( ! empty( $events_reviews ) ) : ?>
+			<?php if ( '' !== $reviews_ribbon ) : ?>
+				<div class="vintage-ribbon-tag">
+					<span><?php echo esc_html( $reviews_ribbon ); ?></span>
+				</div>
+			<?php endif; ?>
+			<?php
+			View::component( 'card-stream/card-stream', array(
+				'items'      => $events_reviews,
+				'card_type'  => 'dark-review',
+				'direction'  => 'rtl',
+				'aria_label' => $reviews_ribbon,
+			) );
+			?>
+		<?php endif; ?>
+
+		<!-- 6. Event Setup Call to Action Box -->
+		<?php if ( ! empty( $cta_box['title'] ) || ! empty( $cta_box['text'] ) ) : ?>
+			<div class="franchise-cta-box card--rough-cut">
+				<div class="franchise-cta-box__content">
+					<?php if ( ! empty( $cta_box['title'] ) ) : ?>
+						<h3 class="franchise-cta-box__title"><?php echo esc_html( (string) $cta_box['title'] ); ?></h3>
+					<?php endif; ?>
+					<?php if ( ! empty( $cta_box['text'] ) ) : ?>
+						<p class="franchise-cta-box__text"><?php echo esc_html( (string) $cta_box['text'] ); ?></p>
+					<?php endif; ?>
+				</div>
+				<?php if ( ! empty( $cta_buttons ) ) : ?>
+					<div class="franchise-cta-box__actions">
+						<?php foreach ( $cta_buttons as $c_btn ) :
+							$btn_lbl   = (string) ( $c_btn['label'] ?? '' );
+							$btn_route = (string) ( $c_btn['route'] ?? 'contact' );
+							$btn_style = (string) ( $c_btn['style'] ?? 'primary' );
+							$btn_icon  = (string) ( $c_btn['icon'] ?? '' );
+							$btn_url   = 'whatsapp' === $btn_route
+								? SettingsService::whatsapp_url()
+								: ( 0 === strpos( $btn_route, '/' ) || 0 === strpos( $btn_route, 'http' ) ? $btn_route : RouteService::url( $btn_route ) );
+							$btn_class = 'primary' === $btn_style
+								? 'btn btn--primary-vintage'
+								: ( 'secondary' === $btn_style ? 'btn btn--secondary-vintage' : 'btn btn--outline-vintage' );
+						?>
+							<a class="<?php echo esc_attr( $btn_class ); ?>" href="<?php echo esc_url( $btn_url ); ?>"<?php echo 'whatsapp' === $btn_route ? ' target="_blank" rel="noopener"' : ''; ?>>
+								<?php if ( '' !== $btn_icon ) : ?>
+									<span class="btn__icon"><?php echo IconHelper::render( $btn_icon, '#f6d599', 15 ); // phpcs:ignore ?></span>
+								<?php endif; ?>
+								<span><?php echo esc_html( $btn_lbl ); ?></span>
+							</a>
+						<?php endforeach; ?>
+					</div>
+				<?php endif; ?>
 			</div>
-			<div class="events-booking-banner__actions">
-				<a class="btn btn--primary-vintage" href="<?php echo esc_url( \VintageSoul\Services\SettingsService::whatsapp_url() ); ?>" target="_blank" rel="noopener">
-					<span class="btn__icon"><?php echo IconHelper::render( 'whatsapp', '#f6d599', 15 ); // phpcs:ignore ?></span>
-					<span>CHAT ON WHATSAPP</span>
-				</a>
-				<a class="btn btn--outline-vintage" href="<?php echo esc_url( RouteService::url( 'contact' ) ); ?>">
-					<span class="btn__icon"><?php echo IconHelper::render( 'mail', '#f6d599', 15 ); // phpcs:ignore ?></span>
-					<span>ENQUIRE FOR EVENT</span>
-				</a>
-			</div>
-		</div>
+		<?php endif; ?>
 
 	</div>
 </section>

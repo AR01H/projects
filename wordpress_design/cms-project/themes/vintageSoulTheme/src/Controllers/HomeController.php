@@ -41,7 +41,7 @@ final class HomeController {
 		$data = array(
 			'nav'                => NavigationService::menu( 'primary' ),
 			'hero'               => $this->prepare_hero(),
-			'testimonials'       => ( new TestimonialService() )->featured(),
+			'testimonials'       => JsonFileProvider::read( 'data/content/testimonials.json' ),
 			'testimonials_title' => TerminologyService::label( 'testimonials_section_title' ),
 			'testimonials_tag'   => TerminologyService::label( 'testimonials_section_tag' ),
 			'testimonials_meta'  => JsonFileProvider::read( 'data/content/testimonials.json' ),

@@ -1,42 +1,162 @@
 {
-    "_source": "Extracted + genericized from traditional_template/admin/data/franchise.json (hero copy, stamp lines, 'How It Works' steps) and this theme's own data/content/franchise-teaser.json (the 'why partner' benefits, already vintageSoulTheme-native) - wired to pages/franchise/view.php via src/Controllers/FranchiseController.php. hero.image is a relative theme-asset path (real local file, not a placeholder) resolved against VINTAGESOUL_URI by the Controller, same pattern data/content/footer.json's brand.bg_image already uses - never store the absolute URI in JSON for a local asset.",
-
     "hero": {
-        "tag": "A Growing Opportunity",
-        "title": "Bring The Tradition <em>To Your City</em>",
-        "sub": "A timeless drink. A growing opportunity.",
-        "image": "assets/images/backgrounds/machine/old_machine.png",
-        "stamp": { "top": "Family Business", "center": "Proven Model", "bottom": "Full Support" },
-        "buttons": [
-            { "label": "Start Your Enquiry", "route": "contact" },
-            { "label": "See How It Works", "route": "game", "style": "ghost" }
-        ]
+        "tag": "A Growing Opportunity • UK & Beyond",
+        "title": "BRING THE TRADITION <em>To Your City</em>",
+        "sub": "Join our growing family of partners and bring the authentic raw cold-press sugarcane experience to your community.",
+        "image": "assets/images/backgrounds/pure_sugarcane_forest_trees_engraving.jpg",
+        "stamp": { "top": "Family Business", "center": "Proven Model", "bottom": "Full Support" }
     },
-
     "why": {
-        "tag": "Opportunities",
-        "title": "Partner <em>With Us</em>",
-        "sub": "Join a growing family of partners and bring this experience to your own community.",
+        "tag": "Partner Benefits",
+        "title": "WHY PARTNER WITH <em>The Cane House</em>",
+        "sub": "Join a proven botanical beverage business model with high consumer appeal and comprehensive operational backing."
+    },
+    "pillars": [
+        {
+            "icon": "🎪",
+            "title": "TURNKEY MOBILE SETUP",
+            "desc": "Complete rustic wooden stall, heavy-duty commercial stainless steel extractor, and branded POS setup."
+        },
+        {
+            "icon": "🌾",
+            "title": "PREMIUM CANE SUPPLY",
+            "desc": "Guaranteed steady supply of freshly harvested, high-yield premium sugarcane stalks delivered to your hub."
+        },
+        {
+            "icon": "🤝",
+            "title": "TRAINING & CERTIFICATION",
+            "desc": "Hands-on operational training, health & hygiene compliance, recipe mastery, and customer service excellence."
+        },
+        {
+            "icon": "📈",
+            "title": "HIGH MARGINS & QUICK ROI",
+            "desc": "Low ingredient cost, high consumer demand, zero waste byproduct utilisation, and strong event catering margins."
+        }
+    ],
+    "formats": [
+        {
+            "badge": "LOWEST ENTRY",
+            "name": "Mobile Vintage Cart",
+            "tagline": "Markets, Weddings & Popups",
+            "investment": "£15,000 – £22,000",
+            "margin": "72% – 76%",
+            "payback": "3 – 6 Months",
+            "footprint": "1.5m × 1m (15 sq ft)",
+            "royalty": "4% Monthly",
+            "desc": "Compact, high-mobility vintage wooden cart equipped with commercial silent cold-press. Perfect for weekend markets, street food festivals, and private catering.",
+            "features": [
+                "Turnkey Handcrafted Vintage Wooden Cart",
+                "Commercial Cold-Press Sugarcane Extractor Included",
+                "Initial Batch of 500kg Premium Raw Stalks",
+                "Full Food Safety & Hygiene HACCP Certification Kit",
+                "Brand Signage, Uniforms & Glassware Supplies"
+            ]
+        },
+        {
+            "badge": "MOST POPULAR",
+            "name": "Retail Mall Kiosk",
+            "tagline": "Shopping Centres & Transit Hubs",
+            "investment": "£35,000 – £52,000",
+            "margin": "70% – 74%",
+            "payback": "6 – 10 Months",
+            "footprint": "10m² – 18m² (100 – 180 sq ft)",
+            "royalty": "4.5% Monthly",
+            "desc": "High-throughput semi-permanent island kiosk designed for continuous 7-day high footfall trading in shopping centres, train stations, and food halls.",
+            "features": [
+                "Custom Modular Hardwood & Brass Kiosk Island",
+                "Dual High-Output Commercial Pressing Units Included",
+                "Under-Counter Commercial Refrigeration & Waste System",
+                "Cloud POS Terminal & Digital Botanical Menu Screens",
+                "Dedicated Weekly Refrigerated Cane Deliveries"
+            ]
+        },
+        {
+            "badge": "FLAGSHIP CONCEPT",
+            "name": "Botanical Juice Bar",
+            "tagline": "High Street Destination Store",
+            "investment": "£75,000 – £115,000",
+            "margin": "68% – 73%",
+            "payback": "12 – 16 Months",
+            "footprint": "60m² – 120m² (600 – 1,200 sq ft)",
+            "royalty": "5% Monthly",
+            "desc": "Full experiential retail cafe serving freshly pressed cane juices, artisanal mocktails, sugarcane desserts, and packaged bottled wellness tonics.",
+            "features": [
+                "Complete Architectural Interior Fitout (20-40 Seats)",
+                "Full Commercial Kitchen & Cold-Press Bar Theatre",
+                "Expanded Mocktail, Pastry & Bottled Retail Lines",
+                "Protected Postcode Territory & Local Marketing Campaign",
+                "Comprehensive 4-Week Onsite Staff Training"
+            ]
+        }
+    ],
+    "gallery": {
+        "ribbon": "OUR OUTLETS & MACHINERY",
+        "title": "Franchise Outlets & Machinery",
         "items": [
-            { "icon": "📈", "label": "Proven Model", "note": "A tested business model ready to grow." },
-            { "icon": "🎓", "label": "Full Training", "note": "We guide you through every step." },
-            { "icon": "🤝", "label": "Ongoing Support", "note": "Continued support after you launch." },
-            { "icon": "💰", "label": "Low Investment", "note": "Affordable entry, strong potential returns." }
+            { "image": "assets/images/sugarcane/story_moments.jpg", "title": "Borough Market Stall", "tag": "Flagship Stall" },
+            { "image": "assets/images/sugarcane/stacks.jpg", "title": "Fresh Cane Supply Hub", "tag": "Raw Materials" },
+            { "image": "assets/images/sugarcane/hero_juice.jpg", "title": "Commercial Press in Action", "tag": "Machinery" },
+            { "image": "assets/images/sugarcane/combo.jpg", "title": "High-Volume Serving Counter", "tag": "Operations" }
         ]
     },
-
+    "reviews": {
+        "ribbon": "PARTNER EXPERIENCES",
+        "title": "Partner Experiences",
+        "items": [
+            {
+                "quote": "Starting a Cane House franchise was the best decision. The training and cane supply chain are seamless, and customers love the fresh taste.",
+                "author": "Ramesh B.",
+                "city": "Borough Market Partner",
+                "rating": "★★★★★"
+            },
+            {
+                "quote": "High profit margins and the live juice theatre draws crowds every single weekend. We broke even in just four months.",
+                "author": "Priya & Suresh K.",
+                "city": "South London Franchisee",
+                "rating": "★★★★★"
+            },
+            {
+                "quote": "The brand recognition and operational support gave us the confidence to launch our second mall kiosk within one year.",
+                "author": "Tariq A.",
+                "city": "Birmingham Metro Partner",
+                "rating": "★★★★★"
+            }
+        ]
+    },
     "how": {
         "tag": "The Process",
         "title": "How It <em>Works</em>",
+        "sub": "A step-by-step roadmap from submitting your interest to pouring your first glass on grand opening day.",
         "items": [
-            { "number": "1", "label": "Enquire", "desc": "Tell us about your interest." },
-            { "number": "2", "label": "Discussion", "desc": "We discuss your goals and our support." },
-            { "number": "3", "label": "Approval", "desc": "We help you find and approve the location." },
-            { "number": "4", "label": "Training", "desc": "Complete training on operations & service." },
-            { "number": "5", "label": "Opening Day", "desc": "We support you for a successful launch." }
+            { "number": "1", "label": "Enquire", "desc": "Tell us about your interest and target territory." },
+            { "number": "2", "label": "Discussion", "desc": "We discuss your goals, formats, and operational support." },
+            { "number": "3", "label": "Approval", "desc": "We help you select and approve the ideal trading location." },
+            { "number": "4", "label": "Training", "desc": "Comprehensive hands-on training on machine operation & customer service." },
+            { "number": "5", "label": "Opening Day", "desc": "On-site opening support to ensure a high-turnover launch." }
         ]
     },
-
+    "faqs": {
+        "tag": "Partnership Q&A",
+        "title": "Franchise <em>FAQs</em>",
+        "items": [
+            {
+                "question": "What is the initial investment required?",
+                "answer": "Investment packages are custom-tailored to your desired format (Mobile Vintage Cart, Mall Kiosk, or Flagship Storefront), including commercial cold-press equipment, starter inventory, and complete training."
+            },
+            {
+                "question": "How does the sugarcane stalk supply chain work?",
+                "answer": "We manage centralized agricultural imports and dispatch fresh, temperature-controlled, mature organic sugarcane stalks directly to your local operating hub on a weekly schedule."
+            },
+            {
+                "question": "Do I need prior food & beverage experience?",
+                "answer": "No prior hospitality experience is necessary. Our intensive 2-week training program covers machine operation, hygiene standards, recipe mastery, inventory control, and customer service."
+            },
+            {
+                "question": "Are exclusive territory rights available?",
+                "answer": "Yes, franchise partners receive protected geographic territory rights based on agreed postcode clusters and population demographics."
+            }
+        ]
+    },
     "closing": {
         "tag": "Ready To Start?",
         "title": "Ready To Start Your <em>Cane House Journey?</em>",

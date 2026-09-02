@@ -142,8 +142,8 @@ $format_hero_title = static function ( $title ) {
 			
 			<!-- Left Column: Editorial Story Information -->
 			<div class="hero-sugarcane__content">
-				<h1 class="hero-sugarcane__title" id="hero-title"><?php echo $format_hero_title( (string) ( $first_content['title'] ?? 'WELCOME TO THE TASTE OF TRADITION' ) ); // phpcs:ignore ?></h1>
-				<p class="hero-sugarcane__eyebrow" id="hero-eyebrow"><?php echo esc_html( (string) ( $first_content['eyebrow'] ?? 'Freshly Pressed · Naturally Refreshing' ) ); ?></p>
+				<h1 class="hero-sugarcane__title" id="hero-title"><?php echo $format_hero_title( (string) ( $first_content['title'] ?? '' ) ); // phpcs:ignore ?></h1>
+				<p class="hero-sugarcane__eyebrow" id="hero-eyebrow"><?php echo esc_html( (string) ( $first_content['eyebrow'] ?? '' ) ); ?></p>
 
 				<ul class="hero-sugarcane__checklist" id="hero-checklist">
 					<?php foreach ( (array) ( $first_content['checklist'] ?? array() ) as $item ) : ?>
@@ -178,11 +178,11 @@ $format_hero_title = static function ( $title ) {
 						<?php foreach ( $slides as $idx => $slide ) :
 							$slide_media     = (array) ( $slide['media'] ?? array() );
 							$slide_type      = (string) ( $slide_media['type'] ?? 'image' );
-							$slide_img       = UrlHelper::resolve( (string) ( $slide_media['src'] ?? $slide_media['poster'] ?? 'assets/images/sugarcane/hero_juice.jpg' ) );
-							$slide_video     = (string) ( $slide_media['video'] ?? ( 'video' === $slide_type ? $slide_media['src'] : '' ) );
+							$slide_img       = UrlHelper::resolve( (string) ( $slide_media['src'] ?? ( $slide_media['poster'] ?? '' ) ) );
+							$slide_video     = (string) ( $slide_media['video'] ?? ( 'video' === $slide_type ? ( $slide_media['src'] ?? '' ) : '' ) );
 							$slide_video_url = '' !== $slide_video ? UrlHelper::resolve( $slide_video ) : '';
-							$slide_alt       = (string) ( $slide_media['alt'] ?? 'Cane House Sugarcane' );
 							$slide_content   = (array) ( $slide['content'] ?? array() );
+							$slide_alt       = (string) ( $slide_media['alt'] ?? ( $slide_content['title'] ?? '' ) );
 							$is_video        = 'video' === $slide_type || '' !== $slide_video_url;
 						?>
 							<div class="hero-carousel-slide<?php echo 0 === $idx ? ' is-active' : ''; ?>" 
@@ -202,14 +202,14 @@ $format_hero_title = static function ( $title ) {
 					</div>
 
 					<!-- Bottom-Right Carousel Navigation Dots -->
-					<div class="hero-carousel-dots" id="hero-dots" role="tablist" aria-label="<?php esc_attr_e( 'Slide Indicators', 'vintagesoul' ); ?>">
+					<div class="hero-carousel-dots" id="hero-dots" role="tablist" aria-label="Slide Indicators">
 						<?php foreach ( $slides as $idx => $slide ) : ?>
 							<button type="button" 
 									class="hero-carousel-dot<?php echo 0 === $idx ? ' is-active' : ''; ?>" 
 									data-index="<?php echo esc_attr( (string) $idx ); ?>"
 									role="tab"
 									aria-selected="<?php echo 0 === $idx ? 'true' : 'false'; ?>"
-									aria-label="<?php echo esc_attr( sprintf( __( 'Slide %d', 'vintagesoul' ), $idx + 1 ) ); ?>">
+									aria-label="Slide <?php echo esc_attr( (string) ( $idx + 1 ) ); ?>">
 							</button>
 						<?php endforeach; ?>
 					</div>

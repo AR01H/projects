@@ -1,7 +1,10 @@
 {
-    "tag": "Partner With Us",
-    "title": "FRANCHISE &amp; <em>Stall Partnerships</em>",
+    "tag": "Business Opportunity",
+    "title": "BECOME A <em>Franchise Partner</em>",
     "sub": "Own a profitable, turnkey sugarcane juice business with full brand training and farm supply support.",
+    "gallery_ribbon": "OUR OUTLETS & MACHINERY",
+    "steps_ribbon": "HOW TO JOIN THE CANE FAMILY",
+    "reviews_ribbon": "PARTNER SUCCESS STORIES",
     "pillars": [
         {
             "icon": "stall",
@@ -61,6 +64,10 @@
     ],
     "cta": {
         "title": "REQUEST YOUR FRANCHISE PROSPECTUS",
-        "text": "Join the UK's fastest-growing fresh sugarcane juice movement. Limited territorial rights available for 2025."
+        "text": "Join the UK's fastest-growing fresh sugarcane juice movement. Limited territorial rights available for 2025.",
+        "buttons": [
+            { "label": "EXPLORE FRANCHISE DETAILS ✦", "route": "franchise", "style": "primary" },
+            { "label": "TALK TO PARTNERSHIPS", "route": "contact", "style": "outline" }
+        ]
     }
 }

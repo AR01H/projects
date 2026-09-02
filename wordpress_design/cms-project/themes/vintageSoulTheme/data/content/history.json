@@ -244,45 +244,116 @@
     },
 
     "uses": {
-        "tag": "One Plant, Every Purpose",
-        "title": "Uses Of <em>Sugarcane</em>",
-        "sub": "From whole-plant nutrition to zero-waste circular products, sugarcane is among nature's most versatile botanical gifts.",
+        "tag": "The Whole-Cane Zero-Waste Ecosystem",
+        "title": "FROM TRADITION TO BIOFUEL: <em>The Versatile Cane</em>",
+        "sub": "Sugarcane is one of nature's most extraordinary renewable crops. Almost zero percent goes to waste — every single part from sweet nectar to fibrous stalk fuels civilization.",
+        "categories": [
+            "All Applications",
+            "Tradition & Culture",
+            "Food, Juice & Sweeteners",
+            "Renewable Energy & Biofuels",
+            "Eco-Materials & Packaging",
+            "Agriculture & Soil Health"
+        ],
         "items": [
             {
-                "title": "Food & Beverages",
-                "desc": "Fresh cold-pressed cane juice, handcrafted natural refreshments, and culinary syrups.",
+                "id": "tradition",
+                "category": "Tradition & Culture",
+                "title": "Sacred Rituals & Harvest Celebrations",
+                "desc": "For millennia, raw sugarcane stalks have formed the auspicious centerpiece of harvest festivals across Asia and the Tropics — from Thai & Indian harvest celebrations (Pongal, Lohri, Chhath Puja) to traditional wedding blessing mandaps symbolising eternal prosperity and sweet beginnings.",
+                "icon": "star",
+                "tag": "Sacred Heritage",
+                "impact": "6,000+ Years Tradition",
+                "fact": "Ancient Vedic hymns refer to sugarcane as 'Ikshu', the divine plant of happiness and celebratory vitality.",
+                "image": "assets/images/sugarcane/story_moments.jpg"
+            },
+            {
+                "id": "cold-press",
+                "category": "Food, Juice & Sweeteners",
+                "title": "Raw Cold-Pressed Botanical Elixir",
+                "desc": "Freshly extracted through food-grade rollers without thermal pasteurization or chemical additives. Delivers an immediate flood of raw bioavailable electrolytes, natural sucrose, active enzymes, and cooling cellular hydration.",
                 "icon": "drink",
-                "tag": "Primary"
+                "tag": "Living Nutrition",
+                "impact": "100% Unrefined Juice",
+                "fact": "Carries a low glycemic index (~43) because its natural sucrose is bound to living plant polyphenols.",
+                "image": "assets/images/sugarcane/hero_juice.jpg"
             },
             {
-                "title": "Natural Sweetener",
-                "desc": "Unrefined artisan jaggery, raw turbinado crystals, and whole mineral-rich molasses.",
+                "id": "jaggery",
+                "category": "Food, Juice & Sweeteners",
+                "title": "Artisanal Jaggery & Molasses (Gur)",
+                "desc": "Simmered in wide iron vats over wood fires to create unrefined whole cane sugar, jaggery, and blackstrap molasses. Unlike white refined sugar, whole jaggery preserves iron, potassium, magnesium, and essential trace minerals.",
                 "icon": "sugarcane",
-                "tag": "Traditional"
+                "tag": "Natural Sweetener",
+                "impact": "Rich in Bio-Iron",
+                "fact": "Traditional Ayurvedic practitioners prescribe warm jaggery to cleanse the respiratory tract and soothe the lungs.",
+                "image": "assets/images/sugarcane/stacks.jpg"
             },
             {
-                "title": "Medicinal & Ayurveda",
-                "desc": "Hydrating electrolyte elixir celebrated in Eastern botanical wellness traditions.",
-                "icon": "leaf",
-                "tag": "Wellness"
-            },
-            {
-                "title": "Biofuel & Energy",
-                "desc": "Renewable sugarcane bio-ethanol delivering clean green sustainable power.",
+                "id": "biofuel",
+                "category": "Renewable Energy & Biofuels",
+                "title": "Green Bio-Ethanol & Clean Automotive Fuel",
+                "desc": "Fermenting sugarcane molasses yields high-purity bio-ethanol used worldwide as a clean, high-octane biofuel. It displaces fossil fuels, slashing greenhouse gas emissions by up to 90% compared to conventional petroleum gasoline.",
                 "icon": "growth",
-                "tag": "Eco-Fuel"
+                "tag": "Zero-Carbon Fuel",
+                "impact": "90% Lower CO2 Emissions",
+                "fact": "Brazil's sugarcane ethanol fleet has prevented over 600 million tons of carbon emissions since 2003.",
+                "image": "assets/images/sugarcane/sugarcane_stalks_etching.jpg"
             },
             {
-                "title": "Livestock Fodder",
-                "desc": "Nutrient-dense green cane leaves and tops providing high-energy organic cattle feed.",
-                "icon": "plant",
-                "tag": "Agricultural"
+                "id": "biomass",
+                "category": "Renewable Energy & Biofuels",
+                "title": "Biomass Cogeneration & Clean Grid Electricity",
+                "desc": "After extracting the juice, the dry fibrous cane stalks (bagasse) are fed into high-efficiency cogeneration boilers. This generates clean thermal steam and green electricity that powers the entire mill and exports surplus renewable power to local town grids.",
+                "icon": "flame",
+                "tag": "Biomass Power",
+                "impact": "Self-Powering Mills",
+                "fact": "A standard modern sugarcane facility generates 100% of its own energy with excess power fed to public utilities.",
+                "image": "assets/images/sugarcane/stacks.jpg"
             },
             {
-                "title": "Bagasse & Fibre",
-                "desc": "Biodegradable eco-packaging, tableware, and pulp paper from residual plant fibres.",
+                "id": "bagasse-packaging",
+                "category": "Eco-Materials & Packaging",
+                "title": "100% Compostable Bagasse Tableware & Packaging",
+                "desc": "Crushed bagasse fiber is thermo-formed into sturdy, grease-resistant food containers, bowls, cups, and takeaway boxes. They are 100% plastic-free, PFAS-free, and fully biodegrade in backyard compost within 60 to 90 days.",
                 "icon": "machine",
-                "tag": "Zero Waste"
+                "tag": "Zero Single-Use Plastic",
+                "impact": "Composts in 60 Days",
+                "fact": "Replaces petroleum-based Styrofoam and plastic containers with a renewable byproduct that returns to the soil.",
+                "image": "assets/images/sugarcane/story_moments.jpg"
+            },
+            {
+                "id": "tree-free-paper",
+                "category": "Eco-Materials & Packaging",
+                "title": "Tree-Free Paper & Natural Cardboard",
+                "desc": "Because sugarcane stalk fibers are rich in high-tensile cellulose, they make exquisite, silky unbleached paper and corrugated packaging without cutting down a single forest tree. Saves millions of old-growth trees every year.",
+                "icon": "leaf",
+                "tag": "Forest Conservation",
+                "impact": "Saves Forest Trees",
+                "fact": "Sugarcane reaches maturity in 12 months compared to 20–30 years for softwood pulp trees.",
+                "image": "assets/images/sugarcane/sugarcane_stalks_etching.jpg"
+            },
+            {
+                "id": "pressmud-fertilizer",
+                "category": "Agriculture & Soil Health",
+                "title": "Pressmud Bio-Fertiliser & Soil Conditioner",
+                "desc": "The mineral-rich residue filtered during juice clarification is composted with organic matter into 'Pressmud' bio-fertiliser. Packed with phosphorus, calcium, and beneficial soil microbes, it revitalizes agricultural soils naturally.",
+                "icon": "plant",
+                "tag": "Soil Regeneration",
+                "impact": "Restores Earth Microbiome",
+                "fact": "Pressmud acts as an organic moisture retainer, reducing irrigation water requirements by up to 25%.",
+                "image": "assets/images/sugarcane/hero_juice.jpg"
+            },
+            {
+                "id": "bioplastics",
+                "category": "Eco-Materials & Packaging",
+                "title": "Plant-Based Biopolymers & Bio-PE",
+                "desc": "Sugarcane ethanol can be synthesized into Bio-based Polyethylene (Green PE), a renewable biopolymer identical in performance to traditional plastics but made from 100% atmospheric carbon captured by the growing plant.",
+                "icon": "shield",
+                "tag": "Next-Gen Polymers",
+                "impact": "Carbon-Negative Resin",
+                "fact": "For every kilogram of green sugarcane plastic produced, over 3 kg of atmospheric CO2 is permanently sequestered.",
+                "image": "assets/images/sugarcane/stacks.jpg"
             }
         ],
         "image": "assets/images/sugarcane/stacks.jpg",
@@ -345,6 +416,16 @@
         "tag": "Nature's Electrolyte Elixir",
         "title": "The Mineral <em>Alchemy</em> Of Cane",
         "sub": "Unlike refined white sugar which is chemically stripped of all nutrients, 100% raw cold-pressed cane juice is an unrefined whole-plant tonic rich in vital electrolytes.",
+        "spotlight": {
+            "badge": "RAW BOTANICAL SCIENCE",
+            "title": "100% LIVING PLANT WATER",
+            "metrics": [
+                { "val": "420", "unit": "mg", "label": "Bio-Potassium per 330ml" },
+                { "val": "~43", "unit": "", "label": "Low Glycemic Index (GI)" },
+                { "val": "0%", "unit": "", "label": "Refined Sugar or Syrups" }
+            ],
+            "summary": "Unlike processed table sugar that causes rapid insulin spikes, raw sugarcane delivers organic glucose and fructose naturally bound to bioavailable plant minerals, phenolic flavonoids, and soluble fibers for sustained cellular hydration."
+        },
         "minerals": [
             { "symbol": "K", "name": "Potassium", "amount": "420 mg", "benefit": "Restores intracellular electrolyte balance and supports cardiovascular endurance." },
             { "symbol": "Mg", "name": "Magnesium", "amount": "65 mg", "benefit": "Eases muscular tension, accelerates recovery, and aids nervous system calm." },
@@ -409,7 +490,12 @@
     },
 
     "closing": {
+        "tag": "The Cane House Legacy",
         "title": "The Sweetest Story Ever Told",
-        "sub": "Sugarcane is more than a crop. It is a legacy. A gift from nature. A symbol of life. At The Cane House, we honour this timeless sweetness, and bring it to you - fresh, pure, and full of goodness."
+        "sub": "Sugarcane is more than a crop. It is a legacy. A gift from nature. A symbol of life. At The Cane House, we honour this timeless sweetness, and bring it to you - fresh, pure, and full of goodness.",
+        "buttons": [
+            { "label": "VISIT THE CANE HOUSE", "route": "home", "style": "primary" },
+            { "label": "SPEAK WITH US", "route": "contact", "style": "outline" }
+        ]
     }
 }

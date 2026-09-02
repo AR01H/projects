@@ -1,6 +1,6 @@
 <?php
 /**
- * VintageSoulTheme - Single Blog Article View
+ * VintageSoulTheme - Single Blog Article View with Sticky Editorial Sidebar
  */
 
 use VintageSoul\Controllers\SingleController;
@@ -37,99 +37,125 @@ get_header();
 		View::component(
 			'subpage-hero/subpage-hero',
 			array(
-				'id'    => 'article-hero',
-				'tag'   => '✦ ' . $cat_name . ' ✦',
-				'title' => get_the_title(),
-				'sub'   => 'By ' . $author_name . ' • ' . get_the_date( 'j F Y' ) . ' • ' . (int) ( $data['reading_time'] ?? 4 ) . ' min read',
-				'image' => 'assets/images/backgrounds/pure_sugarcane_forest_trees_engraving.jpg',
+				'id'          => 'article-hero',
+				'tag'         => '✦ ' . $cat_name . ' ✦',
+				'title'       => get_the_title(),
+				'sub'         => get_the_date( 'j F Y' ) . ' • ' . (int) ( $data['reading_time'] ?? 4 ) . ' min read',
+				'image'       => 'assets/images/backgrounds/pure_sugarcane_forest_trees_engraving.jpg',
+				'share_url'   => $permalink,
+				'share_title' => $post_title,
 			)
 		);
 		?>
 
-		<div class="section">
-			<div class="container single-article-view">
-				<?php if ( $thumb_url ) : ?>
-					<div class="single-article__featured-img frame--ornate">
-						<img src="<?php echo esc_url( $thumb_url ); ?>" alt="<?php the_title_attribute(); ?>">
-					</div>
-				<?php endif; ?>
+		<div class="section single-article-section paper-rough">
+			<div class="container single-article-layout">
+				
+				<!-- ═══════════ MAIN ARTICLE COLUMN ═══════════ -->
+				<div class="single-article-main-col">
+					
+					<article class="single-article-card frame--ornate" id="post-<?php the_ID(); ?>">
+						
+						<?php if ( $thumb_url ) : ?>
+							<div class="single-article__featured-img frame--ornate">
+								<img src="<?php echo esc_url( $thumb_url ); ?>" alt="<?php the_title_attribute(); ?>">
+							</div>
+						<?php endif; ?>
 
-				<!-- Social Sharing Bar -->
-				<div class="article-social-share-bar">
-					<span class="share-label"><?php esc_html_e( 'SHARE THIS CHRONICLE:', 'vintagesoul' ); ?></span>
-					<div class="share-buttons">
-						<a class="share-btn share-btn--whatsapp" href="https://api.whatsapp.com/send?text=<?php echo rawurlencode( $post_title . ' ' . $permalink ); ?>" target="_blank" rel="noopener" aria-label="Share on WhatsApp">
-							<?php echo IconHelper::render( 'whatsapp', '#ffffff', 14 ); // phpcs:ignore ?>
-							<span>WhatsApp</span>
-						</a>
-						<a class="share-btn share-btn--email" href="mailto:?subject=<?php echo rawurlencode( $post_title ); ?>&body=<?php echo rawurlencode( 'Read this chronicle on The Cane House: ' . $permalink ); ?>" aria-label="Share via Email">
-							<?php echo IconHelper::render( 'mail', '#ffffff', 14 ); // phpcs:ignore ?>
-							<span>Email</span>
-						</a>
-					</div>
-				</div>
-
-				<article class="single-article__content" id="post-<?php the_ID(); ?>">
-					<?php the_content(); ?>
-				</article>
-
-				<!-- Article Navigation Bar -->
-				<div class="single-article__nav-bar" style="margin-top: 36px; text-align: center;">
-					<a href="<?php echo esc_url( RouteService::url( 'blog' ) ?: home_url( '/blog' ) ); ?>" class="btn btn--secondary-vintage" style="font-size:12px; padding:10px 24px;">
-						<span>← ALL CHRONICLES</span>
-					</a>
-				</div>
-
-				<!-- Related Posts Section -->
-				<?php
-				$related_posts = get_posts(
-					array(
-						'post_type'      => 'post',
-						'post_status'    => 'publish',
-						'posts_per_page' => 2,
-						'post__not_in'   => array( $post_id ),
-					)
-				);
-				if ( ! empty( $related_posts ) ) :
-				?>
-					<div class="related-chronicles-box" style="margin-top: 50px;">
-						<h3 style="font-family:'Cinzel',serif; font-size:20px; color:#172b15; text-align:center; text-transform:uppercase; margin-bottom:24px; letter-spacing:0.06em;">
-							<?php esc_html_e( 'MORE CHRONICLES FROM THE CANE HOUSE', 'vintagesoul' ); ?>
-						</h3>
-						<div class="search-results-grid">
-							<?php foreach ( $related_posts as $r_post ) :
-								$r_thumb = get_the_post_thumbnail_url( $r_post->ID, 'medium' ) ?: UrlHelper::resolve( 'assets/images/sugarcane/story_moments.jpg' );
-							?>
-								<article class="search-result-card frame--rough-cut">
-									<a class="search-result-card__media" href="<?php echo esc_url( get_permalink( $r_post ) ); ?>">
-										<img src="<?php echo esc_url( $r_thumb ); ?>" alt="<?php echo esc_attr( get_the_title( $r_post ) ); ?>" loading="lazy">
-										<span class="search-result-card__type-badge">ARTICLE</span>
-									</a>
-									<div class="search-result-card__body">
-										<h4 class="search-result-card__title" style="font-size:16px;">
-											<a href="<?php echo esc_url( get_permalink( $r_post ) ); ?>"><?php echo esc_html( get_the_title( $r_post ) ); ?></a>
-										</h4>
-										<p class="search-result-card__excerpt" style="font-size:13.5px;">
-											<?php echo esc_html( wp_trim_words( $r_post->post_excerpt ?: $r_post->post_content, 18, '...' ) ); ?>
-										</p>
-										<div class="search-result-card__footer">
-											<a class="search-result-card__link" href="<?php echo esc_url( get_permalink( $r_post ) ); ?>">
-												<span>READ CHRONICLE</span>
-												<span class="link-arrow">→</span>
-											</a>
-										</div>
-									</div>
-								</article>
-							<?php endforeach; ?>
+						<!-- Article Content with Rich Editorial Hierarchy -->
+						<div class="single-article__content entry-content">
+							<?php the_content(); ?>
 						</div>
-					</div>
-				<?php endif; ?>
 
-				<?php if ( comments_open() || get_comments_number() ) : ?>
-					<div style="margin-top:40px;">
-						<?php comments_template(); ?>
+					</article>
+
+					<!-- Comments section hidden for now -->
+					<?php if ( false && ( comments_open() || get_comments_number() ) ) : ?>
+						<div class="single-article-comments-wrap">
+							<?php comments_template(); ?>
+						</div>
+					<?php endif; ?>
+
+				</div>
+
+				<!-- ═══════════ STICKY EDITORIAL SIDEBAR (Laptop / Desktop) ═══════════ -->
+				<aside class="single-article__sidebar">
+					<div class="single-article__sidebar-sticky">
+						
+						<!-- Sidebar Widget 1: Related / Recent Chronicles -->
+						<div class="sidebar-widget frame--ornate">
+							<div class="sidebar-widget__header">
+								<span class="sidebar-widget__badge">✦ DISCOVER ✦</span>
+								<h3 class="sidebar-widget__title"><?php esc_html_e( 'RELATED CHRONICLES', 'vintagesoul' ); ?></h3>
+							</div>
+							<div class="sidebar-widget__list">
+								<?php
+								$sidebar_posts = get_posts(
+									array(
+										'post_type'      => 'post',
+										'post_status'    => 'publish',
+										'posts_per_page' => 4,
+										'post__not_in'   => array( $post_id ),
+									)
+								);
+								if ( ! empty( $sidebar_posts ) ) :
+									foreach ( $sidebar_posts as $sp ) :
+										$sp_thumb = get_the_post_thumbnail_url( $sp->ID, 'thumbnail' ) ?: UrlHelper::resolve( 'assets/images/sugarcane/story_moments.jpg' );
+									?>
+										<a href="<?php echo esc_url( get_permalink( $sp ) ); ?>" class="sidebar-post-item">
+											<div class="sidebar-post-item__thumb">
+												<img src="<?php echo esc_url( $sp_thumb ); ?>" alt="<?php echo esc_attr( get_the_title( $sp ) ); ?>" loading="lazy">
+											</div>
+											<div class="sidebar-post-item__meta">
+												<span class="sidebar-post-item__date"><?php echo esc_html( get_the_date( 'j M Y', $sp ) ); ?></span>
+												<h4 class="sidebar-post-item__title"><?php echo esc_html( get_the_title( $sp ) ); ?></h4>
+											</div>
+										</a>
+									<?php
+									endforeach;
+								else :
+									?>
+									<p class="sidebar-empty-msg"><?php esc_html_e( 'Stay tuned for more stories.', 'vintagesoul' ); ?></p>
+								<?php endif; ?>
+							</div>
+						</div>
+
+						<!-- Sidebar Widget 2: Explore Topics -->
+						<?php
+						$categories = get_categories( array( 'hide_empty' => true ) );
+						if ( ! empty( $categories ) ) :
+						?>
+							<div class="sidebar-widget frame--ornate">
+								<div class="sidebar-widget__header">
+									<h3 class="sidebar-widget__title"><?php esc_html_e( 'EXPLORE TOPICS', 'vintagesoul' ); ?></h3>
+								</div>
+								<div class="sidebar-category-tags">
+									<?php foreach ( $categories as $cat ) : ?>
+										<a href="<?php echo esc_url( get_category_link( $cat->term_id ) ); ?>" class="sidebar-cat-tag">
+											<span class="cat-tag__name"><?php echo esc_html( $cat->name ); ?></span>
+											<span class="cat-tag__count"><?php echo esc_html( $cat->count ); ?></span>
+										</a>
+									<?php endforeach; ?>
+								</div>
+							</div>
+						<?php endif; ?>
+
+						<!-- Sidebar Widget 4: Concierge & Quick Links -->
+						<div class="sidebar-widget sidebar-widget--concierge frame--ornate">
+							<div class="sidebar-widget__header">
+								<h3 class="sidebar-widget__title"><?php esc_html_e( 'LONDON PARLOUR', 'vintagesoul' ); ?></h3>
+							</div>
+							<p class="sidebar-concierge__text">
+								<?php esc_html_e( 'Have questions about our botanical drinks or franchise opportunities?', 'vintagesoul' ); ?>
+							</p>
+							<a href="<?php echo esc_url( RouteService::url( 'contact' ) ?: home_url( '/contact' ) ); ?>" class="btn btn--secondary-vintage" style="width: 100%; text-align: center;">
+								<span>GET IN TOUCH</span>
+							</a>
+						</div>
+
 					</div>
-				<?php endif; ?>
+				</aside>
+
 			</div>
 		</div>
 	<?php endwhile; ?>

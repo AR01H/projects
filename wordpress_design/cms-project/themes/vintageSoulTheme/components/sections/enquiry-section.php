@@ -2,16 +2,25 @@
 
 defined( 'ABSPATH' ) || exit;
 
+use VintageSoul\DataProviders\JsonFileProvider;
 use VintageSoul\Services\RouteService;
 use VintageSoul\Support\UrlHelper;
 
-$tag   = (string) ( $tag ?? 'Get In Touch' );
-$title = (string) ( $title ?? 'DIRECT ENQUIRY' );
-$eyebrow = (string) ( $eyebrow ?? 'Have a question or special request?' );
-$body  = (string) ( $body ?? 'We are here to help! Whether you need live sugarcane pressing for your wedding, festival stall bookings, or fresh delivery, our team is ready.' );
-$cta   = (array) ( $cta ?? array( 'label' => 'MAKE AN ENQUIRY', 'route' => 'contact' ) );
-$image = (string) ( $image ?? 'assets/images/sugarcane/hero_juice.jpg' );
-$img_url = UrlHelper::resolve( $image );
+$enquiry_data = (array) ( JsonFileProvider::read( 'data/content/enquiry.json' ) ?? array() );
+
+$tag           = (string) ( $tag ?? ( $enquiry_data['tag'] ?? '' ) );
+$title         = (string) ( $title ?? ( $enquiry_data['title'] ?? '' ) );
+$eyebrow       = (string) ( $eyebrow ?? ( $enquiry_data['eyebrow'] ?? '' ) );
+$body          = (string) ( $body ?? ( $enquiry_data['body'] ?? '' ) );
+$cta           = (array) ( $cta ?? ( $enquiry_data['cta'] ?? array() ) );
+$secondary_cta = (array) ( $secondary_cta ?? ( $enquiry_data['secondary_cta'] ?? array() ) );
+$image         = (string) ( $image ?? ( $enquiry_data['image'] ?? '' ) );
+$pills         = (array) ( $enquiry_data['pills'] ?? array() );
+$img_url       = '' !== $image ? UrlHelper::resolve( $image ) : '';
+
+if ( '' === $title && '' === $body ) {
+	return;
+}
 ?>
 <section class="section section--enquiry enquiry-vintage" id="enquiry">
 	<div class="container enquiry-vintage__container">
@@ -19,42 +28,53 @@ $img_url = UrlHelper::resolve( $image );
 			
 			<!-- Left Column: Content -->
 			<div class="enquiry-vintage__content">
-				<span class="vintage-ribbon-tag vintage-ribbon-tag--gold">
-					<span><?php echo esc_html( $tag ); ?></span>
-				</span>
-				<h2 class="enquiry-vintage__title"><?php echo esc_html( $title ); ?></h2>
-				<p class="section-eyebrow"><?php echo esc_html( $eyebrow ); ?></p>
-				<p class="enquiry-vintage__body"><?php echo esc_html( $body ); ?></p>
+				<?php if ( '' !== $tag ) : ?>
+					<span class="vintage-ribbon-tag vintage-ribbon-tag--gold">
+						<span><?php echo esc_html( $tag ); ?></span>
+					</span>
+				<?php endif; ?>
+				<?php if ( '' !== $title ) : ?>
+					<h2 class="enquiry-vintage__title"><?php echo esc_html( $title ); ?></h2>
+				<?php endif; ?>
+				<?php if ( '' !== $eyebrow ) : ?>
+					<p class="section-eyebrow"><?php echo esc_html( $eyebrow ); ?></p>
+				<?php endif; ?>
+				<?php if ( '' !== $body ) : ?>
+					<p class="enquiry-vintage__body"><?php echo esc_html( $body ); ?></p>
+				<?php endif; ?>
 				
 				<div class="enquiry-vintage__actions">
-					<a class="btn btn--primary-vintage btn--order-now" href="<?php echo esc_url( RouteService::url( (string) ( $cta['route'] ?? 'contact' ) ) ); ?>">
-						<span class="btn__icon">✉️</span>
-						<span><?php echo esc_html( (string) ( $cta['label'] ?? 'MAKE AN ENQUIRY' ) ); ?></span>
-					</a>
-					<a class="btn btn--secondary-vintage btn--outline-vintage" href="<?php echo esc_url( RouteService::url( 'contact' ) ); ?>">
-						<span class="btn__icon">📞</span>
-						<span>CALL US DIRECTLY</span>
-					</a>
+					<?php if ( ! empty( $cta['label'] ) ) : ?>
+						<a class="btn btn--primary-vintage btn--order-now" href="<?php echo esc_url( RouteService::url( (string) ( $cta['route'] ?? 'contact' ) ) ); ?>">
+							<span class="btn__icon">✉️</span>
+							<span><?php echo esc_html( (string) $cta['label'] ); ?></span>
+						</a>
+					<?php endif; ?>
+					<?php if ( ! empty( $secondary_cta['label'] ) ) : ?>
+						<a class="btn btn--secondary-vintage btn--outline-vintage" href="<?php echo esc_url( RouteService::url( (string) ( $secondary_cta['route'] ?? 'contact' ) ) ); ?>">
+							<span class="btn__icon">📞</span>
+							<span><?php echo esc_html( (string) $secondary_cta['label'] ); ?></span>
+						</a>
+					<?php endif; ?>
 				</div>
 
-				<div class="enquiry-vintage__quick-contact">
-					<span class="quick-contact-pill">📍 London, UK</span>
-					<span class="quick-contact-pill">⏱️ Response within 24h</span>
-					<span class="quick-contact-pill">🎪 Events & Markets</span>
-				</div>
+				<?php if ( ! empty( $pills ) ) : ?>
+					<div class="enquiry-vintage__quick-contact">
+						<?php foreach ( $pills as $pill ) : ?>
+							<span class="quick-contact-pill"><?php echo esc_html( (string) $pill ); ?></span>
+						<?php endforeach; ?>
+					</div>
+				<?php endif; ?>
 			</div>
 
-			<!-- Right Column: Framed Vintage Cut Image -->
-			<div class="enquiry-vintage__media-wrap">
-				<div class="enquiry-vintage__photo-frame">
-					<img src="<?php echo esc_url( $img_url ); ?>" alt="<?php echo esc_attr( $title ); ?>" loading="lazy" class="enquiry-vintage__img hover-zoom">
-					<div class="enquiry-vintage__stamp stamp-circle">
-						<span class="stamp-circle__line1">EST. 2014</span>
-						<span class="stamp-circle__line2">DIRECT</span>
-						<span class="stamp-circle__line3">ENQUIRY</span>
+			<!-- Right Column: Visual Frame -->
+			<?php if ( '' !== $img_url ) : ?>
+				<div class="enquiry-vintage__media">
+					<div class="enquiry-vintage__photo frame--ornate">
+						<img src="<?php echo esc_url( $img_url ); ?>" alt="<?php echo esc_attr( $title ); ?>" loading="lazy">
 					</div>
 				</div>
-			</div>
+			<?php endif; ?>
 
 		</div>
 	</div>

@@ -17,25 +17,20 @@ use VintageSoul\Support\View;
 
 $certs_data = (array) ( JsonFileProvider::read( 'data/content/certifications.json' ) ?? array() );
 
-$title = (string) ( $title ?? ( $certs_data['title'] ?? 'Quality / Certifications' ) );
-$body  = (string) ( $body ?? ( $certs_data['body'] ?? 'Certified and verified by leading food safety and quality institutions across the UK and internationally.' ) );
-$items = (array) ( $items ?? ( $certs_data['items'] ?? array() ) );
+$tag          = (string) ( $tag ?? ( $certs_data['tag'] ?? '' ) );
+$title        = (string) ( $title ?? ( $certs_data['title'] ?? '' ) );
+$body         = (string) ( $body ?? ( $certs_data['body'] ?? '' ) );
+$items        = (array) ( $items ?? ( $certs_data['items'] ?? array() ) );
+$bg_watermark = (string) ( $bg_watermark ?? ( $certs_data['bg_watermark'] ?? '' ) );
 
 if ( empty( $items ) ) {
-	$items = (array) ( $certs_data['items'] ?? array() );
+	return;
 }
 
 // Split into slides of 4 cards each (2x2 grid per page)
-$slides       = array_chunk( $items, 4 );
-$bg_watermark = (string) ( $bg_watermark ?? ( $certs_data['bg_watermark'] ?? 'assets/images/backgrounds/sugarcane_farm_plantation_engraving.jpg' ) );
-
+$slides         = array_chunk( $items, 4 );
 $first_item     = ! empty( $items[0] ) ? (array) $items[0] : array();
-$first_seal_img = (string) ( $first_item['seal_img'] ?? 'assets/images/partners/food-hygiene-5.svg' );
-$first_checklist = (array) ( $first_item['checklist'] ?? array(
-	'FSA 5-Star Maximum Hygiene Score',
-	'Full Food Safety Management Compliance',
-	'Regular Unannounced Independent Audits',
-) );
+$first_seal_img = (string) ( $first_item['seal_img'] ?? '' );
 ?>
 <section class="section section--certs certs-vintage paper-rough" id="certifications">
 	<?php if ( '' !== $bg_watermark ) : ?>
@@ -48,15 +43,15 @@ $first_checklist = (array) ( $first_item['checklist'] ?? array(
 		View::component(
 			'section-header/section-header',
 			array(
-				'tag'    => (string) ( $certs_data['tag'] ?? 'Trust & Standards' ),
-				'title'  => (string) ( $certs_data['title'] ?? 'FOOD SAFETY REGISTERED &amp; <em>Fully Compliant</em>' ),
+				'tag'    => $tag,
+				'title'  => $title,
 				'sub'    => $body,
 				'ribbon' => true,
 			)
 		);
 		?>
 
-		<!-- 2. Main Balanced 2-Column Stage (Left: 2x2 Grid with multi-page support • Right: Live Linked Master Accreditation Card) -->
+		<!-- 2. Main Balanced 2-Column Stage -->
 		<div class="certs-showcase-stage" id="certs-showcase-stage">
 			
 			<!-- Left Side: Paginated Accreditation Cards Grid -->
@@ -70,11 +65,11 @@ $first_checklist = (array) ( $first_item['checklist'] ?? array(
 									$code       = (string) ( $item['code'] ?? 'CERT' );
 									$c_name     = (string) ( $item['title'] ?? '' );
 									$c_desc     = (string) ( $item['desc'] ?? '' );
-									$c_auth     = (string) ( $item['authority'] ?? 'Verified Standard' );
-									$c_icon     = (string) ( $item['icon'] ?? '⭐' );
-									$c_badge    = (string) ( $item['badge'] ?? 'OFFICIALLY VERIFIED' );
-									$c_action   = (string) ( $item['action_label'] ?? 'UK CERTIFIED ARTISAN JUICE' );
-									$c_seal_img = UrlHelper::resolve( (string) ( $item['seal_img'] ?? 'assets/images/partners/master-accreditation-seal.svg' ) );
+									$c_auth     = (string) ( $item['authority'] ?? '' );
+									$c_icon     = (string) ( $item['icon'] ?? 'star' );
+									$c_badge    = (string) ( $item['badge'] ?? '' );
+									$c_action   = (string) ( $item['action_label'] ?? '' );
+									$c_seal_img = UrlHelper::resolve( (string) ( $item['seal_img'] ?? '' ) );
 									$c_chk      = (array) ( $item['checklist'] ?? array() );
 								?>
 									<button type="button" 
@@ -100,12 +95,16 @@ $first_checklist = (array) ( $first_item['checklist'] ?? array(
 
 										<!-- Right Details -->
 										<div class="cert-h-card__details">
-											<span class="cert-h-card__auth">
-												<span class="cert-h-card__check">✓</span>
-												<?php echo esc_html( $c_auth ); ?>
-											</span>
+											<?php if ( '' !== $c_auth ) : ?>
+												<span class="cert-h-card__auth">
+													<span class="cert-h-card__check">✓</span>
+													<?php echo esc_html( $c_auth ); ?>
+												</span>
+											<?php endif; ?>
 											<h3 class="cert-h-card__title"><?php echo esc_html( $c_name ); ?></h3>
-											<p class="cert-h-card__desc"><?php echo esc_html( $c_desc ); ?></p>
+											<?php if ( '' !== $c_desc ) : ?>
+												<p class="cert-h-card__desc"><?php echo esc_html( $c_desc ); ?></p>
+											<?php endif; ?>
 										</div>
 
 									</button>
@@ -115,18 +114,19 @@ $first_checklist = (array) ( $first_item['checklist'] ?? array(
 					<?php endforeach; ?>
 				</div>
 
-				<!-- Slider Navigation Dots (If 5, 6, 8 or more items exist) -->
+				<!-- Carousel Navigation Controls -->
 				<?php if ( count( $slides ) > 1 ) : ?>
-					<div class="certs-carousel-dots" id="certs-carousel-dots" aria-label="Certifications navigation">
-						<?php foreach ( $slides as $s_i => $s_data ) : ?>
-							<button type="button" 
-									class="certs-dot <?php echo 0 === $s_i ? 'is-active' : ''; ?>" 
-									data-target-slide="<?php echo esc_attr( (string) $s_i ); ?>"
-									aria-label="<?php echo esc_attr( 'Page ' . ( $s_i + 1 ) ); ?>">
-							</button>
-						<?php endforeach; ?>
+					<div class="certs-carousel-nav">
+						<button type="button" class="certs-nav-btn certs-nav-btn--prev" id="certs-prev-btn" aria-label="Previous Certifications">‹</button>
+						<div class="certs-nav-dots" id="certs-dots">
+							<?php foreach ( $slides as $s_idx => $s_items ) : ?>
+								<button type="button" class="certs-nav-dot<?php echo 0 === $s_idx ? ' is-active' : ''; ?>" data-slide-target="<?php echo esc_attr( (string) $s_idx ); ?>" aria-label="Page <?php echo esc_attr( (string) ( $s_idx + 1 ) ); ?>"></button>
+							<?php endforeach; ?>
+						</div>
+						<button type="button" class="certs-nav-btn certs-nav-btn--next" id="certs-next-btn" aria-label="Next Certifications">›</button>
 					</div>
 				<?php endif; ?>
+
 			</div>
 
 			<!-- Right Side: Dynamically Linked Master Certification Box -->
@@ -135,15 +135,14 @@ $first_checklist = (array) ( $first_item['checklist'] ?? array(
 					
 					<!-- Top Wax Seal Stamp -->
 					<div class="certs-featured-logo-card__seal" id="cert-master-badge-box">
-						<span class="certs-seal-icon" id="cert-master-badge-icon">🏆</span>
-						<span class="certs-seal-text" id="cert-master-badge-text"><?php echo esc_html( (string) ( $first_item['badge'] ?? 'VERIFIED' ) ); ?></span>
+						<span class="certs-seal-text" id="cert-master-badge-text"><?php echo esc_html( (string) ( $first_item['badge'] ?? '' ) ); ?></span>
 					</div>
 
 					<!-- Master Accreditation Certifying Seal Image Container -->
 					<div class="certs-featured-logo-card__image-wrap" id="cert-master-image-wrap">
 						<img id="cert-master-img" 
 							src="<?php echo esc_url( UrlHelper::resolve( $first_seal_img ) ); ?>" 
-							alt="<?php echo esc_attr( (string) ( $first_item['title'] ?? 'Accreditation Seal' ) ); ?>" 
+							alt="<?php echo esc_attr( (string) ( $first_item['title'] ?? '' ) ); ?>" 
 							class="certs-featured-logo-card__img" 
 							loading="lazy">
 					</div>
@@ -151,10 +150,10 @@ $first_checklist = (array) ( $first_item['checklist'] ?? array(
 					<!-- Title & Subtitle Banner -->
 					<div class="certs-featured-logo-card__footer">
 						<h3 class="certs-featured-logo-card__title" id="cert-master-title">
-							<?php echo esc_html( (string) ( $first_item['title'] ?? 'Hygiene Standards' ) ); ?>
+							<?php echo esc_html( (string) ( $first_item['title'] ?? '' ) ); ?>
 						</h3>
 						<span class="certs-featured-logo-card__action-text" id="cert-master-action">
-							<?php echo esc_html( (string) ( $first_item['action_label'] ?? 'THE CANE HOUSE FOOD HYGIENE CERTIFIED' ) ); ?>
+							<?php echo esc_html( (string) ( $first_item['action_label'] ?? '' ) ); ?>
 						</span>
 					</div>
 
@@ -184,8 +183,8 @@ $first_checklist = (array) ( $first_item['checklist'] ?? array(
 		var title = card.getAttribute('data-cert-title') || '';
 		var authority = card.getAttribute('data-cert-authority') || '';
 		var desc = card.getAttribute('data-cert-desc') || '';
-		var badge = card.getAttribute('data-cert-badge') || 'VERIFIED';
-		var action = card.getAttribute('data-cert-action') || 'UK CERTIFIED ARTISAN JUICE';
+		var badge = card.getAttribute('data-cert-badge') || '';
+		var action = card.getAttribute('data-cert-action') || '';
 		var sealImg = card.getAttribute('data-cert-seal-img') || '';
 		var checklistRaw = card.getAttribute('data-cert-checklist') || '';
 
@@ -234,7 +233,7 @@ $first_checklist = (array) ( $first_item['checklist'] ?? array(
 		var section = document.getElementById('certifications');
 		if (!section) return;
 
-		var dots = section.querySelectorAll('.certs-dot');
+		var dots = section.querySelectorAll('.certs-nav-dot');
 		var slides = section.querySelectorAll('.certs-slide');
 		var prevBtn = document.getElementById('certs-prev-btn');
 		var nextBtn = document.getElementById('certs-next-btn');
@@ -277,7 +276,7 @@ $first_checklist = (array) ( $first_item['checklist'] ?? array(
 		dots.forEach(function(dot) {
 			dot.addEventListener('click', function(e) {
 				e.preventDefault();
-				var targetIdx = parseInt(dot.getAttribute('data-target-slide') || '0', 10);
+				var targetIdx = parseInt(dot.getAttribute('data-slide-target') || '0', 10);
 				goToSlide(targetIdx);
 			});
 		});

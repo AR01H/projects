@@ -4,19 +4,25 @@ defined( 'ABSPATH' ) || exit;
 
 use VintageSoul\Services\SettingsService;
 
-$title   = (string) ( $title ?? "LET'S CONNECT" );
+$title   = (string) ( $title ?? '' );
 $address = (string) ( $address ?? SettingsService::address() );
 $phone   = (string) ( $phone ?? SettingsService::phone() );
 $email   = (string) ( $email ?? SettingsService::email() );
-$website = (string) ( $website ?? 'www.thecanehouse.com' );
-$hours   = (string) ( $hours ?? 'Mon - Sun 9:00 AM - 9:00 PM' );
-$socials = (array) ( $socials ?? array() );
+$website = (string) ( $website ?? SettingsService::website() );
+$hours   = (string) ( $hours ?? SettingsService::opening_hours() );
+$socials = (array) ( $socials ?? SettingsService::social_links() );
+
+if ( '' === $title && '' === $address && '' === $phone ) {
+	return;
+}
 ?>
 <section class="section section--connect connect-vintage" id="connect">
 	<div class="container container--narrow connect-vintage__container frame--ornate">
-		<div class="connect-vintage__header">
-			<h2 class="connect-vintage__title">— CONNECT WITH <em>The Cane House</em> —</h2>
-		</div>
+		<?php if ( '' !== $title ) : ?>
+			<div class="connect-vintage__header">
+				<h2 class="connect-vintage__title"><?php echo wp_kses_post( $title ); ?></h2>
+			</div>
+		<?php endif; ?>
 
 		<ul class="connect-vintage__list">
 			<?php if ( '' !== $address ) : ?>
@@ -58,7 +64,7 @@ $socials = (array) ( $socials ?? array() );
 					$s_url  = (string) ( $soc['url'] ?? '#' );
 				?>
 					<a class="social-circle social-circle--<?php echo esc_attr( $s_icon ); ?>" href="<?php echo esc_url( $s_url ); ?>" target="_blank" rel="noopener noreferrer">
-						<span class="social-circle__name"><?php echo esc_html( ucfirst( $s_icon ) ); ?></span>
+						<span class="social-circle__icon"><?php echo esc_html( strtoupper( substr( $s_icon, 0, 2 ) ) ); ?></span>
 					</a>
 				<?php endforeach; ?>
 			</div>

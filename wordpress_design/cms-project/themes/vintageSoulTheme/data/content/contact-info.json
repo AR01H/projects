@@ -1,15 +1,32 @@
 {
-    "_source": "Extracted + genericized from the reference design's Home 'Let's Connect' compact info card (some_styles/canehouse/priority) - distinct from locations.json (multi-location finder with maps); this is a single compact card of core contact details for a one-location or primary-location display.",
-
     "title": "Let's Connect",
-    "address": "Sutton, London, United Kingdom",
+    "tagline": "Freshly Pressed. Naturally Refreshing. Always Made With Care.",
     "phone": "+44 7770 461 999",
+    "whatsapp": "+44 7770 461 999",
+    "whatsapp_url": "https://wa.me/447770461999",
     "email": "thecanehouseuk@gmail.com",
+    "address": "Sutton, London, United Kingdom",
     "website": "www.thecanehouse.com",
-    "hours": "Mon - Sun: 9:00 AM - 9:00 PM",
+    "hours": "Monday – Sunday: 9:00 AM – 9:00 PM",
+    "logo": "assets/images/logo/logotext.png",
+    "logo_footer": "assets/images/logo/logo.png",
     "socials": [
-        { "icon": "facebook", "url": "https://facebook.com/thecanehouse" },
-        { "icon": "instagram", "url": "https://instagram.com/thecanehouse" },
-        { "icon": "whatsapp", "url": "https://wa.me/447770461999" }
+        { "name": "Instagram", "icon": "instagram", "url": "https://www.instagram.com/thecanehouseuk" },
+        { "name": "Facebook", "icon": "facebook", "url": "https://www.facebook.com/thecanehouseuk" },
+        { "name": "WhatsApp", "icon": "whatsapp", "url": "https://wa.me/447770461999" },
+        { "name": "YouTube", "icon": "youtube", "url": "https://www.youtube.com/@thecanehouse" },
+        { "name": "TikTok", "icon": "tiktok", "url": "https://www.tiktok.com/@thecanehouse" }
+    ],
+    "social_links": {
+        "instagram": "https://www.instagram.com/thecanehouseuk",
+        "facebook": "https://www.facebook.com/thecanehouseuk",
+        "whatsapp": "https://wa.me/447770461999",
+        "youtube": "https://www.youtube.com/@thecanehouse",
+        "tiktok": "https://www.tiktok.com/@thecanehouse"
+    },
+    "preheader": [
+        "Freshly Pressed",
+        "Naturally Refreshing",
+        "Always Made With Care"
     ]
 }

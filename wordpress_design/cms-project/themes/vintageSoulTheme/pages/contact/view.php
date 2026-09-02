@@ -14,10 +14,10 @@ $event_bar     = (array) ( $data['event_bar'] ?? array() );
 $enquiry_types = (array) ( $data['enquiry_types'] ?? array() );
 $faqs          = (array) ( $data['faqs'] ?? array() );
 
-$phone   = (string) ( $contact_info['phone'] ?? '+44 7770 461 999' );
-$email   = (string) ( $contact_info['email'] ?? 'thecanehouseuk@gmail.com' );
-$address = (string) ( $contact_info['address'] ?? 'Sutton, London, United Kingdom' );
-$hours   = (string) ( $contact_info['hours'] ?? 'Monday – Sunday: 9:00 AM – 9:00 PM' );
+$phone   = (string) ( $contact_info['phone'] ?? '' );
+$email   = (string) ( $contact_info['email'] ?? '' );
+$address = (string) ( $contact_info['address'] ?? '' );
+$hours   = (string) ( $contact_info['hours'] ?? '' );
 $socials = (array) ( $contact_info['socials'] ?? array() );
 ?>
 
@@ -29,10 +29,10 @@ $socials = (array) ( $contact_info['socials'] ?? array() );
 		'subpage-hero/subpage-hero',
 		array(
 			'id'    => 'contact-hero',
-			'tag'   => (string) ( $hero['tag'] ?? "Let's Connect" ),
-			'title' => 'GET IN <em>Touch</em>',
-			'sub'   => (string) ( $hero['sub'] ?? 'Have questions, want to book us for an event, or looking to franchise? We would love to hear from you.' ),
-			'image' => 'assets/images/backgrounds/pure_sugarcane_forest_trees_engraving.jpg',
+			'tag'   => (string) ( $hero['tag'] ?? '' ),
+			'title' => (string) ( $hero['title'] ?? '' ),
+			'sub'   => (string) ( $hero['sub'] ?? '' ),
+			'image' => (string) ( $hero['image'] ?? '' ),
 		)
 	);
 	?>
@@ -111,41 +111,61 @@ $socials = (array) ( $contact_info['socials'] ?? array() );
 					<div class="side-info-card frame--ornate-sm">
 						<h3 class="side-info-card__title">🌿 DIRECT CONTACT DETAILS</h3>
 						<ul class="side-info-list">
-							<li class="side-info-item">
-								<span class="side-info-item__icon"><?php echo IconHelper::get( 'phone', '#172b15', 18 ); // phpcs:ignore ?></span>
-								<div class="contact-card-v2__info">
-									<span class="contact-card-v2__label">PHONE / WHATSAPP</span>
-									<a href="tel:<?php echo esc_attr( preg_replace( '/[^\d+]/', '', $phone ) ); ?>"><?php echo esc_html( $phone ); ?></a>
-								</div>
-							</li>
-							<li class="side-info-item">
-								<span class="side-info-item__icon"><?php echo IconHelper::get( 'mail', '#172b15', 18 ); // phpcs:ignore ?></span>
-								<div class="side-info-item__text">
-									<strong>Email Us:</strong>
-									<a href="mailto:<?php echo esc_attr( $email ); ?>"><?php echo esc_html( $email ); ?></a>
-								</div>
-							</li>
-							<li class="side-info-item">
-								<span class="side-info-item__icon"><?php echo IconHelper::get( 'stall', '#172b15', 18 ); // phpcs:ignore ?></span>
-								<div class="side-info-item__text">
-									<strong>Main Hub & Stall:</strong>
-									<span><?php echo esc_html( $address ); ?></span>
-								</div>
-							</li>
-							<li class="side-info-item">
-								<span class="side-info-item__icon"><?php echo IconHelper::get( 'growth', '#172b15', 18 ); // phpcs:ignore ?></span>
-								<div class="side-info-item__text">
-									<strong>Opening Hours:</strong>
-									<span><?php echo esc_html( $hours ); ?></span>
-								</div>
-							</li>
+							<?php if ( '' !== $phone ) : ?>
+								<li class="side-info-item">
+									<span class="side-info-item__icon"><?php echo IconHelper::get( 'phone', '#172b15', 18 ); // phpcs:ignore ?></span>
+									<div class="contact-card-v2__info">
+										<span class="contact-card-v2__label">DIRECT PHONE</span>
+										<a href="tel:<?php echo esc_attr( preg_replace( '/[^\d+]/', '', $phone ) ); ?>"><?php echo esc_html( $phone ); ?></a>
+									</div>
+								</li>
+							<?php endif; ?>
+							<?php
+							$wa_num = (string) ( $contact_info['whatsapp'] ?? $phone );
+							$wa_url = (string) ( $contact_info['whatsapp_url'] ?? \VintageSoul\Services\SettingsService::whatsapp_url() );
+							if ( '' !== $wa_num ) : ?>
+								<li class="side-info-item">
+									<span class="side-info-item__icon"><?php echo IconHelper::get( 'phone', '#172b15', 18 ); // phpcs:ignore ?></span>
+									<div class="contact-card-v2__info">
+										<span class="contact-card-v2__label">WHATSAPP CHAT</span>
+										<a href="<?php echo esc_url( $wa_url ); ?>" target="_blank" rel="noopener"><?php echo esc_html( $wa_num ); ?></a>
+									</div>
+								</li>
+							<?php endif; ?>
+							<?php if ( '' !== $email ) : ?>
+								<li class="side-info-item">
+									<span class="side-info-item__icon"><?php echo IconHelper::get( 'mail', '#172b15', 18 ); // phpcs:ignore ?></span>
+									<div class="side-info-item__text">
+										<strong>Email Us:</strong>
+										<a href="mailto:<?php echo esc_attr( $email ); ?>"><?php echo esc_html( $email ); ?></a>
+									</div>
+								</li>
+							<?php endif; ?>
+							<?php if ( '' !== $address ) : ?>
+								<li class="side-info-item">
+									<span class="side-info-item__icon"><?php echo IconHelper::get( 'stall', '#172b15', 18 ); // phpcs:ignore ?></span>
+									<div class="side-info-item__text">
+										<strong>Main Hub &amp; Stall:</strong>
+										<span><?php echo esc_html( $address ); ?></span>
+									</div>
+								</li>
+							<?php endif; ?>
+							<?php if ( '' !== $hours ) : ?>
+								<li class="side-info-item">
+									<span class="side-info-item__icon"><?php echo IconHelper::get( 'growth', '#172b15', 18 ); // phpcs:ignore ?></span>
+									<div class="side-info-item__text">
+										<strong>Opening Hours:</strong>
+										<span><?php echo esc_html( $hours ); ?></span>
+									</div>
+								</li>
+							<?php endif; ?>
 						</ul>
 					</div>
 
 					<!-- Card 2: Live Sugarcane Bar Event Banner -->
 					<div class="event-callout-card">
-						<h3 class="event-callout-card__title">🎪 BOOK OUR LIVE <em>Cane Bar</em></h3>
-						<p class="event-callout-card__sub"><?php echo esc_html( (string) ( $event_bar['sub'] ?? 'Bring authentic freshly pressed sugarcane juice to your wedding, birthday, corporate event, or festival.' ) ); ?></p>
+						<h3 class="event-callout-card__title"><?php echo wp_kses_post( (string) ( $event_bar['title'] ?? '🎪 BOOK OUR LIVE <em>Cane Bar</em>' ) ); ?></h3>
+						<p class="event-callout-card__sub"><?php echo esc_html( (string) ( $event_bar['sub'] ?? '' ) ); ?></p>
 						<ul class="event-callout-card__list">
 							<?php foreach ( (array) ( $event_bar['highlights'] ?? array() ) as $hl ) : ?>
 								<li><span class="check-icon">✓</span> <?php echo esc_html( (string) $hl ); ?></li>

@@ -1,22 +1,30 @@
 <?php
 /**
  * Contact Form Section (embeddable on Home page)
- * Renders a compact side-by-side contact form + quick info card.
+ * Renders a compact side-by-side contact form + quick info card with distinct Phone and WhatsApp items.
  */
 
+use VintageSoul\DataProviders\JsonFileProvider;
 use VintageSoul\Services\SettingsService;
 use VintageSoul\Support\UrlHelper;
 
 defined( 'ABSPATH' ) || exit;
 
-$phone = (string) ( $phone ?? SettingsService::phone() );
-$email = (string) ( $email ?? SettingsService::email() );
+$contact_data = (array) ( JsonFileProvider::read( 'data/content/contact-page.json' ) ?? array() );
+$c_info       = (array) ( $contact_data['contact_info'] ?? array() );
+
+$phone        = (string) ( $phone ?? ( $c_info['phone'] ?? SettingsService::phone() ) );
+$whatsapp     = (string) ( $whatsapp ?? ( $c_info['whatsapp'] ?? SettingsService::whatsapp() ) );
+$whatsapp_url = (string) ( $whatsapp_url ?? ( $c_info['whatsapp_url'] ?? SettingsService::whatsapp_url() ) );
+$email        = (string) ( $email ?? ( $c_info['email'] ?? SettingsService::email() ) );
+$address      = (string) ( $address ?? ( $c_info['address'] ?? SettingsService::address() ) );
+$hours        = (string) ( $hours ?? ( $c_info['hours'] ?? SettingsService::opening_hours() ) );
 ?>
 
 <section class="section contact-home-section" id="connect">
 	<div class="container">
-		<h2 class="events-vintage__title">GET IN TOUCH</h2>
-		<p class="events-vintage__sub" style="text-align:center; margin-bottom:24px;">Have a question, want to book an event, or interested in franchising? Drop us a message.</p>
+		<h2 class="events-vintage__title"><?php echo esc_html( (string) ( $contact_data['hero']['title'] ?? 'GET IN TOUCH' ) ); ?></h2>
+		<p class="events-vintage__sub" style="text-align:center; margin-bottom:24px;"><?php echo esc_html( (string) ( $contact_data['hero']['sub'] ?? 'Have questions, want to book us for an event, or looking to franchise? We\'d love to hear from you.' ) ); ?></p>
 
 		<div class="contact-home-grid">
 			<!-- Left: Form -->
@@ -28,7 +36,7 @@ $email = (string) ( $email ?? SettingsService::email() );
 							<input class="form-input" type="text" id="home-contact-name" name="name" placeholder="e.g. Ramesh Patel" required>
 						</div>
 						<div class="form-group">
-							<label class="form-label" for="home-contact-phone">PHONE / WHATSAPP <span class="required">*</span></label>
+							<label class="form-label" for="home-contact-phone">PHONE NUMBER <span class="required">*</span></label>
 							<input class="form-input" type="tel" id="home-contact-phone" name="phone" placeholder="+44 7770 000 000" required>
 						</div>
 					</div>
@@ -41,10 +49,9 @@ $email = (string) ( $email ?? SettingsService::email() );
 						<div class="form-group">
 							<label class="form-label" for="home-contact-type">ENQUIRY TYPE</label>
 							<select class="form-select" id="home-contact-type" name="enquiry_type">
-								<option value="event">Event / Live Cane Bar</option>
-								<option value="franchise">Franchise Partnership</option>
-								<option value="bulk">Wholesale / Bulk Order</option>
-								<option value="general">General Enquiry</option>
+								<?php foreach ( (array) ( $contact_data['enquiry_types'] ?? array() ) as $eq ) : ?>
+									<option value="<?php echo esc_attr( (string) ( $eq['value'] ?? 'general' ) ); ?>"><?php echo esc_html( (string) ( $eq['label'] ?? '' ) ); ?></option>
+								<?php endforeach; ?>
 							</select>
 						</div>
 					</div>
@@ -84,42 +91,65 @@ $email = (string) ( $email ?? SettingsService::email() );
 						<h3 class="contact-info-card__title">QUICK CONTACT</h3>
 					</div>
 					<div class="contact-info-items">
-						<div class="contact-info-item">
-							<div class="contact-info-item__icon-box">
-								<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f6d599" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+						<?php if ( '' !== $phone ) : ?>
+							<div class="contact-info-item">
+								<div class="contact-info-item__icon-box">
+									<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f6d599" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+								</div>
+								<div class="contact-info-item__body">
+									<span class="contact-info-item__label">DIRECT PHONE</span>
+									<a class="contact-info-item__val" href="tel:<?php echo esc_attr( preg_replace( '/[^\d+]/', '', $phone ) ); ?>"><?php echo esc_html( $phone ); ?></a>
+								</div>
 							</div>
-							<div class="contact-info-item__body">
-								<span class="contact-info-item__label">CALL &amp; WHATSAPP</span>
-								<a class="contact-info-item__val" href="tel:<?php echo esc_attr( preg_replace( '/[^\d+]/', '', $phone ) ); ?>"><?php echo esc_html( $phone ); ?></a>
+						<?php endif; ?>
+
+						<?php if ( '' !== $whatsapp ) : ?>
+							<div class="contact-info-item">
+								<div class="contact-info-item__icon-box">
+									<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f6d599" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+								</div>
+								<div class="contact-info-item__body">
+									<span class="contact-info-item__label">WHATSAPP CHAT</span>
+									<a class="contact-info-item__val" href="<?php echo esc_url( $whatsapp_url ); ?>" target="_blank" rel="noopener"><?php echo esc_html( $whatsapp ); ?></a>
+								</div>
 							</div>
-						</div>
-						<div class="contact-info-item">
-							<div class="contact-info-item__icon-box">
-								<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f6d599" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+						<?php endif; ?>
+
+						<?php if ( '' !== $email ) : ?>
+							<div class="contact-info-item">
+								<div class="contact-info-item__icon-box">
+									<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f6d599" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+								</div>
+								<div class="contact-info-item__body">
+									<span class="contact-info-item__label">EMAIL ENQUIRIES</span>
+									<a class="contact-info-item__val" href="mailto:<?php echo esc_attr( $email ); ?>"><?php echo esc_html( $email ); ?></a>
+								</div>
 							</div>
-							<div class="contact-info-item__body">
-								<span class="contact-info-item__label">EMAIL ENQUIRIES</span>
-								<a class="contact-info-item__val" href="mailto:<?php echo esc_attr( $email ); ?>"><?php echo esc_html( $email ); ?></a>
+						<?php endif; ?>
+
+						<?php if ( '' !== $address ) : ?>
+							<div class="contact-info-item">
+								<div class="contact-info-item__icon-box">
+									<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f6d599" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+								</div>
+								<div class="contact-info-item__body">
+									<span class="contact-info-item__label">LOCATION</span>
+									<span class="contact-info-item__text"><?php echo esc_html( $address ); ?></span>
+								</div>
 							</div>
-						</div>
-						<div class="contact-info-item">
-							<div class="contact-info-item__icon-box">
-								<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f6d599" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+						<?php endif; ?>
+
+						<?php if ( '' !== $hours ) : ?>
+							<div class="contact-info-item">
+								<div class="contact-info-item__icon-box">
+									<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f6d599" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+								</div>
+								<div class="contact-info-item__body">
+									<span class="contact-info-item__label">OPENING HOURS</span>
+									<span class="contact-info-item__text"><?php echo esc_html( $hours ); ?></span>
+								</div>
 							</div>
-							<div class="contact-info-item__body">
-								<span class="contact-info-item__label">LOCATION</span>
-								<span class="contact-info-item__text">Sutton, Greater London, UK</span>
-							</div>
-						</div>
-						<div class="contact-info-item">
-							<div class="contact-info-item__icon-box">
-								<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f6d599" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-							</div>
-							<div class="contact-info-item__body">
-								<span class="contact-info-item__label">OPENING HOURS</span>
-								<span class="contact-info-item__text">Mon – Sun: 9:00 AM – 9:00 PM</span>
-							</div>
-						</div>
+						<?php endif; ?>
 					</div>
 				</div>
 
@@ -128,8 +158,8 @@ $email = (string) ( $email ?? SettingsService::email() );
 						<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f6d599" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m4 10 8-7 8 7-2 11H6L4 10Z"/><path d="M12 3v18"/><path d="M8 21v-7a4 4 0 0 1 8 0v7"/></svg>
 					</span>
 					<div>
-						<strong>BOOK OUR LIVE CANE BAR</strong>
-						<span>Weddings · Birthdays · Festivals · Corporate</span>
+						<strong><?php echo esc_html( (string) ( $contact_data['event_bar']['title'] ?? 'BOOK OUR LIVE CANE BAR' ) ); ?></strong>
+						<span><?php echo esc_html( (string) ( $contact_data['event_bar']['sub'] ?? 'Weddings · Birthdays · Festivals · Corporate' ) ); ?></span>
 					</div>
 				</div>
 

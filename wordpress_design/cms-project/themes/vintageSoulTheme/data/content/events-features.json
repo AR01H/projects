@@ -1,23 +1,74 @@
 {
-    "tag": "Events & Celebrations",
-    "title": "OUR EVENTS",
-    "sub": "Join us at our upcoming events and celebrations.",
-    "upcoming": [
-        { "icon": "🌿", "title": "SUGARCANE FESTIVAL", "desc": "A celebration of sweet traditions.", "date": "12 MAY 2025", "route": "events" },
-        { "icon": "👥", "title": "FARMER'S MEET 2025", "desc": "Connecting farmers, sharing progress.", "date": "25 MAY 2025", "route": "events" },
-        { "icon": "🍎", "title": "JUICE & HEALTH", "desc": "Health benefits of sugarcane juice.", "date": "05 JULY 2025", "route": "events" },
-        { "icon": "🎁", "title": "SPECIAL PACKAGES", "desc": "Exclusive offers at our events.", "date": "15 JUN 2025", "route": "events" }
+    "tag": "Live Stalls • Weddings • Private Galas",
+    "title": "EVENTS &amp; LIVE <em>Cane Bar Catering</em>",
+    "sub": "Bring the theatrical experience of freshly pressed sugarcane juice to your wedding, celebration, or corporate gala across London and the UK.",
+    "gallery_ribbon": "OUR LIVE EVENTS & MACHINERY",
+    "steps_ribbon": "HOW TO BOOK YOUR EVENT",
+    "reviews_ribbon": "CLIENT EXPERIENCES",
+    "pillars": [
+        {
+            "icon": "stall",
+            "title": "LIVE ON-SITE EXTRACTION",
+            "desc": "Fresh whole sugarcane stalks cold-pressed on-site in front of your guests within 30 seconds for theatrical aroma and taste."
+        },
+        {
+            "icon": "plant",
+            "title": "BESPOKE VINTAGE BAR SETUP",
+            "desc": "Hand-crafted rustic wooden bar stall with brass hardware, sugarcane stalk displays, and elegant botanical glassware."
+        },
+        {
+            "icon": "handshake",
+            "title": "CERTIFIED MASTER JUICERS",
+            "desc": "Uniformed, 5★ food hygiene-certified artisans who interact with guests and deliver impeccable hospitality."
+        },
+        {
+            "icon": "growth",
+            "title": "CUSTOM BOTANICAL CRAFT",
+            "desc": "Fresh crushed garden mint, fiery ginger, Sicilian lemon, Himalayan pink salt, and custom mocktails curated for your occasion."
+        }
     ],
     "gallery": [
-        { "image": "assets/images/sugarcane/story_moments.jpg", "title": "SUGARCANE FESTIVAL 2025", "date": "10 May 2025" },
-        { "image": "assets/images/sugarcane/stacks.jpg", "title": "FARMER'S MEET 2025", "date": "25 May 2025" },
-        { "image": "assets/images/sugarcane/hero_juice.jpg", "title": "JUICE & HEALTH TALK", "date": "5 Jun 2025" },
-        { "image": "assets/images/sugarcane/combo.jpg", "title": "SPECIAL OFFERS DAY", "date": "15 Jun 2025" }
+        { "image": "assets/images/sugarcane/hero_juice.jpg", "title": "Cold-Press Machine Extraction", "tag": "Live Pressing" },
+        { "image": "assets/images/gallery/stall_event_4.jpg", "title": "Vintage Wooden Live Bar Stall", "tag": "Rustic Bar Setup" },
+        { "image": "assets/images/sugarcane/combo.jpg", "title": "Botanical Flavors & Citrus Bar", "tag": "Fresh Infusions" },
+        { "image": "assets/images/sugarcane/story_moments.jpg", "title": "Theatrical Pouring Moments", "tag": "Guest Experience" }
     ],
-    "highlights": [
-        { "image": "assets/images/sugarcane/story_moments.jpg", "label": "Live Demos & Workshops" },
-        { "image": "assets/images/sugarcane/hero_juice.jpg", "label": "Expert Talks & Discussions" },
-        { "image": "assets/images/sugarcane/stacks.jpg", "label": "Fun Activities for All Ages" },
-        { "image": "assets/images/sugarcane/combo.jpg", "label": "Special Offers & Discounts" }
-    ]
+    "steps": [
+        { "num": "01", "title": "CHOOSE YOUR OCCASION", "desc": "Weddings, private milestone celebrations, corporate galas, or school festivals." },
+        { "num": "02", "title": "CUSTOMISE MENU & GUEST COUNT", "desc": "Select botanical flavour infusions, mocktails, glassware, and serving duration." },
+        { "num": "03", "title": "LIVE ON-SITE THEATRE", "desc": "Our master juicers arrive early to set up the rustic bar and live cold-press machinery." },
+        { "num": "04", "title": "ENJOY UNFORGETTABLE POURS", "desc": "Delight your guests with ice-cold, frothy sugarcane juice pressed live in 30 seconds." }
+    ],
+    "reviews": [
+        {
+            "quote": "The Cane House live bar was the biggest hit at our wedding reception! Guests are still raving about the ginger-mint sugarcane juice.",
+            "author": "Priya & Rahul M.",
+            "city": "Wedding Reception · London",
+            "rating": "★★★★★",
+            "image": "assets/images/gallery/stall_event_4.jpg"
+        },
+        {
+            "quote": "Super professional team, immaculate setup, and deliciously refreshing juice. Perfect addition to our summer corporate gala.",
+            "author": "David K.",
+            "city": "Corporate Summer Gala · London",
+            "rating": "★★★★★",
+            "image": "assets/images/sugarcane/story_moments.jpg"
+        },
+        {
+            "quote": "Brought back so many childhood memories. Freshly pressed right in front of us. Highly recommended for any celebration!",
+            "author": "Ananya S.",
+            "city": "50th Birthday Celebration · Surrey",
+            "rating": "★★★★★",
+            "image": "assets/images/sugarcane/combo.jpg"
+        }
+    ],
+    "cta": {
+        "title": "REQUEST YOUR LIVE CANE BAR SETUP",
+        "text": "Dates fill up fast for weekends and summer wedding seasons across London and Surrey. Reserve your live bar experience today.",
+        "buttons": [
+            { "label": "EXPLORE ALL PACKAGES ✦", "route": "events", "style": "primary" },
+            { "label": "CHAT ON WHATSAPP", "route": "whatsapp", "style": "secondary", "icon": "whatsapp" },
+            { "label": "REQUEST A QUOTE", "route": "contact", "style": "outline" }
+        ]
+    }
 }

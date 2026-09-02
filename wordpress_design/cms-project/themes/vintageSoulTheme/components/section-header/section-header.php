@@ -2,7 +2,7 @@
 /**
  * VintageSoulTheme - Standardized Section Header Master System
  * Strictly enforces exactly 3 clean lines across EVERY section on the site:
- * 1. Tag Ribbon / Eyebrow Tag
+ * 1. Tag Ribbon (with vintage ribbon styling)
  * 2. Main Title (with italic serif emphasis)
  * 3. Subtitle / Description (readable body text)
  */
@@ -16,7 +16,7 @@ $sub     = isset( $sub ) ? trim( (string) $sub ) : '';
 $body    = isset( $body ) ? trim( (string) $body ) : '';
 $align   = ( isset( $align ) && 'left' === $align ) ? ' section-header--left' : '';
 $variant = ( isset( $variant ) && 'dark' === $variant ) ? ' section-header--dark' : '';
-$ribbon  = ! empty( $ribbon );
+$ribbon  = ! isset( $ribbon ) || false !== $ribbon;
 
 // Exactly 1 description line (never stack 4th or 5th redundant lines)
 $description = '';

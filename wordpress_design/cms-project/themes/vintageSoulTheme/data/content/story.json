@@ -1,12 +1,14 @@
 {
-    "tag": "About Us",
-    "title": "OUR STORY",
+    "tag": "Our Heritage",
+    "title": "TRADITIONAL <em>Handcrafted Story</em>",
     "sub": "A Tradition With Deep Roots",
-    "body": "Started with a passion for bringing the authentic, traditional sugarcane juice experience to modern communities. Every stalk is carefully selected, pressed fresh, and served with pride.",
+    "body": "The Cane House brings that timeless tradition to Sutton and beyond. We source the finest sugarcane, press it fresh while you watch, and serve it with love.",
     "cta": {
         "label": "Discover Our Story",
         "route": "about"
     },
+    "pillars_tag": "Integrity in Every Drop",
+    "pillars_title": "FOUR PILLARS OF OUR <em>Craft</em>",
     "pillars": [
         { "icon": "hourglass", "label": "TRADITION", "note": "Handcrafted method passed down" },
         { "icon": "leaf", "label": "QUALITY", "note": "Freshly harvested cane" },

@@ -2,6 +2,9 @@
     "tag": "Fresh Orders & Bulk Supply",
     "title": "ORDER FRESH JUICE &amp; <em>Bulk Catering</em>",
     "sub": "Pressed fresh to order from premium whole sugarcane. Available for live takeaway, party kegs, and London home deliveries.",
+    "gallery_ribbon": "FRESH EXTRACTION & BOTTLING",
+    "wholesale_ribbon": "WHOLESALE & BULK SUPPLY FORMATS",
+    "reviews_ribbon": "BULK & EVENT CATERING REVIEWS",
     "gallery": [
         { "image": "assets/images/sugarcane/hero_juice.jpg", "title": "Fresh Cold Extraction", "tag": "Made to Order" },
         { "image": "assets/images/sugarcane/combo.jpg", "title": "Artisanal Flavor Blends", "tag": "Botanical Mix" },

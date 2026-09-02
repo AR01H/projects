@@ -11,6 +11,7 @@
  * - Ambient floating botanical shimmer & grain overlay
  * - Gold wave decorative bottom divider
  */
+use VintageSoul\Support\IconHelper;
 use VintageSoul\Support\UrlHelper;
 
 defined( 'ABSPATH' ) || exit;
@@ -19,8 +20,10 @@ $tag   = (string) ( $tag ?? '' );
 $title = (string) ( $title ?? '' );
 $sub   = (string) ( $sub ?? '' );
 $id    = (string) ( $id ?? 'subpage-hero' );
-$image = (string) ( $image ?? 'assets/images/backgrounds/pure_sugarcane_forest_trees_engraving.jpg' );
-$image_url  = UrlHelper::resolve( $image );
+$image = (string) ( $image ?? '' );
+$share_url   = (string) ( $share_url ?? '' );
+$share_title = (string) ( $share_title ?? $title );
+$image_url  = '' !== $image ? UrlHelper::resolve( $image ) : '';
 $wreath_url = UrlHelper::resolve( 'assets/images/decorative/cane-heart-wreath.png' );
 $gold_wave  = UrlHelper::resolve( 'assets/images/textures/border/gold-wave.svg' );
 
@@ -118,6 +121,23 @@ $format_subpage_title = static function( string $raw_title ): string {
 		<!-- Editorial Subtitle -->
 		<?php if ( '' !== $sub ) : ?>
 			<p class="common-subpage-hero__sub"><?php echo esc_html( $sub ); ?></p>
+		<?php endif; ?>
+
+		<!-- Hero Social Share Bar -->
+		<?php if ( '' !== $share_url ) : ?>
+			<div class="subpage-hero__share-bar">
+				<span class="subpage-hero__share-label"><?php esc_html_e( 'SHARE:', 'vintagesoul' ); ?></span>
+				<div class="subpage-hero__share-buttons">
+					<a class="hero-share-btn hero-share-btn--whatsapp" href="https://api.whatsapp.com/send?text=<?php echo rawurlencode( $share_title . ' ' . $share_url ); ?>" target="_blank" rel="noopener" aria-label="Share on WhatsApp">
+						<?php echo IconHelper::render( 'whatsapp', '#ffffff', 13 ); // phpcs:ignore ?>
+						<span>WhatsApp</span>
+					</a>
+					<a class="hero-share-btn hero-share-btn--email" href="mailto:?subject=<?php echo rawurlencode( $share_title ); ?>&body=<?php echo rawurlencode( 'Read this chronicle on The Cane House: ' . $share_url ); ?>" aria-label="Share via Email">
+						<?php echo IconHelper::render( 'mail', '#ffffff', 13 ); // phpcs:ignore ?>
+						<span>Email</span>
+					</a>
+				</div>
+			</div>
 		<?php endif; ?>
 
 	</div>

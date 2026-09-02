@@ -52,10 +52,14 @@
   width: 26px !important;
   height: 26px !important;
   display: block !important;
-  fill: none !important;
-  stroke: #f6d599 !important;
-  stroke-width: 1.8 !important;
-  transition: stroke 0.2s ease, transform 0.2s ease !important;
+  fill: #f6d599 !important;
+  stroke: none !important;
+  transition: fill 0.2s ease, transform 0.2s ease !important;
+}
+
+.floating-whatsapp-btn:hover .floating-whatsapp-icon svg {
+  fill: #ffffff !important;
+  transform: scale(1.05) !important;
 }
 
 .floating-whatsapp-btn:hover .floating-whatsapp-icon svg {

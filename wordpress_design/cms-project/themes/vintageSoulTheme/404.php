@@ -139,18 +139,7 @@ get_header();
         </div>
       </div>
 
-      <!-- VINTAGE ON-PAGE SEARCH BAR -->
-      <div class="vst-404-search-wrap">
-        <form role="search" method="get" class="vst-404-search-form" action="<?php echo esc_url( home_url( '/' ) ); ?>">
-          <div class="vst-404-search-input-group">
-            <span class="vst-404-search-icon" aria-hidden="true">🔍</span>
-            <input type="search" class="vst-404-search-field" placeholder="Search for wedding catering, drinks menu, franchise, health..." value="<?php echo get_search_query(); ?>" name="s" required>
-            <button type="submit" class="btn btn--primary-vintage vst-404-search-submit">
-              <span>FIND IT</span>
-            </button>
-          </div>
-        </form>
-      </div>
+
 
       <!-- POPULAR DESTINATION CARDS -->
       <div class="vst-404-nav-grid">
@@ -289,17 +278,36 @@ document.addEventListener('DOMContentLoaded', function() {
 /* Master Card with Authentic Vintage Rough Cut */
 .vst-404-card {
   position: relative !important;
+  border-radius: 8px !important;
+  padding: 56px 36px 40px !important;
+  text-align: center !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  filter: none !important;
+  -webkit-filter: none !important;
+}
+
+.vst-404-card > * {
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+.vst-404-card::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
   background: linear-gradient(135deg, #fdf8ef 0%, #f7e6ce 60%, #eed5b3 100%) !important;
   border: 1.5px solid #8e622d !important;
   border-radius: 8px !important;
-  padding: 56px 36px 40px !important;
   box-shadow: 
     inset 0 0 0 1.5px #caa06d,
     inset 0 1px 0 rgba(255, 255, 255, 0.8),
     0 16px 48px rgba(42, 26, 12, 0.28) !important;
-  text-align: center !important;
   filter: url(#rough-button-cut-sm) !important;
   -webkit-filter: url(#rough-button-cut-sm) !important;
+  z-index: 0 !important;
+  pointer-events: none !important;
 }
 
 /* Top Wax Seal */
@@ -436,8 +444,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 /* Interactive Mini-Box */
 .vst-404-interactive-box {
-  background: linear-gradient(135deg, #fdf8ee 0%, #f6e4cb 100%) !important;
-  border: 1.5px solid #8e622d !important;
+  position: relative !important;
   border-radius: 6px !important;
   padding: 16px 20px !important;
   margin: 0 auto 26px !important;
@@ -446,11 +453,32 @@ document.addEventListener('DOMContentLoaded', function() {
   flex-direction: column !important;
   align-items: center !important;
   gap: 12px !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  filter: none !important;
+  -webkit-filter: none !important;
+}
+
+.vst-404-interactive-box > * {
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+.vst-404-interactive-box::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  background: linear-gradient(135deg, #fdf8ee 0%, #f6e4cb 100%) !important;
+  border: 1.5px solid #8e622d !important;
+  border-radius: 6px !important;
   box-shadow: 
     inset 0 0 0 1px #caa06d,
     0 4px 14px rgba(42, 26, 12, 0.1) !important;
   filter: url(#rough-button-cut-sm) !important;
   -webkit-filter: url(#rough-button-cut-sm) !important;
+  z-index: 0 !important;
+  pointer-events: none !important;
 }
 
 .vst-404-interactive-box__content {
@@ -461,18 +489,18 @@ document.addEventListener('DOMContentLoaded', function() {
 }
 
 .vst-404-interactive-box__icon {
-  font-size: 28px !important;
+  font-size: 26px !important;
   flex-shrink: 0 !important;
 }
 
 .vst-404-interactive-box__text strong {
   display: block !important;
   font-family: 'Cinzel', serif !important;
-  font-size: 13px !important;
-  font-weight: 700 !important;
+  font-size: 13.5px !important;
+  font-weight: 800 !important;
   color: #172b15 !important;
-  letter-spacing: 0.06em !important;
-  text-transform: uppercase !important;
+  letter-spacing: 0.04em !important;
+  margin-bottom: 2px !important;
 }
 
 .vst-404-interactive-box__text span {
@@ -589,24 +617,48 @@ document.addEventListener('DOMContentLoaded', function() {
 }
 
 .vst-404-dest-card {
+  position: relative !important;
   display: flex !important;
   flex-direction: column !important;
   align-items: center !important;
   text-align: center !important;
   padding: 16px 14px !important;
-  background: linear-gradient(135deg, #fdf8ee 0%, #f6e4cb 100%) !important;
-  border: 1.5px solid #8e622d !important;
   border-radius: 6px !important;
   text-decoration: none !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  filter: none !important;
+  -webkit-filter: none !important;
+  transition: transform 0.25s ease !important;
+  box-sizing: border-box !important;
+}
+
+.vst-404-dest-card > * {
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+.vst-404-dest-card::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  border-radius: 6px !important;
+  background: linear-gradient(135deg, #fdf8ee 0%, #f6e4cb 100%) !important;
+  border: 1.5px solid #8e622d !important;
   box-shadow: inset 0 0 0 1px #caa06d, 0 3px 10px rgba(42, 26, 12, 0.08) !important;
   filter: url(#rough-button-cut-sm) !important;
   -webkit-filter: url(#rough-button-cut-sm) !important;
+  z-index: 0 !important;
+  pointer-events: none !important;
   transition: all 0.25s ease !important;
-  box-sizing: border-box !important;
 }
 
 .vst-404-dest-card:hover {
   transform: translateY(-3px) !important;
+}
+
+.vst-404-dest-card:hover::before {
   background: linear-gradient(135deg, #ffffff 0%, #faecd7 100%) !important;
   border-color: #caa06d !important;
   box-shadow: inset 0 0 0 1.5px #f6d599, 0 8px 20px rgba(142, 98, 45, 0.2) !important;

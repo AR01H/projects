@@ -105,7 +105,7 @@
 			close();
 		});
 
-		dom.on(drawer, 'click', '.mobile-nav__toggle', function () {
+		dom.on(drawer, 'click', '.mobile-nav__toggle, .mobile-nav__link--has-children', function () {
 			var item = this.closest('.mobile-nav__item');
 			if (!item) return;
 			var wasOpen = item.classList.contains('is-open');

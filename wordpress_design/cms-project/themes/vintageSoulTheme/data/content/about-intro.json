@@ -1,11 +1,48 @@
 {
-    "_source": "Extracted + genericized from the reference design's About page 'More Than Just A Crop' intro section (some_styles/canehouse/priority) - About's own intro block with 2 images, distinct from Home's intro.json ('More Than Just A Drink').",
-
     "tag": "The Beginning",
-    "title": "More Than Just A <em>Crop</em>",
-    "body": "What starts as a simple, humble plant becomes something people gather around, celebrate with, and remember for years to come. This is that story.",
-    "images": [
-        "https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=600&q=80",
-        "https://images.unsplash.com/photo-1444210971048-6130cf0c46cf?auto=format&fit=crop&w=600&q=80"
-    ]
+    "title": "MORE THAN JUST A <em>Crop</em>",
+    "sub": "A Tradition That Brings People Together",
+    "body": "What starts as a simple, humble plant becomes something people gather around, celebrate with, and remember for years to come. Every stalk is carefully selected, freshly cold-pressed before your eyes, and served pure with love — just as it has been done for generations.",
+    "media_image": "assets/images/sugarcane/story_moments.jpg",
+    "services_tag": "Our Core Services",
+    "services_title": "WHAT WE <em>Do & Serve</em>",
+    "services": [
+        {
+            "icon": "stall",
+            "title": "LIVE SUGARCANE BAR",
+            "desc": "Our signature live cold-pressing setup for weddings, birthdays, corporate events, and festivals. Fresh juice served before your guests' eyes.",
+            "btn_label": "BOOK NOW",
+            "btn_link": "contact"
+        },
+        {
+            "icon": "leaf",
+            "title": "FRESH JUICE STALL",
+            "desc": "Visit our permanent stall in Sutton for freshly pressed classic, lemon ginger, mint, masala, pineapple, and mix-fruit sugarcane juice.",
+            "btn_label": "VIEW MENU",
+            "btn_link": "/#our-drinks"
+        },
+        {
+            "icon": "handshake",
+            "title": "FRANCHISE PARTNERSHIP",
+            "desc": "Join The Cane House family. We offer end-to-end franchise support including training, branding, equipment, and ongoing mentorship.",
+            "btn_label": "LEARN MORE",
+            "btn_link": "/#franchise"
+        },
+        {
+            "icon": "growth",
+            "title": "WHOLESALE SUPPLY",
+            "desc": "Bulk fresh sugarcane juice supply for restaurants, cafes, and health food stores. Consistent quality, reliable delivery.",
+            "btn_label": "ENQUIRE",
+            "btn_link": "contact"
+        }
+    ],
+    "closing": {
+        "tag": "Taste The Tradition",
+        "title": "WANT TO TASTE THE <em>Tradition?</em>",
+        "sub": "Visit our stall in Sutton, London or book our live sugarcane bar for your next wedding, birthday, corporate event, or festival.",
+        "buttons": [
+            { "label": "BOOK AN EVENT", "route": "contact", "style": "primary" },
+            { "label": "ALL ABOUT CANE", "route": "history", "style": "outline" }
+        ]
+    }
 }

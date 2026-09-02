@@ -10,15 +10,20 @@ use VintageSoul\Support\View;
 
 $franchise_data = (array) ( JsonFileProvider::read( 'data/content/franchise-teaser.json' ) ?? array() );
 
-$tag   = (string) ( $tag ?? ( $franchise_data['tag'] ?? 'Partner With Us' ) );
-$title = (string) ( $title ?? ( $franchise_data['title'] ?? 'FRANCHISE &amp; <em>Stall Partnerships</em>' ) );
-$sub   = (string) ( $sub ?? ( $franchise_data['sub'] ?? 'Own a profitable, turnkey sugarcane juice business with full brand support.' ) );
+$tag   = (string) ( $tag ?? ( $franchise_data['tag'] ?? '' ) );
+$title = (string) ( $title ?? ( $franchise_data['title'] ?? '' ) );
+$sub   = (string) ( $sub ?? ( $franchise_data['sub'] ?? '' ) );
+
+$gallery_ribbon = (string) ( $franchise_data['gallery_ribbon'] ?? '' );
+$steps_ribbon   = (string) ( $franchise_data['steps_ribbon'] ?? '' );
+$reviews_ribbon = (string) ( $franchise_data['reviews_ribbon'] ?? '' );
 
 $franchise_pillars  = (array) ( $pillars ?? ( $franchise_data['pillars'] ?? array() ) );
 $franchise_gallery  = (array) ( $gallery ?? ( $franchise_data['gallery'] ?? array() ) );
 $franchise_steps    = (array) ( $steps ?? ( $franchise_data['steps'] ?? array() ) );
 $franchisee_reviews = (array) ( $reviews ?? ( $franchise_data['reviews'] ?? array() ) );
 $cta_box            = (array) ( $franchise_data['cta'] ?? array() );
+$cta_buttons        = (array) ( $cta_box['buttons'] ?? array() );
 ?>
 <section class="section section--franchise franchise-vintage-block torn-dark-block grain-dark" id="franchise">
 	<?php View::component( 'background/ambient-layer', array( 'variant' => 'dark', 'cane_positions' => array( 'top-left', 'bottom-right' ), 'bubble_count' => 12 ) ); ?>
@@ -29,8 +34,8 @@ $cta_box            = (array) ( $franchise_data['cta'] ?? array() );
 		View::component(
 			'section-header/section-header',
 			array(
-				'tag'     => 'Business Opportunity',
-				'title'   => 'BECOME A <em>Franchise Partner</em>',
+				'tag'     => $tag,
+				'title'   => $title,
 				'sub'     => $sub,
 				'variant' => 'dark',
 				'ribbon'  => true,
@@ -39,71 +44,102 @@ $cta_box            = (array) ( $franchise_data['cta'] ?? array() );
 		?>
 
 		<!-- 2. What We Provide / 4 Pillars Grid -->
-		<div class="franchise-pillars-grid">
-			<?php foreach ( $franchise_pillars as $pillar ) :
-				$icon_svg = IconHelper::get( $pillar['icon'], '#f6d599', 30 );
-			?>
-				<div class="franchise-pillar-card card--rough-cut-dark">
-					<span class="franchise-pillar-card__icon"><?php echo $icon_svg; // phpcs:ignore ?></span>
-					<h3 class="franchise-pillar-card__title"><?php echo esc_html( $pillar['title'] ); ?></h3>
-					<p class="franchise-pillar-card__desc"><?php echo esc_html( $pillar['desc'] ); ?></p>
-				</div>
-			<?php endforeach; ?>
-		</div>
+		<?php if ( ! empty( $franchise_pillars ) ) : ?>
+			<div class="franchise-pillars-grid">
+				<?php foreach ( $franchise_pillars as $pillar ) :
+					$icon_svg = IconHelper::get( (string) ( $pillar['icon'] ?? 'stall' ), '#f6d599', 30 );
+				?>
+					<div class="franchise-pillar-card card--rough-cut-dark">
+						<span class="franchise-pillar-card__icon"><?php echo $icon_svg; // phpcs:ignore ?></span>
+						<h3 class="franchise-pillar-card__title"><?php echo esc_html( (string) ( $pillar['title'] ?? '' ) ); ?></h3>
+						<p class="franchise-pillar-card__desc"><?php echo esc_html( (string) ( $pillar['desc'] ?? '' ) ); ?></p>
+					</div>
+				<?php endforeach; ?>
+			</div>
+		<?php endif; ?>
 
 		<!-- 3. Franchise Operations & Stalls Photo Gallery Stream (Left-to-Right) -->
-		<div class="vintage-ribbon-tag vintage-ribbon-tag--gold">
-			<span>OUR OUTLETS & MACHINERY</span>
-		</div>
-		<?php
-		View::component( 'card-stream/card-stream', array(
-			'items'      => $franchise_gallery,
-			'card_type'  => 'gallery',
-			'direction'  => 'ltr',
-		) );
-		?>
-
-		<!-- 4. Step-by-Step Launch Timeline -->
-		<div class="vintage-ribbon-tag vintage-ribbon-tag--gold">
-			<span>HOW TO GET STARTED</span>
-		</div>
-		<div class="franchise-steps-grid">
-			<?php foreach ( $franchise_steps as $st ) : ?>
-				<div class="franchise-step-card card--rough-cut-dark">
-					<span class="franchise-step-card__badge"><?php echo esc_html( $st['num'] ); ?></span>
-					<h4 class="franchise-step-card__title"><?php echo esc_html( $st['title'] ); ?></h4>
-					<p class="franchise-step-card__desc"><?php echo esc_html( $st['desc'] ); ?></p>
+		<?php if ( ! empty( $franchise_gallery ) ) : ?>
+			<?php if ( '' !== $gallery_ribbon ) : ?>
+				<div class="vintage-ribbon-tag vintage-ribbon-tag--gold">
+					<span><?php echo esc_html( $gallery_ribbon ); ?></span>
 				</div>
-			<?php endforeach; ?>
-		</div>
+			<?php endif; ?>
+			<?php
+			View::component( 'card-stream/card-stream', array(
+				'items'      => $franchise_gallery,
+				'card_type'  => 'gallery',
+				'direction'  => 'ltr',
+				'aria_label' => $gallery_ribbon,
+			) );
+			?>
+		<?php endif; ?>
 
-		<!-- 5. Franchisee Success Stories Stream (Right-to-Left) -->
-		<div class="vintage-ribbon-tag">
-			<span>PARTNER EXPERIENCES</span>
-		</div>
-		<?php
-		View::component( 'card-stream/card-stream', array(
-			'items'      => $franchisee_reviews,
-			'card_type'  => 'dark-review',
-			'direction'  => 'rtl',
-		) );
-		?>
+		<!-- 4. Step-by-Step Roadmap -->
+		<?php if ( ! empty( $franchise_steps ) ) : ?>
+			<?php if ( '' !== $steps_ribbon ) : ?>
+				<div class="vintage-ribbon-tag vintage-ribbon-tag--gold">
+					<span><?php echo esc_html( $steps_ribbon ); ?></span>
+				</div>
+			<?php endif; ?>
+			<div class="franchise-steps-grid">
+				<?php foreach ( $franchise_steps as $st ) : ?>
+					<div class="franchise-step-card card--rough-cut-dark">
+						<span class="franchise-step-card__badge"><?php echo esc_html( (string) ( $st['num'] ?? '' ) ); ?></span>
+						<h4 class="franchise-step-card__title"><?php echo esc_html( (string) ( $st['title'] ?? '' ) ); ?></h4>
+						<p class="franchise-step-card__desc"><?php echo esc_html( (string) ( $st['desc'] ?? '' ) ); ?></p>
+					</div>
+				<?php endforeach; ?>
+			</div>
+		<?php endif; ?>
 
-		<!-- 6. Franchise Call to Action Box -->
-		<div class="franchise-cta-box card--rough-cut">
-			<div class="franchise-cta-box__content">
-				<h3 class="franchise-cta-box__title">REQUEST YOUR FRANCHISE PROSPECTUS</h3>
-				<p class="franchise-cta-box__text">Join the UK's fastest-growing fresh sugarcane juice movement. Limited territorial rights available for 2025.</p>
+		<!-- 5. Partner Success Stories Stream (Right-to-Left) -->
+		<?php if ( ! empty( $franchisee_reviews ) ) : ?>
+			<?php if ( '' !== $reviews_ribbon ) : ?>
+				<div class="vintage-ribbon-tag">
+					<span><?php echo esc_html( $reviews_ribbon ); ?></span>
+				</div>
+			<?php endif; ?>
+			<?php
+			View::component( 'card-stream/card-stream', array(
+				'items'      => $franchisee_reviews,
+				'card_type'  => 'dark-review',
+				'direction'  => 'rtl',
+				'aria_label' => $reviews_ribbon,
+			) );
+			?>
+		<?php endif; ?>
+
+		<!-- 6. Franchise Enquiry Call to Action Box -->
+		<?php if ( ! empty( $cta_box['title'] ) || ! empty( $cta_box['text'] ) ) : ?>
+			<div class="franchise-cta-box card--rough-cut">
+				<div class="franchise-cta-box__content">
+					<?php if ( ! empty( $cta_box['title'] ) ) : ?>
+						<h3 class="franchise-cta-box__title"><?php echo esc_html( (string) $cta_box['title'] ); ?></h3>
+					<?php endif; ?>
+					<?php if ( ! empty( $cta_box['text'] ) ) : ?>
+						<p class="franchise-cta-box__text"><?php echo esc_html( (string) $cta_box['text'] ); ?></p>
+					<?php endif; ?>
+				</div>
+				<?php if ( ! empty( $cta_buttons ) ) : ?>
+					<div class="franchise-cta-box__actions">
+						<?php foreach ( $cta_buttons as $c_btn ) :
+							$btn_lbl   = (string) ( $c_btn['label'] ?? '' );
+							$btn_route = (string) ( $c_btn['route'] ?? 'franchise' );
+							$btn_style = (string) ( $c_btn['style'] ?? 'primary' );
+							$btn_url   = 0 === strpos( $btn_route, '/' ) || 0 === strpos( $btn_route, 'http' )
+								? $btn_route
+								: RouteService::url( $btn_route );
+							$btn_class = 'primary' === $btn_style ? 'btn btn--primary-vintage' : 'btn btn--outline-vintage';
+						?>
+							<a class="<?php echo esc_attr( $btn_class ); ?>" href="<?php echo esc_url( $btn_url ); ?>">
+								<span><?php echo esc_html( $btn_lbl ); ?></span>
+							</a>
+						<?php endforeach; ?>
+					</div>
+				<?php endif; ?>
 			</div>
-			<div class="franchise-cta-box__actions">
-				<a class="btn btn--primary-vintage" href="<?php echo esc_url( RouteService::url( 'contact' ) ); ?>">
-					<span>APPLY FOR FRANCHISE</span>
-				</a>
-				<a class="btn btn--outline-vintage" href="tel:<?php echo esc_attr( preg_replace( '/[^\d+]/', '', \VintageSoul\Services\SettingsService::phone() ) ); ?>">
-					<span>📞 CALL <?php echo esc_html( \VintageSoul\Services\SettingsService::phone() ); ?></span>
-				</a>
-			</div>
-		</div>
+		<?php endif; ?>
 
 	</div>
 </section>

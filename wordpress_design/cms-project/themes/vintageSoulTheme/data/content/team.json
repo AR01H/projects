@@ -1,7 +1,8 @@
 {
-    "tag": "The Cane Artisans",
+    "tag": "The Hands Behind The Craft",
     "title": "MEET THE <em>Cane Family</em>",
     "sub": "Our dedicated artisans, sourcing specialists, and cold-press masters who check every stalk.",
+    "aria_label": "The Cane Family team members",
     "items": [
         {
             "name": "Ravi Sharma",

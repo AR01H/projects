@@ -218,6 +218,33 @@ $track_class = 'social-stream__track social-stream__track--' . $direction;
 								allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share">
 						</iframe>
 					</div>
+
+				<?php elseif ( 'team' === $card_type ) :
+					$name      = (string) ( $item['name'] ?? '' );
+					$role      = (string) ( $item['role'] ?? '' );
+					$bio       = (string) ( $item['bio'] ?? '' );
+					$raw_photo = (string) ( $item['photo'] ?? ( $item['image'] ?? 'assets/images/sugarcane/story_moments.jpg' ) );
+					$photo     = UrlHelper::resolve( $raw_photo );
+				?>
+					<div class="team-card frame--rough-cut"
+						 tabindex="0" 
+						 role="button" 
+						 aria-haspopup="dialog" 
+						 aria-label="<?php echo esc_attr( $name ); ?>"
+						 data-story-modal="true"
+						 data-story-title="<?php echo esc_attr( $name ); ?>"
+						 data-story-badge="<?php echo esc_attr( $role ); ?>"
+						 data-story-quote="<?php echo esc_attr( $bio ); ?>"
+						 data-story-image="<?php echo esc_url( $photo ); ?>">
+						<div class="team-card__photo frame--ornate-sm">
+							<img src="<?php echo esc_url( $photo ); ?>" alt="<?php echo esc_attr( $name ); ?>" loading="lazy">
+						</div>
+						<div class="team-card__body">
+							<h4 class="team-card__name"><?php echo esc_html( $name ); ?></h4>
+							<span class="team-card__role"><?php echo esc_html( $role ); ?></span>
+							<p class="team-card__bio"><?php echo esc_html( $bio ); ?></p>
+						</div>
+					</div>
 				<?php endif; ?>
 			<?php endforeach; ?>
 		<?php endfor; ?>

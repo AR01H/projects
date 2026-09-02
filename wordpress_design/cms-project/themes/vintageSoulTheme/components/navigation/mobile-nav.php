@@ -31,8 +31,7 @@ $has_cta      = true;
 	<!-- Top Bar inside Drawer -->
 	<div class="mobile-nav__header">
 		<div class="mobile-nav__brand">
-			<span class="mobile-nav__brand-title">THE CANE HOUSE</span>
-			<span class="mobile-nav__brand-sub">EST. 2014 · LONDON</span>
+			<?php View::component( 'logo/logo', array( 'context' => 'mobile-nav' ) ); ?>
 		</div>
 		<button type="button" class="mobile-nav__close-btn" id="mobile-nav-close" aria-label="<?php esc_attr_e( 'Close menu', 'vintagesoul' ); ?>">
 			<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#184b25" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -58,23 +57,33 @@ $has_cta      = true;
 			$children  = ( isset( $item['children'] ) && is_array( $item['children'] ) ) ? $item['children'] : array();
 			$has_kids  = ! empty( $children );
 
-			// Exact 1-to-1 active route matching
+			// Accurate 1-to-1 active route matching
 			$is_active = false;
-			if ( 'home' === $current_route ) {
-				$is_active = ( '' === $item_path || '/' === ( $item['url'] ?? '' ) || '#' === ( $item['url'] ?? '' ) );
+			if ( $has_kids ) {
+				// Parent dropdown (Blog) should NEVER be active on the Home page
+				if ( 'home' !== $current_route && ( 'blog' === $current_route || is_singular( 'post' ) || is_category() || is_tag() ) ) {
+					$is_active = true;
+				}
 			} else {
-				$is_active = ( $item_path === $current_route || ltrim( (string) ( $item['url'] ?? '' ), '/' ) === $current_route );
+				if ( 'home' === $current_route ) {
+					$is_active = ( '' === $item_path || '/' === ( $item['url'] ?? '' ) || 'home' === $item_path );
+				} else {
+					$is_active = ( '' !== $item_path && ( $item_path === $current_route || ltrim( (string) ( $item['url'] ?? '' ), '/' ) === $current_route ) );
+				}
 			}
-			$m_href = $has_kids ? 'javascript:void(0)' : esc_url( $url );
 		?>
 			<li class="mobile-nav__item<?php echo $is_active ? ' is-active' : ''; ?>">
 				<div class="mobile-nav__row">
-					<a class="mobile-nav__link<?php echo $is_active ? ' is-active' : ''; ?>" href="<?php echo esc_attr( $m_href ); ?>"<?php echo ( ! $has_kids && $is_active ) ? ' aria-current="page"' : ''; ?>><?php echo esc_html( $label ); ?></a>
 					<?php if ( $has_kids ) : ?>
-						<button type="button" class="mobile-nav__toggle" aria-expanded="false"
+						<button type="button" class="mobile-nav__link mobile-nav__link--has-children<?php echo $is_active ? ' is-active' : ''; ?>" aria-expanded="false"
 							aria-label="<?php echo esc_attr( sprintf( __( '%s submenu', 'vintagesoul' ), $label ) ); ?>">
+							<span class="mobile-nav__link-text"><?php echo esc_html( $label ); ?></span>
 							<span class="mobile-nav__chevron" aria-hidden="true"></span>
 						</button>
+					<?php else : ?>
+						<a class="mobile-nav__link<?php echo $is_active ? ' is-active' : ''; ?>" href="<?php echo esc_url( $url ); ?>"<?php echo $is_active ? ' aria-current="page"' : ''; ?>>
+							<span class="mobile-nav__link-text"><?php echo esc_html( $label ); ?></span>
+						</a>
 					<?php endif; ?>
 				</div>
 				<?php if ( $has_kids ) : ?>

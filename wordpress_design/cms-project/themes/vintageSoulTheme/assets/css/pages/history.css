@@ -459,30 +459,37 @@ body.page-history,
 
 .mineral-card {
   position: relative !important;
-  z-index: 1 !important;
   display: flex !important;
   flex-direction: column !important;
   align-items: center !important;
   text-align: center !important;
-  padding: 24px 16px !important;
+  padding: 24px 14px 20px !important;
   border-radius: 6px !important;
   background: transparent !important;
   border: none !important;
+  box-shadow: none !important;
+  filter: none !important;
+  -webkit-filter: none !important;
   box-sizing: border-box !important;
   transition: transform 0.25s ease !important;
+}
+
+.mineral-card > * {
+  position: relative !important;
+  z-index: 1 !important;
 }
 
 .mineral-card::before {
   content: "" !important;
   position: absolute !important;
   inset: 0 !important;
-  background: linear-gradient(180deg, rgba(20, 60, 30, 0.85) 0%, rgba(10, 30, 15, 0.95) 100%) !important;
-  border: 1.5px solid #8e622d !important;
   border-radius: 6px !important;
-  box-shadow: inset 0 0 0 1px #caa06d, 0 6px 18px rgba(0, 0, 0, 0.35) !important;
+  background: linear-gradient(180deg, #133e1f 0%, #0c2814 100%) !important;
+  border: 1.5px solid #caa06d !important;
+  box-shadow: inset 0 0 0 1px rgba(202, 160, 109, 0.4), 0 8px 20px rgba(0, 0, 0, 0.3) !important;
   filter: url(#rough-button-cut-sm) !important;
   -webkit-filter: url(#rough-button-cut-sm) !important;
-  z-index: -1 !important;
+  z-index: 0 !important;
   pointer-events: none !important;
   transition: all 0.25s ease !important;
 }
@@ -493,20 +500,20 @@ body.page-history,
 
 .mineral-card:hover::before {
   border-color: #f6d599 !important;
-  box-shadow: inset 0 0 0 1.5px #f6d599, 0 10px 24px rgba(0, 0, 0, 0.55), 0 0 12px rgba(246, 213, 153, 0.3) !important;
+  box-shadow: inset 0 0 0 1.5px #f6d599, 0 12px 28px rgba(0, 0, 0, 0.5) !important;
 }
 
 .mineral-card__symbol {
-  width: 52px !important;
-  height: 52px !important;
+  width: 46px !important;
+  height: 46px !important;
   border-radius: 50% !important;
   background: linear-gradient(135deg, #f6d599 0%, #d49842 100%) !important;
   border: 1.5px solid #ffffff !important;
-  box-shadow: 0 0 12px rgba(246, 213, 153, 0.6) !important;
+  box-shadow: 0 0 10px rgba(246, 213, 153, 0.5) !important;
   color: #0c2b14 !important;
   font-family: 'Cinzel', serif !important;
-  font-size: 20px !important;
-  font-weight: 700 !important;
+  font-size: 17px !important;
+  font-weight: 800 !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -515,28 +522,33 @@ body.page-history,
 
 .mineral-card__name {
   font-family: 'Cinzel', serif !important;
-  font-size: 15px !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.05em !important;
+  font-size: 14px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.08em !important;
   color: #f6d599 !important;
-  margin: 0 0 2px !important;
+  margin: 0 0 4px !important;
   text-transform: uppercase !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7) !important;
 }
 
 .mineral-card__amount {
   font-family: 'Cinzel', serif !important;
   font-size: 13px !important;
-  font-weight: 700 !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.06em !important;
   color: #ffffff !important;
   margin-bottom: 8px !important;
+  display: block !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6) !important;
 }
 
 .mineral-card__benefit {
-  font-family: var(--font-family-base, 'EB Garamond', serif) !important;
-  font-size: 13.5px !important;
+  font-family: var(--font-family-base, 'EB Garamond', Georgia, serif) !important;
+  font-size: 14px !important;
   line-height: 1.45 !important;
-  color: #d6b88b !important;
+  color: #f0deca !important;
   margin: 0 !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5) !important;
 }
 
 /* ═══════════ ARTISANAL STORAGE GUIDE ═══════════ */
@@ -919,70 +931,6 @@ body.page-history,
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)) !important;
   gap: 16px !important;
   margin-top: 28px !important;
-}
-
-.mineral-card {
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  text-align: center !important;
-  background: linear-gradient(135deg, #fdf8ef 0%, #f7e6cf 60%, #eed2ae 100%) !important;
-  border: 1.5px solid #8e622d !important;
-  border-radius: 8px !important;
-  padding: 20px 14px !important;
-  box-shadow: inset 0 0 0 1px #caa06d, 0 4px 14px rgba(42, 26, 12, 0.1) !important;
-  transition: transform 0.25s ease, box-shadow 0.25s ease !important;
-  box-sizing: border-box !important;
-}
-
-.mineral-card:hover {
-  transform: translateY(-4px) scale(1.02) !important;
-  border-color: #d49842 !important;
-  box-shadow: inset 0 0 0 1.5px #d49842, 0 10px 24px rgba(142, 98, 45, 0.2) !important;
-}
-
-.mineral-card__symbol {
-  width: 44px !important;
-  height: 44px !important;
-  border-radius: 50% !important;
-  background: linear-gradient(145deg, #184b25 0%, #0d2a14 100%) !important;
-  border: 1.5px solid #caa06d !important;
-  color: #f6d599 !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  font-family: 'Cinzel', serif !important;
-  font-size: 15px !important;
-  font-weight: 800 !important;
-  margin-bottom: 10px !important;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25) !important;
-}
-
-.mineral-card__name {
-  font-family: 'Cinzel', serif !important;
-  font-size: 14px !important;
-  font-weight: 700 !important;
-  text-transform: uppercase !important;
-  color: #172b15 !important;
-  margin: 0 0 4px !important;
-  letter-spacing: 0.04em !important;
-}
-
-.mineral-card__amount {
-  font-family: 'Cinzel', serif !important;
-  font-size: 11px !important;
-  font-weight: 800 !important;
-  color: #8e5f2b !important;
-  margin-bottom: 6px !important;
-  display: block !important;
-}
-
-.mineral-card__benefit {
-  font-family: var(--font-family-base, 'EB Garamond', serif) !important;
-  font-size: 13px !important;
-  line-height: 1.4 !important;
-  color: #5d3d1a !important;
-  margin: 0 !important;
 }
 
 /* ═══════════ CONNOISSEUR STORAGE & HANDLING GUIDE ═══════════ */
@@ -1498,4 +1446,502 @@ body.page-history,
   text-transform: uppercase !important;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4) !important;
 }
+
+/* ==========================================================================
+   Editorial Historical Timeline Roadmap
+   ========================================================================== */
+.vintage-timeline-roadmap {
+  position: relative !important;
+  max-width: 900px !important;
+  margin: 32px auto 0 !important;
+  padding: 20px 0 !important;
+}
+.timeline-roadmap-spine {
+  position: absolute !important;
+  left: 50% !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  width: 3px !important;
+  background: linear-gradient(180deg, transparent 0%, #caa06d 10%, #8e622d 90%, transparent 100%) !important;
+  transform: translateX(-50%) !important;
+  box-shadow: 0 0 8px rgba(202, 160, 109, 0.4) !important;
+}
+.timeline-milestone-row {
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  margin-bottom: 36px !important;
+  width: 100% !important;
+}
+.timeline-milestone-node {
+  position: absolute !important;
+  left: 50% !important;
+  top: 24px !important;
+  transform: translate(-50%, -50%) !important;
+  width: 38px !important;
+  height: 38px !important;
+  border-radius: 50% !important;
+  background: linear-gradient(135deg, #1e5a2f 0%, #0c2614 100%) !important;
+  border: 2px solid #f6d599 !important;
+  box-shadow: 0 0 14px rgba(246, 213, 153, 0.4) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  z-index: 2 !important;
+}
+.timeline-milestone-node__num {
+  font-family: 'Cinzel', serif !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  color: #f6d599 !important;
+}
+.timeline-milestone-card {
+  width: 44% !important;
+  padding: 20px 22px !important;
+  background: linear-gradient(145deg, #fbf2e6 0%, #f4dcc0 100%) !important;
+  border-radius: 8px !important;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08) !important;
+  box-sizing: border-box !important;
+  transition: transform 0.25s ease, box-shadow 0.25s ease !important;
+}
+.timeline-milestone-card:hover {
+  transform: translateY(-3px) !important;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.14) !important;
+}
+.timeline-milestone-row--left {
+  justify-content: flex-start !important;
+}
+.timeline-milestone-row--right {
+  justify-content: flex-end !important;
+}
+.timeline-milestone-card__header {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  margin-bottom: 10px !important;
+  gap: 8px !important;
+  flex-wrap: wrap !important;
+}
+.vintage-timeline-roadmap .timeline-milestone-card div.timeline-milestone-card__era-badge {
+  color: #f6d599 !important;
+}
+.vintage-timeline-roadmap .timeline-milestone-card div.timeline-milestone-card__era-badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  background: #184b25 !important;
+  color: #f6d599 !important;
+  padding: 4px 10px !important;
+  border-radius: 4px !important;
+  font-family: 'Cinzel', serif !important;
+  font-size: 11px !important;
+  letter-spacing: 0.06em !important;
+}
+.timeline-milestone-card__loc {
+  font-size: 12px !important;
+  color: #8e622d !important;
+  font-weight: 600 !important;
+}
+.timeline-milestone-card__title {
+  font-family: 'Cinzel', serif !important;
+  font-size: 16px !important;
+  color: #172b15 !important;
+  margin: 0 0 8px !important;
+}
+.timeline-milestone-card__desc {
+  font-size: 13.5px !important;
+  line-height: 1.5 !important;
+  color: #4a341e !important;
+  margin: 0 !important;
+}
+@media (max-width: 768px) {
+  .timeline-roadmap-spine {
+    left: 20px !important;
+  }
+  .timeline-milestone-node {
+    left: 20px !important;
+  }
+  .timeline-milestone-card {
+    width: calc(100% - 48px) !important;
+    margin-left: 48px !important;
+  }
+  .timeline-milestone-row--left,
+  .timeline-milestone-row--right {
+    justify-content: flex-end !important;
+  }
+}
+
+/* ==========================================================================
+   Specimen Cane Variety Cards
+   ========================================================================== */
+.variety-specimen-card {
+  background: linear-gradient(160deg, #fdf8ef 0%, #f4e3cd 100%) !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+  transition: transform 0.25s ease, box-shadow 0.25s ease !important;
+  cursor: pointer !important;
+  box-sizing: border-box !important;
+}
+.variety-specimen-card:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15) !important;
+}
+.variety-specimen-card__media {
+  position: relative !important;
+  height: 200px !important;
+  overflow: hidden !important;
+}
+.variety-specimen-card__media img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  transition: transform 0.4s ease !important;
+}
+.variety-specimen-card:hover .variety-specimen-card__media img {
+  transform: scale(1.05) !important;
+}
+.variety-specimen-card__badge {
+  position: absolute !important;
+  top: 12px !important;
+  right: 12px !important;
+  background: #184b25 !important;
+  color: #f6d599 !important;
+  padding: 3px 8px !important;
+  border-radius: 4px !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+}
+.variety-specimen-card__body {
+  padding: 20px 22px !important;
+}
+.variety-specimen-card__origin {
+  font-size: 11.5px !important;
+  color: #8e622d !important;
+  font-weight: 600 !important;
+  display: block !important;
+  margin-bottom: 4px !important;
+}
+.variety-specimen-card__title {
+  font-family: 'Cinzel', serif !important;
+  font-size: 17px !important;
+  color: #172b15 !important;
+  margin: 0 0 4px !important;
+}
+.variety-specimen-card__species {
+  font-size: 12.5px !important;
+  color: #6a4a23 !important;
+  display: block !important;
+  margin-bottom: 10px !important;
+}
+.variety-specimen-card__brix-gauge {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  background: rgba(24, 75, 37, 0.08) !important;
+  border: 1px solid rgba(24, 75, 37, 0.2) !important;
+  border-radius: 4px !important;
+  padding: 5px 10px !important;
+  margin-bottom: 12px !important;
+}
+.brix-gauge__label {
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  color: #184b25 !important;
+}
+.brix-gauge__val {
+  font-family: 'Cinzel', serif !important;
+  font-size: 11.5px !important;
+  font-weight: 700 !important;
+  color: #8e622d !important;
+}
+.variety-specimen-card__desc {
+  font-size: 13.5px !important;
+  line-height: 1.5 !important;
+  color: #4a341e !important;
+  margin: 0 !important;
+}
+
+/* ==========================================================================
+   Mineral Alchemy & Apothecary Science Layout
+   ========================================================================== */
+.nutrition-apothecary-layout {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 28px !important;
+  margin-top: 28px !important;
+}
+@media (min-width: 992px) {
+  .nutrition-apothecary-layout {
+    grid-template-columns: 340px 1fr !important;
+  }
+}
+.nutrition-spotlight-card {
+  background: linear-gradient(145deg, #184b25 0%, #0d2a14 100%) !important;
+  color: #fdf8ef !important;
+  padding: 28px 24px !important;
+  border-radius: 8px !important;
+  border: 2px solid #caa06d !important;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.25) !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  filter: url(#rough-button-cut-sm) !important;
+  -webkit-filter: url(#rough-button-cut-sm) !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+.nutrition-spotlight-card::before {
+  display: none !important;
+}
+.spotlight-badge {
+  display: inline-block !important;
+  font-family: 'Cinzel', serif !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.12em !important;
+  color: #f6d599 !important;
+  background: rgba(246, 213, 153, 0.15) !important;
+  padding: 4px 10px !important;
+  border-radius: 4px !important;
+  margin-bottom: 10px !important;
+}
+.spotlight-title {
+  font-family: 'Cinzel', serif !important;
+  font-size: 18px !important;
+  color: #ffffff !important;
+  margin: 0 0 20px !important;
+  line-height: 1.3 !important;
+}
+.spotlight-metrics {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 14px !important;
+  margin-bottom: 22px !important;
+  padding: 16px 0 !important;
+  border-top: 1px dashed rgba(246, 213, 153, 0.3) !important;
+  border-bottom: 1px dashed rgba(246, 213, 153, 0.3) !important;
+}
+.spotlight-metric-item {
+  display: flex !important;
+  align-items: baseline !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+}
+.spotlight-metric-val {
+  font-family: 'Cinzel', serif !important;
+  font-size: 24px !important;
+  font-weight: 700 !important;
+  color: #f6d599 !important;
+}
+.spotlight-metric-val small {
+  font-size: 13px !important;
+  font-weight: 400 !important;
+}
+.spotlight-metric-lbl {
+  font-size: 12px !important;
+  color: #f0deca !important;
+}
+.spotlight-summary {
+  font-size: 13px !important;
+  line-height: 1.55 !important;
+  color: #e5d2be !important;
+  margin: 0 !important;
+}
+.mineral-apothecary-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)) !important;
+  gap: 16px !important;
+}
+.mineral-apothecary-card {
+  background: linear-gradient(150deg, #fdf8ef 0%, #f4e3cd 100%) !important;
+  padding: 18px 20px !important;
+  border-radius: 8px !important;
+  border: 1px solid #8e622d !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06) !important;
+  box-sizing: border-box !important;
+  transition: transform 0.25s ease, box-shadow 0.25s ease !important;
+}
+.mineral-apothecary-card:hover {
+  transform: translateY(-3px) !important;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12) !important;
+}
+.mineral-apothecary-card__top {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  margin-bottom: 8px !important;
+}
+.mineral-symbol-stamp {
+  width: 34px !important;
+  height: 34px !important;
+  border-radius: 4px !important;
+  background: #184b25 !important;
+  color: #f6d599 !important;
+  font-family: 'Cinzel', serif !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2) !important;
+}
+.mineral-amount-badge {
+  font-family: 'Cinzel', serif !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  color: #8e622d !important;
+  background: rgba(142, 98, 45, 0.1) !important;
+  padding: 3px 8px !important;
+  border-radius: 4px !important;
+}
+.mineral-name {
+  font-family: 'Cinzel', serif !important;
+  font-size: 15px !important;
+  color: #172b15 !important;
+  margin: 0 0 6px !important;
+}
+.mineral-benefit {
+  font-size: 13px !important;
+  line-height: 1.5 !important;
+  color: #4a341e !important;
+  margin: 0 !important;
+}
+
+/* ==========================================================================
+   The Whole-Cane Zero-Waste Ecosystem & Diverse Uses (Tradition, Biofuels, Eco-Materials)
+   ========================================================================== */
+.uses-category-filter-bar {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 10px !important;
+  margin: 28px 0 32px !important;
+}
+.uses-filter-pill {
+  padding: 8px 16px !important;
+  border-radius: 24px !important;
+  border: 1.5px solid #8e622d !important;
+  background: linear-gradient(180deg, #fdf8ef 0%, #f4e3cd 100%) !important;
+  color: #4a341e !important;
+  font-family: 'Cinzel', serif !important;
+  font-size: 11.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.05em !important;
+  cursor: pointer !important;
+  transition: all 0.25s ease !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06) !important;
+  filter: url(#rough-button-cut-sm) !important;
+  -webkit-filter: url(#rough-button-cut-sm) !important;
+}
+.uses-filter-pill:hover,
+.uses-filter-pill.is-active {
+  background: linear-gradient(145deg, #184b25 0%, #0d2a14 100%) !important;
+  color: #f6d599 !important;
+  border-color: #f6d599 !important;
+  box-shadow: 0 4px 14px rgba(24, 75, 37, 0.35) !important;
+  transform: translateY(-2px) !important;
+}
+.uses-ecosystem-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)) !important;
+  gap: 22px !important;
+}
+.use-ecosystem-card {
+  background: linear-gradient(155deg, #fdf8ef 0%, #f4e3cd 100%) !important;
+  border-radius: 8px !important;
+  padding: 24px 22px !important;
+  box-sizing: border-box !important;
+  border: 1px solid #caa06d !important;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08) !important;
+  transition: transform 0.25s ease, box-shadow 0.25s ease !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+}
+.use-ecosystem-card:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.14) !important;
+}
+.use-ecosystem-card__top {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  margin-bottom: 14px !important;
+  gap: 10px !important;
+}
+.use-ecosystem-card__icon-box {
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 50% !important;
+  background: linear-gradient(135deg, #184b25 0%, #0d2a14 100%) !important;
+  border: 1.5px solid #f6d599 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2) !important;
+}
+.use-ecosystem-card__tags {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-end !important;
+  gap: 4px !important;
+}
+.use-ecosystem-card__tag {
+  font-family: 'Cinzel', serif !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  color: #184b25 !important;
+  background: rgba(24, 75, 37, 0.1) !important;
+  padding: 3px 8px !important;
+  border-radius: 4px !important;
+  text-transform: uppercase !important;
+}
+.use-ecosystem-card__impact-badge {
+  font-size: 10.5px !important;
+  font-weight: 700 !important;
+  color: #8e622d !important;
+  background: rgba(142, 98, 45, 0.12) !important;
+  padding: 2px 7px !important;
+  border-radius: 4px !important;
+}
+.use-ecosystem-card__title {
+  font-family: 'Cinzel', serif !important;
+  font-size: 17px !important;
+  color: #172b15 !important;
+  margin: 0 0 10px !important;
+  line-height: 1.35 !important;
+}
+.use-ecosystem-card__desc {
+  font-size: 14px !important;
+  line-height: 1.55 !important;
+  color: #4a341e !important;
+  margin: 0 0 14px !important;
+  flex-grow: 1 !important;
+}
+.use-ecosystem-card__fact {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 8px !important;
+  background: rgba(202, 160, 109, 0.15) !important;
+  border-left: 3px solid #8e622d !important;
+  padding: 8px 12px !important;
+  border-radius: 0 4px 4px 0 !important;
+}
+.use-ecosystem-card__fact .fact-leaf {
+  color: #8e622d !important;
+  font-size: 12px !important;
+  line-height: 1.4 !important;
+}
+.use-ecosystem-card__fact .fact-text {
+  font-size: 12px !important;
+  line-height: 1.45 !important;
+  color: #4a341e !important;
+  font-style: italic !important;
+}
+
 

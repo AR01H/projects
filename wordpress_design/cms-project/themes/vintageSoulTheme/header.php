@@ -69,10 +69,16 @@ defined( 'ABSPATH' ) || exit;
 
 					// Exact 1-to-1 active route matching
 					$is_active = false;
-					if ( 'home' === $current_route ) {
-						$is_active = ( '' === $item_path || '/' === ( $item['url'] ?? '' ) || '#' === ( $item['url'] ?? '' ) );
+					if ( $has_kids ) {
+						if ( 'home' !== $current_route && ( 'blog' === $current_route || is_singular( 'post' ) || is_category() || is_tag() ) ) {
+							$is_active = true;
+						}
 					} else {
-						$is_active = ( $item_path === $current_route || ltrim( (string) ( $item['url'] ?? '' ), '/' ) === $current_route );
+						if ( 'home' === $current_route ) {
+							$is_active = ( '' === $item_path || '/' === ( $item['url'] ?? '' ) || 'home' === $item_path );
+						} else {
+							$is_active = ( '' !== $item_path && ( $item_path === $current_route || ltrim( (string) ( $item['url'] ?? '' ), '/' ) === $current_route ) );
+						}
 					}
 					$item_href = $has_kids ? 'javascript:void(0)' : esc_url( $item_url );
 				?>
@@ -95,9 +101,12 @@ defined( 'ABSPATH' ) || exit;
 									$has_icon = ( 2 === count( $parts ) && 1 === mb_strlen( $parts[0] ) );
 									$icon = $has_icon ? $parts[0] : '';
 									$text = $has_icon ? $parts[1] : $child_label;
+									$child_url  = UrlHelper::resolve( (string) ( $child['url'] ?? '#' ) );
+									$child_path = trim( (string) parse_url( $child_url, PHP_URL_PATH ), '/' );
+									$is_child_active = ( '' !== $child_path && ( $child_path === $current_route || ltrim( (string) ( $child['url'] ?? '' ), '/' ) === $current_route ) );
 								?>
 									<li>
-										<a class="nav__submenu-link" href="<?php echo esc_url( UrlHelper::resolve( (string) ( $child['url'] ?? '#' ) ) ); ?>">
+										<a class="nav__submenu-link<?php echo $is_child_active ? ' is-active' : ''; ?>" href="<?php echo esc_url( $child_url ); ?>"<?php echo $is_child_active ? ' aria-current="page"' : ''; ?>>
 											<?php if ( '' !== $icon ) : ?>
 												<span class="nav__submenu-icon"><?php echo esc_html( $icon ); ?></span>
 											<?php endif; ?>

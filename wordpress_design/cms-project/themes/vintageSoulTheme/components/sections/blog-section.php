@@ -13,11 +13,16 @@ defined( 'ABSPATH' ) || exit;
 
 $blog_ctrl = new BlogController();
 $blog_data = $blog_ctrl->prepare();
+$hero_info = (array) ( $blog_data['hero'] ?? array() );
 $articles  = (array) ( $blog_data['articles'] ?? array() );
 
 if ( empty( $articles ) ) {
 	return;
 }
+
+$tag   = (string) ( $hero_info['tag'] ?? '' );
+$title = (string) ( $hero_info['title'] ?? '' );
+$sub   = (string) ( $hero_info['sub'] ?? '' );
 
 // Pick 3 random or latest articles
 $display_articles = $articles;
@@ -32,18 +37,18 @@ if ( count( $display_articles ) > 3 ) {
 	<div class="container">
 		
 		<!-- Section Header -->
-		<?php
-		View::component(
-			'section-header/section-header',
-			array(
-				'tag'   => 'The Cane Chronicle',
-				'title' => 'LATEST STORIES & <em>Insights</em>',
-			)
-		);
-		?>
-		<p class="about-intro__sub" style="text-align:center; max-width:720px; margin:-10px auto 36px;">
-			Explore our latest writings on ancient sugarcane cultivation, raw cold-press nutrition, London market life, and botanical recipe pairings.
-		</p>
+		<?php if ( '' !== $title || '' !== $tag ) : ?>
+			<?php
+			View::component(
+				'section-header/section-header',
+				array(
+					'tag'   => $tag,
+					'title' => $title,
+					'sub'   => $sub,
+				)
+			);
+			?>
+		<?php endif; ?>
 
 		<!-- 3-Card Luxury Vintage Grid -->
 		<div class="blog-grid" style="margin-bottom: 32px;">
@@ -51,47 +56,50 @@ if ( count( $display_articles ) > 3 ) {
 				$title   = (string) ( $art['title'] ?? '' );
 				$link    = (string) ( $art['permalink'] ?? '#' );
 				$img     = (string) ( $art['image'] ?? '' );
-				$cat     = (string) ( $art['category'] ?? 'Heritage' );
+				$cat     = (string) ( $art['category'] ?? '' );
 				$date    = (string) ( $art['date'] ?? '' );
-				$author  = (string) ( $art['author'] ?? 'The Cane House' );
+				$author  = (string) ( $art['author'] ?? '' );
 				$read    = (int) ( $art['reading_time'] ?? 4 );
 				$excerpt = (string) ( $art['excerpt'] ?? '' );
 			?>
 				<article class="blog-card" data-category="<?php echo esc_attr( $cat ); ?>">
-					<div class="blog-card__media frame--ornate-sm">
-						<img src="<?php echo esc_url( $img ); ?>" alt="<?php echo esc_attr( $title ); ?>" loading="lazy">
-						<span class="blog-card__category"><?php echo esc_html( $cat ); ?></span>
-					</div>
+					<?php if ( '' !== $img ) : ?>
+						<div class="blog-card__media frame--ornate-sm">
+							<img src="<?php echo esc_url( $img ); ?>" alt="<?php echo esc_attr( $title ); ?>" loading="lazy">
+							<?php if ( '' !== $cat ) : ?>
+								<span class="blog-card__category"><?php echo esc_html( $cat ); ?></span>
+							<?php endif; ?>
+						</div>
+					<?php endif; ?>
 					<div class="blog-card__meta">
-						<span>📅 <?php echo esc_html( $date ); ?></span>
-						<span>•</span>
-						<span>⏳ <?php echo esc_html( $read ); ?> MIN READ</span>
+						<?php if ( '' !== $date ) : ?>
+							<span class="blog-card__date"><?php echo esc_html( $date ); ?></span>
+						<?php endif; ?>
+						<?php if ( $read > 0 ) : ?>
+							<span class="blog-card__reading"><?php echo esc_html( (string) $read ); ?> min read</span>
+						<?php endif; ?>
 					</div>
 					<h3 class="blog-card__title">
 						<a href="<?php echo esc_url( $link ); ?>"><?php echo esc_html( $title ); ?></a>
 					</h3>
-					<p class="blog-card__excerpt"><?php echo esc_html( $excerpt ); ?></p>
+					<?php if ( '' !== $excerpt ) : ?>
+						<p class="blog-card__excerpt"><?php echo esc_html( $excerpt ); ?></p>
+					<?php endif; ?>
 					<div class="blog-card__footer">
-						<span class="blog-card__author">By <?php echo esc_html( $author ); ?></span>
-						<a href="<?php echo esc_url( $link ); ?>" class="blog-card__btn">
-							READ STORY →
-						</a>
+						<?php if ( '' !== $author ) : ?>
+							<span class="blog-card__author">By <?php echo esc_html( $author ); ?></span>
+						<?php endif; ?>
+						<a class="blog-card__link" href="<?php echo esc_url( $link ); ?>">Read Story →</a>
 					</div>
 				</article>
 			<?php endforeach; ?>
 		</div>
 
-		<!-- View All Articles CTA Button -->
-		<div style="text-align: center; margin-top: 12px;">
-			<a href="<?php echo esc_url( RouteService::url( 'blog' ) ); ?>" class="btn btn--secondary" style="font-size: 12px; padding: 10px 24px;">
-				EXPLORE THE FULL JOURNAL (<?php echo count( $articles ); ?> ARTICLES) →
+		<div class="blog-showcase__actions" style="text-align: center; margin-top: 20px;">
+			<a class="btn btn--secondary-vintage" href="<?php echo esc_url( RouteService::url( 'blog' ) ); ?>">
+				<span>VIEW ALL CHRONICLES ✦</span>
 			</a>
 		</div>
 
 	</div>
 </section>
-
-<!-- Gold Wave Divider -->
-<div class="gold-wave-divider" aria-hidden="true">
-	<img src="<?php echo esc_url( \VintageSoul\Support\UrlHelper::resolve( 'assets/images/textures/border/gold-wave.svg' ) ); ?>" alt="" loading="lazy">
-</div>

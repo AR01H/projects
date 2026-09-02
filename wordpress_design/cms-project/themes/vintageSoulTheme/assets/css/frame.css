@@ -42,9 +42,6 @@
 .search-result-card,
 .feature-row__item,
 .social-card,
-.event-gallery-card,
-.franchise-gallery-card,
-.order-gallery-card,
 .sourcing-pillar-card,
 .sourcing-vintage__photo-frame,
 .vintage-carousel-card,
@@ -79,7 +76,16 @@
 .cert-h-card,
 .certs-featured-logo-card,
 .contact-home-info-card,
-.faq-accordion-item {
+.faq-accordion-item,
+.acard,
+.acard-stat,
+.acard-stat-card,
+.acard-pro,
+.acard-con,
+.sidebar-widget,
+.single-article-card,
+.event-point-card,
+.event-experience-card {
   position: relative !important;
   box-sizing: border-box !important;
   background: transparent !important;
@@ -122,9 +128,6 @@
 .search-result-card > *,
 .feature-row__item > *,
 .social-card > *,
-.event-gallery-card > *,
-.franchise-gallery-card > *,
-.order-gallery-card > *,
 .sourcing-pillar-card > *,
 .sourcing-vintage__photo-frame > *,
 .vintage-carousel-card > *,
@@ -159,7 +162,16 @@
 .cert-h-card > *,
 .certs-featured-logo-card > *,
 .contact-home-info-card > *,
-.faq-accordion-item > * {
+.faq-accordion-item > *,
+.acard > *,
+.acard-stat > *,
+.acard-stat-card > *,
+.acard-pro > *,
+.acard-con > *,
+.sidebar-widget > *,
+.single-article-card > *,
+.event-point-card > *,
+.event-experience-card > * {
   position: relative !important;
   z-index: 1 !important;
 }
@@ -196,9 +208,6 @@
 .search-result-card::before,
 .feature-row__item::before,
 .social-card::before,
-.event-gallery-card::before,
-.franchise-gallery-card::before,
-.order-gallery-card::before,
 .sourcing-pillar-card::before,
 .sourcing-vintage__photo-frame::before,
 .vintage-carousel-card::before,
@@ -233,7 +242,16 @@
 .cert-h-card::before,
 .certs-featured-logo-card::before,
 .contact-home-info-card::before,
-.faq-accordion-item::before {
+.faq-accordion-item::before,
+.acard::before,
+.acard-stat::before,
+.acard-stat-card::before,
+.acard-pro::before,
+.acard-con::before,
+.sidebar-widget::before,
+.single-article-card::before,
+.event-point-card::before,
+.event-experience-card::before {
   content: "" !important;
   position: absolute !important;
   inset: 0 !important;

@@ -48,10 +48,10 @@ $deckled_edge_url = UrlHelper::resolve( 'assets/images/textures/border/deckled-e
 			'subpage-hero/subpage-hero',
 			array(
 				'id'    => 'history-hero',
-				'tag'   => (string) ( $hero['tag'] ?? 'The Story of Sugarcane' ),
-				'title' => 'ALL ABOUT <em>Sugar Cane</em>',
-				'sub'   => (string) ( $hero['sub'] ?? 'From its origins to your glass — explore the heritage, science, varieties, and culture of nature’s purest drink.' ),
-				'image' => 'assets/images/backgrounds/pure_sugarcane_forest_trees_engraving.jpg',
+				'tag'   => (string) ( $hero['tag'] ?? '' ),
+				'title' => (string) ( $hero['title'] ?? '' ),
+				'sub'   => (string) ( $hero['sub'] ?? '' ),
+				'image' => (string) ( $hero['image'] ?? 'assets/images/backgrounds/pure_sugarcane_forest_trees_engraving.jpg' ),
 			)
 		);
 		?>
@@ -65,10 +65,10 @@ $deckled_edge_url = UrlHelper::resolve( 'assets/images/textures/border/deckled-e
 				View::component(
 					'banner/banner',
 					array(
-						'tag'   => (string) ( $intro['tag'] ?? 'More Than Just A Crop' ),
-						'title' => (string) ( $intro['title'] ?? 'Sugarcane Has Fed, Healed And Sweetened Millions Of Lives' ),
-						'sub'   => (string) ( $intro['sub'] ?? 'It feeds, heals, sweetens, and sustains millions of lives. At The Cane House, we celebrate its journey, its goodness, and its incredible story.' ),
-						'image' => (string) ( $intro['image'] ?? 'assets/images/sugarcane/stacks.jpg' ),
+						'tag'   => (string) ( $intro['tag'] ?? '' ),
+						'title' => (string) ( $intro['title'] ?? '' ),
+						'sub'   => (string) ( $intro['sub'] ?? '' ),
+						'image' => (string) ( $intro['image'] ?? '' ),
 					)
 				);
 				?>
@@ -87,8 +87,8 @@ $deckled_edge_url = UrlHelper::resolve( 'assets/images/textures/border/deckled-e
 				View::component(
 					'section-header/section-header',
 					array(
-						'tag'   => (string) ( $why['tag'] ?? 'A Journey Through Time' ),
-						'title' => (string) ( $why['title'] ?? 'Why Sugarcane?' ),
+						'tag'   => (string) ( $why['tag'] ?? '' ),
+						'title' => (string) ( $why['title'] ?? '' ),
 					)
 				);
 				View::component(
@@ -113,31 +113,40 @@ $deckled_edge_url = UrlHelper::resolve( 'assets/images/textures/border/deckled-e
 				View::component(
 					'section-header/section-header',
 					array(
-						'tag'   => (string) ( $timeline['tag'] ?? '8,000 BC to Present' ),
-						'title' => (string) ( $timeline['title'] ?? 'The Ancient <em>Odyssey</em> Of Cane' ),
-						'sub'   => (string) ( $timeline['sub'] ?? 'Trace how a wild Pacific grass became the world\'s most cherished botanical elixir.' ),
+						'tag'   => (string) ( $timeline['tag'] ?? '' ),
+						'title' => (string) ( $timeline['title'] ?? '' ),
+						'sub'   => (string) ( $timeline['sub'] ?? '' ),
 					)
 				);
 				?>
 
-				<div class="vintage-timeline-grid">
+				<div class="vintage-timeline-roadmap">
+					<div class="timeline-roadmap-spine" aria-hidden="true"></div>
 					<?php foreach ( $milestones as $m_idx => $mile ) :
 						$m_era  = (string) ( $mile['era'] ?? '' );
 						$m_loc  = (string) ( $mile['location'] ?? '' );
 						$m_ttl  = (string) ( $mile['title'] ?? '' );
 						$m_dsc  = (string) ( $mile['desc'] ?? '' );
 						$m_ico  = (string) ( $mile['icon'] ?? '🌱' );
+						$is_even = ( 0 === $m_idx % 2 );
 					?>
-						<div class="timeline-step-card frame--rough-cut">
-							<div class="timeline-step-card__header">
-								<div class="timeline-step-card__badge">
-									<span class="timeline-step-card__icon"><?php echo esc_html( $m_ico ); ?></span>
-									<span class="timeline-step-card__era"><?php echo esc_html( $m_era ); ?></span>
-								</div>
-								<span class="timeline-step-card__loc">📍 <?php echo esc_html( $m_loc ); ?></span>
+						<div class="timeline-milestone-row<?php echo $is_even ? ' timeline-milestone-row--left' : ' timeline-milestone-row--right'; ?>">
+							<div class="timeline-milestone-node" aria-hidden="true">
+								<span class="timeline-milestone-node__num"><?php echo esc_html( sprintf( '%02d', $m_idx + 1 ) ); ?></span>
 							</div>
-							<h3 class="timeline-step-card__title"><?php echo esc_html( $m_ttl ); ?></h3>
-							<p class="timeline-step-card__desc"><?php echo esc_html( $m_dsc ); ?></p>
+							<div class="timeline-milestone-card frame--rough-cut">
+								<div class="timeline-milestone-card__header">
+									<div class="timeline-milestone-card__era-badge">
+										<span class="timeline-milestone-card__icon"><?php echo esc_html( $m_ico ); ?></span>
+										<strong class="timeline-milestone-card__era"><?php echo esc_html( $m_era ); ?></strong>
+									</div>
+									<?php if ( '' !== $m_loc ) : ?>
+										<span class="timeline-milestone-card__loc">📍 <?php echo esc_html( $m_loc ); ?></span>
+									<?php endif; ?>
+								</div>
+								<h3 class="timeline-milestone-card__title"><?php echo esc_html( $m_ttl ); ?></h3>
+								<p class="timeline-milestone-card__desc"><?php echo esc_html( $m_dsc ); ?></p>
+							</div>
 						</div>
 					<?php endforeach; ?>
 				</div>
@@ -158,9 +167,9 @@ $deckled_edge_url = UrlHelper::resolve( 'assets/images/textures/border/deckled-e
 				View::component(
 					'section-header/section-header',
 					array(
-						'tag'   => (string) ( $varieties['tag'] ?? 'Botanical Cultivars' ),
-						'title' => (string) ( $varieties['title'] ?? 'Heirloom Cane <em>Varieties</em>' ),
-						'sub'   => (string) ( $varieties['sub'] ?? 'Different soils and climates produce distinct cane cultivars, each with unique mineral profiles.' ),
+						'tag'   => (string) ( $varieties['tag'] ?? '' ),
+						'title' => (string) ( $varieties['title'] ?? '' ),
+						'sub'   => (string) ( $varieties['sub'] ?? '' ),
 					)
 				);
 				?>
@@ -173,9 +182,9 @@ $deckled_edge_url = UrlHelper::resolve( 'assets/images/textures/border/deckled-e
 						$v_brix    = (string) ( $v_item['brix'] ?? '' );
 						$v_prof    = (string) ( $v_item['profile'] ?? '' );
 						$v_badge   = (string) ( $v_item['badge'] ?? '' );
-						$v_img     = UrlHelper::resolve( (string) ( $v_item['image'] ?? 'assets/images/sugarcane/hero_juice.jpg' ) );
+						$v_img     = UrlHelper::resolve( (string) ( $v_item['image'] ?? '' ) );
 					?>
-						<div class="variety-card frame--ornate" 
+						<div class="variety-specimen-card frame--ornate" 
 							 tabindex="0" 
 							 role="button" 
 							 aria-haspopup="dialog"
@@ -186,20 +195,29 @@ $deckled_edge_url = UrlHelper::resolve( 'assets/images/textures/border/deckled-e
 							 data-story-meta="<?php echo esc_attr( $v_origin . ' • ' . $v_brix ); ?>"
 							 data-story-quote="<?php echo esc_attr( $v_prof ); ?>"
 							 data-story-image="<?php echo esc_url( $v_img ); ?>">
-							<div class="variety-card__media">
+							<div class="variety-specimen-card__media">
 								<img src="<?php echo esc_url( $v_img ); ?>" alt="<?php echo esc_attr( $v_name ); ?>" loading="lazy">
 								<?php if ( '' !== $v_badge ) : ?>
-									<span class="variety-card__badge"><?php echo esc_html( $v_badge ); ?></span>
+									<span class="variety-specimen-card__badge"><?php echo esc_html( $v_badge ); ?></span>
 								<?php endif; ?>
 							</div>
-							<div class="variety-card__body">
-								<span class="variety-card__origin">📍 <?php echo esc_html( $v_origin ); ?></span>
-								<h3 class="variety-card__title"><?php echo esc_html( $v_name ); ?></h3>
-								<span class="variety-card__species"><em><?php echo esc_html( $v_species ); ?></em></span>
-								<div class="variety-card__brix-tag">
-									<span>⚡ <?php echo esc_html( $v_brix ); ?></span>
-								</div>
-								<p class="variety-card__desc"><?php echo esc_html( $v_prof ); ?></p>
+							<div class="variety-specimen-card__body">
+								<?php if ( '' !== $v_origin ) : ?>
+									<span class="variety-specimen-card__origin">📍 <?php echo esc_html( $v_origin ); ?></span>
+								<?php endif; ?>
+								<h3 class="variety-specimen-card__title"><?php echo esc_html( $v_name ); ?></h3>
+								<?php if ( '' !== $v_species ) : ?>
+									<span class="variety-specimen-card__species"><em><?php echo esc_html( $v_species ); ?></em></span>
+								<?php endif; ?>
+								<?php if ( '' !== $v_brix ) : ?>
+									<div class="variety-specimen-card__brix-gauge">
+										<span class="brix-gauge__label">Natural Sweetness:</span>
+										<span class="brix-gauge__val">⚡ <?php echo esc_html( $v_brix ); ?></span>
+									</div>
+								<?php endif; ?>
+								<?php if ( '' !== $v_prof ) : ?>
+									<p class="variety-specimen-card__desc"><?php echo esc_html( $v_prof ); ?></p>
+								<?php endif; ?>
 							</div>
 						</div>
 					<?php endforeach; ?>
@@ -212,7 +230,6 @@ $deckled_edge_url = UrlHelper::resolve( 'assets/images/textures/border/deckled-e
 	<?php endif; ?>
 
 	<!-- ═══════════ 6. 7-STAGE BOTANICAL LIFE CYCLE ═══════════ -->
-	<!-- ═══════════ 6. 7-STAGE BOTANICAL LIFE CYCLE (MASTER INTERACTIVE SHOWCASE) ═══════════ -->
 	<?php if ( ! empty( $life_cycle['items'] ) ) :
 		$life_items = (array) ( $life_cycle['items'] ?? array() );
 	?>
@@ -222,9 +239,9 @@ $deckled_edge_url = UrlHelper::resolve( 'assets/images/textures/border/deckled-e
 				View::component(
 					'section-header/section-header',
 					array(
-						'tag'   => (string) ( $life_cycle['tag'] ?? 'Botanical Journey • Field To Glass' ),
-						'title' => (string) ( $life_cycle['title'] ?? 'Life Cycle Of <em>Sugarcane</em>' ),
-						'sub'   => (string) ( $life_cycle['sub'] ?? 'From fertile volcanic soils to the final fresh-pressed London pour — explore every biological stage of the ancient Saccharum officinarum plant.' ),
+						'tag'   => (string) ( $life_cycle['tag'] ?? '' ),
+						'title' => (string) ( $life_cycle['title'] ?? '' ),
+						'sub'   => (string) ( $life_cycle['sub'] ?? '' ),
 					)
 				);
 				?>
@@ -271,7 +288,7 @@ $deckled_edge_url = UrlHelper::resolve( 'assets/images/textures/border/deckled-e
 						$step_fact     = (string) ( $l_step['fact'] ?? '' );
 						$step_desc     = (string) ( $l_step['desc'] ?? '' );
 						$step_bullets  = (array) ( $l_step['bullets'] ?? array() );
-						$step_img      = UrlHelper::resolve( (string) ( $l_step['image'] ?? 'assets/images/sugarcane/stacks.jpg' ) );
+						$step_img      = UrlHelper::resolve( (string) ( $l_step['image'] ?? '' ) );
 						$is_active     = 0 === $l_idx;
 					?>
 						<div class="lifecycle-panel frame--rough-cut<?php echo $is_active ? ' is-active' : ''; ?>"
@@ -389,22 +406,50 @@ $deckled_edge_url = UrlHelper::resolve( 'assets/images/textures/border/deckled-e
 				View::component(
 					'section-header/section-header',
 					array(
-						'tag'   => (string) ( $nutritional_alchemy['tag'] ?? "Nature's Electrolyte Elixir" ),
-						'title' => (string) ( $nutritional_alchemy['title'] ?? 'The Mineral <em>Alchemy</em> Of Cane' ),
-						'sub'   => (string) ( $nutritional_alchemy['sub'] ?? 'Raw sugarcane is a whole-plant electrolyte elixir, naturally mineral-rich and unrefined.' ),
+						'tag'   => (string) ( $nutritional_alchemy['tag'] ?? '' ),
+						'title' => (string) ( $nutritional_alchemy['title'] ?? '' ),
+						'sub'   => (string) ( $nutritional_alchemy['sub'] ?? '' ),
 					)
 				);
 				?>
 
-				<div class="mineral-grid">
-					<?php foreach ( $minerals as $min ) : ?>
-						<div class="mineral-card frame--rough-cut">
-							<div class="mineral-card__symbol"><?php echo esc_html( (string) ( $min['symbol'] ?? '' ) ); ?></div>
-							<h4 class="mineral-card__name"><?php echo esc_html( (string) ( $min['name'] ?? '' ) ); ?></h4>
-							<span class="mineral-card__amount"><?php echo esc_html( (string) ( $min['amount'] ?? '' ) ); ?></span>
-							<p class="mineral-card__benefit"><?php echo esc_html( (string) ( $min['benefit'] ?? '' ) ); ?></p>
+				<div class="nutrition-apothecary-layout">
+					<!-- Left Side: Master Electrolyte Spotlight Banner -->
+					<div class="nutrition-spotlight-card">
+						<div class="nutrition-spotlight-card__header">
+							<span class="spotlight-badge">RAW BOTANICAL SCIENCE</span>
+							<h3 class="spotlight-title">100% LIVING PLANT WATER</h3>
 						</div>
-					<?php endforeach; ?>
+						<div class="spotlight-metrics">
+							<div class="spotlight-metric-item">
+								<span class="spotlight-metric-val">420<small>mg</small></span>
+								<span class="spotlight-metric-lbl">Bio-Potassium per 330ml</span>
+							</div>
+							<div class="spotlight-metric-item">
+								<span class="spotlight-metric-val">~43</span>
+								<span class="spotlight-metric-lbl">Low Glycemic Index (GI)</span>
+							</div>
+							<div class="spotlight-metric-item">
+								<span class="spotlight-metric-val">0%</span>
+								<span class="spotlight-metric-lbl">Refined Sugar or Syrups</span>
+							</div>
+						</div>
+						<p class="spotlight-summary">Unlike processed table sugar that causes rapid insulin spikes, raw sugarcane delivers organic glucose and fructose naturally bound to bioavailable plant minerals, phenolic flavonoids, and soluble fibers for sustained cellular hydration.</p>
+					</div>
+
+					<!-- Right Side: Periodic Mineral Grid -->
+					<div class="mineral-apothecary-grid">
+						<?php foreach ( $minerals as $min ) : ?>
+							<div class="mineral-apothecary-card frame--rough-cut">
+								<div class="mineral-apothecary-card__top">
+									<div class="mineral-symbol-stamp"><?php echo esc_html( (string) ( $min['symbol'] ?? '' ) ); ?></div>
+									<span class="mineral-amount-badge"><?php echo esc_html( (string) ( $min['amount'] ?? '' ) ); ?></span>
+								</div>
+								<h4 class="mineral-name"><?php echo esc_html( (string) ( $min['name'] ?? '' ) ); ?></h4>
+								<p class="mineral-benefit"><?php echo esc_html( (string) ( $min['benefit'] ?? '' ) ); ?></p>
+							</div>
+						<?php endforeach; ?>
+					</div>
 				</div>
 			</div>
 		</section>
@@ -413,9 +458,10 @@ $deckled_edge_url = UrlHelper::resolve( 'assets/images/textures/border/deckled-e
 		</div>
 	<?php endif; ?>
 
-	<!-- ═══════════ 8. CIRCULAR ZERO-WASTE USES ═══════════ -->
+	<!-- ═══════════ 8. THE WHOLE-CANE ZERO-WASTE ECOSYSTEM: TRADITION, FOOD, BIOFUEL & MATERIALS ═══════════ -->
 	<?php if ( ! empty( $uses['items'] ) ) :
-		$use_items = (array) ( $uses['items'] ?? array() );
+		$use_items      = (array) ( $uses['items'] ?? array() );
+		$use_categories = (array) ( $uses['categories'] ?? array() );
 	?>
 		<section class="section history-uses-section paper-rough" id="uses">
 			<div class="container">
@@ -423,37 +469,115 @@ $deckled_edge_url = UrlHelper::resolve( 'assets/images/textures/border/deckled-e
 				View::component(
 					'section-header/section-header',
 					array(
-						'tag'   => (string) ( $uses['tag'] ?? 'One Plant, Every Purpose' ),
-						'title' => (string) ( $uses['title'] ?? 'Uses Of <em>Sugarcane</em>' ),
-						'sub'   => (string) ( $uses['sub'] ?? 'From raw nutrition to zero-waste circular tableware and bio-energy.' ),
+						'tag'   => (string) ( $uses['tag'] ?? '' ),
+						'title' => (string) ( $uses['title'] ?? '' ),
+						'sub'   => (string) ( $uses['sub'] ?? '' ),
 					)
 				);
 				?>
 
-				<div class="uses-grid">
+				<!-- Interactive Category Filter Bar -->
+				<?php if ( ! empty( $use_categories ) ) : ?>
+					<div class="uses-category-filter-bar" role="tablist" aria-label="Sugarcane Uses Filter">
+						<?php foreach ( $use_categories as $c_idx => $cat_name ) :
+							$cat_slug  = 0 === $c_idx ? 'all' : strtolower( trim( preg_replace( '/[^a-z0-9]+/i', '-', $cat_name ), '-' ) );
+							$is_active = 0 === $c_idx;
+						?>
+							<button class="uses-filter-pill<?php echo $is_active ? ' is-active' : ''; ?>"
+									type="button"
+									role="tab"
+									aria-selected="<?php echo $is_active ? 'true' : 'false'; ?>"
+									data-filter-category="<?php echo esc_attr( $cat_slug ); ?>">
+								<?php echo esc_html( $cat_name ); ?>
+							</button>
+						<?php endforeach; ?>
+					</div>
+				<?php endif; ?>
+
+				<!-- Dynamic Multi-Use Ecosystem Cards Grid -->
+				<div class="uses-ecosystem-grid" id="uses-ecosystem-grid">
 					<?php foreach ( $use_items as $u_item ) :
-						$u_ttl  = (string) ( $u_item['title'] ?? '' );
-						$u_dsc  = (string) ( $u_item['desc'] ?? '' );
-						$u_tag  = (string) ( $u_item['tag'] ?? 'Pure Cane' );
-						$u_icon = (string) ( $u_item['icon'] ?? 'leaf' );
+						$u_ttl    = (string) ( $u_item['title'] ?? '' );
+						$u_dsc    = (string) ( $u_item['desc'] ?? '' );
+						$u_cat    = (string) ( $u_item['category'] ?? '' );
+						$u_catslug = strtolower( trim( preg_replace( '/[^a-z0-9]+/i', '-', $u_cat ), '-' ) );
+						$u_tag    = (string) ( $u_item['tag'] ?? '' );
+						$u_impact = (string) ( $u_item['impact'] ?? '' );
+						$u_fact   = (string) ( $u_item['fact'] ?? '' );
+						$u_icon   = (string) ( $u_item['icon'] ?? 'leaf' );
+						$u_img    = UrlHelper::resolve( (string) ( $u_item['image'] ?? '' ) );
 					?>
-						<div class="use-card frame--rough-cut">
-							<div class="use-card__top">
-								<span class="use-card__tag"><?php echo esc_html( $u_tag ); ?></span>
-								<div class="use-card__icon-box">
-									<?php echo IconHelper::render( $u_icon, '#f6d599', 20 ); // phpcs:ignore ?>
+						<article class="use-ecosystem-card frame--rough-cut" data-use-category="<?php echo esc_attr( $u_catslug ); ?>">
+							<div class="use-ecosystem-card__top">
+								<div class="use-ecosystem-card__icon-box">
+									<?php echo IconHelper::render( $u_icon, '#f6d599', 24 ); // phpcs:ignore ?>
+								</div>
+								<div class="use-ecosystem-card__tags">
+									<?php if ( '' !== $u_tag ) : ?>
+										<span class="use-ecosystem-card__tag"><?php echo esc_html( $u_tag ); ?></span>
+									<?php endif; ?>
+									<?php if ( '' !== $u_impact ) : ?>
+										<span class="use-ecosystem-card__impact-badge">🌱 <?php echo esc_html( $u_impact ); ?></span>
+									<?php endif; ?>
 								</div>
 							</div>
-							<h3 class="use-card__title"><?php echo esc_html( $u_ttl ); ?></h3>
-							<p class="use-card__desc"><?php echo esc_html( $u_dsc ); ?></p>
-						</div>
+
+							<h3 class="use-ecosystem-card__title"><?php echo esc_html( $u_ttl ); ?></h3>
+							<p class="use-ecosystem-card__desc"><?php echo esc_html( $u_dsc ); ?></p>
+
+							<?php if ( '' !== $u_fact ) : ?>
+								<div class="use-ecosystem-card__fact">
+									<span class="fact-leaf">✦</span>
+									<span class="fact-text"><?php echo esc_html( $u_fact ); ?></span>
+								</div>
+							<?php endif; ?>
+						</article>
 					<?php endforeach; ?>
 				</div>
+
 			</div>
 		</section>
 		<div class="deckled-divider" aria-hidden="true">
 			<img src="<?php echo esc_url( $deckled_edge_url ); ?>" alt="" loading="lazy">
 		</div>
+
+		<!-- Interactive Category Filter Script -->
+		<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			var filterButtons = document.querySelectorAll('[data-filter-category]');
+			var cards = document.querySelectorAll('[data-use-category]');
+			if (!filterButtons.length || !cards.length) return;
+
+			filterButtons.forEach(function(btn) {
+				btn.addEventListener('click', function() {
+					var cat = this.getAttribute('data-filter-category');
+					
+					filterButtons.forEach(function(b) {
+						b.classList.remove('is-active');
+						b.setAttribute('aria-selected', 'false');
+					});
+					this.classList.add('is-active');
+					this.setAttribute('aria-selected', 'true');
+
+					cards.forEach(function(card) {
+						var cardCat = card.getAttribute('data-use-category');
+						if (cat === 'all' || cardCat === cat) {
+							card.style.display = '';
+							card.style.opacity = '0';
+							card.style.transform = 'translateY(8px)';
+							setTimeout(function() {
+								card.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
+								card.style.opacity = '1';
+								card.style.transform = 'translateY(0)';
+							}, 20);
+						} else {
+							card.style.display = 'none';
+						}
+					});
+				});
+			});
+		});
+		</script>
 	<?php endif; ?>
 
 	<!-- ═══════════ 9. CONNOISSEUR STORAGE & FRESHNESS GUIDE ═══════════ -->
@@ -466,9 +590,9 @@ $deckled_edge_url = UrlHelper::resolve( 'assets/images/textures/border/deckled-e
 				View::component(
 					'section-header/section-header',
 					array(
-						'tag'   => (string) ( $storage_guide['tag'] ?? "Connoisseur's Guide" ),
-						'title' => (string) ( $storage_guide['title'] ?? 'How To Store & <em>Enjoy</em>' ),
-						'sub'   => (string) ( $storage_guide['sub'] ?? 'Raw sugarcane juice contains live enzymes. Follow our artisanal handling rules for peak flavour.' ),
+						'tag'   => (string) ( $storage_guide['tag'] ?? '' ),
+						'title' => (string) ( $storage_guide['title'] ?? '' ),
+						'sub'   => (string) ( $storage_guide['sub'] ?? '' ),
 					)
 				);
 				?>
@@ -495,8 +619,8 @@ $deckled_edge_url = UrlHelper::resolve( 'assets/images/textures/border/deckled-e
 		View::component(
 			'faq/faq',
 			array(
-				'tag'     => 'Botanical Wisdom',
-				'heading' => 'FREQUENTLY ASKED <em>Questions</em>',
+				'tag'     => (string) ( $faq['tag'] ?? '' ),
+				'heading' => (string) ( $faq['title'] ?? '' ),
 				'items'   => (array) ( $faq['items'] ?? array() ),
 				'id'      => 'history-faq',
 			)
@@ -506,23 +630,7 @@ $deckled_edge_url = UrlHelper::resolve( 'assets/images/textures/border/deckled-e
 
 	<!-- ═══════════ 11. CLOSING HERITAGE CTA ═══════════ -->
 	<?php if ( ! empty( $closing ) ) : ?>
-		<section class="section history-closing-cta-section" style="padding: 50px 20px 30px; text-align: center;">
-			<div class="container container--narrow">
-				<div class="history-closing-box frame--ornate" style="background: linear-gradient(135deg, #184b25 0%, #0d2f16 100%); border: 2px solid #caa06d; border-radius: 12px; padding: 44px 32px; box-shadow: inset 0 0 0 1.5px #8e622d, 0 16px 48px rgba(0, 0, 0, 0.35); position: relative; overflow: hidden;">
-					<span class="vintage-ribbon-tag" style="margin: 0 auto 12px;"><?php esc_html_e( 'The Cane House Legacy', 'vintagesoul' ); ?></span>
-					<h2 style="font-family: 'Cinzel', serif; font-size: clamp(22px, 4vw, 34px); color: #f6d599; text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 14px;"><?php echo esc_html( (string) ( $closing['title'] ?? 'The Sweetest Story Ever Told' ) ); ?></h2>
-					<p style="font-family: 'EB Garamond', serif; font-size: 17.5px; line-height: 1.65; color: #ebd4b3; max-width: 680px; margin: 0 auto 26px;"><?php echo esc_html( (string) ( $closing['sub'] ?? '' ) ); ?></p>
-					<div class="hero-sugarcane__buttons" style="justify-content: center; gap: 16px;">
-						<a class="btn btn--primary-vintage" href="<?php echo esc_url( RouteService::url( 'home' ) ); ?>">
-							<span><?php esc_html_e( 'VISIT THE CANE HOUSE', 'vintagesoul' ); ?></span>
-						</a>
-						<a class="btn btn--secondary-vintage" href="<?php echo esc_url( RouteService::url( 'contact' ) ); ?>">
-							<span><?php esc_html_e( 'SPEAK WITH US', 'vintagesoul' ); ?></span>
-						</a>
-					</div>
-				</div>
-			</div>
-		</section>
+		<?php View::component( 'cta-banner/cta-banner', (array) $closing ); ?>
 	<?php endif; ?>
 
 	<!-- Trust Accreditation Ribbon -->

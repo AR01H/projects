@@ -1,7 +1,7 @@
 {
-    "_source": "Extracted + genericized from traditional_template/admin/data/faqs.json. Feeds a Contact (or Home) FAQ section.",
-
-    "heading": "Frequently Asked Questions",
+    "tag": "Common Inquiries",
+    "title": "FREQUENTLY ASKED <em>Questions</em>",
+    "sub": "Everything you need to know about our fresh cold-pressed process, catering, and delivery.",
     "items": [
         { "question": "What events do you cater for?", "answer": "We cater for weddings, birthday parties, college fests, corporate events, festivals, and private gatherings of any size." },
         { "question": "Where do you provide your service?", "answer": "We currently serve Sutton, London, Surrey, and surrounding areas across the United Kingdom." },

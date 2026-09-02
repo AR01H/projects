@@ -16,10 +16,15 @@ final class FranchiseController {
 		}
 
 		return array(
-			'hero'    => $hero,
-			'why'     => (array) ( $data['why'] ?? array() ),
-			'how'     => (array) ( $data['how'] ?? array() ),
-			'closing' => (array) ( $data['closing'] ?? array() ),
+			'hero'      => $hero,
+			'why'       => (array) ( $data['why'] ?? array() ),
+			'how'       => (array) ( $data['how'] ?? array() ),
+			'pillars'   => (array) ( $data['pillars'] ?? array() ),
+			'formats'   => (array) ( $data['formats'] ?? array() ),
+			'gallery'   => (array) ( $data['gallery'] ?? array() ),
+			'reviews'   => (array) ( $data['reviews'] ?? array() ),
+			'faqs'      => (array) ( $data['faqs'] ?? array() ),
+			'closing'   => (array) ( $data['closing'] ?? array() ),
 		);
 	}
 }

@@ -61,8 +61,8 @@ final class BlogController {
 		// If no posts in WP database, use rich fallback posts
 		if ( empty( $articles ) ) {
 			foreach ( $fallback_items as $item ) {
-				$img = (string) ( $item['image'] ?? 'assets/images/sugarcane/hero_juice.jpg' );
-				if ( 0 !== strpos( $img, 'http' ) ) {
+				$img = (string) ( $item['image'] ?? '' );
+				if ( '' !== $img && 0 !== strpos( $img, 'http' ) ) {
 					$img = UrlHelper::resolve( $img );
 				}
 
@@ -71,9 +71,9 @@ final class BlogController {
 					'title'        => (string) ( $item['title'] ?? '' ),
 					'permalink'    => home_url( '/blog/?article=' . (string) ( $item['slug'] ?? '' ) ),
 					'slug'         => (string) ( $item['slug'] ?? '' ),
-					'category'     => (string) ( $item['category'] ?? 'Heritage' ),
+					'category'     => (string) ( $item['category'] ?? '' ),
 					'date'         => (string) ( $item['date'] ?? '' ),
-					'author'       => (string) ( $item['author'] ?? 'The Cane House' ),
+					'author'       => (string) ( $item['author'] ?? '' ),
 					'reading_time' => (int) ( $item['reading_time'] ?? 4 ),
 					'excerpt'      => (string) ( $item['excerpt'] ?? '' ),
 					'image'        => $img,

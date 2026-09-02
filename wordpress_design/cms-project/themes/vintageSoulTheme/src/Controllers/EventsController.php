@@ -16,11 +16,14 @@ final class EventsController {
 		}
 
 		return array(
-			'hero'     => $hero,
-			'packages' => (array) ( $data['packages'] ?? array() ),
-			'process'  => (array) ( $data['process'] ?? array() ),
-			'gallery'  => (array) ( $data['gallery'] ?? array() ),
-			'faqs'     => (array) ( $data['faqs'] ?? array() ),
+			'hero'        => $hero,
+			'event_types' => (array) ( $data['event_types'] ?? array() ),
+			'inclusions'  => (array) ( $data['inclusions'] ?? array() ),
+			'packages'    => (array) ( $data['packages'] ?? array() ),
+			'process'     => (array) ( $data['process'] ?? array() ),
+			'gallery'     => (array) ( $data['gallery'] ?? array() ),
+			'reviews'     => (array) ( $data['reviews'] ?? array() ),
+			'faqs'        => (array) ( $data['faqs'] ?? array() ),
 		);
 	}
 }

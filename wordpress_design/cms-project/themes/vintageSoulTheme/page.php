@@ -2,6 +2,7 @@
 
 use VintageSoul\Controllers\PageController;
 use VintageSoul\Services\RouteService;
+use VintageSoul\Support\View;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -16,20 +17,33 @@ get_header();
 			require $view;
 		else :
 			$data = ( new PageController() )->prepare();
+			$post_title = get_the_title();
 			?>
-			<article <?php post_class( 'page' ); ?> id="post-<?php the_ID(); ?>">
-				<div class="section">
-					<div class="container container--narrow">
-						<header class="page__header">
-							<h1 class="page__title"><?php echo esc_html( $data['title'] ); ?></h1>
-						</header>
-						<div class="page__content">
+			<!-- Subpage Hero for Standard WordPress Pages -->
+			<?php
+			View::component(
+				'subpage-hero/subpage-hero',
+				array(
+					'id'    => 'page-hero-' . get_the_ID(),
+					'tag'   => '✦ THE CANE HOUSE ✦',
+					'title' => $post_title,
+					'sub'   => 'Official Information & Policy Details',
+					'image' => 'assets/images/backgrounds/pure_sugarcane_forest_trees_engraving.jpg',
+				)
+			);
+			?>
+
+			<!-- Standard Page Parchment Card Body -->
+			<div class="section page-standard-section paper-rough">
+				<div class="container container--narrow">
+					<article <?php post_class( 'page-standard-card' ); ?> id="post-<?php the_ID(); ?>">
+						<div class="page-standard-content entry-content">
 							<?php the_content(); ?>
 						</div>
-					</div>
+					</article>
+					<?php if ( comments_open() || get_comments_number() ) : comments_template(); endif; ?>
 				</div>
-			</article>
-			<?php if ( comments_open() || get_comments_number() ) : comments_template(); endif; ?>
+			</div>
 		<?php endif;
 	endwhile; ?>
 </main>

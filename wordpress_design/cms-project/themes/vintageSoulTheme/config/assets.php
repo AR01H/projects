@@ -41,6 +41,7 @@ return array(
 		'ui-testimonial-card' => 'assets/css/components/testimonial-card.css',
 		'ui-stamp'            => 'assets/css/components/stamp.css',
 		'ui-section-header'   => 'assets/css/components/section-header.css',
+		'ui-cta-banner'       => 'assets/css/components/cta-banner.css',
 		'ui-process-steps'    => 'assets/css/components/process-steps.css',
 		'ui-gallery'          => 'assets/css/components/gallery.css',
 
@@ -107,5 +108,6 @@ return array(
 		'ui-vintage-carousel'     => 'assets/js/components/vintage-carousel.js',
 		'ui-live-badge'           => 'assets/js/components/live-badge.js',
 		'ui-cookie-consent'       => 'assets/js/components/cookie-consent.js',
+		'ui-sticky-sidebar'       => 'assets/js/components/sticky-sidebar.js',
 	),
 );

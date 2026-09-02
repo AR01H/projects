@@ -59,10 +59,24 @@
             "desc": "Slow, cold mechanical brass-roller pressing to keep live enzymes and alkaline minerals alive."
         },
         {
-            "icon": "sparkles",
+            "icon": "leaf",
             "num": "03",
-            "title": "100% Pure — Zero Added Sugar",
-            "desc": "Unpasteurized, unadulterated raw nectar served naturally chilled with no water dilution."
+            "title": "Zero Heat, Zero Additives",
+            "desc": "Unpasteurised, unfiltered raw nectar packed with live enzymes, antioxidants, and natural plant minerals."
+        }
+    ],
+    "buttons": [
+        {
+            "icon": "sugarcane",
+            "label": "ALL ABOUT CANE",
+            "route": "history",
+            "style": "primary"
+        },
+        {
+            "icon": "pin",
+            "label": "FIND OUR STALL",
+            "route": "contact",
+            "style": "secondary"
         }
     ]
 }

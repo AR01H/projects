@@ -36,7 +36,7 @@ $items   = (array) ( $items ?? ( $community_data['items'] ?? array() ) );
 		<?php if ( ! empty( $items ) ) : ?>
 			<div class="community-vintage__grid">
 				<?php foreach ( $items as $item ) :
-					$c_icon  = (string) ( $item['icon'] ?? 'heart' );
+					$c_icon  = (string) ( $item['icon'] ?? 'plant' );
 					$c_title = (string) ( $item['title'] ?? '' );
 					$c_tag   = (string) ( $item['tag'] ?? '' );
 					$c_desc  = (string) ( $item['desc'] ?? '' );

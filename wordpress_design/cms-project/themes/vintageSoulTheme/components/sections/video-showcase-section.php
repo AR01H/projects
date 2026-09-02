@@ -28,7 +28,7 @@ if ( ! function_exists( 'vintagesoul_extract_youtube_id' ) ) {
 }
 
 $first_vid     = (array) $videos[0];
-$first_poster  = UrlHelper::resolve( (string) ( $first_vid['poster'] ?? 'assets/images/sugarcane/hero_juice.jpg' ) );
+$first_poster  = UrlHelper::resolve( (string) ( $first_vid['poster'] ?? '' ) );
 $first_src     = (string) ( $first_vid['src'] ?? '' );
 $first_src_url = '' !== $first_src ? UrlHelper::resolve( $first_src ) : '';
 $first_youtube = vintagesoul_extract_youtube_id( (string) ( $first_vid['youtube_id'] ?? '' ) );
@@ -77,7 +77,7 @@ $first_type    = (string) ( $first_vid['type'] ?? ( '' !== $first_youtube ? 'you
 						<img id="video-showcase-photo" 
 							class="video-showcase__photo" 
 							src="<?php echo esc_url( $first_poster ); ?>" 
-							alt="<?php echo esc_attr( (string) ( $first_vid['title'] ?? 'Showcase Photo' ) ); ?>" 
+							alt="<?php echo esc_attr( (string) ( $first_vid['title'] ?? '' ) ); ?>" 
 							loading="lazy">
 					</div>
 
@@ -86,9 +86,11 @@ $first_type    = (string) ( $first_vid['type'] ?? ( '' !== $first_youtube ? 'you
 
 			<!-- Right: Editorial Story Info -->
 			<div class="video-showcase__story-wrap">
-				<span class="vintage-ribbon-tag vintage-ribbon-tag--gold" id="video-showcase-tag">
-					<span><?php echo esc_html( (string) ( $first_vid['tag'] ?? 'Featured Showcase' ) ); ?></span>
-				</span>
+				<?php if ( ! empty( $first_vid['tag'] ) ) : ?>
+					<span class="vintage-ribbon-tag vintage-ribbon-tag--gold" id="video-showcase-tag">
+						<span><?php echo esc_html( (string) $first_vid['tag'] ); ?></span>
+					</span>
+				<?php endif; ?>
 
 				<h2 class="video-showcase__title" id="video-showcase-title"><?php echo esc_html( (string) ( $first_vid['title'] ?? '' ) ); ?></h2>
 				<p class="section-eyebrow" id="video-showcase-eyebrow"><?php echo esc_html( (string) ( $first_vid['eyebrow'] ?? '' ) ); ?></p>
@@ -104,12 +106,14 @@ $first_type    = (string) ( $first_vid['type'] ?? ( '' !== $first_youtube ? 'you
 					<?php endforeach; ?>
 				</ul>
 
-				<div class="video-showcase__cta-wrap">
-					<a class="btn btn--primary-vintage btn--order-now" id="video-showcase-btn" href="<?php echo esc_url( RouteService::url( (string) ( $first_vid['cta']['route'] ?? 'contact' ) ) ); ?>">
-						<span class="btn__icon" id="video-showcase-btn-icon">✦</span>
-						<span id="video-showcase-btn-label"><?php echo esc_html( (string) ( $first_vid['cta']['label'] ?? 'VISIT OUR STALL' ) ); ?></span>
-					</a>
-				</div>
+				<?php if ( ! empty( $first_vid['cta']['label'] ) ) : ?>
+					<div class="video-showcase__cta-wrap">
+						<a class="btn btn--primary-vintage btn--order-now" id="video-showcase-btn" href="<?php echo esc_url( RouteService::url( (string) ( $first_vid['cta']['route'] ?? 'contact' ) ) ); ?>">
+							<span class="btn__icon" id="video-showcase-btn-icon">✦</span>
+							<span id="video-showcase-btn-label"><?php echo esc_html( (string) $first_vid['cta']['label'] ); ?></span>
+						</a>
+					</div>
+				<?php endif; ?>
 			</div>
 
 		</div>
@@ -117,11 +121,11 @@ $first_type    = (string) ( $first_vid['type'] ?? ( '' !== $first_youtube ? 'you
 		<!-- Bottom 100% Full-Width Horizontal Scrollable Playlist Bar (15 Items) -->
 		<div class="video-showcase__playlist-bar card--rough-cut-dark">
 			<div class="video-showcase__playlist-container">
-				<button type="button" class="playlist-nav-btn playlist-nav-btn--prev" id="video-scroll-prev" aria-label="<?php esc_attr_e( 'Scroll Left', 'vintagesoul' ); ?>">‹</button>
+				<button type="button" class="playlist-nav-btn playlist-nav-btn--prev" id="video-scroll-prev" aria-label="Previous Media">‹</button>
 				<div class="video-showcase__playlist-track-wrap">
 					<div class="video-showcase__playlist-track" id="video-playlist-track">
 						<?php foreach ( $videos as $v_idx => $v_item ) :
-							$v_poster   = UrlHelper::resolve( (string) ( $v_item['poster'] ?? 'assets/images/sugarcane/hero_juice.jpg' ) );
+							$v_poster   = UrlHelper::resolve( (string) ( $v_item['poster'] ?? '' ) );
 							$v_src      = (string) ( $v_item['src'] ?? '' );
 							$v_src_url  = '' !== $v_src ? UrlHelper::resolve( $v_src ) : '';
 							$v_yt       = vintagesoul_extract_youtube_id( (string) ( $v_item['youtube_id'] ?? '' ) );
@@ -142,7 +146,7 @@ $first_type    = (string) ( $first_vid['type'] ?? ( '' !== $first_youtube ? 'you
 									data-video-tag="<?php echo esc_attr( (string) ( $v_item['tag'] ?? '' ) ); ?>"
 									data-video-desc="<?php echo esc_attr( (string) ( $v_item['description'] ?? '' ) ); ?>"
 									data-video-highlights='<?php echo esc_attr( (string) wp_json_encode( (array) ( $v_item['highlights'] ?? array() ) ) ); ?>'
-									data-video-cta-label="<?php echo esc_attr( (string) ( $v_item['cta']['label'] ?? 'LEARN MORE' ) ); ?>"
+									data-video-cta-label="<?php echo esc_attr( (string) ( $v_item['cta']['label'] ?? '' ) ); ?>"
 									data-video-cta-url="<?php echo esc_attr( $c_url ); ?>">
 								<div class="video-playlist-item__thumb frame--rough-cut">
 									<img src="<?php echo esc_url( $v_poster ); ?>" alt="<?php echo esc_attr( (string) ( $v_item['title'] ?? '' ) ); ?>" loading="lazy">
@@ -153,17 +157,17 @@ $first_type    = (string) ( $first_vid['type'] ?? ( '' !== $first_youtube ? 'you
 											<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
 										<?php endif; ?>
 									</span>
-									<span class="video-playlist-item__duration"><?php echo esc_html( (string) ( $v_item['duration'] ?? '1:00' ) ); ?></span>
+									<span class="video-playlist-item__duration"><?php echo esc_html( (string) ( $v_item['duration'] ?? '' ) ); ?></span>
 								</div>
 								<div class="video-playlist-item__info">
 									<strong class="video-playlist-item__title"><?php echo esc_html( (string) ( $v_item['title'] ?? '' ) ); ?></strong>
-									<span class="video-playlist-item__tag"><?php echo esc_html( (string) ( $v_item['tag'] ?? 'Showcase' ) ); ?></span>
+									<span class="video-playlist-item__tag"><?php echo esc_html( (string) ( $v_item['tag'] ?? '' ) ); ?></span>
 								</div>
 							</button>
 						<?php endforeach; ?>
 					</div>
 				</div>
-				<button type="button" class="playlist-nav-btn playlist-nav-btn--next" id="video-scroll-next" aria-label="<?php esc_attr_e( 'Scroll Right', 'vintagesoul' ); ?>">›</button>
+				<button type="button" class="playlist-nav-btn playlist-nav-btn--next" id="video-scroll-next" aria-label="Next Media">›</button>
 			</div>
 		</div>
 
@@ -233,7 +237,7 @@ $first_type    = (string) ( $first_vid['type'] ?? ( '' !== $first_youtube ? 'you
 		var tag = item.getAttribute('data-video-tag') || '';
 		var desc = item.getAttribute('data-video-desc') || '';
 		var highlightsRaw = item.getAttribute('data-video-highlights') || '';
-		var ctaLabel = item.getAttribute('data-video-cta-label') || 'LEARN MORE';
+		var ctaLabel = item.getAttribute('data-video-cta-label') || '';
 		var ctaUrl = item.getAttribute('data-video-cta-url') || '#';
 
 		// Visual feedback transition on big card

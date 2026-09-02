@@ -1,8 +1,6 @@
 {
-    "_source": "Extracted + genericized from the reference design's About page hero band (some_styles/canehouse/priority, history_mobile/history_desktop) - About's own hero, distinct from Home's hero.json.",
-
-    "tag": "Our Story",
-    "title": "All About <em>Us</em>",
-    "subtitle": "Where it all began, and where it's going.",
-    "image": "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=1200&q=80"
+    "tag": "The Cane House Story",
+    "title": "ABOUT <em>The Cane House</em>",
+    "sub": "We are on a mission to bring the authentic, traditional sugarcane juice experience back to modern communities — freshly pressed, 100% natural, and full of memories.",
+    "image": "assets/images/backgrounds/pure_sugarcane_forest_trees_engraving.jpg"
 }

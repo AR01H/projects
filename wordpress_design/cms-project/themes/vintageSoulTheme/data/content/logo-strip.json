@@ -1,16 +1,16 @@
 {
     "tag": "In Good Company",
-    "title": "AS FEATURED & TRUSTED BY",
+    "title": "AS FEATURED &amp; <em>Trusted By</em>",
     "sub": "Proudly recognized by leading culinary & cultural establishments across London.",
     "marquee": true,
     "items": [
-        { "name": "LONDON BOROUGH OF SUTTON", "image": "assets/images/partners/lb-sutton-council.svg", "subtitle": "Local Authority" },
-        { "name": "FOOD HYGIENE RATING", "image": "assets/images/partners/food-hygiene-5.svg", "subtitle": "5 Star Rating" },
-        { "name": "SOIL ASSOCIATION", "image": "assets/images/partners/soil-association.svg", "subtitle": "Organic Partner" },
-        { "name": "BBC GOOD FOOD", "image": "assets/images/partners/bbc-good-food.svg", "subtitle": "Featured Stalls" },
-        { "name": "TIME OUT LONDON", "image": "assets/images/partners/timeout-london.svg", "subtitle": "Editor's Pick" },
-        { "name": "BOROUGH MARKET", "image": "assets/images/partners/borough-market.svg", "subtitle": "London" },
-        { "name": "SLOW FOOD UK", "image": "assets/images/partners/slow-food.svg", "subtitle": "Heritage Choice" },
-        { "name": "THE GROCER", "image": "assets/images/partners/the-grocer.svg", "subtitle": "UK Food & Drink" }
+        { "name": "LONDON BOROUGH OF SUTTON", "image": "assets/images/partners/lb-sutton-council.svg", "subtitle": "Local Authority", "url": "https://www.sutton.gov.uk" },
+        { "name": "FOOD HYGIENE RATING", "image": "assets/images/partners/food-hygiene-5.svg", "subtitle": "5 Star Rating", "url": "https://ratings.food.gov.uk" },
+        { "name": "SOIL ASSOCIATION", "image": "assets/images/partners/soil-association.svg", "subtitle": "Organic Partner", "url": "https://www.soilassociation.org" },
+        { "name": "BBC GOOD FOOD", "image": "assets/images/partners/bbc-good-food.svg", "subtitle": "Featured Stalls", "url": "https://www.bbcgoodfood.com" },
+        { "name": "TIME OUT LONDON", "image": "assets/images/partners/timeout-london.svg", "subtitle": "Editor's Pick", "url": "https://www.timeout.com/london" },
+        { "name": "BOROUGH MARKET", "image": "assets/images/partners/borough-market.svg", "subtitle": "London", "url": "https://boroughmarket.org.uk" },
+        { "name": "SLOW FOOD UK", "image": "assets/images/partners/slow-food.svg", "subtitle": "Heritage Choice", "url": "https://www.slowfood.org.uk" },
+        { "name": "THE GROCER", "image": "assets/images/partners/the-grocer.svg", "subtitle": "UK Food & Drink", "url": "https://www.thegrocer.co.uk" }
     ]
 }

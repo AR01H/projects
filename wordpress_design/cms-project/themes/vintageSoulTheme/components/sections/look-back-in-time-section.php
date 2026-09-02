@@ -4,25 +4,29 @@ defined( 'ABSPATH' ) || exit;
 
 use VintageSoul\DataProviders\JsonFileProvider;
 use VintageSoul\Services\RouteService;
-use VintageSoul\Services\SettingsService;
 use VintageSoul\Support\IconHelper;
 use VintageSoul\Support\UrlHelper;
 use VintageSoul\Support\View;
 
 $gallery_data = (array) ( JsonFileProvider::read( 'data/content/gallery.json' ) ?? array() );
 
-$tag        = (string) ( $tag ?? $gallery_data['tag'] ?? 'Our Gallery' );
-$title      = (string) ( $title ?? $gallery_data['title'] ?? 'LOOK BACK IN <em>Time</em>' );
-$subtitle   = (string) ( $subtitle ?? ( $sub ?? ( $gallery_data['subtitle'] ?? ( $gallery_data['body'] ?? 'A few of our favourite moments capturing the heritage, stall life, and smiles over the years.' ) ) ) );
+$tag        = (string) ( $tag ?? ( $gallery_data['tag'] ?? '' ) );
+$title      = (string) ( $title ?? ( $gallery_data['title'] ?? '' ) );
+$subtitle   = (string) ( $subtitle ?? ( $sub ?? ( $gallery_data['subtitle'] ?? ( $gallery_data['body'] ?? '' ) ) ) );
 $categories = ! empty( $categories ) ? (array) $categories : (array) ( $gallery_data['categories'] ?? array() );
 $items      = ! empty( $items ) ? (array) $items : (array) ( $gallery_data['items'] ?? ( $gallery_data['images'] ?? array() ) );
 
 $actions_cfg   = (array) ( $actions ?? ( $gallery_data['actions'] ?? array() ) );
-$primary_btn   = (array) ( $actions_cfg['primary'] ?? array( 'label' => 'VISIT OUR LIVE STALL', 'icon' => 'pin', 'route' => 'contact' ) );
-$secondary_btn = (array) ( $actions_cfg['secondary'] ?? array( 'label' => 'BOOK OUR STALL FOR EVENTS', 'icon' => 'tent', 'url' => SettingsService::whatsapp_url() ) );
+$primary_btn   = (array) ( $actions_cfg['primary'] ?? array() );
+$secondary_btn = (array) ( $actions_cfg['secondary'] ?? array() );
 
-$primary_url = isset( $primary_btn['url'] ) ? (string) $primary_btn['url'] : RouteService::url( (string) ( $primary_btn['route'] ?? 'contact' ) );
-$secondary_url = isset( $secondary_btn['url'] ) ? (string) $secondary_btn['url'] : ( isset( $secondary_btn['route'] ) ? RouteService::url( (string) $secondary_btn['route'] ) : SettingsService::whatsapp_url() );
+$primary_url = ! empty( $primary_btn['url'] )
+	? (string) $primary_btn['url']
+	: ( ! empty( $primary_btn['route'] ) ? RouteService::url( (string) $primary_btn['route'] ) : '' );
+
+$secondary_url = ! empty( $secondary_btn['url'] )
+	? (string) $secondary_btn['url']
+	: ( ! empty( $secondary_btn['route'] ) ? RouteService::url( (string) $secondary_btn['route'] ) : '' );
 ?>
 <section class="section section--gallery look-back-vintage paper-rough" id="look-back-in-time">
 	<div class="container look-back-vintage__container">
@@ -55,52 +59,68 @@ $secondary_url = isset( $secondary_btn['url'] ) ? (string) $secondary_btn['url']
 		<?php endif; ?>
 
 		<!-- 8-Photo Rough-Cut Gallery Grid -->
-		<div class="look-back-grid">
-			<?php foreach ( $items as $item ) :
-				$img_src  = is_array( $item ) ? (string) ( $item['image'] ?? ( $item['src'] ?? '' ) ) : (string) $item;
-				$img_url  = UrlHelper::resolve( $img_src );
-				$img_ttl  = is_array( $item ) ? (string) ( $item['title'] ?? ( $item['label'] ?? 'Cane House Moment' ) ) : 'Cane House Moment';
-				$img_cap  = is_array( $item ) ? (string) ( $item['caption'] ?? ( $item['desc'] ?? '' ) ) : '';
-				$img_cat  = is_array( $item ) ? (string) ( $item['category'] ?? 'all' ) : 'all';
-				$img_tag  = is_array( $item ) ? (string) ( $item['tag'] ?? 'Heritage' ) : 'Heritage';
-				$cat_slug = strtolower( str_replace( ' ', '-', $img_cat ) );
-			?>
-				<div class="look-back-card frame--rough-cut" 
-					 data-category="<?php echo esc_attr( $cat_slug ); ?>"
-					 tabindex="0"
-					 role="button"
-					 aria-haspopup="dialog"
-					 aria-label="<?php echo esc_attr( $img_ttl ); ?>"
-					 data-story-modal="true"
-					 data-story-title="<?php echo esc_attr( $img_ttl ); ?>"
-					 data-story-image="<?php echo esc_url( $img_url ); ?>"
-					 data-story-quote="<?php echo esc_attr( $img_cap ); ?>"
-					 data-story-meta="<?php echo esc_attr( $img_tag ); ?>">
-					<div class="look-back-card__media">
-						<img src="<?php echo esc_url( $img_url ); ?>" alt="<?php echo esc_attr( $img_ttl ); ?>" loading="lazy">
-						<span class="look-back-card__tag"><?php echo esc_html( $img_tag ); ?></span>
+		<?php if ( ! empty( $items ) ) : ?>
+			<div class="look-back-grid">
+				<?php foreach ( $items as $item ) :
+					$img_src  = is_array( $item ) ? (string) ( $item['image'] ?? ( $item['src'] ?? '' ) ) : (string) $item;
+					$img_url  = UrlHelper::resolve( $img_src );
+					$img_ttl  = is_array( $item ) ? (string) ( $item['title'] ?? ( $item['label'] ?? '' ) ) : '';
+					$img_cap  = is_array( $item ) ? (string) ( $item['caption'] ?? ( $item['desc'] ?? '' ) ) : '';
+					$img_cat  = is_array( $item ) ? (string) ( $item['category'] ?? 'all' ) : 'all';
+					$img_tag  = is_array( $item ) ? (string) ( $item['tag'] ?? '' ) : '';
+					$cat_slug = strtolower( str_replace( ' ', '-', $img_cat ) );
+				?>
+					<div class="look-back-card frame--rough-cut" 
+						 data-category="<?php echo esc_attr( $cat_slug ); ?>"
+						 tabindex="0"
+						 role="button"
+						 aria-haspopup="dialog"
+						 aria-label="<?php echo esc_attr( $img_ttl ); ?>"
+						 data-story-modal="true"
+						 data-story-title="<?php echo esc_attr( $img_ttl ); ?>"
+						 data-story-image="<?php echo esc_url( $img_url ); ?>"
+						 data-story-quote="<?php echo esc_attr( $img_cap ); ?>"
+						 data-story-meta="<?php echo esc_attr( $img_tag ); ?>">
+						<div class="look-back-card__media">
+							<img src="<?php echo esc_url( $img_url ); ?>" alt="<?php echo esc_attr( $img_ttl ); ?>" loading="lazy">
+							<?php if ( '' !== $img_tag ) : ?>
+								<span class="look-back-card__tag"><?php echo esc_html( $img_tag ); ?></span>
+							<?php endif; ?>
+						</div>
+						<div class="look-back-card__content">
+							<?php if ( '' !== $img_ttl ) : ?>
+								<h3 class="look-back-card__title"><?php echo esc_html( $img_ttl ); ?></h3>
+							<?php endif; ?>
+							<?php if ( '' !== $img_cap ) : ?>
+								<p class="look-back-card__caption"><?php echo esc_html( $img_cap ); ?></p>
+							<?php endif; ?>
+						</div>
 					</div>
-					<div class="look-back-card__content">
-						<h3 class="look-back-card__title"><?php echo esc_html( $img_ttl ); ?></h3>
-						<?php if ( '' !== $img_cap ) : ?>
-							<p class="look-back-card__caption"><?php echo esc_html( $img_cap ); ?></p>
-						<?php endif; ?>
-					</div>
-				</div>
-			<?php endforeach; ?>
-		</div>
+				<?php endforeach; ?>
+			</div>
+		<?php endif; ?>
 
 		<!-- Actions -->
-		<div class="look-back-vintage__actions">
-			<a class="btn btn--primary-vintage" href="<?php echo esc_url( $primary_url ); ?>">
-				<span class="btn__icon"><?php echo IconHelper::render( (string) ( $primary_btn['icon'] ?? 'pin' ), '#f6d599', 15 ); // phpcs:ignore ?></span>
-				<span><?php echo esc_html( (string) ( $primary_btn['label'] ?? 'VISIT OUR LIVE STALL' ) ); ?></span>
-			</a>
-			<a class="btn btn--secondary-vintage" href="<?php echo esc_url( $secondary_url ); ?>" target="_blank" rel="noopener">
-				<span class="btn__icon"><?php echo IconHelper::render( (string) ( $secondary_btn['icon'] ?? 'tent' ), '#f6d599', 15 ); // phpcs:ignore ?></span>
-				<span><?php echo esc_html( (string) ( $secondary_btn['label'] ?? 'BOOK OUR STALL FOR EVENTS' ) ); ?></span>
-			</a>
-		</div>
+		<?php if ( ! empty( $primary_btn['label'] ) || ! empty( $secondary_btn['label'] ) ) : ?>
+			<div class="look-back-vintage__actions">
+				<?php if ( ! empty( $primary_btn['label'] ) ) : ?>
+					<a class="btn btn--primary-vintage" href="<?php echo esc_url( $primary_url ); ?>">
+						<?php if ( ! empty( $primary_btn['icon'] ) ) : ?>
+							<span class="btn__icon"><?php echo IconHelper::render( (string) $primary_btn['icon'], '#f6d599', 15 ); // phpcs:ignore ?></span>
+						<?php endif; ?>
+						<span><?php echo esc_html( (string) $primary_btn['label'] ); ?></span>
+					</a>
+				<?php endif; ?>
+				<?php if ( ! empty( $secondary_btn['label'] ) ) : ?>
+					<a class="btn btn--secondary-vintage" href="<?php echo esc_url( $secondary_url ); ?>">
+						<?php if ( ! empty( $secondary_btn['icon'] ) ) : ?>
+							<span class="btn__icon"><?php echo IconHelper::render( (string) $secondary_btn['icon'], '#f6d599', 15 ); // phpcs:ignore ?></span>
+						<?php endif; ?>
+						<span><?php echo esc_html( (string) $secondary_btn['label'] ); ?></span>
+					</a>
+				<?php endif; ?>
+			</div>
+		<?php endif; ?>
 
 	</div>
 </section>

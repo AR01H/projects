@@ -1,30 +1,41 @@
 {
-    "_source": "Extracted + genericized from traditional_template/admin/data/reviews.json - brand references removed, shape preserved. Feeds a Home-page Testimonials section (see src/Repositories/JsonTestimonialRepository.php, already built).",
-
+    "_source": "Customer stories and reviews dataset.",
     "tag": "Customer Stories",
-    "title": "Reviews",
+    "title": "WHAT PEOPLE <em>Say</em>",
     "sub": "Loved by colleges, weddings, corporates and everyday visitors in Sutton & beyond.",
+    "image": "assets/images/backgrounds/pure_sugarcane_forest_trees_engraving.jpg",
     "items": [
         {
             "name": "Greenfield College",
             "location": "Sutton, UK",
             "rating": 5,
             "text": "Best sugarcane juice I had at our college fest! Loved it!",
-            "badge": "Facebook Verified"
+            "badge": "Facebook Verified",
+            "image": "assets/images/sugarcane/story_moments.jpg"
         },
         {
             "name": "Priya & Arjun",
             "location": "Wedding Event",
             "rating": 5,
             "text": "They made our event so refreshing and memorable. The live pressing cart was a massive hit!",
-            "badge": "Google Review"
+            "badge": "Google Review",
+            "image": "assets/images/sugarcane/combo.jpg"
         },
         {
             "name": "FOODNOVA",
             "location": "TECHNOVA Corp",
             "rating": 5,
             "text": "Best sugarcane juice in Sutton! Always fresh, hygienic, and wonderfully tasty.",
-            "badge": "Corporate Partner"
+            "badge": "Corporate Partner",
+            "image": "assets/images/sugarcane/hero_juice.jpg"
+        },
+        {
+            "name": "Dr. Marcus Thorne",
+            "location": "Holistic Wellness",
+            "rating": 5,
+            "text": "An unmatched raw electrolyte profile. Naturally mineral rich and unadulterated freshness.",
+            "badge": "Verified Connoisseur",
+            "image": "assets/images/sugarcane/stacks.jpg"
         }
     ]
 }

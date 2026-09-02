@@ -35,7 +35,7 @@ $items = (array) ( $items ?? ( $benefits_data['items'] ?? array() ) );
 		<?php if ( ! empty( $items ) ) : ?>
 			<div class="benefits-vintage__grid">
 				<?php foreach ( $items as $item ) :
-					$b_icon  = (string) ( $item['icon'] ?? 'leaf' );
+					$b_icon  = (string) ( $item['icon'] ?? 'plant' );
 					$b_title = (string) ( $item['title'] ?? '' );
 					$b_stat  = (string) ( $item['stat'] ?? '' );
 					$b_text  = (string) ( $item['text'] ?? '' );

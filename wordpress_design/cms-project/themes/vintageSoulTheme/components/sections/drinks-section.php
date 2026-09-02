@@ -21,35 +21,39 @@ $items = (array) ( $items ?? ( $products_data['items'] ?? array() ) );
 			'section-header/section-header',
 			array(
 				'tag'    => $tag,
-				'title'  => 'SIGNATURE CANE <em>Creations</em>',
+				'title'  => $title,
 				'sub'    => $sub,
 				'ribbon' => true,
 			)
 		);
 		?>
 
-		<div class="drinks-vintage__list">
-			<?php foreach ( $items as $item ) :
-				$name      = (string) ( $item['name'] ?? '' );
-				$desc      = (string) ( $item['desc'] ?? '' );
-				$price     = (string) ( $item['price'] ?? '' );
-				$img_raw   = (string) ( $item['image'] ?? 'assets/images/sugarcane/drink_classic.jpg' );
-				$img       = UrlHelper::resolve( $img_raw );
-				$btn_label = (string) ( $item['button']['label'] ?? 'ORDER NOW' );
-				$btn_route = (string) ( $item['button']['route'] ?? 'contact' );
-			?>
-				<div class="drink-row-card card--cut">
-					<div class="drink-row-card__media">
-						<img src="<?php echo esc_url( $img ); ?>" alt="<?php echo esc_attr( $name ); ?>" loading="lazy">
-					</div>
-					<div class="drink-row-card__content">
-						<h3 class="drink-row-card__name"><?php echo esc_html( $name ); ?></h3>
-						<?php if ( '' !== $desc ) : ?>
-							<p class="drink-row-card__desc"><?php echo esc_html( $desc ); ?></p>
+		<?php if ( ! empty( $items ) ) : ?>
+			<div class="drinks-vintage__list">
+				<?php foreach ( $items as $item ) :
+					$name    = (string) ( $item['name'] ?? '' );
+					$desc    = (string) ( $item['desc'] ?? '' );
+					$price   = (string) ( $item['price'] ?? '' );
+					$img_raw = (string) ( $item['image'] ?? '' );
+					$img     = '' !== $img_raw ? UrlHelper::resolve( $img_raw ) : '';
+				?>
+					<div class="drink-row-card card--cut">
+						<?php if ( '' !== $img ) : ?>
+							<div class="drink-row-card__media">
+								<img src="<?php echo esc_url( $img ); ?>" alt="<?php echo esc_attr( $name ); ?>" loading="lazy">
+							</div>
 						<?php endif; ?>
+						<div class="drink-row-card__content">
+							<?php if ( '' !== $name ) : ?>
+								<h3 class="drink-row-card__name"><?php echo esc_html( $name ); ?></h3>
+							<?php endif; ?>
+							<?php if ( '' !== $desc ) : ?>
+								<p class="drink-row-card__desc"><?php echo esc_html( $desc ); ?></p>
+							<?php endif; ?>
+						</div>
 					</div>
-				</div>
-			<?php endforeach; ?>
-		</div>
+				<?php endforeach; ?>
+			</div>
+		<?php endif; ?>
 	</div>
 </section>

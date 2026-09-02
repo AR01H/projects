@@ -6,6 +6,16 @@
     "cta_label": "Experience Fresh Sugarcane Juice Today",
     "cta_route": "contact",
     "image": "assets/images/gallery/stall_event_3.jpg",
+    "highlights": [
+        {
+            "title": "100% RAW NATURAL NECTAR",
+            "desc": "Never diluted with water, zero artificial preservatives, strictly unrefined."
+        },
+        {
+            "title": "COLD EXTRACTED BEFORE YOU",
+            "desc": "Freshly pressed in seconds on hygienic commercial food-grade rolls."
+        }
+    ],
     "images": [
         {
             "image": "assets/images/gallery/stall_event_3.jpg",

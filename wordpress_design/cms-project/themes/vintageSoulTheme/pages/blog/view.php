@@ -68,10 +68,10 @@ if ( '' !== $requested_slug ) {
 		'subpage-hero/subpage-hero',
 		array(
 			'id'    => 'blog-hero',
-			'tag'   => (string) ( $hero['tag'] ?? 'Journal & Botanical Insights' ),
-			'title' => 'THE CANE <em>Chronicle</em>',
-			'sub'   => (string) ( $hero['sub'] ?? 'Explore our latest writings on ancient sugarcane cultivation, raw cold-press nutrition, and botanical pairings.' ),
-			'image' => 'assets/images/backgrounds/pure_sugarcane_forest_trees_engraving.jpg',
+			'tag'   => (string) ( $hero['tag'] ?? '' ),
+			'title' => (string) ( $hero['title'] ?? '' ),
+			'sub'   => (string) ( $hero['sub'] ?? '' ),
+			'image' => (string) ( $hero['image'] ?? 'assets/images/backgrounds/pure_sugarcane_forest_trees_engraving.jpg' ),
 		)
 	);
 	?>
@@ -102,11 +102,11 @@ if ( '' !== $requested_slug ) {
 					$read    = (int) ( $art['reading_time'] ?? 4 );
 					$excerpt = (string) ( $art['excerpt'] ?? '' );
 				?>
-					<article class="blog-card" data-category="<?php echo esc_attr( $cat ); ?>">
-						<div class="blog-card__media frame--ornate-sm">
+					<article class="blog-card" data-category="<?php echo esc_attr( $cat ); ?>" onclick="if(event.target.tagName !== 'A' && !event.target.closest('a')) window.location.href='<?php echo esc_url( $link ); ?>';">
+						<a href="<?php echo esc_url( $link ); ?>" class="blog-card__media frame--ornate-sm">
 							<img src="<?php echo esc_url( $img ); ?>" alt="<?php echo esc_attr( $title ); ?>" loading="lazy">
 							<span class="blog-card__category"><?php echo esc_html( $cat ); ?></span>
-						</div>
+						</a>
 						<div class="blog-card__meta">
 							<span>📅 <?php echo esc_html( $date ); ?></span>
 							<span>•</span>

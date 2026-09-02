@@ -35,6 +35,11 @@ $closing          = (array) ( $data['closing'] ?? array() );
 $deckled_edge_url = UrlHelper::resolve( 'assets/images/textures/border/deckled-edge.svg' );
 ?>
 
+<?php
+// ══════════════════════════════════════════════════════════════════════════
+// 1. HERO & WELCOME ARC
+// ══════════════════════════════════════════════════════════════════════════
+?>
 <?php if ( ! empty( $hero['slides'] ) ) : ?>
 	<?php View::component( 'sections/hero-section', array( 'hero' => $hero ) ); ?>
 <?php endif; ?>
@@ -50,8 +55,13 @@ $deckled_edge_url = UrlHelper::resolve( 'assets/images/textures/border/deckled-e
 	</div>
 <?php endif; ?>
 
-<?php if ( ! empty( $story ) ) : ?>
-	<?php View::component( 'sections/story-section', $story ); ?>
+<?php
+// ══════════════════════════════════════════════════════════════════════════
+// 2. SIGNATURE DRINKS & EXTRACTION THEATRE
+// ══════════════════════════════════════════════════════════════════════════
+?>
+<?php if ( ! empty( $products['items'] ) ) : ?>
+	<?php View::component( 'sections/order-juice-section', array( 'products' => (array) ( $products['items'] ?? array() ) ) ); ?>
 	<div class="deckled-divider" aria-hidden="true">
 		<img src="<?php echo esc_url( $deckled_edge_url ); ?>" alt="" loading="lazy">
 	</div>
@@ -69,15 +79,20 @@ $deckled_edge_url = UrlHelper::resolve( 'assets/images/textures/border/deckled-e
 	<img src="<?php echo esc_url( $deckled_edge_url ); ?>" alt="" loading="lazy">
 </div>
 
-<?php if ( ! empty( $sourcing ) ) : ?>
-	<?php View::component( 'sections/sourcing-section', $sourcing ); ?>
+<?php
+// ══════════════════════════════════════════════════════════════════════════
+// 3. HERITAGE, SOURCING & BOTANICAL BENEFITS
+// ══════════════════════════════════════════════════════════════════════════
+?>
+<?php if ( ! empty( $story ) ) : ?>
+	<?php View::component( 'sections/story-section', $story ); ?>
 	<div class="deckled-divider" aria-hidden="true">
 		<img src="<?php echo esc_url( $deckled_edge_url ); ?>" alt="" loading="lazy">
 	</div>
 <?php endif; ?>
 
-<?php if ( ! empty( $certs['items'] ) ) : ?>
-	<?php View::component( 'sections/certifications-section', $certs ); ?>
+<?php if ( ! empty( $sourcing ) ) : ?>
+	<?php View::component( 'sections/sourcing-section', $sourcing ); ?>
 	<div class="deckled-divider" aria-hidden="true">
 		<img src="<?php echo esc_url( $deckled_edge_url ); ?>" alt="" loading="lazy">
 	</div>
@@ -90,12 +105,22 @@ $deckled_edge_url = UrlHelper::resolve( 'assets/images/textures/border/deckled-e
 	</div>
 <?php endif; ?>
 
-<?php if ( ! empty( $memories['items'] ) ) : ?>
-	<?php View::component( 'sections/memories-section', $memories ); ?>
+<?php if ( ! empty( $certs['items'] ) ) : ?>
+	<?php View::component( 'sections/certifications-section', $certs ); ?>
 	<div class="deckled-divider" aria-hidden="true">
 		<img src="<?php echo esc_url( $deckled_edge_url ); ?>" alt="" loading="lazy">
 	</div>
 <?php endif; ?>
+
+<?php
+// ══════════════════════════════════════════════════════════════════════════
+// 4. SOCIAL PROOF & REVIEWS
+// ══════════════════════════════════════════════════════════════════════════
+?>
+<?php View::component( 'sections/social-stream-section' ); ?>
+<div class="deckled-divider" aria-hidden="true">
+	<img src="<?php echo esc_url( $deckled_edge_url ); ?>" alt="" loading="lazy">
+</div>
 
 <?php if ( ! empty( $testimonials['items'] ) ) : ?>
 	<?php View::component( 'sections/reviews-section', $testimonials ); ?>
@@ -104,32 +129,18 @@ $deckled_edge_url = UrlHelper::resolve( 'assets/images/textures/border/deckled-e
 	</div>
 <?php endif; ?>
 
-<?php if ( ! empty( $community['items'] ) ) : ?>
-	<?php View::component( 'sections/community-section', $community ); ?>
+<?php if ( ! empty( $logo_strip['items'] ) ) : ?>
+	<?php View::component( 'sections/logo-strip-section', $logo_strip ); ?>
 	<div class="deckled-divider" aria-hidden="true">
 		<img src="<?php echo esc_url( $deckled_edge_url ); ?>" alt="" loading="lazy">
 	</div>
 <?php endif; ?>
 
-<?php View::component( 'sections/logo-strip-section', $logo_strip ); ?>
-<div class="deckled-divider" aria-hidden="true">
-	<img src="<?php echo esc_url( $deckled_edge_url ); ?>" alt="" loading="lazy">
-</div>
-
-<?php View::component( 'sections/gallery-section', array(
-	'items'      => (array) ( $gallery['items'] ?? ( $gallery['images'] ?? array() ) ),
-	'title'      => (string) ( $gallery['title'] ?? 'LOOK BACK IN <em>Time</em>' ),
-	'categories' => (array) ( $gallery['categories'] ?? array() ),
-) ); ?>
-<div class="deckled-divider" aria-hidden="true">
-	<img src="<?php echo esc_url( $deckled_edge_url ); ?>" alt="" loading="lazy">
-</div>
-
-<?php View::component( 'sections/social-stream-section' ); ?>
-<div class="deckled-divider" aria-hidden="true">
-	<img src="<?php echo esc_url( $deckled_edge_url ); ?>" alt="" loading="lazy">
-</div>
-
+<?php
+// ══════════════════════════════════════════════════════════════════════════
+// 5. LIVE EVENTS CATERING & FRANCHISE PARTNERSHIPS
+// ══════════════════════════════════════════════════════════════════════════
+?>
 <?php View::component( 'sections/events-section', $events ); ?>
 <div class="deckled-divider" aria-hidden="true">
 	<img src="<?php echo esc_url( $deckled_edge_url ); ?>" alt="" loading="lazy">
@@ -140,19 +151,26 @@ $deckled_edge_url = UrlHelper::resolve( 'assets/images/textures/border/deckled-e
 	<img src="<?php echo esc_url( $deckled_edge_url ); ?>" alt="" loading="lazy">
 </div>
 
-<?php View::component( 'sections/order-juice-section', array( 'products' => (array) ( $products['items'] ?? array() ) ) ); ?>
-<div class="deckled-divider" aria-hidden="true">
-	<img src="<?php echo esc_url( $deckled_edge_url ); ?>" alt="" loading="lazy">
-</div>
+<?php if ( ! empty( $community['items'] ) ) : ?>
+	<?php View::component( 'sections/community-section', $community ); ?>
+	<div class="deckled-divider" aria-hidden="true">
+		<img src="<?php echo esc_url( $deckled_edge_url ); ?>" alt="" loading="lazy">
+	</div>
+<?php endif; ?>
 
-<?php View::component( 'sections/contact-form-section', $contact ); ?>
-<div class="deckled-divider" aria-hidden="true">
-	<img src="<?php echo esc_url( $deckled_edge_url ); ?>" alt="" loading="lazy">
-</div>
-
+<?php
+// ══════════════════════════════════════════════════════════════════════════
+// 6. FAQS & CONCIERGE CONTACT / INQUIRY
+// ══════════════════════════════════════════════════════════════════════════
+?>
 <?php if ( ! empty( $faqs['items'] ) ) : ?>
 	<?php View::component( 'sections/faq-section', $faqs ); ?>
 	<div class="deckled-divider" aria-hidden="true">
 		<img src="<?php echo esc_url( $deckled_edge_url ); ?>" alt="" loading="lazy">
 	</div>
 <?php endif; ?>
+
+<?php View::component( 'sections/contact-form-section', $contact ); ?>
+<div class="deckled-divider" aria-hidden="true">
+	<img src="<?php echo esc_url( $deckled_edge_url ); ?>" alt="" loading="lazy">
+</div>

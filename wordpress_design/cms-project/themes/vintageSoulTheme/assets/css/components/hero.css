@@ -502,14 +502,28 @@
 
 .common-subpage-hero__watermark {
   position: absolute !important;
-  inset: 0 !important;
+  inset: -15px !important;
   background-size: cover !important;
   background-position: center 30% !important;
   mix-blend-mode: multiply !important;
-  opacity: 0.14 !important;
-  filter: sepia(70%) contrast(1.15) !important;
+  opacity: 0.16 !important;
+  filter: sepia(65%) contrast(1.12) !important;
   pointer-events: none !important;
   z-index: 0 !important;
+  animation: subpage-kenburns 22s ease-in-out infinite alternate !important;
+  will-change: transform;
+}
+
+@keyframes subpage-kenburns {
+  0% {
+    transform: scale(1) translate(0, 0);
+  }
+  50% {
+    transform: scale(1.04) translate(-1%, -0.8%);
+  }
+  100% {
+    transform: scale(1.02) translate(1%, 0.6%);
+  }
 }
 
 /* Roughness Texture Layer */
@@ -750,3 +764,78 @@
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+/* ═══════════ SUBPAGE HERO SOCIAL SHARE BAR ═══════════ */
+.subpage-hero__share-bar {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 10px !important;
+  margin-top: 14px !important;
+  opacity: 0;
+  animation: sub-fade 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards !important;
+}
+
+.subpage-hero__share-label {
+  font-family: 'Cinzel', serif !important;
+  font-size: 10.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.1em !important;
+  color: #8e5f2b !important;
+  text-transform: uppercase !important;
+}
+
+.subpage-hero__share-buttons {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+.hero-share-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  padding: 5px 14px !important;
+  border-radius: 16px !important;
+  font-family: 'Cinzel', serif !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  text-decoration: none !important;
+  transition: all 0.25s ease !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15) !important;
+}
+
+.hero-share-btn--whatsapp {
+  background: #11381b !important;
+  color: #f6d599 !important;
+  border: 1px solid #caa06d !important;
+}
+
+.hero-share-btn--whatsapp:hover {
+  background: #1b5329 !important;
+  color: #ffffff !important;
+  border-color: #f6d599 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 12px rgba(17, 56, 27, 0.35) !important;
+}
+
+.hero-share-btn--email {
+  background: #2a1406 !important;
+  color: #f6d599 !important;
+  border: 1px solid #caa06d !important;
+}
+
+.hero-share-btn--email:hover {
+  background: #422009 !important;
+  color: #ffffff !important;
+  border-color: #f6d599 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 12px rgba(42, 20, 6, 0.35) !important;
+}
+
+.hero-share-btn svg {
+  display: inline-block !important;
+  vertical-align: middle !important;
+}
+
