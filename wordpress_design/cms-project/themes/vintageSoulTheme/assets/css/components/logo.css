@@ -11,6 +11,8 @@
   max-height: 40px !important;
   width: auto !important;
   object-fit: contain !important;
+  filter: drop-shadow(0 2px 4px rgba(42, 26, 12, 0.2)) !important;
+  -webkit-filter: drop-shadow(0 2px 4px rgba(42, 26, 12, 0.2)) !important;
 }
 
 .logo__brand-lockup {
@@ -30,6 +32,7 @@
   align-items: center;
   justify-content: center;
   box-shadow: inset 0 0 0 1px #caa06d;
+
 }
 .logo__brand-text {
   display: flex;
@@ -54,18 +57,59 @@
 }
 
 .logo--header {
+  position: relative !important;
   display: inline-flex !important;
   align-items: center !important;
   background: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
   padding: 0 !important;
   margin: 0 !important;
   text-decoration: none !important;
+  overflow: visible !important;
+  z-index: 15 !important;
 }
+
+.logo--header img,
+.logo--header .logo__mark,
+.logo--header .custom-logo-link img {
+  display: block !important;
+  max-height: 58px !important;
+  height: 58px !important;
+  width: auto !important;
+  object-fit: contain !important;
+  transform: translateY(0) !important;
+  transform-origin: center center !important;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.22)) !important;
+  -webkit-filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.22)) !important;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), filter 0.25s ease !important;
+}
+
+.logo--header:hover img,
+.logo--header:hover .logo__mark {
+  transform: scale(1.08) translateY(-1px) !important;
+  filter: drop-shadow(0 5px 12px rgba(184, 134, 11, 0.4)) !important;
+}
+
 .logo--header::before,
 .logo--header::after {
   display: none !important;
 }
 
+.logo--footer {
+  display: inline-flex !important;
+  align-items: center !important;
+}
+.logo--footer img,
+.logo--footer .logo__mark {
+  max-height: 115px !important;
+  width: auto !important;
+  object-fit: contain !important;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.5)) !important;
+  -webkit-filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.5)) !important;
+  transition: transform 0.25s ease !important;
+}
 .logo--footer .logo__title {
   color: #f6d599 !important;
 }
@@ -74,6 +118,10 @@
 }
 
 @media (max-width: 768px) {
+  .logo--footer img,
+  .logo--footer .logo__mark {
+    max-height: 90px !important;
+  }
   .logo__brand-icon {
     width: 26px;
     height: 26px;

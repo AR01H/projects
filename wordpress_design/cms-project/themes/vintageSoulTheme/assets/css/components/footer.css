@@ -101,8 +101,7 @@
     0 4px 10px rgba(0, 0, 0, 0.4) !important;
   transition: all 0.25s ease !important;
   text-decoration: none !important;
-  filter: url(#rough-button-cut-sm) !important;
-  -webkit-filter: url(#rough-button-cut-sm) !important;
+
 }
 .site-footer__social-btn svg {
   width: 18px !important;

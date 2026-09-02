@@ -5,6 +5,7 @@ defined( 'ABSPATH' ) || exit;
 use VintageSoul\Services\RouteService;
 use VintageSoul\Support\IconHelper;
 use VintageSoul\Support\UrlHelper;
+use VintageSoul\Support\View;
 
 $hero     = (array) ( $hero ?? array() );
 $slides   = (array) ( $hero['slides'] ?? array() );
@@ -14,11 +15,11 @@ if ( empty( $slides ) ) {
 		array(
 			'media'   => array( 'type' => 'video', 'src' => 'assets/videos/hero_bg.mp4', 'poster' => 'assets/images/sugarcane/hero_juice.jpg', 'alt' => 'Live fresh sugarcane extraction' ),
 			'content' => array(
-				'title'     => 'WATCH IT. TASTE IT. LOVE IT.',
-				'eyebrow'   => 'A Taste of Tradition',
+				'title'     => 'WELCOME TO THE TASTE OF TRADITION',
+				'eyebrow'   => 'Freshly Pressed · Naturally Refreshing',
 				'checklist' => array(
-					'Freshly pressed right before your eyes.',
-					'100% pure sugarcane — nothing added.',
+					'100% Natural · No Additives · Freshly Pressed',
+					'Freshly cold-pressed right before your eyes.',
 					'A taste of tradition, crafted with love.',
 				),
 				'buttons'   => array(
@@ -131,12 +132,18 @@ $format_hero_title = static function ( $title ) {
 
 	<!-- Foreground 2-Column Hero Stage -->
 	<div class="container hero-sugarcane__container">
+		
+		<!-- Live Location, Weather & 24H Clock Badge (Outside Navigation Bar) -->
+		<div class="hero-live-badge-bar">
+			<?php View::component( 'header/header-live-badge' ); ?>
+		</div>
+
 		<div class="hero-sugarcane__header">
 			
 			<!-- Left Column: Editorial Story Information -->
 			<div class="hero-sugarcane__content">
-				<h1 class="hero-sugarcane__title" id="hero-title"><?php echo $format_hero_title( (string) ( $first_content['title'] ?? 'WATCH IT. TASTE IT. LOVE IT.' ) ); // phpcs:ignore ?></h1>
-				<p class="hero-sugarcane__eyebrow" id="hero-eyebrow"><?php echo esc_html( (string) ( $first_content['eyebrow'] ?? 'A Taste of Tradition' ) ); ?></p>
+				<h1 class="hero-sugarcane__title" id="hero-title"><?php echo $format_hero_title( (string) ( $first_content['title'] ?? 'WELCOME TO THE TASTE OF TRADITION' ) ); // phpcs:ignore ?></h1>
+				<p class="hero-sugarcane__eyebrow" id="hero-eyebrow"><?php echo esc_html( (string) ( $first_content['eyebrow'] ?? 'Freshly Pressed · Naturally Refreshing' ) ); ?></p>
 
 				<ul class="hero-sugarcane__checklist" id="hero-checklist">
 					<?php foreach ( (array) ( $first_content['checklist'] ?? array() ) as $item ) : ?>

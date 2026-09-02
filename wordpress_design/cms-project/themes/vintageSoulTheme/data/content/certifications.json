@@ -1,72 +1,68 @@
 {
     "tag": "Trust & Standards",
-    "title": "Quality / Certifications",
+    "title": "FOOD SAFETY REGISTERED &amp; <em>Fully Compliant</em>",
     "bg_watermark": "assets/images/backgrounds/sugarcane_farm_plantation_engraving.jpg",
-    "body": "Certified and verified by leading food safety and quality institutions across the UK and internationally.",
+    "body": "Every event we attend comes with full documentation, insurance, and Food Safety Registered compliance. We take the trust of our clients and their guests very seriously.",
     "items": [
         {
-            "code": "5★ HYGIENE",
-            "title": "Food Hygiene Rating 5",
-            "desc": "Awarded the top 5-Star 'Very Good' rating by the UK Food Standards Agency for flawless hygiene.",
-            "authority": "UK Food Standards Agency",
-            "icon": "⭐",
-            "action_label": "Verified Rating"
+            "code": "NCASS",
+            "title": "Trade Membership (NCASS)",
+            "desc": "Member of a recognised food & catering trade body (NCASS) — held to strict industry code of conduct.",
+            "authority": "NCASS Catering Association",
+            "icon": "🤝",
+            "seal_img": "assets/images/certifications/ncass_logo.png",
+            "badge": "ACTIVE MEMBER",
+            "checklist": [
+                "Official NCASS Trade Body Member",
+                "Held to Professional Industry Code of Conduct",
+                "Complete Event Safety & Hygiene Documentation"
+            ],
+            "action_label": "OFFICIAL NCASS TRADE MEMBER"
         },
         {
-            "code": "ISO 22000",
-            "title": "ISO 22000:2018",
-            "desc": "International Food Safety Management System standard certifying our sterile cold-press chain.",
-            "authority": "ISO Standards",
+            "code": "HYGIENE",
+            "title": "Hygiene Standards",
+            "desc": "Industrial-grade customised pressing machine built to strict hygiene specifications.",
+            "authority": "Food Hygiene UK",
+            "icon": "🍽️",
+            "seal_img": "assets/images/partners/food-hygiene-5.svg",
+            "badge": "CERTIFIED",
+            "checklist": [
+                "Industrial-Grade Custom Stainless Press",
+                "Built to Strict Hygiene Specifications",
+                "Sanitized Food-Grade Cold Rollers"
+            ],
+            "action_label": "THE CANE HOUSE FOOD HYGIENE CERTIFIED"
+        },
+        {
+            "code": "COMPLIANCE",
+            "title": "Local Authority Registered",
+            "desc": "Registered with London Borough of Sutton and trusted by premier event organisers, corporate clients, and festivals.",
+            "authority": "London Borough of Sutton",
+            "icon": "🏛️",
+            "seal_img": "assets/images/certifications/lb-sutton-council.png",
+            "badge": "REGISTERED",
+            "checklist": [
+                "Registered with London Borough of Sutton",
+                "Approved for Public Events & Festivals",
+                "Full Local Authority Environmental Health Compliance"
+            ],
+            "action_label": "LOCAL AUTHORITY REGISTERED & COMPLIANT"
+        },
+        {
+            "code": "INSURED",
+            "title": "Fully Insured",
+            "desc": "Public liability insurance covering all guests, staff, equipment, and venue facilities.",
+            "authority": "Insurance Verified",
             "icon": "🛡️",
-            "action_label": "View Standard"
-        },
-        {
-            "code": "ORGANIC",
-            "title": "Soil Association Organic",
-            "desc": "100% sustainably grown sugarcane harvested without synthetic pesticides or chemical fertilizers.",
-            "authority": "Organic UK",
-            "icon": "🌿",
-            "action_label": "View Certificate"
-        },
-        {
-            "code": "SALSA",
-            "title": "SALSA Accreditation",
-            "desc": "Safe and Local Supplier Approval ensuring the highest operational integrity for UK artisans.",
-            "authority": "SALSA UK",
-            "icon": "📜",
-            "action_label": "View Certificate"
-        },
-        {
-            "code": "100% PURE",
-            "title": "Zero Additives Lab Purity",
-            "desc": "Independently lab tested for zero added water, refined sugars, artificial acids, or preservatives.",
-            "authority": "Purity Tested",
-            "icon": "🧪",
-            "action_label": "Lab Verified"
-        },
-        {
-            "code": "HACCP",
-            "title": "HACCP Certified Protocol",
-            "desc": "Hazard Analysis Critical Control Point protocol applied at every stage of extraction and serving.",
-            "authority": "Food Safety UK",
-            "icon": "✅",
-            "action_label": "View Protocol"
-        },
-        {
-            "code": "ECO GREEN",
-            "title": "Circular Zero-Waste Cane",
-            "desc": "100% of residual cane bagasse is repurposed into biodegradable tableware and clean bio-energy.",
-            "authority": "Sustainability UK",
-            "icon": "🌱",
-            "action_label": "Eco Verified"
-        },
-        {
-            "code": "ARTISAN",
-            "title": "London Craft Guild Standard",
-            "desc": "Accredited member of London's artisanal producers celebrating authentic heritage beverages.",
-            "authority": "Artisan Guild UK",
-            "icon": "🏆",
-            "action_label": "Guild Certified"
+            "seal_img": "assets/images/partners/master-accreditation-seal.svg",
+            "badge": "FULLY INSURED",
+            "checklist": [
+                "Public Liability Insurance Coverage",
+                "Full Cover for Guests, Staff & Venues",
+                "Complete Risk Assessment & Method Statements"
+            ],
+            "action_label": "FULLY INSURED CATERER"
         }
     ]
 }

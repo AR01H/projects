@@ -33,23 +33,18 @@ get_header();
 		$post_title  = get_the_title();
 	?>
 		<!-- Master Common Subpage Hero -->
-		<header class="page-hero common-subpage-hero article-header-hero" id="article-hero">
-			<div class="container article-header-hero__inner">
-				<div class="article-header__badge-wrap">
-					<span class="article-header__category">
-						✦ <?php echo esc_html( $cat_name ); ?> ✦
-					</span>
-				</div>
-				<h1 class="article-header__title"><?php the_title(); ?></h1>
-				<p class="article-header__meta">
-					By <?php echo esc_html( $author_name ); ?> • <?php echo esc_html( get_the_date( 'j F Y' ) ); ?> • <?php echo esc_html( (int) ( $data['reading_time'] ?? 4 ) ); ?> min read
-				</p>
-			</div>
-		</header>
-
-		<div class="gold-wave-divider" aria-hidden="true">
-			<img src="<?php echo esc_url( UrlHelper::resolve( 'assets/images/textures/border/gold-wave.svg' ) ); ?>" alt="" loading="lazy">
-		</div>
+		<?php
+		View::component(
+			'subpage-hero/subpage-hero',
+			array(
+				'id'    => 'article-hero',
+				'tag'   => '✦ ' . $cat_name . ' ✦',
+				'title' => get_the_title(),
+				'sub'   => 'By ' . $author_name . ' • ' . get_the_date( 'j F Y' ) . ' • ' . (int) ( $data['reading_time'] ?? 4 ) . ' min read',
+				'image' => 'assets/images/backgrounds/pure_sugarcane_forest_trees_engraving.jpg',
+			)
+		);
+		?>
 
 		<div class="section">
 			<div class="container single-article-view">

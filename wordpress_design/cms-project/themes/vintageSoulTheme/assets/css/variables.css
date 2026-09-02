@@ -100,6 +100,8 @@
   --font-family-script: "Dancing Script", "Cormorant Garamond", cursive;
   --font-family-chunky: "Cinzel", "Playfair Display", serif;
   --font-family-heading: "Cinzel", "Playfair Display", "EB Garamond", serif;
+  --font-family-distressed: "Rubik Distressed", "Playfair Display", "Cinzel", cursive, serif;
+  --font-family-metal: "Metal Mania", "Playfair Display", "Cinzel", cursive, serif;
   --font-family-ui: "Cinzel", "EB Garamond", serif;
   --font-family-nav: "Cinzel", "EB Garamond", Georgia, serif;
 
@@ -199,11 +201,13 @@
   --letterpress-light: 0 1px 0 rgba(255, 248, 235, 0.7);
   --letterpress-dark: 0 1px 2px rgba(0, 0, 0, 0.6);
 
-  --transition-fast: 150ms;
-  --transition-normal: 250ms;
-  --transition-slow: 400ms;
-  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-fast: 180ms;
+  --transition-normal: 320ms;
+  --transition-slow: 650ms;
+  --ease-standard: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-settle: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-smooth: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 
   --z-header: 100;
   --z-dropdown: 200;

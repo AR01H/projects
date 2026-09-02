@@ -1,7 +1,12 @@
 html.js :is(.card, .feature-row__item, .product-list__item, .faq__item, .intro-photo-card, .pillar-card, .sourcing-pillar-card, .sourcing-vintage__photo-frame, .sourcing-signboard, .cert-h-card, .certs-featured-logo-card, .order-product-card, .memory-card-vintage, .look-back-card, .variety-card, .mineral-card, .storage-step-card, .timeline-step-card, .event-type-card, .franchise-pillar-card, .franchise-step-card, .wholesale-card, .blog-card, .contact-home-info-card, .faq-accordion-item, .social-card) {
   opacity: 0;
-  transform: translateY(28px);
-  transition: opacity var(--transition-slow, 0.6s) var(--ease-standard, cubic-bezier(0.16, 1, 0.3, 1)), transform var(--transition-slow, 0.6s) var(--ease-standard, cubic-bezier(0.16, 1, 0.3, 1));
+  transform: translateY(16px);
+  will-change: opacity, transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transition:
+    opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.42s cubic-bezier(0.16, 1, 0.3, 1);
 }
 html.js :is(.card, .feature-row__item, .product-list__item, .faq__item, .intro-photo-card, .pillar-card, .sourcing-pillar-card, .sourcing-vintage__photo-frame, .sourcing-signboard, .cert-h-card, .certs-featured-logo-card, .order-product-card, .memory-card-vintage, .look-back-card, .variety-card, .mineral-card, .storage-step-card, .timeline-step-card, .event-type-card, .franchise-pillar-card, .franchise-step-card, .wholesale-card, .blog-card, .contact-home-info-card, .faq-accordion-item, .social-card).is-revealed {
   opacity: 1;
@@ -10,18 +15,28 @@ html.js :is(.card, .feature-row__item, .product-list__item, .faq__item, .intro-p
 
 html.js :is(.photo-grid__item, .photo-stamp) {
   opacity: 0;
-  transform: scale(0.88);
-  transition: opacity var(--transition-slow) var(--ease-standard), transform var(--transition-slow) var(--ease-standard);
+  transform: scale(0.96) translateY(12px);
+  will-change: opacity, transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transition:
+    opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.42s cubic-bezier(0.16, 1, 0.3, 1);
 }
 html.js :is(.photo-grid__item, .photo-stamp).is-revealed {
   opacity: 1;
-  transform: scale(1);
+  transform: none;
 }
 
 html.js .gallery__item {
   opacity: 0;
-  transform: scale(0.92) translateX(30px);
-  transition: opacity 900ms var(--ease-standard), transform 900ms var(--ease-standard);
+  transform: scale(0.97) translateY(14px);
+  will-change: opacity, transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transition:
+    opacity 0.42s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
 }
 html.js .gallery__item.is-revealed {
   opacity: 1;
@@ -30,40 +45,58 @@ html.js .gallery__item.is-revealed {
 
 html.js .stats__item {
   opacity: 0;
-  transform: scale(0.8);
-  transition: opacity var(--transition-slow) var(--ease-standard), transform var(--transition-slow) var(--ease-standard);
+  transform: scale(0.94) translateY(12px);
+  will-change: opacity, transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transition:
+    opacity 0.38s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 html.js .stats__item.is-revealed {
   opacity: 1;
-  transform: scale(1);
+  transform: none;
 }
 
 html.js :is(.testimonial-card, .video-testimonial-card, .memories__item) {
   opacity: 0;
-  filter: blur(10px) grayscale(85%) sepia(15%);
-  transform: rotate(-2.5deg) scale(0.94);
-  transition: opacity 1000ms var(--ease-standard), filter 1000ms var(--ease-standard), transform 1000ms var(--ease-standard);
+  transform: translateY(16px);
+  will-change: opacity, transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transition:
+    opacity 0.42s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
 }
 html.js :is(.testimonial-card, .video-testimonial-card, .memories__item).is-revealed {
   opacity: 1;
-  filter: blur(0) grayscale(0) sepia(0);
-  transform: rotate(0deg) scale(1);
+  transform: none;
 }
 
 html.js .process-steps__item {
   opacity: 0;
-  transform: rotate(-10deg) scale(0.82);
-  transition: opacity 700ms var(--ease-standard), transform 700ms var(--ease-standard);
+  transform: scale(0.95) translateY(12px);
+  will-change: opacity, transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transition:
+    opacity 0.38s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 html.js .process-steps__item.is-revealed {
   opacity: 1;
-  transform: rotate(0deg) scale(1);
+  transform: none;
 }
 
 html.js .step-chain__item {
   opacity: 0;
-  transform: translateY(28px);
-  transition: opacity var(--transition-slow) var(--ease-standard), transform var(--transition-slow) var(--ease-standard);
+  transform: translateY(14px);
+  will-change: opacity, transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transition:
+    opacity 0.38s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 html.js .step-chain__item.is-revealed {
   opacity: 1;
@@ -72,14 +105,14 @@ html.js .step-chain__item.is-revealed {
 
 html.js .banner__media {
   clip-path: inset(0 100% 0 0);
-  transition: clip-path 900ms var(--ease-standard);
+  transition: clip-path 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 html.js .banner--reverse .banner__media {
   clip-path: inset(0 0 0 100%);
 }
 html.js .banner__media img {
-  transform: scale(1.12);
-  transition: transform 1400ms var(--ease-standard);
+  transform: scale(1.05);
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 html.js .banner.is-revealed .banner__media img {
   transform: scale(1);
@@ -89,8 +122,11 @@ html.js .banner.is-revealed .banner__media {
 }
 html.js .banner__content {
   opacity: 0;
-  transform: translateY(16px);
-  transition: opacity var(--transition-slow) var(--ease-standard) 350ms, transform var(--transition-slow) var(--ease-standard) 350ms;
+  transform: translateY(12px);
+  will-change: opacity, transform;
+  transition:
+    opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1) 120ms,
+    transform 0.42s cubic-bezier(0.16, 1, 0.3, 1) 120ms;
 }
 html.js .banner.is-revealed .banner__content {
   opacity: 1;
@@ -99,32 +135,47 @@ html.js .banner.is-revealed .banner__content {
 
 html.js .banner__list-item {
   opacity: 0;
-  transform: scale(0.4) translateY(-12px);
-  transition: opacity 500ms var(--ease-standard), transform 500ms var(--ease-standard);
+  transform: scale(0.85) translateY(-6px);
+  will-change: opacity, transform;
+  transition:
+    opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.38s cubic-bezier(0.16, 1, 0.3, 1);
 }
 html.js .banner.is-revealed .banner__list-item {
   opacity: 1;
   transform: none;
 }
-html.js .banner__list-item:nth-child(1) { transition-delay: 450ms; }
-html.js .banner__list-item:nth-child(2) { transition-delay: 550ms; }
-html.js .banner__list-item:nth-child(3) { transition-delay: 650ms; }
-html.js .banner__list-item:nth-child(4) { transition-delay: 750ms; }
-html.js .banner__list-item:nth-child(5) { transition-delay: 850ms; }
-html.js .banner__list-item:nth-child(n + 6) { transition-delay: 950ms; }
+html.js .banner__list-item:nth-child(1) { transition-delay: 150ms; }
+html.js .banner__list-item:nth-child(2) { transition-delay: 190ms; }
+html.js .banner__list-item:nth-child(3) { transition-delay: 230ms; }
+html.js .banner__list-item:nth-child(4) { transition-delay: 270ms; }
+html.js .banner__list-item:nth-child(5) { transition-delay: 310ms; }
+html.js .banner__list-item:nth-child(n + 6) { transition-delay: 350ms; }
 
 html.js .section-header {
   opacity: 0;
-  transition: opacity var(--transition-slow) var(--ease-standard);
+  transform: translateY(14px);
+  will-change: opacity, transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transition:
+    opacity 0.42s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
 }
 html.js .section-header.is-revealed {
   opacity: 1;
+  transform: none;
 }
 
 html.js :is(.container > h1, .container > h2, .container > h3, .container > p) {
   opacity: 0;
   transform: translateY(20px);
-  transition: opacity var(--transition-slow) var(--ease-standard), transform var(--transition-slow) var(--ease-standard);
+  will-change: opacity, transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transition:
+    opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
 }
 html.js :is(.container > h1, .container > h2, .container > h3, .container > p).is-revealed {
   opacity: 1;
@@ -133,22 +184,33 @@ html.js :is(.container > h1, .container > h2, .container > h3, .container > p).i
 
 html.js :is(.container > .btn, .container > .btn--outline, .container > .badge) {
   opacity: 0;
-  transform: scale(0.85);
-  transition: opacity var(--transition-normal) var(--ease-standard), transform var(--transition-normal) var(--ease-standard);
+  transform: scale(0.94) translateY(10px);
+  will-change: opacity, transform;
+  transition:
+    opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 html.js :is(.container > .btn, .container > .btn--outline, .container > .badge).is-revealed {
   opacity: 1;
-  transform: scale(1);
+  transform: none;
 }
 
 html.js .site-footer {
   opacity: 0;
-  filter: sepia(65%) brightness(0.65) contrast(0.9);
-  transition: opacity 1200ms var(--ease-standard), filter 1200ms var(--ease-standard);
+  transform: translateY(18px);
+  will-change: opacity, transform;
+  transition:
+    opacity 1.1s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 1.1s cubic-bezier(0.16, 1, 0.3, 1);
 }
 html.js .site-footer.is-revealed {
   opacity: 1;
-  filter: sepia(0) brightness(1) contrast(1);
+  transform: none;
+}
+
+/* ═══════════ ULTRA-SMOOTH CARD & BUTTON HOVER PHYSICS ═══════════ */
+:is(.card, .btn, .btn--outline, .pillar-card, .intro-photo-card, .look-back-card, .benefit-card, .community-card, .franchise-step-card, .sourcing-pillar-card, .order-product-card, .memory-card-vintage, .variety-card, .social-card, .faq-accordion-item, .vst-custom-select__trigger) {
+  transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.38s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease, border-color 0.3s ease, color 0.25s ease !important;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -184,85 +246,210 @@ html.js .site-footer.is-revealed {
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   BOTANICAL SVG BACKGROUND ANIMATIONS (parchment pages)
+   REALISTIC BOTANICAL WIND-FLOW AIR CURRENT ANIMATIONS
    Used by components/background/parchment-botanical-bg.php
 ═══════════════════════════════════════════════════════════════ */
 
-@keyframes vst-leaf-drift-a {
-  0%, 100% { transform: translateY(0px) translateX(0px) rotate(0deg) scale(1); }
-  20%       { transform: translateY(-18px) translateX(6px) rotate(4deg) scale(1.04); }
-  45%       { transform: translateY(-8px) translateX(-5px) rotate(-3deg) scale(0.97); }
-  70%       { transform: translateY(-22px) translateX(8px) rotate(5deg) scale(1.02); }
-}
-
-@keyframes vst-leaf-drift-b {
-  0%, 100% { transform: translateY(0px) translateX(0px) rotate(0deg); }
-  30%       { transform: translateY(12px) translateX(-8px) rotate(-5deg); }
-  65%       { transform: translateY(-10px) translateX(5px) rotate(3.5deg); }
-}
-
-@keyframes vst-gold-float {
-  0%, 100% { transform: translateY(0) scale(1); opacity: 0.25; }
-  33%       { transform: translateY(-16px) scale(1.4); opacity: 0.55; }
-  66%       { transform: translateY(-6px) scale(0.9); opacity: 0.35; }
-}
-
-@keyframes vst-cane-sway {
-  0%, 100% { transform-origin: bottom center; transform: rotate(0deg); }
-  25%       { transform-origin: bottom center; transform: rotate(1.8deg); }
-  75%       { transform-origin: bottom center; transform: rotate(-1.4deg); }
-}
-
-@keyframes vst-watermark-breathe {
-  0%, 100% { opacity: 0.035; transform: scale(1); }
-  50%       { opacity: 0.06; transform: scale(1.015); }
-}
-
-/* Apply to each named element class */
-.vst-bg-cane-a { animation: vst-cane-sway 9s ease-in-out infinite; }
-.vst-bg-cane-b { animation: vst-cane-sway 11s ease-in-out infinite reverse; }
-.vst-bg-cane-c { animation: vst-cane-sway 7.5s ease-in-out infinite 2s; }
-
-.vst-bg-leaf-a  { animation: vst-leaf-drift-a 6s ease-in-out infinite; }
-.vst-bg-leaf-b  { animation: vst-leaf-drift-b 8s ease-in-out infinite 1.5s; }
-.vst-bg-leaf-c  { animation: vst-leaf-drift-a 7s ease-in-out infinite 3s; }
-.vst-bg-leaf-d  { animation: vst-leaf-drift-b 5.5s ease-in-out infinite 0.8s; }
-.vst-bg-leaf-e  { animation: vst-leaf-drift-a 9s ease-in-out infinite 2.5s; }
-
-.vst-bg-gold-1  { animation: vst-gold-float 4s ease-in-out infinite; }
-.vst-bg-gold-2  { animation: vst-gold-float 5.5s ease-in-out infinite 1s; }
-.vst-bg-gold-3  { animation: vst-gold-float 4.8s ease-in-out infinite 2.2s; }
-.vst-bg-gold-4  { animation: vst-gold-float 6.2s ease-in-out infinite 0.4s; }
-.vst-bg-gold-5  { animation: vst-gold-float 3.8s ease-in-out infinite 3.1s; }
-.vst-bg-gold-6  { animation: vst-gold-float 5.2s ease-in-out infinite 1.7s; }
-
-.vst-bg-watermark { animation: vst-watermark-breathe 12s ease-in-out infinite; }
-
-/* Wrapper positioning */
 .vst-parchment-botanical-bg {
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 0;
-  overflow: hidden;
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  pointer-events: none !important;
+  z-index: 0 !important;
+  overflow: hidden !important;
+  display: block !important;
 }
 
-.vst-parchment-botanical-bg svg {
-  width: 100%;
-  height: 100%;
+.vst-breeze-canvas {
+  width: 100% !important;
+  height: 100% !important;
+  position: absolute !important;
+  inset: 0 !important;
+}
+
+/* --- 1. Grass Tufts Natural Wind Sway --- */
+.vst-grass-sway-left {
+  transform-origin: 20px 1000px;
+  animation: vst-grass-sway-anim-left 6s ease-in-out infinite alternate;
+}
+
+.vst-grass-sway-right {
+  transform-origin: 1580px 1000px;
+  animation: vst-grass-sway-anim-right 7.5s ease-in-out infinite alternate 1s;
+}
+
+@keyframes vst-grass-sway-anim-left {
+  0%   { transform: rotate(0deg) skewX(0deg); }
+  50%  { transform: rotate(2.2deg) skewX(1.8deg); }
+  100% { transform: rotate(-1.2deg) skewX(-0.8deg); }
+}
+
+@keyframes vst-grass-sway-anim-right {
+  0%   { transform: rotate(0deg) skewX(0deg); }
+  50%  { transform: rotate(-2.6deg) skewX(-2deg); }
+  100% { transform: rotate(1.4deg) skewX(1deg); }
+}
+
+/* --- 2. Drifting Air-Flow Leaves --- */
+.vst-drifting-leaf {
   position: absolute;
-  inset: 0;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+/* Leaf 1: High altitude gentle diagonal wind stream */
+.vst-drifting-leaf--1 {
+  animation: vst-wind-leaf-drift-1 22s cubic-bezier(0.25, 0.1, 0.25, 1) infinite;
+}
+
+@keyframes vst-wind-leaf-drift-1 {
+  0% {
+    transform: translate(-150px, 80px) rotate(12deg) scale(0.7);
+    opacity: 0;
+  }
+  10% { opacity: 0.85; }
+  45% {
+    transform: translate(750px, 240px) rotate(65deg) scale(0.78);
+  }
+  85% { opacity: 0.85; }
+  100% {
+    transform: translate(1750px, 420px) rotate(140deg) scale(0.65);
+    opacity: 0;
+  }
+}
+
+/* Leaf 2: Mid-air swirling glide */
+.vst-drifting-leaf--2 {
+  animation: vst-wind-leaf-drift-2 26s cubic-bezier(0.3, 0.15, 0.3, 1) infinite 5s;
+}
+
+@keyframes vst-wind-leaf-drift-2 {
+  0% {
+    transform: translate(-120px, 280px) rotate(-15deg) scale(0.8);
+    opacity: 0;
+  }
+  12% { opacity: 0.9; }
+  40% {
+    transform: translate(600px, 190px) rotate(45deg) scale(0.85);
+  }
+  70% {
+    transform: translate(1100px, 350px) rotate(-20deg) scale(0.8);
+  }
+  88% { opacity: 0.9; }
+  100% {
+    transform: translate(1800px, 260px) rotate(80deg) scale(0.75);
+    opacity: 0;
+  }
+}
+
+/* Leaf 3: Golden cane leaf fluttering downwards */
+.vst-drifting-leaf--3 {
+  animation: vst-wind-leaf-drift-3 19s cubic-bezier(0.2, 0.2, 0.35, 1) infinite 11s;
+}
+
+@keyframes vst-wind-leaf-drift-3 {
+  0% {
+    transform: translate(200px, -80px) rotate(-35deg) scale(0.65);
+    opacity: 0;
+  }
+  15% { opacity: 0.85; }
+  50% {
+    transform: translate(850px, 380px) rotate(40deg) scale(0.7);
+  }
+  85% { opacity: 0.85; }
+  100% {
+    transform: translate(1550px, 850px) rotate(-15deg) scale(0.6);
+    opacity: 0;
+  }
+}
+
+/* Leaf 4: Low-level breeze flutter */
+.vst-drifting-leaf--4 {
+  animation: vst-wind-leaf-drift-4 24s ease-in-out infinite 8s;
+}
+
+@keyframes vst-wind-leaf-drift-4 {
+  0% {
+    transform: translate(-100px, 620px) rotate(20deg) scale(0.6);
+    opacity: 0;
+  }
+  10% { opacity: 0.8; }
+  50% {
+    transform: translate(780px, 510px) rotate(-30deg) scale(0.65);
+  }
+  90% { opacity: 0.8; }
+  100% {
+    transform: translate(1700px, 680px) rotate(55deg) scale(0.55);
+    opacity: 0;
+  }
+}
+
+/* Leaf 5: Micro leaf rapid air drift */
+.vst-drifting-leaf--5 {
+  animation: vst-wind-leaf-drift-5 17s linear infinite 2s;
+}
+
+@keyframes vst-wind-leaf-drift-5 {
+  0% {
+    transform: translate(-80px, 140px) rotate(-50deg) scale(0.5);
+    opacity: 0;
+  }
+  10% { opacity: 0.75; }
+  90% { opacity: 0.75; }
+  100% {
+    transform: translate(1750px, 320px) rotate(160deg) scale(0.48);
+    opacity: 0;
+  }
+}
+
+/* Leaf 6: Golden fragment soft air dance */
+.vst-drifting-leaf--6 {
+  animation: vst-wind-leaf-drift-6 28s ease-in-out infinite 14s;
+}
+
+@keyframes vst-wind-leaf-drift-6 {
+  0% {
+    transform: translate(-100px, 450px) rotate(10deg) scale(0.55);
+    opacity: 0;
+  }
+  15% { opacity: 0.8; }
+  55% {
+    transform: translate(820px, 340px) rotate(-45deg) scale(0.6);
+  }
+  85% { opacity: 0.8; }
+  100% {
+    transform: translate(1750px, 520px) rotate(70deg) scale(0.5);
+    opacity: 0;
+  }
+}
+
+/* --- 3. Sunlit Golden Pollen Particles --- */
+.vst-pollen-1 { animation: vst-pollen-drift 12s ease-in-out infinite; }
+.vst-pollen-2 { animation: vst-pollen-drift 15s ease-in-out infinite 2s; }
+.vst-pollen-3 { animation: vst-pollen-drift 14s ease-in-out infinite 5s; }
+.vst-pollen-4 { animation: vst-pollen-drift 16s ease-in-out infinite 1s; }
+.vst-pollen-5 { animation: vst-pollen-drift 13s ease-in-out infinite 7s; }
+.vst-pollen-6 { animation: vst-pollen-drift 17s ease-in-out infinite 4s; }
+
+@keyframes vst-pollen-drift {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+    opacity: 0.18;
+  }
+  50% {
+    transform: translateY(-24px) translateX(18px);
+    opacity: 0.45;
+  }
 }
 
 /* Reduced motion overrides */
 @media (prefers-reduced-motion: reduce) {
-  .vst-bg-cane-a, .vst-bg-cane-b, .vst-bg-cane-c,
-  .vst-bg-leaf-a, .vst-bg-leaf-b, .vst-bg-leaf-c, .vst-bg-leaf-d, .vst-bg-leaf-e,
-  .vst-bg-gold-1, .vst-bg-gold-2, .vst-bg-gold-3,
-  .vst-bg-gold-4, .vst-bg-gold-5, .vst-bg-gold-6,
-  .vst-bg-watermark {
-    animation: none;
+  .vst-grass-sway-left,
+  .vst-grass-sway-right,
+  .vst-drifting-leaf,
+  .vst-pollen-1, .vst-pollen-2, .vst-pollen-3,
+  .vst-pollen-4, .vst-pollen-5, .vst-pollen-6 {
+    animation: none !important;
   }
 }

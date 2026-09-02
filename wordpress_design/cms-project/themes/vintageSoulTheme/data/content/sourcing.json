@@ -5,6 +5,40 @@
     "bg_watermark": "assets/images/backgrounds/pure_sugarcane_forest_trees_engraving.jpg",
     "body": "We hand-select only mature, sunshine-ripened sugarcane grown without chemical ripeners. Pressed the traditional way on cold brass rolls to preserve all natural vitamins, live enzymes, and authentic sweetness.",
     "image": "assets/images/sugarcane/stacks.jpg",
+    "gallery": [
+        {
+            "image": "assets/images/sugarcane/stacks.jpg",
+            "title": "Farm-Fresh Mature Cane Stacks",
+            "caption": "Hand-cut sugarcane harvested at peak sweetness brix.",
+            "stamp_line1": "EST. 2014",
+            "stamp_line2": "FARM FRESH",
+            "stamp_line3": "STACKS"
+        },
+        {
+            "image": "assets/images/sugarcane/hero_juice.jpg",
+            "title": "Pure Cold Extraction",
+            "caption": "Pressed on heavy brass rolls with zero added water.",
+            "stamp_line1": "100% RAW",
+            "stamp_line2": "COLD PRESS",
+            "stamp_line3": "LIVE JUICE"
+        },
+        {
+            "image": "assets/images/sugarcane/story_moments.jpg",
+            "title": "Artisanal Market Bar",
+            "caption": "Serving fresh live glasses in under 30 seconds.",
+            "stamp_line1": "LONDON",
+            "stamp_line2": "LIVE CRAFT",
+            "stamp_line3": "EVENTS"
+        },
+        {
+            "image": "assets/images/sugarcane/sugarcane_stalks_etching.jpg",
+            "title": "Heirloom Botanical Cane",
+            "caption": "Sun-ripened thick juicy fibers rich in natural electrolytes.",
+            "stamp_line1": "HERITAGE",
+            "stamp_line2": "ORGANIC",
+            "stamp_line3": "BOTANICAL"
+        }
+    ],
     "sign_lines": [
         "FRESH CANE",
         "PREMIUM QUALITY",

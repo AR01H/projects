@@ -36,9 +36,6 @@
     </radialGradient>
   </defs>
 
-  <!-- Base warm aged paper gradient -->
-  <rect width="100%" height="100%" fill="#edd5ad"/>
-
   <!-- Multi-layered warm parchment washes -->
   <rect width="100%" height="100%" fill="url(#tea-stain-left)" filter="url(#tea-displace)"/>
   <rect width="100%" height="100%" fill="url(#tea-stain-bottom)" filter="url(#tea-displace)"/>

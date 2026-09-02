@@ -9,6 +9,8 @@ html {
   scroll-behavior: smooth;
   scrollbar-width: thin;
   scrollbar-color: #11381b #f4e3cd;
+  overflow-x: clip;
+  max-width: 100vw;
 }
 
 /* ═══════════ GLOBAL THIN VINTAGE SCROLLBAR (PAGE LEVEL) ═══════════ */
@@ -97,6 +99,8 @@ body {
   line-height: var(--line-height-normal, 1.6);
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
+  overflow-x: clip;
+  max-width: 100vw;
 }
 
 .site-header,
@@ -106,7 +110,6 @@ body {
   position: relative;
   z-index: 1;
 }
-
 
 h1, h2, h3, h4, h5, h6 {
   margin: 0 0 var(--space-sm);

@@ -4,138 +4,30 @@
     "sub": "Real moments from our live stall, customer sips, and behind-the-scenes craft across London.",
     "row1": [
         {
-            "platform": "instagram",
-            "badge": "Instagram Reel",
-            "handle": "@thecanehouse.uk",
-            "caption": "Fresh sugarcane pressed to pure golden perfection under 10 seconds 🌿✨",
-            "likes": "2.8k",
-            "comments": "142",
-            "image": "assets/images/sugarcane/hero_juice.jpg",
-            "video": "assets/videos/hero_bg.mp4",
-            "link": "https://instagram.com/thecanehouseuk"
+            "link": "https://www.instagram.com/p/DbgIbW4h42y/"
         },
         {
-            "platform": "tiktok",
-            "badge": "TikTok Viral",
-            "handle": "@thecanehouse",
-            "caption": "POV: The first sip of ice-cold ginger lime sugarcane juice on a hot summer day 🍋🧊",
-            "likes": "14.5k",
-            "comments": "380",
-            "image": "assets/images/sugarcane/drink_lemon.jpg",
-            "video": "assets/videos/hero_bg.mp4",
-            "link": "https://tiktok.com/@thecanehouse"
+            "link": "https://youtube.com/shorts/LV7JviQKFk8?si=6Xea6t8Kjz1fggXO"
         },
         {
-            "platform": "instagram",
-            "badge": "Customer Love",
-            "handle": "@londonfoodguide",
-            "caption": "Best sugarcane juice stall in London! Absolutely no added sugar or water 👌",
-            "likes": "1.9k",
-            "comments": "89",
-            "image": "assets/images/sugarcane/story_moments.jpg",
-            "video": "assets/videos/hero_bg.mp4",
-            "link": "https://instagram.com/thecanehouseuk"
+            "link": "https://www.instagram.com/reel/Dcv0v5zt3zd/"
         },
         {
-            "platform": "instagram",
-            "badge": "Fresh Harvest",
-            "handle": "@thecanehouse.uk",
-            "caption": "Straight from ethical family farms to our live mobile crushing mill 🚜🎋",
-            "likes": "3.2k",
-            "comments": "115",
-            "image": "assets/images/sugarcane/stacks.jpg",
-            "video": "assets/videos/hero_bg.mp4",
-            "link": "https://instagram.com/thecanehouseuk"
-        },
-        {
-            "platform": "tiktok",
-            "badge": "Mint Refresh",
-            "handle": "@thecanehouse",
-            "caption": "Our secret crushed garden mint & black salt recipe! Pure nostalgia 🍃💚",
-            "likes": "8.7k",
-            "comments": "210",
-            "image": "assets/images/sugarcane/drink_mint.jpg",
-            "video": "assets/videos/hero_bg.mp4",
-            "link": "https://tiktok.com/@thecanehouse"
-        },
-        {
-            "platform": "instagram",
-            "badge": "Archival Classic",
-            "handle": "@thecanehouse.uk",
-            "caption": "Classic raw cane served ice cold — zero compromise on authenticity 🏆",
-            "likes": "4.1k",
-            "comments": "174",
-            "image": "assets/images/sugarcane/drink_classic.jpg",
-            "video": "assets/videos/hero_bg.mp4",
-            "link": "https://instagram.com/thecanehouseuk"
+            "link": "https://www.instagram.com/p/DbgIbW4h42y/"
         }
     ],
     "row2": [
         {
-            "platform": "youtube",
-            "badge": "YouTube Short",
-            "handle": "@TheCaneHouseUK",
-            "caption": "Live Event Stall Setup! Watch 500+ cups served at London Summer Mela 🎪⚡",
-            "likes": "5.6k",
-            "comments": "312",
-            "image": "assets/images/sugarcane/combo.jpg",
-            "video": "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=1&rel=0",
-            "link": "https://youtube.com/@thecanehouse"
+            "link": "https://www.instagram.com/reel/Dcv0v5zt3zd/"
         },
         {
-            "platform": "instagram",
-            "badge": "Festival Vibe",
-            "handle": "@thecanehouse.uk",
-            "caption": "The queue at Sutton High Street today! Thank you for the incredible energy ❤️",
-            "likes": "3.9k",
-            "comments": "198",
-            "image": "assets/images/sugarcane/sugarcane_stalks_etching.jpg",
-            "video": "assets/videos/hero_bg.mp4",
-            "link": "https://instagram.com/thecanehouseuk"
+            "link": "https://www.instagram.com/p/DbgIbW4h42y/"
         },
         {
-            "platform": "youtube",
-            "badge": "Behind The Scenes",
-            "handle": "@TheCaneHouseUK",
-            "caption": "How we sanitize and cold-press 100kg of raw sugarcane stalks daily 🧼🎋",
-            "likes": "11.2k",
-            "comments": "420",
-            "image": "assets/images/sugarcane/stacks.jpg",
-            "video": "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=1&rel=0",
-            "link": "https://youtube.com/@thecanehouse"
+            "link": "https://youtube.com/shorts/LV7JviQKFk8?si=6Xea6t8Kjz1fggXO"
         },
         {
-            "platform": "instagram",
-            "badge": "Masala Special",
-            "handle": "@thecanehouse.uk",
-            "caption": "Spicy, tangy, sweet! Have you tried our Indian Masala blend yet? 🔥🌶️",
-            "likes": "2.4k",
-            "comments": "94",
-            "image": "assets/images/sugarcane/drink_masala.jpg",
-            "video": "assets/videos/hero_bg.mp4",
-            "link": "https://instagram.com/thecanehouseuk"
-        },
-        {
-            "platform": "youtube",
-            "badge": "Wedding Bar",
-            "handle": "@TheCaneHouseUK",
-            "caption": "Catering an elegant rustic wedding with live customized sugarcane mocktails 💍🥂",
-            "likes": "7.3k",
-            "comments": "165",
-            "image": "assets/images/sugarcane/hero_juice.jpg",
-            "video": "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=1&rel=0",
-            "link": "https://youtube.com/@thecanehouse"
-        },
-        {
-            "platform": "instagram",
-            "badge": "Pineapple Twist",
-            "handle": "@thecanehouse.uk",
-            "caption": "Tropical sunshine in a glass: Raw Cane x Fresh Cold-Pressed Pineapple 🍍💛",
-            "likes": "3.6k",
-            "comments": "130",
-            "image": "assets/images/sugarcane/drink_pineapple.jpg",
-            "video": "assets/videos/hero_bg.mp4",
-            "link": "https://instagram.com/thecanehouseuk"
+            "link": "https://www.instagram.com/reel/Dcv0v5zt3zd/"
         }
     ],
     "cta": {

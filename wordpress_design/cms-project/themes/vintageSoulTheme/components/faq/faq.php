@@ -54,7 +54,7 @@ if ( empty( $items ) ) {
 				$a      = $item['answer'];
 				$faq_id = $id . '-item-' . sanitize_title( $q );
 			?>
-				<details class="faq-accordion__item frame--ornate-sm" id="<?php echo esc_attr( $faq_id ); ?>" name="<?php echo esc_attr( $group_name ); ?>"<?php echo 0 === $idx ? ' open' : ''; ?>>
+				<details class="faq-accordion__item frame--ornate-sm" id="<?php echo esc_attr( $faq_id ); ?>" name="<?php echo esc_attr( $group_name ); ?>">
 					<summary class="faq-accordion__summary">
 						<span class="faq-accordion__question"><?php echo esc_html( $q ); ?></span>
 						<span class="faq-accordion__icon" aria-hidden="true">+</span>

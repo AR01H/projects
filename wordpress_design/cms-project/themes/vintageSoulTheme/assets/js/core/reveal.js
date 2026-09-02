@@ -21,7 +21,7 @@
 			var parent = el.parentElement;
 			var n = counts.get(parent) || 0;
 			counts.set(parent, n + 1);
-			el.style.transitionDelay = (Math.min(n, 5) * 90) + 'ms';
+			el.style.transitionDelay = (Math.min(n, 4) * 35) + 'ms';
 		});
 
 		var observer = new IntersectionObserver(function (entries) {
@@ -31,7 +31,7 @@
 					observer.unobserve(entry.target);
 				}
 			});
-		}, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+		}, { threshold: 0.01, rootMargin: '0px 0px 60px 0px' });
 
 		items.forEach(function (el) {
 			observer.observe(el);

@@ -23,38 +23,16 @@ $banner            = (array) ( $order_data['banner'] ?? array() );
 ?>
 <section class="section section--order-juice order-juice-vintage-block torn-dark-block grain-dark" id="order" style="position:relative; overflow:hidden;">
 	<?php View::component( 'background/ambient-layer', array( 'variant' => 'dark', 'cane_positions' => array( 'top-right', 'mid-right', 'bottom-left' ), 'bubble_count' => 14 ) ); ?>
-	<!-- Floating Botanical Fruits & Ingredients Layer -->
-	<div class="floating-fruit-layer" aria-hidden="true">
-		<div class="floating-fruit-item floating-fruit--lemon-1">
-			<div class="fruit-graphic" title="Fresh Lemon"><span>🍋</span></div>
-		</div>
-		<div class="floating-fruit-item floating-fruit--mint-1">
-			<div class="fruit-graphic fruit-graphic--mint" title="Garden Mint"><span>🌿</span></div>
-		</div>
-		<div class="floating-fruit-item floating-fruit--ginger-1">
-			<div class="fruit-graphic fruit-graphic--ginger" title="Crushed Ginger"><span>🫚</span></div>
-		</div>
-		<div class="floating-fruit-item floating-fruit--pineapple-1">
-			<div class="fruit-graphic" title="Golden Pineapple"><span>🍍</span></div>
-		</div>
-		<div class="floating-fruit-item floating-fruit--ice-1">
-			<div class="fruit-graphic fruit-graphic--ice" title="Chilled Ice"><span>🧊</span></div>
-		</div>
-		<div class="floating-fruit-item floating-fruit--lime-1">
-			<div class="fruit-graphic fruit-graphic--mint" title="Zesty Lime"><span>🍈</span></div>
-		</div>
-	</div>
 
 	<div class="container order-juice-vintage__container" style="position:relative; z-index:3;">
 		
-		<!-- 1. Header -->
+		<!-- 1. Header (3 Elements: Tag, Title, Subtitle) -->
 		<?php
 		View::component(
 			'section-header/section-header',
 			array(
 				'tag'     => 'OUR MENU',
 				'title'   => 'ORDER FRESH <em>Cane Juice</em>',
-				'eyebrow' => 'Pressed Fresh to Order',
 				'sub'     => $subtitle,
 				'variant' => 'dark',
 				'ribbon'  => true,

@@ -38,25 +38,58 @@ $franchise_pillars = array(
 
 $franchise_formats = array(
 	array(
-		'badge'    => 'LOWEST ENTRY',
-		'name'     => 'Mobile Vintage Cart',
-		'tagline'  => 'Markets, Weddings & Popups',
-		'desc'     => 'Compact, high-mobility vintage wooden cart equipped with commercial silent cold-press. Perfect for weekend markets, street food festivals, and private catering.',
-		'features' => array( 'Compact footprint (1.5m x 1m)', 'Trailer transportable', 'Flexible weekend trading', 'Lowest capital expenditure' ),
+		'badge'        => 'LOWEST ENTRY',
+		'name'         => 'Mobile Vintage Cart',
+		'tagline'      => 'Markets, Weddings & Popups',
+		'investment'   => '£15,000 – £22,000',
+		'margin'       => '72% – 76%',
+		'payback'      => '3 – 6 Months',
+		'footprint'    => '1.5m × 1m (15 sq ft)',
+		'royalty'      => '4% Monthly',
+		'desc'         => 'Compact, high-mobility vintage wooden cart equipped with commercial silent cold-press. Perfect for weekend markets, street food festivals, and private catering.',
+		'features'     => array(
+			'Turnkey Handcrafted Vintage Wooden Cart',
+			'Commercial Cold-Press Sugarcane Extractor Included',
+			'Initial Batch of 500kg Premium Raw Stalks',
+			'Full Food Safety & Hygiene HACCP Certification Kit',
+			'Brand Signage, Uniforms & Glassware Supplies',
+		),
 	),
 	array(
-		'badge'    => 'POPULAR CHOICE',
-		'name'     => 'Retail Mall Kiosk',
-		'tagline'  => 'Shopping Centres & Transit Hubs',
-		'desc'     => 'High-throughput semi-permanent island kiosk designed for continuous 7-day high footfall trading in shopping centres, train stations, and food halls.',
-		'features' => array( 'Dedicated cold storage unit', 'Dual presser capacity', 'Integrated POS & digital menu', 'High consistent daily volume' ),
+		'badge'        => 'MOST POPULAR',
+		'name'         => 'Retail Mall Kiosk',
+		'tagline'      => 'Shopping Centres & Transit Hubs',
+		'investment'   => '£35,000 – £52,000',
+		'margin'       => '70% – 74%',
+		'payback'      => '6 – 10 Months',
+		'footprint'    => '10m² – 18m² (100 – 180 sq ft)',
+		'royalty'      => '4.5% Monthly',
+		'desc'         => 'High-throughput semi-permanent island kiosk designed for continuous 7-day high footfall trading in shopping centres, train stations, and food halls.',
+		'features'     => array(
+			'Custom Modular Hardwood & Brass Kiosk Island',
+			'Dual High-Output Commercial Pressing Units Included',
+			'Under-Counter Commercial Refrigeration & Waste System',
+			'Cloud POS Terminal & Digital Botanical Menu Screens',
+			'Dedicated Weekly Refrigerated Cane Deliveries',
+		),
 	),
 	array(
-		'badge'    => 'FLAGSHIP CONCEPT',
-		'name'     => 'Botanical Juice Bar',
-		'tagline'  => 'High Street Destination Store',
-		'desc'     => 'Full experiential retail cafe serving freshly pressed cane juices, artisanal mocktails, sugarcane desserts, and packaged bottled wellness tonics.',
-		'features' => array( 'Full seating area (20-40 seats)', 'Expanded food & mocktail menu', 'Retail takeaway counter', 'Maximum brand authority & revenue' ),
+		'badge'        => 'FLAGSHIP CONCEPT',
+		'name'         => 'Botanical Juice Bar',
+		'tagline'      => 'High Street Destination Store',
+		'investment'   => '£75,000 – £115,000',
+		'margin'       => '68% – 73%',
+		'payback'      => '12 – 16 Months',
+		'footprint'    => '60m² – 120m² (600 – 1,200 sq ft)',
+		'royalty'      => '5% Monthly',
+		'desc'         => 'Full experiential retail cafe serving freshly pressed cane juices, artisanal mocktails, sugarcane desserts, and packaged bottled wellness tonics.',
+		'features'     => array(
+			'Complete Architectural Interior Fitout (20-40 Seats)',
+			'Full Commercial Kitchen & Cold-Press Bar Theatre',
+			'Expanded Mocktail, Pastry & Bottled Retail Lines',
+			'Protected Postcode Territory & Local Marketing Campaign',
+			'Comprehensive 4-Week Onsite Staff Training',
+		),
 	),
 );
 
@@ -165,33 +198,63 @@ View::component(
 		?>
 
 		<div class="vintage-carousel-wrapper">
-			<button class="vintage-carousel-ctrl vintage-carousel-ctrl--prev" type="button" aria-label="Previous Format" onclick="document.getElementById('formats-carousel-track').scrollBy({left: -320, behavior: 'smooth'})">‹</button>
+			<button class="vintage-carousel-ctrl vintage-carousel-ctrl--prev" type="button" aria-label="Previous Format" onclick="document.getElementById('formats-carousel-track').scrollBy({left: -350, behavior: 'smooth'})">‹</button>
 			<div class="vintage-card-carousel" id="formats-carousel-track">
 				<?php foreach ( $franchise_formats as $fmt ) : ?>
-					<div class="vintage-carousel-card frame--rough-cut" style="flex:0 0 320px; max-width:320px; padding:22px 18px;">
-						<div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px;">
-							<span class="lifecycle-carousel-card__badge" style="position:static;"><?php echo esc_html( $fmt['badge'] ); ?></span>
+					<div class="vintage-carousel-card frame--rough-cut" style="flex:0 0 350px; max-width:350px; padding:24px 20px; display:flex; flex-direction:column;">
+						<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+							<span class="lifecycle-carousel-card__badge" style="position:static; font-size:10px;"><?php echo esc_html( $fmt['badge'] ); ?></span>
+							<span style="font-family:'Cinzel',serif; font-size:11px; font-weight:700; color:#8e5222; letter-spacing:0.06em;"><?php echo esc_html( $fmt['footprint'] ); ?></span>
 						</div>
-						<h4 class="goodness-carousel-card__title" style="font-size:17px; margin-bottom:4px;"><?php echo esc_html( $fmt['name'] ); ?></h4>
-						<p style="font-size:13px; font-style:italic; color:#8e5222; margin:0 0 10px;"><?php echo esc_html( $fmt['tagline'] ); ?></p>
+						
+						<h4 class="goodness-carousel-card__title" style="font-size:18px; margin-bottom:4px;"><?php echo esc_html( $fmt['name'] ); ?></h4>
+						<p style="font-family:'Dancing Script',cursive; font-size:15px; color:#8e5222; margin:0 0 12px;"><?php echo esc_html( $fmt['tagline'] ); ?></p>
+						
+						<!-- ═══════════ FINANCIAL & INVESTMENT METRICS ═══════════ -->
+						<div style="background:rgba(23,43,21,0.06); border:1.5px dashed #8e622d; border-radius:6px; padding:12px 14px; margin-bottom:14px;">
+							<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; border-bottom:1px solid rgba(142,98,45,0.2); padding-bottom:6px;">
+								<span style="font-family:'Cinzel',serif; font-size:11px; font-weight:700; color:#11381b; letter-spacing:0.08em; text-transform:uppercase;">OPERATIONAL METRICS</span>
+								<span style="font-family:'Cinzel',serif; font-size:10.5px; font-weight:700; color:#8e5222; text-transform:uppercase;">CUSTOM TAILORED</span>
+							</div>
+							<div style="display:grid; grid-template-columns:1fr 1fr; gap:8px 12px;">
+								<div>
+									<span style="font-size:10px; font-family:'Cinzel',serif; color:#8e5222; display:block; text-transform:uppercase;">Gross Margin</span>
+									<strong style="font-size:13px; font-family:'Cinzel',serif; color:#172b15;"><?php echo esc_html( $fmt['margin'] ); ?></strong>
+								</div>
+								<div>
+									<span style="font-size:10px; font-family:'Cinzel',serif; color:#8e5222; display:block; text-transform:uppercase;">Est. Payback</span>
+									<strong style="font-size:13px; font-family:'Cinzel',serif; color:#172b15;"><?php echo esc_html( $fmt['payback'] ); ?></strong>
+								</div>
+								<div>
+									<span style="font-size:10px; font-family:'Cinzel',serif; color:#8e5222; display:block; text-transform:uppercase;">Space Required</span>
+									<strong style="font-size:12px; font-family:'Cinzel',serif; color:#172b15;"><?php echo esc_html( $fmt['footprint'] ); ?></strong>
+								</div>
+								<div>
+									<span style="font-size:10px; font-family:'Cinzel',serif; color:#8e5222; display:block; text-transform:uppercase;">Ongoing Royalty</span>
+									<strong style="font-size:12px; font-family:'Cinzel',serif; color:#172b15;"><?php echo esc_html( $fmt['royalty'] ); ?></strong>
+								</div>
+							</div>
+						</div>
+
 						<p style="font-size:13.5px; line-height:1.45; color:#5d3d1a; margin:0 0 14px;"><?php echo esc_html( $fmt['desc'] ); ?></p>
 						
-						<ul style="list-style:none; padding:0; margin:0 0 18px; display:flex; flex-direction:column; gap:8px;">
+						<div style="font-family:'Cinzel',serif; font-size:11px; font-weight:700; color:#11381b; margin-bottom:8px; text-transform:uppercase; letter-spacing:0.06em;">Package Includes:</div>
+						<ul style="list-style:none; padding:0; margin:0 0 18px; display:flex; flex-direction:column; gap:7px; flex-grow:1;">
 							<?php foreach ( $fmt['features'] as $feat ) : ?>
-								<li style="font-size:13px; line-height:1.35; color:#3a2814; display:flex; align-items:flex-start; gap:6px;">
-									<span style="color:#11381b; font-weight:700;">✓</span>
+								<li style="font-size:12.5px; line-height:1.35; color:#3a2814; display:flex; align-items:flex-start; gap:6px;">
+									<span style="color:#11381b; font-weight:700; font-size:13px;">✓</span>
 									<span><?php echo esc_html( $feat ); ?></span>
 								</li>
 							<?php endforeach; ?>
 						</ul>
 
 						<a href="#franchise-enquiry" class="btn btn--order-now" style="width:100%; text-align:center; justify-content:center; margin-top:auto;">
-							ENQUIRE FOR THIS FORMAT
+							ENQUIRE FOR THIS FORMAT ✦
 						</a>
 					</div>
 				<?php endforeach; ?>
 			</div>
-			<button class="vintage-carousel-ctrl vintage-carousel-ctrl--next" type="button" aria-label="Next Format" onclick="document.getElementById('formats-carousel-track').scrollBy({left: 320, behavior: 'smooth'})">›</button>
+			<button class="vintage-carousel-ctrl vintage-carousel-ctrl--next" type="button" aria-label="Next Format" onclick="document.getElementById('formats-carousel-track').scrollBy({left: 350, behavior: 'smooth'})">›</button>
 		</div>
 	</div>
 </section>

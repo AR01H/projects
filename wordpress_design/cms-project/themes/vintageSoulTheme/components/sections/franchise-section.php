@@ -31,7 +31,6 @@ $cta_box            = (array) ( $franchise_data['cta'] ?? array() );
 			array(
 				'tag'     => 'Business Opportunity',
 				'title'   => 'BECOME A <em>Franchise Partner</em>',
-				'eyebrow' => 'Turnkey Kiosks, Retail Stalls & UK Distribution',
 				'sub'     => $sub,
 				'variant' => 'dark',
 				'ribbon'  => true,

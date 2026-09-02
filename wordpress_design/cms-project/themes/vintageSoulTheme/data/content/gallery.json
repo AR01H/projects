@@ -12,11 +12,39 @@
     ],
     "items": [
         {
-            "image": "assets/images/sugarcane/hero_juice.jpg",
-            "title": "Fresh Extraction",
-            "caption": "Pure cane juice pouring fresh at our London stall.",
+            "image": "assets/images/gallery/stall_event_3.jpg",
+            "title": "Sutton High Street Stall",
+            "caption": "Serving hundreds of fresh cold-pressed cups at our live market stall.",
+            "category": "our-stall",
+            "tag": "Live Stall"
+        },
+        {
+            "image": "assets/images/gallery/stall_event_2.jpg",
+            "title": "Live Pressing & Pour",
+            "caption": "100% pure raw cane nectar extracted fresh on demand.",
+            "category": "events",
+            "tag": "Live Catering"
+        },
+        {
+            "image": "assets/images/gallery/stall_event_1.jpg",
+            "title": "Fresh Bundles Harvest",
+            "caption": "Handpicked, cleaned premium sugarcane stalks ready for pressing.",
             "category": "sugarcane",
-            "tag": "Harvest & Press"
+            "tag": "Raw Stalks"
+        },
+        {
+            "image": "assets/images/gallery/stall_event_4.jpg",
+            "title": "Festival & Event Setup",
+            "caption": "Our mobile botanical bar ready for weddings and summer galas.",
+            "category": "events",
+            "tag": "Event Bar"
+        },
+        {
+            "image": "assets/images/sugarcane/hero_juice.jpg",
+            "title": "The Golden Nectar",
+            "caption": "Pure cane juice pouring fresh at our London stall.",
+            "category": "drinks",
+            "tag": "Pure Juice"
         },
         {
             "image": "assets/images/sugarcane/story_moments.jpg",
@@ -26,45 +54,17 @@
             "tag": "Community"
         },
         {
-            "image": "assets/images/sugarcane/combo.jpg",
-            "title": "Artisanal Flavours",
-            "caption": "Ginger, lemon & mint infused cold cane mocktails.",
-            "category": "drinks",
-            "tag": "Signature Drinks"
-        },
-        {
-            "image": "assets/images/sugarcane/stacks.jpg",
-            "title": "Clean Stalks Sourcing",
-            "caption": "Handpicked, pre-washed premium sugarcane stalks.",
-            "category": "our-stall",
-            "tag": "Farm Sourced"
-        },
-        {
-            "image": "assets/images/sugarcane/drink_classic.jpg",
-            "title": "The Classic Glass",
-            "caption": "100% natural sugarcane juice — nothing added.",
-            "category": "drinks",
-            "tag": "Original Taste"
-        },
-        {
             "image": "assets/images/sugarcane/drink_mint.jpg",
             "title": "Garden Mint Infusion",
-            "caption": "Freshly muddled aromatic mint leaves.",
+            "caption": "Freshly muddled aromatic mint leaves and black salt.",
             "category": "drinks",
-            "tag": "Refreshing"
-        },
-        {
-            "image": "assets/images/sugarcane/drink_lemon.jpg",
-            "title": "Zesty Lemon Splash",
-            "caption": "A citrus twist balancing sweet sugarcane notes.",
-            "category": "drinks",
-            "tag": "Zesty Twist"
+            "tag": "Signature Drink"
         },
         {
             "image": "assets/images/sugarcane/drink_masala.jpg",
             "title": "Chaat Masala Spice",
             "caption": "Traditional Indian spiced cane mocktail.",
-            "category": "events",
+            "category": "drinks",
             "tag": "Heritage Special"
         }
     ],

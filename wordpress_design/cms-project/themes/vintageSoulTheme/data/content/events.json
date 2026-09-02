@@ -1,40 +1,60 @@
 {
     "hero": {
-        "tag": "Live Stalls • Weddings • Private Galas",
-        "title": "Bespoke Sugarcane <em>Bar Catering</em>",
-        "sub": "Transform your special occasion with our live vintage cold-press sugarcane bar. Freshly extracted organic cane nectar, custom botanical blends, and authentic London craft.",
-        "image": "assets/images/backgrounds/vintage_coldpress_bar_catering.jpg",
+        "tag": "Live Sugarcane Experience",
+        "title": "BRING US TO YOUR <em>Event</em>",
+        "sub": "Elevate your celebration with our premium live-pressed sugarcane juice experience — perfect for weddings, Mehndi nights, Eid parties, Diwali celebrations, and corporate gatherings.",
+        "image": "assets/images/gallery/stall_event_4.jpg",
         "stamp": { "top": "Live Cold-Press", "center": "5★ Hygiene", "bottom": "London & Beyond" }
     },
 
     "event_types": [
         {
-            "icon": "🎪",
-            "title": "WEDDINGS & RECEPTIONS",
-            "tag": "Popular Choice",
-            "desc": "A live sugarcane juice counter that charms guests with fresh, bespoke mocktails and traditional sugarcane theatre.",
-            "features": [ "Customised rustic cane bar setup", "Unlimited fresh pressings", "Fresh mint, ginger & lime infusions" ]
-        },
-        {
-            "icon": "🏢",
-            "title": "CORPORATE & BRAND EVENTS",
-            "tag": "Wellness & Energy",
-            "desc": "Boost workplace wellness and celebrate milestones with a 100% natural, energising live juice station.",
-            "features": [ "Fast professional service", "Branded cups & bar signage", "Zero artificial sugars or syrups" ]
+            "icon": "💒",
+            "title": "WEDDINGS & ASIAN CELEBRATIONS",
+            "tag": "Wedding Special",
+            "desc": "Add a traditional and healthy touch to your special day. We serve fresh juice live during your reception, Mehndi night, Sangeet, or Baraat — a truly memorable experience your guests will talk about.",
+            "features": [
+                "Reception Drinks",
+                "Mehndi & Sangeet Night",
+                "Post-Ceremony Refreshment",
+                "Baraat Welcome Drinks"
+            ]
         },
         {
             "icon": "🎉",
-            "title": "BIRTHDAYS & PRIVATE PARTIES",
-            "tag": "All Ages Favourite",
-            "desc": "Fun, interactive live pressing that kids and adults adore. Sweet memories crafted right before their eyes.",
-            "features": [ "Compact mobile setup", "Kids friendly mocktails", "Full hygiene certified team" ]
+            "title": "PRIVATE PARTIES & FESTIVALS",
+            "tag": "All Occasions",
+            "desc": "From Diwali parties to garden gatherings, Eid celebrations to birthday bashes — we bring the vibe and freshness. Guests of all ages love it.",
+            "features": [
+                "Birthday Parties",
+                "Diwali & Eid Celebrations",
+                "Community Festivals & Melas",
+                "Garden & BBQ Events"
+            ]
         },
         {
-            "icon": "🌾",
-            "title": "FESTIVALS & COMMUNITY MEETS",
-            "tag": "High Volume Capacity",
-            "desc": "High-throughput commercial extractors ready to serve hundreds of festival-goers with icy, refreshing cane juice.",
-            "features": [ "High-speed twin rollers", "Eco-friendly recyclable cups", "Trained event crew" ]
+            "icon": "🎓",
+            "title": "GRADUATION & MILESTONE PARTIES",
+            "tag": "Milestones",
+            "desc": "Celebrate achievements in style with a refreshing juice bar. Perfect for marking life's big moments with family and friends of all ages.",
+            "features": [
+                "Graduation Parties",
+                "18th & 21st Birthdays",
+                "Retirement Celebrations",
+                "Engagement Parties"
+            ]
+        },
+        {
+            "icon": "🏫",
+            "title": "SCHOOL & UNIVERSITY EVENTS",
+            "tag": "Campus & Sports",
+            "desc": "Keep students and staff refreshed and energised. Our setup is fast, clean, and loved by younger crowds and health-conscious audiences.",
+            "features": [
+                "Sports Days",
+                "Freshers Fairs",
+                "Charity Fundraisers",
+                "Cultural Society Events"
+            ]
         }
     ],
 
@@ -46,38 +66,70 @@
             {
                 "name": "The Heritage Wedding Bar",
                 "tagline": "Unforgettable Celebration Experience",
+                "badge": "Most Popular",
+                "price": "From £750",
                 "guests": "100 – 500+ Guests",
+                "duration": "4 Hours Live Service",
+                "servings": "Unlimited Fresh Pouring",
+                "footprint": "2.5m Rustic Bar Setup",
                 "features": [
                     "Live Cold-Press Extraction Bar with Master Pressers",
                     "Unlimited Signature Blends (Classic, Ginger, Mint, Masala)",
                     "Customized Wooden Signage & Vintage Brass Accents",
-                    "4 Hours of Continuous Live Pouring Service"
-                ],
-                "badge": "Most Popular"
+                    "Eco-Friendly Glassware & Biodegradable Sugarcane Straws",
+                    "Full Setup, Teardown & Pristine Waste Management"
+                ]
             },
             {
                 "name": "Corporate Wellness Lounge",
                 "tagline": "Nutrient-Dense Natural Energy",
-                "guests": "50 – 300 Guests",
+                "badge": "Corporate Choice",
+                "price": "From £450",
+                "guests": "50 – 250 Guests",
+                "duration": "3 Hours Live Service",
+                "servings": "Up to 250 Cold-Press Cups",
+                "footprint": "1.5m Compact Counter",
                 "features": [
                     "Compact Mobile Stalk Bar for Office & Conferences",
                     "Low-GI Hydration Shots & Wellness Informational Cards",
-                    "Eco-Friendly Compostable Glassware & Biodegradable Straws",
-                    "Zero Added Sugar • 100% Raw Whole-Plant Tonic"
-                ],
-                "badge": "Corporate Choice"
+                    "Fresh Ginger, Lemon & Kaffir Lime Infusions",
+                    "Compostable Eco-Cups & Bamboo Serving Trays",
+                    "Silent Electric Cold-Press Extractor Unit"
+                ]
             },
             {
                 "name": "Festival & Private Party Pop-Up",
                 "tagline": "Vibrant Botanical Street Craft",
-                "guests": "30 – 200 Guests",
+                "badge": "Artisanal Craft",
+                "price": "From £350",
+                "guests": "30 – 150 Guests",
+                "duration": "2.5 Hours Live Service",
+                "servings": "Up to 150 Fresh Cups",
+                "footprint": "1.2m Vintage Cart",
                 "features": [
                     "Rustic Sugarcane Stalk Display & Crushed Ice Presentation",
-                    "Fresh Lemon & Kaffir Lime Infusions Poured on Demand",
-                    "Full Setup, Teardown & Pristine Waste Management",
-                    "Available across Greater London & Surrey"
-                ],
-                "badge": "Artisanal Craft"
+                    "Fresh Lemon & Himalayan Pink Salt Poured on Demand",
+                    "Includes 1 Uniformed Master Cold-Presser",
+                    "Quick 30-Minute Setup & Zero Residue Teardown",
+                    "Available across Greater London & Surrey Postcodes"
+                ]
+            },
+            {
+                "name": "Grand Multi-Day VIP Suite",
+                "tagline": "High-Volume Luxury Banquets",
+                "badge": "VIP Luxury",
+                "price": "From £1,450",
+                "guests": "500 – 1,500+ Guests",
+                "duration": "Full Day / Multi-Day",
+                "servings": "Unlimited High-Capacity",
+                "footprint": "Dual Bar Island Setup",
+                "features": [
+                    "Twin High-Output Cold-Press Units with 3 Dedicated Staff",
+                    "Full Botanical Mocktail Bar with Glass Decanters",
+                    "Personalized Engraved Bottles for Wedding Favours",
+                    "Continuous Fresh Cane Replenishment from Farm Hub",
+                    "VIP Dedicated Fast-Track Serving Lane"
+                ]
             }
         ]
     },
@@ -97,10 +149,10 @@
         "tag": "Moments in Action",
         "title": "Recent Event <em>Celebrations</em>",
         "items": [
-            { "image": "assets/images/sugarcane/story_moments.jpg", "title": "Summer Festival Market", "label": "London Stalls" },
-            { "image": "assets/images/sugarcane/hero_juice.jpg", "title": "Botanical Wedding Bar", "label": "Surrey Estate" },
-            { "image": "assets/images/sugarcane/stacks.jpg", "title": "Fresh Farm Deliveries", "label": "Dawn Harvest" },
-            { "image": "assets/images/sugarcane/combo.jpg", "title": "Corporate Wellness Day", "label": "Canary Wharf" }
+            { "image": "assets/images/gallery/stall_event_3.jpg", "title": "Sutton High Street Stall", "label": "London Stalls" },
+            { "image": "assets/images/gallery/stall_event_2.jpg", "title": "Live Cold-Press Bar", "label": "Surrey Events" },
+            { "image": "assets/images/gallery/stall_event_1.jpg", "title": "Fresh Bundles Delivery", "label": "Farm Harvest" },
+            { "image": "assets/images/gallery/stall_event_4.jpg", "title": "Mobile Festival Setup", "label": "Live Galas" }
         ]
     },
 

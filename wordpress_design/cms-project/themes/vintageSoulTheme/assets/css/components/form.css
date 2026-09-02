@@ -210,8 +210,7 @@ input, textarea, select {
 .contact-info-card,
 .contact-detail-card,
 .contact-method-card {
-  filter: url(#rough-button-cut-sm) !important;
-  -webkit-filter: url(#rough-button-cut-sm) !important;
+
   border: 2px solid #8e622d !important;
   border-radius: 8px !important;
   box-shadow: inset 0 0 0 1.5px #caa06d, 0 8px 24px rgba(42, 26, 12, 0.16) !important;

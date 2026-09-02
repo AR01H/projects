@@ -29,23 +29,18 @@ if ( '' !== $requested_slug ) {
 
 <?php if ( $current_article ) : ?>
 	<!-- ═══════════ SINGLE ARTICLE VIEW ═══════════ -->
-	<header class="page-hero common-subpage-hero article-header-hero" id="article-hero">
-		<div class="container article-header-hero__inner">
-			<div class="article-header__badge-wrap">
-				<span class="article-header__category">
-					✦ <?php echo esc_html( (string) ( $current_article['category'] ?? 'Heritage' ) ); ?> ✦
-				</span>
-			</div>
-			<h1 class="article-header__title"><?php echo esc_html( (string) $current_article['title'] ); ?></h1>
-			<p class="article-header__meta">
-				By <?php echo esc_html( (string) $current_article['author'] ); ?> • <?php echo esc_html( (string) $current_article['date'] ); ?> • <?php echo esc_html( (string) $current_article['reading_time'] ); ?> min read
-			</p>
-		</div>
-	</header>
-
-	<div class="gold-wave-divider" aria-hidden="true">
-		<img src="<?php echo esc_url( \VintageSoul\Support\UrlHelper::resolve( 'assets/images/textures/border/gold-wave.svg' ) ); ?>" alt="" loading="lazy">
-	</div>
+	<?php
+	View::component(
+		'subpage-hero/subpage-hero',
+		array(
+			'id'    => 'article-hero',
+			'tag'   => '✦ ' . (string) ( $current_article['category'] ?? 'Heritage' ) . ' ✦',
+			'title' => (string) $current_article['title'],
+			'sub'   => 'By ' . (string) $current_article['author'] . ' • ' . (string) $current_article['date'] . ' • ' . (string) $current_article['reading_time'] . ' min read',
+			'image' => (string) ( $current_article['image'] ?? 'assets/images/backgrounds/pure_sugarcane_forest_trees_engraving.jpg' ),
+		)
+	);
+	?>
 
 	<div class="section">
 		<div class="container single-article-view">

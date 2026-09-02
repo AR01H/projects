@@ -21,11 +21,10 @@ $pillars      = (array) ( $pillars ?? ( $story_data['pillars'] ?? array() ) );
 		View::component(
 			'section-header/section-header',
 			array(
-				'tag'     => ! empty( $tag ) ? $tag : 'Our Roots',
-				'title'   => 'TRADITIONAL <em>Handcrafted Story</em>',
-				'eyebrow' => ! empty( $subtitle ) ? $subtitle : 'A Tradition With Deep Roots',
-				'body'    => $body_1,
-				'ribbon'  => true,
+				'tag'    => ! empty( $tag ) ? $tag : 'Our Roots',
+				'title'  => 'TRADITIONAL <em>Handcrafted Story</em>',
+				'sub'    => $body_1,
+				'ribbon' => true,
 			)
 		);
 		?>

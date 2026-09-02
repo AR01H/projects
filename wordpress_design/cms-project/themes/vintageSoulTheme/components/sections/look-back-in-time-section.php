@@ -32,11 +32,10 @@ $secondary_url = isset( $secondary_btn['url'] ) ? (string) $secondary_btn['url']
 		View::component(
 			'section-header/section-header',
 			array(
-				'tag'     => $tag,
-				'title'   => $title,
-				'eyebrow' => 'Vintage Moments & Archival Memories',
-				'sub'     => $subtitle,
-				'ribbon'  => true,
+				'tag'    => $tag,
+				'title'  => $title,
+				'sub'    => $subtitle,
+				'ribbon' => true,
 			)
 		);
 		?>

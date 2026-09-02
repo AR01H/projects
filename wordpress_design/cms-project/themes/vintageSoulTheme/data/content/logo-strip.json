@@ -4,7 +4,7 @@
     "sub": "Proudly recognized by leading culinary & cultural establishments across London.",
     "marquee": true,
     "items": [
-        { "name": "SUTTON MARKET", "image": "assets/images/partners/sutton-market.svg", "subtitle": "London Borough" },
+        { "name": "LONDON BOROUGH OF SUTTON", "image": "assets/images/partners/lb-sutton-council.svg", "subtitle": "Local Authority" },
         { "name": "FOOD HYGIENE RATING", "image": "assets/images/partners/food-hygiene-5.svg", "subtitle": "5 Star Rating" },
         { "name": "SOIL ASSOCIATION", "image": "assets/images/partners/soil-association.svg", "subtitle": "Organic Partner" },
         { "name": "BBC GOOD FOOD", "image": "assets/images/partners/bbc-good-food.svg", "subtitle": "Featured Stalls" },

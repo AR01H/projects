@@ -191,7 +191,7 @@ $socials = (array) ( $contact_info['socials'] ?? array() );
 						$a      = (string) ( $f['answer'] ?? '' );
 						$faq_id = 'faq-' . sanitize_title( $q );
 					?>
-						<details class="faq-accordion__item frame--ornate-sm" id="<?php echo esc_attr( $faq_id ); ?>" name="contact-faq"<?php echo 0 === $idx ? ' open' : ''; ?>>
+						<details class="faq-accordion__item frame--ornate-sm" id="<?php echo esc_attr( $faq_id ); ?>" name="contact-faq">
 							<summary class="faq-accordion__summary">
 								<span class="faq-accordion__question"><?php echo esc_html( $q ); ?></span>
 								<span class="faq-accordion__icon" aria-hidden="true">+</span>

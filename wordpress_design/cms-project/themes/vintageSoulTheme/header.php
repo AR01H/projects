@@ -18,11 +18,7 @@ defined( 'ABSPATH' ) || exit;
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
 
-<?php if ( is_front_page() || is_home() ) : ?>
-	<?php View::component( 'loader/loader' ); ?>
-<?php endif; ?>
-
-<!-- SVG Filters for Authentic Rough Cut Button & Card Edges -->
+<!-- SVG Filters for Authentic Rough Cut Button & Card Edges (Loaded before all UI elements) -->
 <svg style="position: absolute; width: 0; height: 0; overflow: hidden; pointer-events: none;" aria-hidden="true">
 	<defs>
 		<filter id="rough-button-cut" x="-10%" y="-10%" width="120%" height="120%">
@@ -35,6 +31,10 @@ defined( 'ABSPATH' ) || exit;
 		</filter>
 	</defs>
 </svg>
+
+<?php if ( is_front_page() || is_home() ) : ?>
+	<?php View::component( 'loader/loader' ); ?>
+<?php endif; ?>
 
 <!-- Top Vintage Ticker Ribbon -->
 <div class="ribbon-ticker ribbon-ticker--green" aria-hidden="true">
@@ -58,12 +58,26 @@ defined( 'ABSPATH' ) || exit;
 		<?php View::component( 'logo/logo', array( 'context' => 'header' ) ); ?>
 		<nav class="nav" aria-label="<?php esc_attr_e( 'Primary', 'vintagesoul' ); ?>">
 			<ul class="nav__list">
-				<?php foreach ( NavigationService::menu( 'primary' ) as $item ) :
-					$children = ( isset( $item['children'] ) && is_array( $item['children'] ) ) ? $item['children'] : array();
-					$has_kids = ! empty( $children );
+				<?php
+				$current_route = (string) ( \VintageSoul\Services\RouteService::current_key() ?? 'home' );
+
+				foreach ( NavigationService::menu( 'primary' ) as $item ) :
+					$children  = ( isset( $item['children'] ) && is_array( $item['children'] ) ) ? $item['children'] : array();
+					$has_kids  = ! empty( $children );
+					$item_url  = UrlHelper::resolve( (string) ( $item['url'] ?? '#' ) );
+					$item_path = trim( (string) parse_url( $item_url, PHP_URL_PATH ), '/' );
+
+					// Exact 1-to-1 active route matching
+					$is_active = false;
+					if ( 'home' === $current_route ) {
+						$is_active = ( '' === $item_path || '/' === ( $item['url'] ?? '' ) || '#' === ( $item['url'] ?? '' ) );
+					} else {
+						$is_active = ( $item_path === $current_route || ltrim( (string) ( $item['url'] ?? '' ), '/' ) === $current_route );
+					}
+					$item_href = $has_kids ? 'javascript:void(0)' : esc_url( $item_url );
 				?>
-					<li class="nav__item<?php echo $has_kids ? ' nav__item--has-children' : ''; ?>">
-						<a class="nav__link" href="<?php echo esc_url( UrlHelper::resolve( (string) ( $item['url'] ?? '#' ) ) ); ?>"<?php echo $has_kids ? ' aria-haspopup="true"' : ''; ?>>
+					<li class="nav__item<?php echo $has_kids ? ' nav__item--has-children' : ''; ?><?php echo $is_active ? ' is-active' : ''; ?>">
+						<a class="nav__link<?php echo $is_active ? ' is-active' : ''; ?>" href="<?php echo esc_attr( $item_href ); ?>"<?php echo $has_kids ? ' aria-haspopup="true" role="button"' : ''; ?><?php echo ( ! $has_kids && $is_active ) ? ' aria-current="page"' : ''; ?>>
 							<?php echo esc_html( $item['label'] ); ?>
 							<?php if ( $has_kids ) : ?>
 								<span class="nav__chevron" aria-hidden="true"></span>
@@ -77,8 +91,8 @@ defined( 'ABSPATH' ) || exit;
 									if ( '' === $child_label ) {
 										continue;
 									}
-									$parts = preg_split( '/(?<=\p{Emoji_Presentation}|\p{Extended_Pictographic})\s*/u', $child_label, 2 );
-									$has_icon = is_array( $parts ) && count( $parts ) > 1 && '' !== $parts[0];
+									$parts    = explode( ' ', $child_label, 2 );
+									$has_icon = ( 2 === count( $parts ) && 1 === mb_strlen( $parts[0] ) );
 									$icon = $has_icon ? $parts[0] : '';
 									$text = $has_icon ? $parts[1] : $child_label;
 								?>

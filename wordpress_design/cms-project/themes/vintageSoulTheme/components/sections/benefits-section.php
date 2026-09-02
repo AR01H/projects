@@ -16,16 +16,16 @@ $items = (array) ( $items ?? ( $benefits_data['items'] ?? array() ) );
 <section class="section section--benefits benefits-vintage paper-rough" id="benefits">
 	<div class="container benefits-vintage__container">
 		
-		<!-- Header System -->
+		<!-- Header System (3 Elements: Tag, Title, Subtitle) -->
 		<?php if ( '' !== $title || '' !== $tag || '' !== $sub ) : ?>
 			<?php
 			View::component(
 				'section-header/section-header',
 				array(
-					'tag'     => $tag,
-					'title'   => $title,
-					'eyebrow' => $sub,
-					'ribbon'  => true,
+					'tag'    => $tag,
+					'title'  => $title,
+					'sub'    => $sub,
+					'ribbon' => true,
 				)
 			);
 			?>

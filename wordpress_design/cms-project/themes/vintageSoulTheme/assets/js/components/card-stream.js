@@ -153,12 +153,15 @@
         isDragging = false;
         hasMovedSignificantly = false;
         startX = e.clientX;
+
+        // IMMEDIATELY pause animation on touch/tap so users can stop the stream on mobile
+        startManualControl();
       });
 
       wrap.addEventListener('pointermove', function(e) {
+        if (!pointerDownId && pointerDownId !== 0) return;
         var diffX = e.clientX - startX;
-        if (!isDragging && Math.abs(diffX) > 6) {
-          startManualControl();
+        if (!isDragging && Math.abs(diffX) > 4) {
           isDragging = true;
           hasMovedSignificantly = true;
           wrap.style.cursor = 'grabbing';

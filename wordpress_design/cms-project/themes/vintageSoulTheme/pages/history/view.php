@@ -33,7 +33,7 @@ $culture             = (array) ( $data['culture'] ?? array() );
 $storage_guide       = (array) ( $data['storage_guide'] ?? array() );
 $why_everyone_loves  = (array) ( $data['why_everyone_loves'] ?? array() );
 $faq                 = (array) ( $data['faq'] ?? array() );
-$closing             = (array) ( $data['closing'] ?? array() );
+$deckled_edge_url = UrlHelper::resolve( 'assets/images/textures/border/deckled-edge.svg' );
 ?>
 
 <div class="history-page">
@@ -74,6 +74,9 @@ $closing             = (array) ( $data['closing'] ?? array() );
 				?>
 			</div>
 		</section>
+		<div class="deckled-divider" aria-hidden="true">
+			<img src="<?php echo esc_url( $deckled_edge_url ); ?>" alt="" loading="lazy">
+		</div>
 	<?php endif; ?>
 
 	<!-- ═══════════ 3. WHY SUGARCANE: 4 FOUNDATIONAL PILLARS ═══════════ -->
@@ -95,6 +98,9 @@ $closing             = (array) ( $data['closing'] ?? array() );
 				?>
 			</div>
 		</section>
+		<div class="deckled-divider" aria-hidden="true">
+			<img src="<?php echo esc_url( $deckled_edge_url ); ?>" alt="" loading="lazy">
+		</div>
 	<?php endif; ?>
 
 	<!-- ═══════════ 4. CHRONICLES OF SWEETNESS: HISTORICAL TIMELINE ═══════════ -->
@@ -137,6 +143,9 @@ $closing             = (array) ( $data['closing'] ?? array() );
 				</div>
 			</div>
 		</section>
+		<div class="deckled-divider" aria-hidden="true">
+			<img src="<?php echo esc_url( $deckled_edge_url ); ?>" alt="" loading="lazy">
+		</div>
 	<?php endif; ?>
 
 	<!-- ═══════════ 5. HEIRLOOM CANE VARIETIES SHOWCASE ═══════════ -->
@@ -197,9 +206,13 @@ $closing             = (array) ( $data['closing'] ?? array() );
 				</div>
 			</div>
 		</section>
+		<div class="deckled-divider" aria-hidden="true">
+			<img src="<?php echo esc_url( $deckled_edge_url ); ?>" alt="" loading="lazy">
+		</div>
 	<?php endif; ?>
 
 	<!-- ═══════════ 6. 7-STAGE BOTANICAL LIFE CYCLE ═══════════ -->
+	<!-- ═══════════ 6. 7-STAGE BOTANICAL LIFE CYCLE (MASTER INTERACTIVE SHOWCASE) ═══════════ -->
 	<?php if ( ! empty( $life_cycle['items'] ) ) :
 		$life_items = (array) ( $life_cycle['items'] ?? array() );
 	?>
@@ -209,56 +222,161 @@ $closing             = (array) ( $data['closing'] ?? array() );
 				View::component(
 					'section-header/section-header',
 					array(
-						'tag'   => (string) ( $life_cycle['tag'] ?? 'Field To Glass' ),
+						'tag'   => (string) ( $life_cycle['tag'] ?? 'Botanical Journey • Field To Glass' ),
 						'title' => (string) ( $life_cycle['title'] ?? 'Life Cycle Of <em>Sugarcane</em>' ),
-						'sub'   => (string) ( $life_cycle['sub'] ?? 'Explore every biological stage of the ancient Saccharum officinarum plant.' ),
+						'sub'   => (string) ( $life_cycle['sub'] ?? 'From fertile volcanic soils to the final fresh-pressed London pour — explore every biological stage of the ancient Saccharum officinarum plant.' ),
 					)
 				);
 				?>
 
-				<div class="vintage-carousel-wrapper">
-					<button class="vintage-carousel-ctrl vintage-carousel-ctrl--prev" type="button" aria-label="Previous Step" onclick="document.getElementById('lifecycle-carousel-track').scrollBy({left: -320, behavior: 'smooth'})">‹</button>
-					<div class="vintage-card-carousel" id="lifecycle-carousel-track">
-						<?php foreach ( $life_items as $idx => $step ) :
-							$step_num   = (string) ( $step['number'] ?? ( $idx + 1 ) );
-							$step_label = (string) ( $step['label'] ?? '' );
-							$step_dur   = (string) ( $step['duration'] ?? '' );
-							$step_fact  = (string) ( $step['fact'] ?? '' );
-							$step_desc  = (string) ( $step['desc'] ?? '' );
-							$step_img   = UrlHelper::resolve( (string) ( $step['image'] ?? 'assets/images/sugarcane/hero_juice.jpg' ) );
+				<!-- Master Botanical Stepper Timeline Navigation -->
+				<div class="lifecycle-stepper-wrap" role="tablist" aria-label="Sugarcane Life Cycle Stages">
+					<div class="lifecycle-stepper-track">
+						<?php foreach ( $life_items as $l_idx => $l_step ) :
+							$step_num   = (string) ( $l_step['number'] ?? ( $l_idx + 1 ) );
+							$step_label = (string) ( $l_step['label'] ?? '' );
+							$step_icon  = (string) ( $l_step['icon'] ?? 'plant' );
+							$is_active  = 0 === $l_idx;
 						?>
-							<div class="lifecycle-carousel-card frame--rough-cut"
-								 tabindex="0" 
-								 role="button" 
-								 aria-haspopup="dialog"
-								 aria-label="<?php echo esc_attr( $step_label ); ?>"
-								 data-story-modal="true"
-								 data-story-title="<?php echo esc_attr( 'Stage ' . $step_num . ': ' . $step_label ); ?>"
-								 data-story-badge="<?php echo esc_attr( $step_dur ); ?>"
-								 data-story-meta="<?php echo esc_attr( $step_fact ); ?>"
-								 data-story-quote="<?php echo esc_attr( $step_desc ); ?>"
-								 data-story-image="<?php echo esc_url( $step_img ); ?>">
-								<div class="lifecycle-carousel-card__photo frame--ornate-sm">
-									<img src="<?php echo esc_url( $step_img ); ?>" alt="<?php echo esc_attr( $step_label ); ?>" loading="lazy">
-									<span class="lifecycle-carousel-card__badge">STAGE <?php echo esc_html( $step_num ); ?></span>
-								</div>
-								<div class="lifecycle-carousel-card__body">
-									<?php if ( $step_dur ) : ?>
-										<span class="lifecycle-carousel-card__duration">⏳ <?php echo esc_html( $step_dur ); ?></span>
-									<?php endif; ?>
-									<h4 class="lifecycle-carousel-card__title"><?php echo esc_html( $step_label ); ?></h4>
-									<?php if ( $step_fact ) : ?>
-										<span class="lifecycle-carousel-card__fact">🌿 <?php echo esc_html( $step_fact ); ?></span>
-									<?php endif; ?>
-									<p class="lifecycle-carousel-card__desc"><?php echo esc_html( $step_desc ); ?></p>
-								</div>
-							</div>
+							<button class="lifecycle-step-btn<?php echo $is_active ? ' is-active' : ''; ?>" 
+									type="button" 
+									role="tab" 
+									aria-selected="<?php echo $is_active ? 'true' : 'false'; ?>"
+									aria-controls="lifecycle-panel-<?php echo esc_attr( $step_num ); ?>"
+									id="lifecycle-tab-<?php echo esc_attr( $step_num ); ?>"
+									data-lifecycle-step="<?php echo esc_attr( $step_num ); ?>">
+								<span class="lifecycle-step-btn__circle">
+									<span class="lifecycle-step-btn__icon"><?php echo IconHelper::render( $step_icon, '#f6d599', 20 ); // phpcs:ignore ?></span>
+								</span>
+								<span class="lifecycle-step-btn__label"><?php echo esc_html( $step_label ); ?></span>
+								<span class="lifecycle-step-btn__num">0<?php echo esc_html( $step_num ); ?></span>
+							</button>
+							<?php if ( $l_idx < count( $life_items ) - 1 ) : ?>
+								<span class="lifecycle-step-connector" aria-hidden="true">
+									<span class="lifecycle-step-connector__line"></span>
+									<span class="lifecycle-step-connector__arrow">›</span>
+								</span>
+							<?php endif; ?>
 						<?php endforeach; ?>
 					</div>
-					<button class="vintage-carousel-ctrl vintage-carousel-ctrl--next" type="button" aria-label="Next Step" onclick="document.getElementById('lifecycle-carousel-track').scrollBy({left: 320, behavior: 'smooth'})">›</button>
 				</div>
+
+				<!-- Master Showcase Stage Panels -->
+				<div class="lifecycle-showcase-container">
+					<?php foreach ( $life_items as $l_idx => $l_step ) :
+						$step_num      = (string) ( $l_step['number'] ?? ( $l_idx + 1 ) );
+						$step_label    = (string) ( $l_step['label'] ?? '' );
+						$step_headline = (string) ( $l_step['headline'] ?? $step_label );
+						$step_dur      = (string) ( $l_step['duration'] ?? '' );
+						$step_fact     = (string) ( $l_step['fact'] ?? '' );
+						$step_desc     = (string) ( $l_step['desc'] ?? '' );
+						$step_bullets  = (array) ( $l_step['bullets'] ?? array() );
+						$step_img      = UrlHelper::resolve( (string) ( $l_step['image'] ?? 'assets/images/sugarcane/stacks.jpg' ) );
+						$is_active     = 0 === $l_idx;
+					?>
+						<div class="lifecycle-panel frame--rough-cut<?php echo $is_active ? ' is-active' : ''; ?>"
+							 id="lifecycle-panel-<?php echo esc_attr( $step_num ); ?>"
+							 role="tabpanel"
+							 aria-labelledby="lifecycle-tab-<?php echo esc_attr( $step_num ); ?>"
+							 data-lifecycle-panel="<?php echo esc_attr( $step_num ); ?>">
+							
+							<div class="lifecycle-panel__inner">
+								<!-- Left Column: Rich Botanical Information -->
+								<div class="lifecycle-panel__content">
+									<div class="lifecycle-panel__meta">
+										<span class="lifecycle-panel__stage-tag">STAGE <?php echo esc_html( $step_num ); ?> OF 07</span>
+										<?php if ( '' !== $step_dur ) : ?>
+											<span class="lifecycle-panel__dur-tag">⏳ <?php echo esc_html( $step_dur ); ?></span>
+										<?php endif; ?>
+									</div>
+
+									<h3 class="lifecycle-panel__title"><?php echo esc_html( $step_headline ); ?></h3>
+									<p class="lifecycle-panel__desc"><?php echo esc_html( $step_desc ); ?></p>
+
+									<?php if ( ! empty( $step_bullets ) ) : ?>
+										<ul class="lifecycle-panel__bullets">
+											<?php foreach ( $step_bullets as $bullet ) : ?>
+												<li>
+													<span class="lifecycle-bullet-dot">✓</span>
+													<span><?php echo esc_html( (string) $bullet ); ?></span>
+												</li>
+											<?php endforeach; ?>
+										</ul>
+									<?php endif; ?>
+
+									<?php if ( '' !== $step_fact ) : ?>
+										<div class="lifecycle-panel__fact-box">
+											<span class="lifecycle-panel__fact-icon">🌿</span>
+											<span class="lifecycle-panel__fact-text"><strong>Master Note:</strong> <?php echo esc_html( $step_fact ); ?></span>
+										</div>
+									<?php endif; ?>
+
+									<div class="lifecycle-panel__nav">
+										<button type="button" class="btn btn--secondary-vintage btn--outline-vintage lifecycle-nav-btn lifecycle-nav-btn--prev" data-lifecycle-nav="prev">
+											<span>← Previous Stage</span>
+										</button>
+										<button type="button" class="btn btn--primary-vintage lifecycle-nav-btn lifecycle-nav-btn--next" data-lifecycle-nav="next">
+											<span>Next Stage →</span>
+										</button>
+									</div>
+								</div>
+
+								<!-- Right Column: Ornate Botanical Photo Frame -->
+								<div class="lifecycle-panel__media">
+									<div class="lifecycle-panel__photo-frame frame--ornate">
+										<img class="lifecycle-panel__img" src="<?php echo esc_url( $step_img ); ?>" alt="<?php echo esc_attr( $step_headline ); ?>" loading="lazy">
+										<div class="lifecycle-panel__photo-overlay"></div>
+										<span class="lifecycle-panel__photo-badge"><?php echo esc_html( $step_label ); ?></span>
+									</div>
+								</div>
+							</div>
+
+						</div>
+					<?php endforeach; ?>
+				</div>
+
 			</div>
 		</section>
+		<div class="deckled-divider" aria-hidden="true">
+			<img src="<?php echo esc_url( $deckled_edge_url ); ?>" alt="" loading="lazy">
+		</div>
+
+		<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			var tabButtons = document.querySelectorAll('[data-lifecycle-step]');
+			var panels = document.querySelectorAll('[data-lifecycle-panel]');
+			if (!tabButtons.length || !panels.length) return;
+
+			function switchStage(stepNum) {
+				tabButtons.forEach(function(btn) {
+					var active = btn.getAttribute('data-lifecycle-step') === String(stepNum);
+					btn.classList.toggle('is-active', active);
+					btn.setAttribute('aria-selected', active ? 'true' : 'false');
+				});
+				panels.forEach(function(panel) {
+					var active = panel.getAttribute('data-lifecycle-panel') === String(stepNum);
+					panel.classList.toggle('is-active', active);
+				});
+			}
+
+			tabButtons.forEach(function(btn) {
+				btn.addEventListener('click', function() {
+					var step = this.getAttribute('data-lifecycle-step');
+					switchStage(step);
+				});
+			});
+
+			document.querySelectorAll('[data-lifecycle-nav]').forEach(function(navBtn) {
+				navBtn.addEventListener('click', function() {
+					var currentActive = document.querySelector('.lifecycle-panel.is-active');
+					var currentNum = currentActive ? parseInt(currentActive.getAttribute('data-lifecycle-panel'), 10) : 1;
+					var dir = this.getAttribute('data-lifecycle-nav');
+					var nextNum = dir === 'next' ? (currentNum >= 7 ? 1 : currentNum + 1) : (currentNum <= 1 ? 7 : currentNum - 1);
+					switchStage(nextNum);
+				});
+			});
+		});
+		</script>
 	<?php endif; ?>
 
 	<!-- ═══════════ 7. MINERAL ALCHEMY & NUTRITIONAL SCIENCE ═══════════ -->
@@ -290,6 +408,9 @@ $closing             = (array) ( $data['closing'] ?? array() );
 				</div>
 			</div>
 		</section>
+		<div class="deckled-divider" aria-hidden="true">
+			<img src="<?php echo esc_url( $deckled_edge_url ); ?>" alt="" loading="lazy">
+		</div>
 	<?php endif; ?>
 
 	<!-- ═══════════ 8. CIRCULAR ZERO-WASTE USES ═══════════ -->
@@ -330,6 +451,9 @@ $closing             = (array) ( $data['closing'] ?? array() );
 				</div>
 			</div>
 		</section>
+		<div class="deckled-divider" aria-hidden="true">
+			<img src="<?php echo esc_url( $deckled_edge_url ); ?>" alt="" loading="lazy">
+		</div>
 	<?php endif; ?>
 
 	<!-- ═══════════ 9. CONNOISSEUR STORAGE & FRESHNESS GUIDE ═══════════ -->
@@ -360,6 +484,9 @@ $closing             = (array) ( $data['closing'] ?? array() );
 				</div>
 			</div>
 		</section>
+		<div class="deckled-divider" aria-hidden="true">
+			<img src="<?php echo esc_url( $deckled_edge_url ); ?>" alt="" loading="lazy">
+		</div>
 	<?php endif; ?>
 
 	<!-- ═══════════ 10. FREQUENTLY ASKED QUESTIONS ═══════════ -->

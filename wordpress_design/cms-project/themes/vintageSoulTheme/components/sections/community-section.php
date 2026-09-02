@@ -23,11 +23,10 @@ $items   = (array) ( $items ?? ( $community_data['items'] ?? array() ) );
 			View::component(
 				'section-header/section-header',
 				array(
-					'tag'     => $tag,
-					'title'   => $title,
-					'eyebrow' => $eyebrow,
-					'body'    => $body,
-					'ribbon'  => true,
+					'tag'    => $tag,
+					'title'  => $title,
+					'sub'    => $body,
+					'ribbon' => true,
 				)
 			);
 			?>

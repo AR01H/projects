@@ -123,7 +123,8 @@
   outline: none !important;
   position: relative !important;
   z-index: 1 !important;
-  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6)) !important;
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), filter 0.22s ease !important;
 }
 
 .vintage-section-nav__btn::before {
@@ -131,11 +132,13 @@
   position: absolute !important;
   inset: 0 !important;
   border-radius: 50% !important;
-  background: var(--vintage-green-dark, #11381b) !important;
+  background: radial-gradient(circle at 35% 30%, #1c5229 0%, #11381b 60%, #071f0d 100%) !important;
   border: 1.5px solid var(--vintage-bark-border, #8e622d) !important;
   box-shadow:
-    inset 0 0 0 1px rgba(202, 160, 109, 0.4),
-    0 1px 4px rgba(0, 0, 0, 0.35) !important;
+    inset 0 1px 2px rgba(255, 255, 255, 0.25),
+    inset 0 -1px 3px rgba(0, 0, 0, 0.7),
+    0 3px 8px rgba(0, 0, 0, 0.65),
+    0 1px 3px rgba(0, 0, 0, 0.5) !important;
   filter: url(#rough-button-cut-sm) !important;
   -webkit-filter: url(#rough-button-cut-sm) !important;
   z-index: -1 !important;
@@ -149,19 +152,23 @@
   width: 12px !important;
   height: 12px !important;
   stroke: currentColor !important;
-  filter: none !important;
-  -webkit-filter: none !important;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.6)) !important;
+  -webkit-filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.6)) !important;
   transition: transform 0.22s ease, stroke 0.22s ease !important;
 }
 
 .vintage-section-nav__btn:hover {
   transform: scale(1.2) !important;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.8)) !important;
 }
 
 .vintage-section-nav__btn:hover::before {
-  background: var(--vintage-gold-bright, #f6d599) !important;
+  background: linear-gradient(135deg, #ffe8b5 0%, #f6d599 60%, #d49842 100%) !important;
   border-color: #ffffff !important;
-  box-shadow: 0 0 10px rgba(246, 213, 153, 0.85) !important;
+  box-shadow:
+    0 0 12px rgba(246, 213, 153, 0.95),
+    0 4px 10px rgba(0, 0, 0, 0.6),
+    inset 0 1px 2px rgba(255, 255, 255, 0.8) !important;
 }
 
 .vintage-section-nav__btn:hover svg {
@@ -170,21 +177,27 @@
 
 /* Active Section Indicator */
 .vintage-section-nav__item.is-active .vintage-section-nav__btn {
-  width: 26px !important;
-  height: 26px !important;
-  transform: scale(1.15) !important;
+  width: 28px !important;
+  height: 28px !important;
+  transform: scale(1.24) !important;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.85)) !important;
 }
 
 .vintage-section-nav__item.is-active .vintage-section-nav__btn::before {
-  background: linear-gradient(135deg, #f6d599 0%, #d49842 100%) !important;
-  border-color: #ffffff !important;
+  background: linear-gradient(135deg, #ffe8b5 0%, #f6d599 50%, #d49842 100%) !important;
+  border: 2px solid #ffffff !important;
   box-shadow:
-    0 0 12px rgba(246, 213, 153, 0.95),
-    inset 0 0 0 1px #8e5f2b !important;
+    0 0 18px rgba(246, 213, 153, 1),
+    0 0 8px rgba(212, 152, 66, 0.8),
+    0 5px 12px rgba(0, 0, 0, 0.75),
+    inset 0 0 0 1px #8e5f2b,
+    inset 0 1px 2px rgba(255, 255, 255, 0.9) !important;
 }
 
 .vintage-section-nav__item.is-active .vintage-section-nav__btn svg {
-  stroke: var(--vintage-green-deep, #0a2512) !important;
+  stroke: #071c0d !important;
+  stroke-width: 2.2px !important;
+  transform: scale(1.1) !important;
 }
 
 /* Floating Tooltip with Deckle Roughness */

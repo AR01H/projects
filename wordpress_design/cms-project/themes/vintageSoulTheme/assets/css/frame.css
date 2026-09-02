@@ -9,24 +9,36 @@
   box-shadow: inset 0 0 0 1px #caa06d, 0 4px 14px rgba(42, 26, 12, 0.1);
 }
 
-/* ═══════════ CLEAN VINTAGE CARD & PHOTO FRAMES ═══════════ */
+/* ═══════════ CLEAN VINTAGE CARD & PHOTO FRAMES (LAYER ISOLATED FOR 100% SHARP TEXT) ═══════════ */
 .frame--ornate,
 .frame--rough-cut,
 .photo--rough-cut,
 .card--rough-cut,
+.card,
+.vintage-card,
+.card--vintage,
+.card--post,
+.post-card,
+.blog-card,
+.blog-article-card,
+.post-entry-card,
 .memory-card-vintage,
 .gallery-item,
 .about-gallery-item,
 .look-back-card,
-.cert-h-card,
 .order-product-card,
 .event-type-card,
+.event-package-card,
+.event-detail-card,
 .franchise-pillar-card,
+.franchise-format-card,
+.franchise-step-card,
 .wholesale-card,
 .timeline-step-card,
 .variety-card,
 .mineral-card,
 .storage-step-card,
+.use-card,
 .search-result-card,
 .feature-row__item,
 .social-card,
@@ -34,19 +46,209 @@
 .franchise-gallery-card,
 .order-gallery-card,
 .sourcing-pillar-card,
-.sourcing-vintage__photo-frame {
+.sourcing-vintage__photo-frame,
+.vintage-carousel-card,
+.goodness-carousel-card,
+.about-story-card,
+.about-value-card,
+.about-team-card,
+.contact-info-card,
+.contact-card,
+.contact-detail-card,
+.review-card,
+.testimonial-card,
+.testimonial-card-vintage,
+.ui-testimonial-card,
+.faq-card,
+.faq-item,
+.combo-card,
+.serve-card,
+.drink-card,
+.drinks-card,
+.drink-row-card,
+.intro-photo-card,
+.stat-card,
+.stats-card,
+.pillar-card,
+.benefit-card,
+.benefits-card,
+.story-card,
+.culture-card,
+.community-card,
+.card--paper-cut,
+.cert-h-card,
+.certs-featured-logo-card,
+.contact-home-info-card,
+.faq-accordion-item {
   position: relative !important;
-  border: 1.5px solid #8e622d !important;
-  border-radius: 6px !important;
-  background: linear-gradient(135deg, #fdf8ef 0%, #f7e6ce 60%, #eed2ae 100%) !important;
+  box-sizing: border-box !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  filter: none !important;
+  -webkit-filter: none !important;
+  transition: transform 0.25s ease !important;
+}
+
+.frame--ornate > *,
+.frame--rough-cut > *,
+.photo--rough-cut > *,
+.card--rough-cut > *,
+.card > *,
+.vintage-card > *,
+.card--vintage > *,
+.card--post > *,
+.post-card > *,
+.blog-card > *,
+.blog-article-card > *,
+.post-entry-card > *,
+.memory-card-vintage > *,
+.gallery-item > *,
+.about-gallery-item > *,
+.look-back-card > *,
+.order-product-card > *,
+.event-type-card > *,
+.event-package-card > *,
+.event-detail-card > *,
+.franchise-pillar-card > *,
+.franchise-format-card > *,
+.franchise-step-card > *,
+.wholesale-card > *,
+.timeline-step-card > *,
+.variety-card > *,
+.mineral-card > *,
+.storage-step-card > *,
+.use-card > *,
+.search-result-card > *,
+.feature-row__item > *,
+.social-card > *,
+.event-gallery-card > *,
+.franchise-gallery-card > *,
+.order-gallery-card > *,
+.sourcing-pillar-card > *,
+.sourcing-vintage__photo-frame > *,
+.vintage-carousel-card > *,
+.goodness-carousel-card > *,
+.about-story-card > *,
+.about-value-card > *,
+.about-team-card > *,
+.contact-info-card > *,
+.contact-card > *,
+.contact-detail-card > *,
+.review-card > *,
+.testimonial-card > *,
+.testimonial-card-vintage > *,
+.ui-testimonial-card > *,
+.faq-card > *,
+.faq-item > *,
+.combo-card > *,
+.serve-card > *,
+.drink-card > *,
+.drinks-card > *,
+.drink-row-card > *,
+.intro-photo-card > *,
+.stat-card > *,
+.stats-card > *,
+.pillar-card > *,
+.benefit-card > *,
+.benefits-card > *,
+.story-card > *,
+.culture-card > *,
+.community-card > *,
+.card--paper-cut > *,
+.cert-h-card > *,
+.certs-featured-logo-card > *,
+.contact-home-info-card > *,
+.faq-accordion-item > * {
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+.frame--ornate::before,
+.frame--rough-cut::before,
+.photo--rough-cut::before,
+.card--rough-cut::before,
+.card::before,
+.vintage-card::before,
+.card--vintage::before,
+.card--post::before,
+.post-card::before,
+.blog-card::before,
+.blog-article-card::before,
+.post-entry-card::before,
+.memory-card-vintage::before,
+.gallery-item::before,
+.about-gallery-item::before,
+.look-back-card::before,
+.order-product-card::before,
+.event-type-card::before,
+.event-package-card::before,
+.event-detail-card::before,
+.franchise-pillar-card::before,
+.franchise-format-card::before,
+.franchise-step-card::before,
+.wholesale-card::before,
+.timeline-step-card::before,
+.variety-card::before,
+.mineral-card::before,
+.storage-step-card::before,
+.use-card::before,
+.search-result-card::before,
+.feature-row__item::before,
+.social-card::before,
+.event-gallery-card::before,
+.franchise-gallery-card::before,
+.order-gallery-card::before,
+.sourcing-pillar-card::before,
+.sourcing-vintage__photo-frame::before,
+.vintage-carousel-card::before,
+.goodness-carousel-card::before,
+.about-story-card::before,
+.about-value-card::before,
+.about-team-card::before,
+.contact-info-card::before,
+.contact-card::before,
+.contact-detail-card::before,
+.review-card::before,
+.testimonial-card::before,
+.testimonial-card-vintage::before,
+.ui-testimonial-card::before,
+.faq-card::before,
+.faq-item::before,
+.combo-card::before,
+.serve-card::before,
+.drink-card::before,
+.drinks-card::before,
+.drink-row-card::before,
+.intro-photo-card::before,
+.stat-card::before,
+.stats-card::before,
+.pillar-card::before,
+.benefit-card::before,
+.benefits-card::before,
+.story-card::before,
+.culture-card::before,
+.community-card::before,
+.card--paper-cut::before,
+.cert-h-card::before,
+.certs-featured-logo-card::before,
+.contact-home-info-card::before,
+.faq-accordion-item::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  border: 1.5px solid var(--vintage-bark-border, #8e622d) !important;
+  border-radius: var(--radius-lg, 6px) !important;
+  background: linear-gradient(135deg, var(--vintage-parchment-light, #fdf8ef) 0%, var(--vintage-parchment-mid, #f7e6ce) 60%, var(--vintage-parchment-deep, #eed2ae) 100%) !important;
   box-shadow:
-    inset 0 0 0 1px #caa06d,
+    inset 0 0 0 1px var(--vintage-gold-inner, #caa06d),
     inset 0 1px 0 rgba(255, 255, 255, 0.7),
     0 6px 18px rgba(42, 26, 12, 0.12) !important;
-  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease !important;
-  box-sizing: border-box !important;
   filter: url(#rough-button-cut-sm) !important;
   -webkit-filter: url(#rough-button-cut-sm) !important;
+  z-index: 0 !important;
+  pointer-events: none !important;
+  transition: all 0.25s ease !important;
 }
 
 /* Hover Lift */
@@ -54,28 +256,143 @@
 .frame--rough-cut:hover,
 .photo--rough-cut:hover,
 .card--rough-cut:hover,
+.card:hover,
+.vintage-card:hover,
+.card--vintage:hover,
+.card--post:hover,
+.post-card:hover,
+.blog-card:hover,
+.blog-article-card:hover,
+.post-entry-card:hover,
 .memory-card-vintage:hover,
 .gallery-item:hover,
 .about-gallery-item:hover,
 .look-back-card:hover,
-.cert-h-card:hover,
 .order-product-card:hover,
 .event-type-card:hover,
+.event-package-card:hover,
+.event-detail-card:hover,
 .franchise-pillar-card:hover,
+.franchise-format-card:hover,
+.franchise-step-card:hover,
 .wholesale-card:hover,
 .timeline-step-card:hover,
 .variety-card:hover,
 .mineral-card:hover,
 .storage-step-card:hover,
+.use-card:hover,
 .search-result-card:hover,
 .feature-row__item:hover,
-.social-card:hover {
+.social-card:hover,
+.event-gallery-card:hover,
+.franchise-gallery-card:hover,
+.order-gallery-card:hover,
+.sourcing-pillar-card:hover,
+.sourcing-vintage__photo-frame:hover,
+.vintage-carousel-card:hover,
+.goodness-carousel-card:hover,
+.about-story-card:hover,
+.about-value-card:hover,
+.about-team-card:hover,
+.contact-info-card:hover,
+.contact-card:hover,
+.contact-detail-card:hover,
+.review-card:hover,
+.testimonial-card:hover,
+.testimonial-card-vintage:hover,
+.ui-testimonial-card:hover,
+.faq-card:hover,
+.faq-item:hover,
+.combo-card:hover,
+.serve-card:hover,
+.drink-card:hover,
+.drinks-card:hover,
+.drink-row-card:hover,
+.intro-photo-card:hover,
+.stat-card:hover,
+.stats-card:hover,
+.pillar-card:hover,
+.benefit-card:hover,
+.benefits-card:hover,
+.story-card:hover,
+.culture-card:hover {
   transform: translateY(-4px) !important;
-  background: linear-gradient(135deg, #ffffff 0%, #faecd7 60%, #f3d8b6 100%) !important;
-  border-color: #d49842 !important;
+}
+
+.frame--ornate:hover::before,
+.frame--rough-cut:hover::before,
+.photo--rough-cut:hover::before,
+.card--rough-cut:hover::before,
+.card:hover::before,
+.vintage-card:hover::before,
+.card--vintage:hover::before,
+.card--post:hover::before,
+.post-card:hover::before,
+.blog-card:hover::before,
+.blog-article-card:hover::before,
+.post-entry-card:hover::before,
+.memory-card-vintage:hover::before,
+.gallery-item:hover::before,
+.about-gallery-item:hover::before,
+.look-back-card:hover::before,
+.order-product-card:hover::before,
+.event-type-card:hover::before,
+.event-package-card:hover::before,
+.event-detail-card:hover::before,
+.franchise-pillar-card:hover::before,
+.franchise-format-card:hover::before,
+.franchise-step-card:hover::before,
+.wholesale-card:hover::before,
+.timeline-step-card:hover::before,
+.variety-card:hover::before,
+.mineral-card:hover::before,
+.storage-step-card:hover::before,
+.use-card:hover::before,
+.search-result-card:hover::before,
+.feature-row__item:hover::before,
+.social-card:hover::before,
+.event-gallery-card:hover::before,
+.franchise-gallery-card:hover::before,
+.order-gallery-card:hover::before,
+.sourcing-pillar-card:hover::before,
+.sourcing-vintage__photo-frame:hover::before,
+.vintage-carousel-card:hover::before,
+.goodness-carousel-card:hover::before,
+.about-story-card:hover::before,
+.about-value-card:hover::before,
+.about-team-card:hover::before,
+.contact-info-card:hover::before,
+.contact-card:hover::before,
+.contact-detail-card:hover::before,
+.review-card:hover::before,
+.testimonial-card:hover::before,
+.testimonial-card-vintage:hover::before,
+.ui-testimonial-card:hover::before,
+.faq-card:hover::before,
+.faq-item:hover::before,
+.combo-card:hover::before,
+.serve-card:hover::before,
+.drink-card:hover::before,
+.drinks-card:hover::before,
+.drink-row-card:hover::before,
+.intro-photo-card:hover::before,
+.stat-card:hover::before,
+.stats-card:hover::before,
+.pillar-card:hover::before,
+.benefit-card:hover::before,
+.benefits-card:hover::before,
+.story-card:hover::before,
+.culture-card:hover::before,
+.community-card:hover::before,
+.card--paper-cut:hover::before,
+.cert-h-card:hover::before,
+.certs-featured-logo-card:hover::before,
+.contact-home-info-card:hover::before,
+.faq-accordion-item:hover::before {
+  border-color: var(--vintage-gold-inner, #caa06d) !important;
   box-shadow:
-    inset 0 0 0 1.5px #d49842,
-    0 10px 24px rgba(142, 98, 45, 0.2) !important;
+    inset 0 0 0 1px var(--vintage-gold-bright, #f6d599),
+    0 10px 24px rgba(42, 26, 12, 0.22) !important;
 }
 
 /* ═══════════ MEDIA & THUMBNAILS ═══════════ */
@@ -94,6 +411,7 @@
   position: relative !important;
 }
 
+/* ═══════════ AUTHENTIC VINTAGE IMAGE STYLING & WARM BROWNISH PARCHMENT TINT ═══════════ */
 .photo--rough-cut > img,
 .memory-card-vintage > img,
 .gallery-item > img,
@@ -104,12 +422,114 @@
 .order-gallery-card__media img,
 .variety-card__media img,
 .search-result-card__media img,
-.sourcing-vintage__photo-frame img {
+.sourcing-vintage__photo-frame img,
+.blog-card__media img,
+.single-article__featured-img img,
+.lifecycle-carousel-card__photo img,
+.lifecycle-panel__img,
+.intro-photo-card__image-box img,
+.about-intro__media img,
+.team-card__photo img,
+.drink-row-card__media img,
+.order-product-card__media img,
+.combo-bottom-card__media img,
+.social-card__media img,
+.card__media img {
   width: 100% !important;
   height: 100% !important;
   display: block !important;
   object-fit: cover !important;
-  transition: transform 0.4s ease !important;
+  filter: sepia(16%) contrast(1.04) saturate(96%) brightness(0.98) !important;
+  transition: transform 0.4s ease, filter 0.4s ease !important;
+}
+
+.photo--rough-cut:hover > img,
+.memory-card-vintage:hover > img,
+.gallery-item:hover > img,
+.about-gallery-item:hover > img,
+.look-back-card:hover .look-back-card__media img,
+.event-gallery-card:hover .event-gallery-card__media img,
+.franchise-gallery-card:hover .franchise-gallery-card__media img,
+.order-gallery-card:hover .order-gallery-card__media img,
+.variety-card:hover .variety-card__media img,
+.search-result-card:hover .search-result-card__media img,
+.blog-card:hover .blog-card__media img,
+.lifecycle-panel:hover .lifecycle-panel__img,
+.intro-photo-card:hover .intro-photo-card__image-box img,
+.drink-row-card:hover .drink-row-card__media img,
+.order-product-card:hover .order-product-card__media img,
+.social-card:hover .social-card__media img,
+.card:hover .card__media img {
+  filter: sepia(6%) contrast(1.02) saturate(102%) brightness(1) !important;
+  transform: scale(1.03) !important;
+}
+
+/* Light Warm Brownish Wash Overlay on Photo Frames */
+.look-back-card__media,
+.event-gallery-card__media,
+.franchise-gallery-card__media,
+.order-gallery-card__media,
+.variety-card__media,
+.search-result-card__media,
+.sourcing-vintage__photo-frame,
+.blog-card__media,
+.single-article__featured-img,
+.lifecycle-carousel-card__photo,
+.lifecycle-panel__photo-frame,
+.intro-photo-card__image-box,
+.about-intro__media,
+.team-card__photo,
+.drink-row-card__media,
+.order-product-card__media,
+.combo-bottom-card__media,
+.social-card__media,
+.card__media {
+  position: relative !important;
+}
+
+.look-back-card__media::after,
+.event-gallery-card__media::after,
+.franchise-gallery-card__media::after,
+.order-gallery-card__media::after,
+.variety-card__media::after,
+.search-result-card__media::after,
+.sourcing-vintage__photo-frame::after,
+.blog-card__media::after,
+.single-article__featured-img::after,
+.lifecycle-carousel-card__photo::after,
+.lifecycle-panel__photo-frame::after,
+.intro-photo-card__image-box::after,
+.about-intro__media::after,
+.team-card__photo::after,
+.drink-row-card__media::after,
+.order-product-card__media::after,
+.combo-bottom-card__media::after,
+.social-card__media::after,
+.card__media::after {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  background: linear-gradient(180deg, rgba(246, 213, 153, 0.08) 0%, rgba(142, 98, 45, 0.12) 100%) !important;
+  mix-blend-mode: multiply !important;
+  pointer-events: none !important;
+  z-index: 2 !important;
+  border-radius: inherit !important;
+  transition: opacity 0.35s ease !important;
+}
+
+.look-back-card:hover .look-back-card__media::after,
+.event-gallery-card:hover .event-gallery-card__media::after,
+.franchise-gallery-card:hover .franchise-gallery-card__media::after,
+.order-gallery-card:hover .order-gallery-card__media::after,
+.variety-card:hover .variety-card__media::after,
+.search-result-card:hover .search-result-card__media::after,
+.blog-card:hover .blog-card__media::after,
+.intro-photo-card:hover .intro-photo-card__image-box::after,
+.drink-row-card:hover .drink-row-card__media::after,
+.order-product-card:hover .order-product-card__media::after,
+.social-card:hover .social-card__media::after,
+.card:hover .card__media::after {
+  opacity: 0.4 !important;
 }
 
 /* ═══════════ DARK CARDS ═══════════ */
@@ -118,20 +538,19 @@
   border: 1.5px solid #8e622d !important;
   background-color: #11381b !important;
   background-image:
-    url("../../images/textures/roughness/roughness-a.svg"),
+    url("../images/textures/roughness/roughness-a.svg"),
     linear-gradient(135deg, #184b25 0%, #0d2f16 100%) !important;
   background-size: 140px 140px, 100% 100% !important;
   color: #fbf2e6 !important;
   box-shadow:
     inset 0 0 0 1.5px #caa06d,
     0 6px 18px rgba(0, 0, 0, 0.35) !important;
-  filter: url(#rough-button-cut-sm) !important;
-  -webkit-filter: url(#rough-button-cut-sm) !important;
+
   transition: all 0.25s ease !important;
 }
 
 .card--rough-cut-dark:hover {
-  transform: translateY(-4px) scale(1.02) !important;
+  transform: none !important;
   border-color: #f6d599 !important;
   box-shadow:
     inset 0 0 0 1.5px #f6d599,

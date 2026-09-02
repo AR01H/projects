@@ -16,7 +16,7 @@
         { "label": "Franchise", "url": "/franchise" },
         {
             "label": "Blog",
-            "url": "/blog",
+            "url": "#",
             "children": [
                 { "label": "All Stories & Articles", "url": "/blog" },
                 { "label": "🌿 Botanical Nutrition", "url": "/blog/?article=why-cold-pressed-raw-cane-outperforms-synthetic-energy-drinks" },

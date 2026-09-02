@@ -212,17 +212,37 @@
 .plantation-loader__crest-frame {
   position: relative !important;
   z-index: 2 !important;
-  background: linear-gradient(180deg, #184224 0%, #0c2613 60%, #051308 100%) !important;
-  border: 2.5px solid #8e622d !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
   border-radius: 16px !important;
   padding: 34px 56px 28px !important;
-  box-shadow:
-    inset 0 0 0 2px #caa06d,
-    0 16px 48px rgba(0, 0, 0, 0.92) !important;
   display: flex !important;
   flex-direction: column !important;
   align-items: center !important;
   max-width: 480px !important;
+  box-sizing: border-box !important;
+}
+
+.plantation-loader__crest-frame::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  background: linear-gradient(180deg, #184224 0%, #0c2613 60%, #051308 100%) !important;
+  border: 2.5px solid #8e622d !important;
+  border-radius: 16px !important;
+  box-shadow:
+    inset 0 0 0 2px #caa06d,
+    0 16px 48px rgba(0, 0, 0, 0.92) !important;
+  filter: url(#rough-button-cut) !important;
+  -webkit-filter: url(#rough-button-cut) !important;
+  z-index: 0 !important;
+  pointer-events: none !important;
+}
+
+.plantation-loader__crest-frame > * {
+  position: relative !important;
+  z-index: 1 !important;
 }
 
 .plantation-loader__logo-wrap {
@@ -257,30 +277,53 @@
   text-transform: uppercase !important;
 }
 
-/* Botanical Progress Bar */
+/* Botanical Progress Bar with Flowing Liquid-Gold Shimmer */
 .plantation-loader__progress-track {
-  width: 300px !important;
-  height: 7px !important;
+  width: 320px !important;
+  max-width: 88vw !important;
+  height: 8px !important;
   background: #081a0e !important;
-  border: 1px solid #8e622d !important;
-  border-radius: 4px !important;
+  border: 1.5px solid #8e622d !important;
+  border-radius: 6px !important;
   overflow: hidden !important;
-  margin-bottom: 12px !important;
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.8) !important;
+  margin: 4px 0 14px !important;
+  position: relative !important;
+  box-shadow:
+    inset 0 1px 4px rgba(0, 0, 0, 0.9),
+    0 0 0 1px rgba(202, 160, 109, 0.3) !important;
 }
 
 .plantation-loader__progress-bar {
-  width: 0% !important;
+  width: 100% !important;
   height: 100% !important;
-  background: linear-gradient(90deg, #8e622d 0%, #caa06d 50%, #f6d599 100%) !important;
-  box-shadow: 0 0 10px #f6d599 !important;
-  animation: loader-fill 1.4s cubic-bezier(0.2, 0.8, 0.4, 1) forwards !important;
+  background: linear-gradient(
+    90deg,
+    #8e622d 0%,
+    #caa06d 25%,
+    #ffffff 50%,
+    #f6d599 75%,
+    #8e622d 100%
+  ) !important;
+  background-size: 200% 100% !important;
+  border-radius: 4px !important;
+  box-shadow:
+    0 0 14px rgba(246, 213, 153, 0.95),
+    0 0 4px #ffffff !important;
+  animation:
+    loader-fill 1.6s cubic-bezier(0.2, 0.8, 0.4, 1) forwards,
+    loader-shimmer 1.1s linear infinite !important;
 }
 
 @keyframes loader-fill {
-  0% { width: 0%; }
-  50% { width: 70%; }
-  100% { width: 100%; }
+  0% { transform: scaleX(0); transform-origin: left center; }
+  45% { transform: scaleX(0.68); transform-origin: left center; }
+  85% { transform: scaleX(0.92); transform-origin: left center; }
+  100% { transform: scaleX(1); transform-origin: left center; }
+}
+
+@keyframes loader-shimmer {
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
 }
 
 .plantation-loader__status-text {
@@ -300,6 +343,17 @@
 }
 
 @media (max-width: 768px) {
+  .plantation-loader__door-frame {
+    inset: 8px 4px 8px 4px !important;
+    padding: 6px !important;
+    border-width: 1.5px !important;
+  }
+  .plantation-loader__door--left .plantation-loader__door-frame {
+    inset: 8px 3px 8px 6px !important;
+  }
+  .plantation-loader__door--right .plantation-loader__door-frame {
+    inset: 8px 6px 8px 3px !important;
+  }
   .plantation-loader__door-farm--left {
     background-image: var(--loader-mobile-img, var(--loader-left-img)) !important;
     background-position: left center !important;
@@ -311,15 +365,25 @@
 }
 
 @media (max-width: 600px) {
+  .plantation-loader__door-frame {
+    inset: 6px 3px 6px 3px !important;
+    padding: 4px !important;
+  }
+  .plantation-loader__door--left .plantation-loader__door-frame {
+    inset: 6px 2px 6px 4px !important;
+  }
+  .plantation-loader__door--right .plantation-loader__door-frame {
+    inset: 6px 4px 6px 2px !important;
+  }
   .plantation-loader__crest-frame {
-    padding: 24px 30px 20px !important;
-    max-width: 340px !important;
+    padding: 20px 24px 18px !important;
+    max-width: 320px !important;
   }
   .plantation-loader__logo-icon {
-    width: 150px !important;
-    height: 150px !important;
+    width: 130px !important;
+    height: 130px !important;
   }
   .plantation-loader__progress-track {
-    width: 220px !important;
+    width: 200px !important;
   }
 }

@@ -20,11 +20,10 @@ $items = (array) ( $items ?? ( $products_data['items'] ?? array() ) );
 		View::component(
 			'section-header/section-header',
 			array(
-				'tag'     => $tag,
-				'title'   => 'SIGNATURE CANE <em>Creations</em>',
-				'eyebrow' => 'A Taste of Tradition',
-				'sub'     => $sub,
-				'ribbon'  => true,
+				'tag'    => $tag,
+				'title'  => 'SIGNATURE CANE <em>Creations</em>',
+				'sub'    => $sub,
+				'ribbon' => true,
 			)
 		);
 		?>

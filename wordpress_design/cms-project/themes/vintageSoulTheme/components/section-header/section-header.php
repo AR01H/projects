@@ -1,21 +1,34 @@
 <?php
 /**
- * VintageSoulTheme - Standardized Section Header Component
- * Provides unified, theme-wide section headings with engraved cut lines, ribbons, italic serif accents, and subheadings.
+ * VintageSoulTheme - Standardized Section Header Master System
+ * Strictly enforces exactly 3 clean lines across EVERY section on the site:
+ * 1. Tag Ribbon / Eyebrow Tag
+ * 2. Main Title (with italic serif emphasis)
+ * 3. Subtitle / Description (readable body text)
  */
 
 defined( 'ABSPATH' ) || exit;
 
-$tag     = isset( $tag ) ? (string) $tag : '';
-$title   = isset( $title ) ? (string) $title : '';
-$eyebrow = isset( $eyebrow ) ? (string) $eyebrow : '';
-$sub     = isset( $sub ) ? (string) $sub : '';
-$body    = isset( $body ) ? (string) $body : '';
+$tag     = isset( $tag ) ? trim( (string) $tag ) : '';
+$title   = isset( $title ) ? trim( (string) $title ) : '';
+$eyebrow = isset( $eyebrow ) ? trim( (string) $eyebrow ) : '';
+$sub     = isset( $sub ) ? trim( (string) $sub ) : '';
+$body    = isset( $body ) ? trim( (string) $body ) : '';
 $align   = ( isset( $align ) && 'left' === $align ) ? ' section-header--left' : '';
 $variant = ( isset( $variant ) && 'dark' === $variant ) ? ' section-header--dark' : '';
 $ribbon  = ! empty( $ribbon );
 
-if ( '' === $tag && '' === $title && '' === $sub && '' === $eyebrow ) {
+// Exactly 1 description line (never stack 4th or 5th redundant lines)
+$description = '';
+if ( '' !== $sub ) {
+	$description = $sub;
+} elseif ( '' !== $body ) {
+	$description = $body;
+} elseif ( '' !== $eyebrow ) {
+	$description = $eyebrow;
+}
+
+if ( '' === $tag && '' === $title && '' === $description ) {
 	return;
 }
 ?>
@@ -34,15 +47,7 @@ if ( '' === $tag && '' === $title && '' === $sub && '' === $eyebrow ) {
 		<h2 class="section-header__title"><?php echo wp_kses_post( $title ); ?></h2>
 	<?php endif; ?>
 
-	<?php if ( '' !== $eyebrow ) : ?>
-		<p class="section-eyebrow"><?php echo esc_html( $eyebrow ); ?></p>
-	<?php endif; ?>
-
-	<?php if ( '' !== $sub ) : ?>
-		<p class="section-header__sub"><?php echo esc_html( $sub ); ?></p>
-	<?php endif; ?>
-
-	<?php if ( '' !== $body ) : ?>
-		<p class="section-header__body"><?php echo esc_html( $body ); ?></p>
+	<?php if ( '' !== $description ) : ?>
+		<p class="section-header__sub"><?php echo esc_html( $description ); ?></p>
 	<?php endif; ?>
 </div>

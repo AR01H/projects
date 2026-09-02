@@ -1,47 +1,49 @@
 /* ==========================================================================
-   VintageSoulTheme - Mobile Navigation Drawer
+   VintageSoulTheme - Mobile Navigation Drawer (Authentic Deckle Roughness)
    ========================================================================== */
 
 /* 1. Toggle Button (Header) */
 .mobile-nav-toggle {
-  display: inline-flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 5px;
-  width: 40px;
-  height: 40px;
-  min-width: 40px;
-  padding: 0;
-  background: #fdfaf4;
-  border: 1.5px solid #8e622d;
-  border-radius: 50%;
-  box-shadow: inset 0 0 0 1px #caa06d, 0 2px 6px rgba(42, 26, 12, 0.15);
-  cursor: pointer;
-  z-index: 1001;
-  transition: all 0.2s ease;
+  display: inline-flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 5px !important;
+  width: 40px !important;
+  height: 40px !important;
+  min-width: 40px !important;
+  padding: 0 !important;
+  background: #fdfaf4 !important;
+  border: 1.5px solid #8e622d !important;
+  border-radius: 50% !important;
+  box-shadow: inset 0 0 0 1px #caa06d, 0 2px 6px rgba(42, 26, 12, 0.15) !important;
+  filter: url(#rough-button-cut-sm) !important;
+  -webkit-filter: url(#rough-button-cut-sm) !important;
+  cursor: pointer !important;
+  z-index: 1001 !important;
+  transition: all 0.2s ease !important;
 }
 .mobile-nav-toggle:hover {
-  background: #f6e4cc;
-  border-color: #184b25;
+  background: #f6e4cc !important;
+  border-color: #184b25 !important;
 }
 .mobile-nav-toggle__bar {
-  display: block;
-  width: 18px;
-  height: 2px;
-  background: #172b15;
-  border-radius: 2px;
-  transition: transform 0.25s ease, opacity 0.25s ease;
+  display: block !important;
+  width: 18px !important;
+  height: 2px !important;
+  background: #172b15 !important;
+  border-radius: 2px !important;
+  transition: transform 0.25s ease, opacity 0.25s ease !important;
 }
 
 .mobile-nav-toggle[aria-expanded="true"] .mobile-nav-toggle__bar:nth-child(1) {
-  transform: translateY(7px) rotate(45deg);
+  transform: translateY(7px) rotate(45deg) !important;
 }
 .mobile-nav-toggle[aria-expanded="true"] .mobile-nav-toggle__bar:nth-child(2) {
-  opacity: 0;
+  opacity: 0 !important;
 }
 .mobile-nav-toggle[aria-expanded="true"] .mobile-nav-toggle__bar:nth-child(3) {
-  transform: translateY(-7px) rotate(-45deg);
+  transform: translateY(-7px) rotate(-45deg) !important;
 }
 
 /* 2. Backdrop Scrim */
@@ -50,18 +52,18 @@
   inset: 0 !important;
   z-index: 999998 !important;
   background: rgba(10, 28, 14, 0.8) !important;
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
+  backdrop-filter: blur(4px) !important;
+  -webkit-backdrop-filter: blur(4px) !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transition: opacity 0.3s ease !important;
 }
 .mobile-nav-scrim.is-open {
   opacity: 1 !important;
   pointer-events: auto !important;
 }
 
-/* 3. Slide-Out Drawer */
+/* 3. Slide-Out Drawer with Deckled Torn-Paper Left Edge */
 .mobile-nav {
   position: fixed !important;
   top: 0 !important;
@@ -71,8 +73,7 @@
   height: 100vh !important;
   height: 100dvh !important;
   z-index: 999999 !important;
-  background: #faf3e6 !important;
-  border-left: 2px solid #8e622d !important;
+  background: linear-gradient(180deg, #fdf8ef 0%, #f7e6ce 50%, #eed6b6 100%) !important;
   box-shadow: -8px 0 36px rgba(0, 0, 0, 0.65) !important;
   padding: 24px 20px 30px !important;
   display: flex !important;
@@ -87,6 +88,23 @@
   pointer-events: none !important;
   box-sizing: border-box !important;
 }
+
+/* Left Torn-Paper Edge Strip */
+.mobile-nav::before {
+  content: "" !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  bottom: 0 !important;
+  width: 4px !important;
+  background: linear-gradient(180deg, #8e622d 0%, #caa06d 50%, #8e622d 100%) !important;
+  box-shadow: inset 1px 0 0 rgba(246, 213, 153, 0.8), -2px 0 8px rgba(0, 0, 0, 0.3) !important;
+  filter: url(#rough-button-cut-sm) !important;
+  -webkit-filter: url(#rough-button-cut-sm) !important;
+  z-index: 10 !important;
+  pointer-events: none !important;
+}
+
 .mobile-nav.is-open {
   transform: translateX(0) !important;
   visibility: visible !important;
@@ -99,7 +117,7 @@
   align-items: center !important;
   justify-content: space-between !important;
   padding-bottom: 16px !important;
-  border-bottom: 1.5px solid #caa06d !important;
+  border-bottom: 1.5px dashed rgba(142, 98, 45, 0.45) !important;
 }
 .mobile-nav__brand {
   display: flex !important;
@@ -123,8 +141,8 @@
   margin-top: 2px !important;
 }
 .mobile-nav__close-btn {
-  width: 34px !important;
-  height: 34px !important;
+  width: 36px !important;
+  height: 36px !important;
   border-radius: 50% !important;
   background: #fdfaf4 !important;
   border: 1.5px solid #8e622d !important;
@@ -135,6 +153,9 @@
   cursor: pointer !important;
   transition: all 0.2s ease !important;
   padding: 0 !important;
+  box-shadow: inset 0 0 0 1px #caa06d, 0 2px 6px rgba(0, 0, 0, 0.15) !important;
+  filter: url(#rough-button-cut-sm) !important;
+  -webkit-filter: url(#rough-button-cut-sm) !important;
 }
 .mobile-nav__close-btn:hover {
   background: #184b25 !important;
@@ -148,12 +169,13 @@
   margin: 0 !important;
   display: flex !important;
   flex-direction: column !important;
-  gap: 2px !important;
+  gap: 4px !important;
   flex: 1 1 auto !important;
 }
 .mobile-nav__item {
   border-bottom: 1px dashed rgba(142, 98, 45, 0.35) !important;
   list-style: none !important;
+  position: relative !important;
 }
 .mobile-nav__row {
   display: flex !important;
@@ -168,14 +190,27 @@
   text-transform: uppercase !important;
   letter-spacing: 0.06em !important;
   text-decoration: none !important;
-  padding: 12px 6px !important;
+  padding: 12px 12px !important;
   display: block !important;
   width: 100% !important;
+  border-radius: 4px !important;
+  position: relative !important;
+  z-index: 1 !important;
   transition: all 0.2s ease !important;
 }
 .mobile-nav__link:hover {
   color: #0c6434 !important;
   transform: translateX(4px) !important;
+}
+.mobile-nav__link.is-active,
+.mobile-nav__link[aria-current="page"] {
+  color: #11381b !important;
+  font-weight: 800 !important;
+  background: linear-gradient(135deg, rgba(246, 213, 153, 0.5) 0%, rgba(202, 160, 109, 0.4) 100%) !important;
+  border: 1px solid #8e622d !important;
+  box-shadow: inset 0 0 0 1px #caa06d, 0 2px 6px rgba(42, 26, 12, 0.1) !important;
+  filter: url(#rough-button-cut-sm) !important;
+  -webkit-filter: url(#rough-button-cut-sm) !important;
 }
 
 /* 6. Submenus */
@@ -229,14 +264,18 @@
   flex-direction: column !important;
   gap: 12px !important;
   padding-top: 14px !important;
-  border-top: 1.5px solid #caa06d !important;
+  border-top: 1.5px dashed rgba(142, 98, 45, 0.45) !important;
 }
 .mobile-nav__cta {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
   gap: 10px !important;
-  background: linear-gradient(180deg, #184b25 0%, #0d2f16 100%) !important;
+  background-color: #11381b !important;
+  background-image:
+    url("../../images/textures/roughness/roughness-a.svg"),
+    radial-gradient(ellipse 120% 80% at 50% -10%, #2a7a42 0%, #175228 40%, #0d2f16 80%, #061a0c 100%) !important;
+  background-size: 140px 140px, 100% 100% !important;
   color: #f6d599 !important;
   font-family: 'Cinzel', serif !important;
   font-size: 12px !important;
@@ -244,16 +283,24 @@
   letter-spacing: 0.08em !important;
   text-transform: uppercase !important;
   padding: 12px 16px !important;
-  border-radius: 6px !important;
-  border: 1.5px solid #caa06d !important;
-  box-shadow: inset 0 0 0 1px #8e5f2b, 0 4px 12px rgba(0, 0, 0, 0.25) !important;
+  border-radius: 4px !important;
+  border: 1.5px solid #8e622d !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    inset 0 0 0 1px rgba(202, 160, 109, 0.6),
+    0 4px 14px rgba(6, 26, 12, 0.4) !important;
+  filter: url(#rough-button-cut-sm) !important;
+  -webkit-filter: url(#rough-button-cut-sm) !important;
   text-decoration: none !important;
   transition: all 0.2s ease !important;
 }
 .mobile-nav__cta:hover {
-  background: linear-gradient(180deg, #256b37 0%, #184b25 100%) !important;
+  background-image:
+    url("../../images/textures/roughness/roughness-a.svg"),
+    radial-gradient(ellipse 120% 80% at 50% -10%, #369553 0%, #1e6934 40%, #113c1c 80%, #08210f 100%) !important;
+  border-color: #f6d599 !important;
   color: #ffffff !important;
-  transform: translateY(-1px) !important;
+  transform: translateY(-2px) !important;
 }
 .mobile-nav__cta-text {
   display: flex !important;
@@ -265,9 +312,10 @@
 }
 .mobile-nav__cta-line2 {
   font-size: 8.5px !important;
-  color: #d6b88b !important;
+  color: #f6d599 !important;
   font-family: var(--font-family-base, 'EB Garamond', serif) !important;
   text-transform: none !important;
+  opacity: 0.9 !important;
 }
 
 .mobile-nav__contact-strip {
@@ -281,21 +329,24 @@
   align-items: center !important;
   justify-content: center !important;
   gap: 6px !important;
-  background: #fdfaf4 !important;
+  background: linear-gradient(180deg, #fdfaf4 0%, #f6e6cf 100%) !important;
   border: 1.5px solid #8e622d !important;
   border-radius: 4px !important;
   padding: 8px 10px !important;
   font-family: 'Cinzel', serif !important;
   font-size: 11px !important;
   font-weight: 700 !important;
-  color: #184b25 !important;
+  color: #172b15 !important;
   text-decoration: none !important;
-  box-shadow: inset 0 0 0 1px #caa06d !important;
+  box-shadow: inset 0 0 0 1px #caa06d, 0 2px 6px rgba(42, 26, 12, 0.12) !important;
+  filter: url(#rough-button-cut-sm) !important;
+  -webkit-filter: url(#rough-button-cut-sm) !important;
   transition: all 0.2s ease !important;
 }
 .mobile-nav__contact-pill:hover {
-  background: #184b25 !important;
+  background: #11381b !important;
   color: #f6d599 !important;
+  border-color: #d49842 !important;
 }
 
 @media (min-width: 769px) {

@@ -16,9 +16,9 @@ defined( 'ABSPATH' ) || exit;
 
 get_header();
 ?>
-<main id="main" class="main vst-404-hero">
+<main id="main" class="main vst-404-hero paper-rough">
 
-  <!-- 1. Ambient Botanical & Effervescent Particle Atmosphere -->
+  <!-- 1. Ambient Botanical Atmosphere -->
   <div class="vst-404-ambient" aria-hidden="true">
     <svg class="vst-404-bg-svg" viewBox="0 0 1400 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
       <defs>
@@ -59,37 +59,18 @@ get_header();
         <path d="M1336 40 Q1270 20 1230 0" stroke="#4a8f5e" stroke-width="3" fill="none" stroke-linecap="round"/>
         <path d="M1336 210 Q1380 180 1420 160" stroke="#4a8f5e" stroke-width="3" fill="none" stroke-linecap="round"/>
       </g>
-
-      <!-- Floating Cane Leaves -->
-      <g class="vst-drift-leaf l1" opacity="0.25">
-        <path d="M180 160 C 220 120, 270 140, 290 170 C 250 190, 200 190, 180 160 Z" fill="#3a7d4a"/>
-      </g>
-      <g class="vst-drift-leaf l2" opacity="0.2">
-        <path d="M1180 320 C 1220 280, 1260 300, 1280 330 C 1240 350, 1200 350, 1180 320 Z" fill="#3a7d4a"/>
-      </g>
-      <g class="vst-drift-leaf l3" opacity="0.22">
-        <path d="M720 780 C 760 740, 800 760, 820 790 C 780 810, 740 810, 720 780 Z" fill="#3a7d4a"/>
-      </g>
-
-      <!-- Effervescent Golden Dust -->
-      <circle class="vst-sparkle sp1" cx="320" cy="220" r="3" fill="#d49842"/>
-      <circle class="vst-sparkle sp2" cx="1060" cy="180" r="2.5" fill="#f6d599"/>
-      <circle class="vst-sparkle sp3" cx="540" cy="680" r="3" fill="#d49842"/>
-      <circle class="vst-sparkle sp4" cx="880" cy="720" r="2" fill="#f6d599"/>
-      <circle class="vst-sparkle sp5" cx="210" cy="560" r="2.5" fill="#f6d599"/>
-      <circle class="vst-sparkle sp6" cx="1220" cy="540" r="3.5" fill="#d49842"/>
     </svg>
   </div>
 
   <div class="container vst-404-stage">
 
-    <!-- MASTER ORNATE PARCHMENT CARD -->
-    <div class="vst-404-card frame--ornate">
+    <!-- MASTER ORNATE PARCHMENT CARD WITH DECKLE ROUGH CUT -->
+    <div class="vst-404-card">
       
       <!-- Top Wax Seal Stamp -->
       <div class="vst-404-seal" aria-hidden="true">
         <div class="vst-404-seal__inner">
-          <span class="vst-404-seal__cane">🌾</span>
+          <span class="vst-404-seal__cane">🌿</span>
           <span class="vst-404-seal__code">404</span>
           <span class="vst-404-seal__tag">LOST HARVEST</span>
         </div>
@@ -126,10 +107,8 @@ get_header();
           <span class="vst-404-digit">4</span>
         </div>
 
-        <div class="vst-404-ribbon-tag">
-          <span class="vst-404-ribbon-line"></span>
-          <span class="vst-404-ribbon-text">LOST IN THE CANE FIELDS</span>
-          <span class="vst-404-ribbon-line"></span>
+        <div class="vintage-ribbon-tag">
+          <span>LOST IN THE CANE FIELDS</span>
         </div>
 
         <h1 class="vst-404-title">
@@ -142,17 +121,17 @@ get_header();
         </p>
       </div>
 
-      <!-- INTERACTIVE SUGARCANE PRESS MINI-ACTION -->
+      <!-- INTERACTIVE SUGARCANE PRESS MINI-ACTION WITH ROUGH CUT -->
       <div class="vst-404-interactive-box" id="vst-press-game">
         <div class="vst-404-interactive-box__content">
           <span class="vst-404-interactive-box__icon">🥤</span>
           <div class="vst-404-interactive-box__text">
-            <strong>Thirsty while lost?</strong>
+            <strong>THIRSTY WHILE LOST?</strong>
             <span>Press the button below to extract a complimentary discount perk!</span>
           </div>
         </div>
-        <button type="button" class="btn btn--order-now vst-404-press-btn" id="vst-juice-squeeze-btn">
-          ⚡ PRESS FRESH JUICE
+        <button type="button" class="btn btn--primary-vintage vst-404-press-btn" id="vst-juice-squeeze-btn">
+          <span>⚡ PRESS FRESH JUICE</span>
         </button>
         <div class="vst-404-secret-perk" id="vst-perk-revealed" style="display:none;">
           <span class="vst-perk-badge">✨ VINTAGE PERK UNLOCKED</span>
@@ -166,7 +145,9 @@ get_header();
           <div class="vst-404-search-input-group">
             <span class="vst-404-search-icon" aria-hidden="true">🔍</span>
             <input type="search" class="vst-404-search-field" placeholder="Search for wedding catering, drinks menu, franchise, health..." value="<?php echo get_search_query(); ?>" name="s" required>
-            <button type="submit" class="vst-404-search-submit">FIND IT</button>
+            <button type="submit" class="btn btn--primary-vintage vst-404-search-submit">
+              <span>FIND IT</span>
+            </button>
           </div>
         </form>
       </div>
@@ -174,42 +155,42 @@ get_header();
       <!-- POPULAR DESTINATION CARDS -->
       <div class="vst-404-nav-grid">
         
-        <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="vst-404-dest-card frame--rough-cut">
+        <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="vst-404-dest-card">
           <span class="vst-404-dest-card__icon">🏡</span>
           <h3 class="vst-404-dest-card__title">HOME PARLOUR</h3>
           <p class="vst-404-dest-card__desc">Return to the front doors and discover our craft story.</p>
-          <span class="vst-404-dest-card__cta">Explore Home →</span>
+          <span class="vst-404-dest-card__cta">Explore Parlour →</span>
         </a>
 
-        <a href="<?php echo esc_url( RouteService::url( 'menu' ) ?: home_url( '/#order' ) ); ?>" class="vst-404-dest-card frame--rough-cut">
-          <span class="vst-404-dest-card__icon">🍹</span>
-          <h3 class="vst-404-dest-card__title">OUR DRINKS</h3>
-          <p class="vst-404-dest-card__desc">Explore ginger-mint, lemon zest, and cold-pressed cane juice.</p>
-          <span class="vst-404-dest-card__cta">View Menu →</span>
+        <a href="<?php echo esc_url( RouteService::url( 'events' ) ?: home_url( '/events' ) ); ?>" class="vst-404-dest-card">
+          <span class="vst-404-dest-card__icon">🎉</span>
+          <h3 class="vst-404-dest-card__title">LIVE CATERING</h3>
+          <p class="vst-404-dest-card__desc">Book our bespoke live sugarcane bar for your special celebrations.</p>
+          <span class="vst-404-dest-card__cta">Book Event →</span>
         </a>
 
-        <a href="<?php echo esc_url( RouteService::url( 'events' ) ?: home_url( '/events' ) ); ?>" class="vst-404-dest-card frame--rough-cut">
-          <span class="vst-404-dest-card__icon">🎪</span>
-          <h3 class="vst-404-dest-card__title">LIVE EVENT BAR</h3>
-          <p class="vst-404-dest-card__desc">Weddings, birthdays, galas & festivals across London.</p>
-          <span class="vst-404-dest-card__cta">Book Live Bar →</span>
+        <a href="<?php echo esc_url( RouteService::url( 'about' ) ?: home_url( '/about' ) ); ?>" class="vst-404-dest-card">
+          <span class="vst-404-dest-card__icon">📖</span>
+          <h3 class="vst-404-dest-card__title">OUR HERITAGE</h3>
+          <p class="vst-404-dest-card__desc">Discover our family tradition and 100% natural extraction craft.</p>
+          <span class="vst-404-dest-card__cta">Read Story →</span>
         </a>
 
-        <a href="<?php echo esc_url( RouteService::url( 'franchise' ) ?: home_url( '/franchise' ) ); ?>" class="vst-404-dest-card frame--rough-cut">
-          <span class="vst-404-dest-card__icon">💼</span>
+        <a href="<?php echo esc_url( RouteService::url( 'franchise' ) ?: home_url( '/franchise' ) ); ?>" class="vst-404-dest-card">
+          <span class="vst-404-dest-card__icon">🌱</span>
           <h3 class="vst-404-dest-card__title">FRANCHISE</h3>
           <p class="vst-404-dest-card__desc">Turnkey kiosk partnerships & UK wholesale opportunities.</p>
           <span class="vst-404-dest-card__cta">Partner With Us →</span>
         </a>
 
-        <a href="<?php echo esc_url( RouteService::url( 'history' ) ?: home_url( '/history' ) ); ?>" class="vst-404-dest-card frame--rough-cut">
+        <a href="<?php echo esc_url( RouteService::url( 'history' ) ?: home_url( '/history' ) ); ?>" class="vst-404-dest-card">
           <span class="vst-404-dest-card__icon">📜</span>
-          <h3 class="vst-404-dest-card__title">CANE HERITAGE</h3>
+          <h3 class="vst-404-dest-card__title">CANE CHRONICLE</h3>
           <p class="vst-404-dest-card__desc">Ancient traditions, botanical varieties, and extraction history.</p>
           <span class="vst-404-dest-card__cta">Read Chronicle →</span>
         </a>
 
-        <a href="<?php echo esc_url( RouteService::url( 'contact' ) ?: home_url( '/contact' ) ); ?>" class="vst-404-dest-card frame--rough-cut">
+        <a href="<?php echo esc_url( RouteService::url( 'contact' ) ?: home_url( '/contact' ) ); ?>" class="vst-404-dest-card">
           <span class="vst-404-dest-card__icon">📞</span>
           <h3 class="vst-404-dest-card__title">CONCIERGE</h3>
           <p class="vst-404-dest-card__desc">Speak with our London team directly for bespoke requests.</p>
@@ -243,56 +224,22 @@ document.addEventListener('DOMContentLoaded', function() {
   if (squeezeBtn && perkBox) {
     squeezeBtn.addEventListener('click', function() {
       squeezeBtn.disabled = true;
-      squeezeBtn.innerHTML = '⚙️ PRESSING IN PROGRESS...';
+      var span = squeezeBtn.querySelector('span');
+      if (span) span.innerHTML = '⚙️ PRESSING IN PROGRESS...';
       
       if (pressWheel) {
         pressWheel.style.animation = 'vst-press-spin-fast 0.6s linear infinite';
       }
       
-      // Floating juice splash particles
-      for (var i = 0; i < 16; i++) {
-        createSplashParticle(squeezeBtn);
-      }
-
       setTimeout(function() {
         if (pressWheel) {
-          pressWheel.style.animation = 'vst-press-spin 12s linear infinite';
+          pressWheel.style.animation = 'vst-press-spin 14s linear infinite';
         }
         squeezeBtn.style.display = 'none';
         perkBox.style.display = 'block';
         perkBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      }, 1200);
+      }, 1100);
     });
-  }
-
-  function createSplashParticle(originElem) {
-    var rect = originElem.getBoundingClientRect();
-    var p = document.createElement('span');
-    p.textContent = Math.random() > 0.5 ? '✨' : '💧';
-    p.style.position = 'fixed';
-    p.style.left = (rect.left + rect.width / 2) + 'px';
-    p.style.top = (rect.top + rect.height / 2) + 'px';
-    p.style.pointerEvents = 'none';
-    p.style.zIndex = '999999';
-    p.style.fontSize = (14 + Math.random() * 16) + 'px';
-    p.style.transition = 'all 0.9s cubic-bezier(0.16, 1, 0.3, 1)';
-    document.body.appendChild(p);
-
-    var angle = Math.random() * Math.PI * 2;
-    var dist = 60 + Math.random() * 120;
-    var targetX = Math.cos(angle) * dist;
-    var targetY = Math.sin(angle) * dist - 30;
-
-    requestAnimationFrame(function() {
-      requestAnimationFrame(function() {
-        p.style.transform = 'translate(' + targetX + 'px, ' + targetY + 'px) scale(0.3)';
-        p.style.opacity = '0';
-      });
-    });
-
-    setTimeout(function() {
-      if (p.parentNode) p.parentNode.removeChild(p);
-    }, 1000);
   }
 });
 </script>
@@ -302,165 +249,136 @@ document.addEventListener('DOMContentLoaded', function() {
    VINTAGESOUL - MASTERPIECE 404 PAGE STYLING
    ══════════════════════════════════════════════════════════════════════════ */
 .vst-404-hero {
-  position: relative;
-  min-height: 94vh;
-  padding: clamp(90px, 11vw, 140px) 20px clamp(70px, 8vw, 100px);
-  background: 
-    radial-gradient(ellipse at 50% 10%, rgba(246, 213, 153, 0.25) 0%, transparent 60%),
-    linear-gradient(165deg, #fdf8f0 0%, #f4e4cf 35%, #ebcfad 75%, #e1c094 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  box-sizing: border-box;
+  position: relative !important;
+  min-height: 94vh !important;
+  padding: 80px 20px 70px !important;
+  background-color: #edd5ad !important;
+  background-image:
+    url("assets/images/textures/paper/paper-fiber-a.svg"),
+    linear-gradient(180deg, #f7e8cb 0%, #edd5ad 50%, #dfbe88 100%) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
 }
 
-/* ─── Ambient SVG Layer ─── */
 .vst-404-ambient {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 0;
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  pointer-events: none !important;
+  z-index: 0 !important;
 }
 
 .vst-404-bg-svg {
-  width: 100%;
-  height: 100%;
+  width: 100% !important;
+  height: 100% !important;
 }
 
-@keyframes vst-sway {
-  0%, 100% { transform: rotate(0deg); transform-origin: bottom center; }
-  33%       { transform: rotate(1.8deg); transform-origin: bottom center; }
-  66%       { transform: rotate(-1.4deg); transform-origin: bottom center; }
-}
-
-@keyframes vst-drift {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50%       { transform: translateY(-16px) rotate(6deg); }
-}
-
-@keyframes vst-spark {
-  0%, 100% { transform: scale(1) translateY(0); opacity: 0.25; }
-  50%       { transform: scale(1.6) translateY(-14px); opacity: 0.65; }
-}
-
-.vst-sway-stalk--1 { animation: vst-sway 8s ease-in-out infinite; }
-.vst-sway-stalk--2 { animation: vst-sway 10s ease-in-out infinite reverse; }
-.l1 { animation: vst-drift 6s ease-in-out infinite; }
-.l2 { animation: vst-drift 7.5s ease-in-out infinite 1s; }
-.l3 { animation: vst-drift 8.5s ease-in-out infinite 2s; }
-.sp1 { animation: vst-spark 4s ease-in-out infinite; }
-.sp2 { animation: vst-spark 5.5s ease-in-out infinite 0.8s; }
-.sp3 { animation: vst-spark 4.2s ease-in-out infinite 1.5s; }
-.sp4 { animation: vst-spark 6s ease-in-out infinite 2s; }
-.sp5 { animation: vst-spark 5s ease-in-out infinite 1.2s; }
-.sp6 { animation: vst-spark 4.8s ease-in-out infinite 0.3s; }
-
-/* ─── Stage & Card Container ─── */
+/* Stage & Card Container */
 .vst-404-stage {
-  position: relative;
-  z-index: 2;
-  max-width: 960px;
-  margin: 0 auto;
-  padding-top: 20px;
+  position: relative !important;
+  z-index: 2 !important;
+  max-width: 960px !important;
+  margin: 0 auto !important;
+  padding-top: 30px !important;
 }
 
+/* Master Card with Authentic Vintage Rough Cut */
 .vst-404-card {
-  position: relative;
-  margin-top: 40px;
-  background: 
-    url("assets/images/textures/paper/parchment-subtle.png"),
-    linear-gradient(175deg, #fdf6ec 0%, #faecd7 50%, #f3dec2 100%) !important;
-  border: 2px solid #8e622d !important;
-  border-radius: 12px;
-  padding: 64px 38px 48px;
+  position: relative !important;
+  background: linear-gradient(135deg, #fdf8ef 0%, #f7e6ce 60%, #eed5b3 100%) !important;
+  border: 1.5px solid #8e622d !important;
+  border-radius: 8px !important;
+  padding: 56px 36px 40px !important;
   box-shadow: 
-    inset 0 0 0 2px #caa06d,
-    inset 0 0 30px rgba(142, 98, 45, 0.12),
-    0 24px 60px rgba(42, 26, 12, 0.22) !important;
-  text-align: center;
+    inset 0 0 0 1.5px #caa06d,
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    0 16px 48px rgba(42, 26, 12, 0.28) !important;
+  text-align: center !important;
+  filter: url(#rough-button-cut-sm) !important;
+  -webkit-filter: url(#rough-button-cut-sm) !important;
 }
 
-/* ─── Top Wax Seal ─── */
+/* Top Wax Seal */
 .vst-404-seal {
-  position: absolute;
-  top: -34px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 68px;
-  height: 68px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #1f572c 0%, #0e3017 100%);
-  border: 2px solid #f6d599;
+  position: absolute !important;
+  top: -30px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: 64px !important;
+  height: 64px !important;
+  border-radius: 50% !important;
+  background: linear-gradient(135deg, #184b25 0%, #0d2f16 100%) !important;
+  border: 2px solid #f6d599 !important;
   box-shadow: 
     inset 0 0 0 1.5px #8e622d,
-    0 8px 20px rgba(0, 0, 0, 0.35);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10;
+    0 8px 20px rgba(0, 0, 0, 0.35) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  z-index: 10 !important;
 }
 
 .vst-404-seal__inner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  line-height: 1;
-  color: #f6d599;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  line-height: 1 !important;
+  color: #f6d599 !important;
 }
 
-.vst-404-seal__cane { font-size: 14px; margin-bottom: 2px; }
-.vst-404-seal__code { font-family: 'Cinzel', serif; font-size: 13px; font-weight: 800; letter-spacing: 0.08em; }
-.vst-404-seal__tag { font-family: 'Cinzel', serif; font-size: 6px; font-weight: 700; letter-spacing: 0.14em; opacity: 0.85; margin-top: 1px; }
+.vst-404-seal__cane { font-size: 14px !important; margin-bottom: 2px !important; }
+.vst-404-seal__code { font-family: 'Cinzel', serif !important; font-size: 13px !important; font-weight: 800 !important; letter-spacing: 0.08em !important; }
+.vst-404-seal__tag { font-family: 'Cinzel', serif !important; font-size: 6px !important; font-weight: 700 !important; letter-spacing: 0.14em !important; opacity: 0.85 !important; margin-top: 1px !important; }
 
-/* ─── Kinetic 404 Headline Group ─── */
+/* Kinetic 404 Headline Group */
 .vst-404-headline-group {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-  padding-top: 12px;
-  margin-bottom: 32px;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 12px !important;
+  margin-bottom: 28px !important;
 }
 
 .vst-404-digits {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: clamp(12px, 3vw, 22px);
-  margin-bottom: 6px;
-  line-height: 1;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: clamp(12px, 3vw, 24px) !important;
+  margin-bottom: 4px !important;
+  line-height: 1 !important;
 }
 
 .vst-404-digit {
-  font-family: 'Cinzel', 'Playfair Display', Georgia, serif;
-  font-size: clamp(80px, 14vw, 130px);
-  font-weight: 900;
-  color: transparent;
-  background: linear-gradient(180deg, #d49842 0%, #8e622d 55%, #42270f 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  letter-spacing: -0.04em;
-  filter: drop-shadow(0 6px 14px rgba(142, 98, 45, 0.35));
+  font-family: 'Cinzel', 'Alfa Slab One', serif !important;
+  font-size: clamp(76px, 12vw, 118px) !important;
+  font-weight: 900 !important;
+  color: #8e5f2b !important;
+  text-shadow: 
+    0 1px 0 #caa06d,
+    0 2px 0 #8e5f2b,
+    0 4px 10px rgba(42, 26, 12, 0.3) !important;
+  letter-spacing: -0.02em !important;
 }
 
 .vst-404-press-stage {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: clamp(80px, 13vw, 110px);
-  height: clamp(80px, 13vw, 110px);
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: clamp(74px, 11vw, 100px) !important;
+  height: clamp(74px, 11vw, 100px) !important;
 }
 
 .vst-press-wheel {
-  width: 100%;
-  height: 100%;
-  filter: drop-shadow(0 6px 14px rgba(0,0,0,0.35));
-  animation: vst-press-spin 14s linear infinite;
+  width: 100% !important;
+  height: 100% !important;
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.35)) !important;
+  animation: vst-press-spin 14s linear infinite !important;
 }
 
 @keyframes vst-press-spin {
@@ -474,12 +392,12 @@ document.addEventListener('DOMContentLoaded', function() {
 }
 
 .vst-press-drop {
-  position: absolute;
-  bottom: -18px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 16px;
-  animation: vst-drop-fall 2.2s cubic-bezier(0.4, 0, 1, 1) infinite;
+  position: absolute !important;
+  bottom: -18px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  font-size: 16px !important;
+  animation: vst-drop-fall 2.2s cubic-bezier(0.4, 0, 1, 1) infinite !important;
 }
 
 @keyframes vst-drop-fall {
@@ -489,361 +407,280 @@ document.addEventListener('DOMContentLoaded', function() {
   100% { opacity: 0; transform: translateX(-50%) translateY(22px) scale(0.4); }
 }
 
-/* Ribbon Tag */
-.vst-404-ribbon-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  margin-top: 4px;
-}
-
-.vst-404-ribbon-line {
-  display: inline-block;
-  width: 40px;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, #8e622d);
-}
-.vst-404-ribbon-line:last-child {
-  background: linear-gradient(90deg, #8e622d, transparent);
-}
-
-.vst-404-ribbon-text {
-  font-family: 'Cinzel', serif;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.22em;
-  color: #8e5f2b;
-  text-transform: uppercase;
-}
-
 .vst-404-title {
-  font-family: 'Cinzel', 'Playfair Display', Georgia, serif;
-  font-size: clamp(22px, 4.5vw, 34px);
-  font-weight: 800;
-  letter-spacing: 0.05em;
-  color: #172b15;
-  margin: 4px 0 0;
-  text-transform: uppercase;
-  line-height: 1.2;
+  font-family: 'Cinzel', 'Playfair Display', Georgia, serif !important;
+  font-size: clamp(22px, 4.2vw, 32px) !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.04em !important;
+  color: #172b15 !important;
+  margin: 4px 0 0 !important;
+  text-transform: uppercase !important;
+  line-height: 1.25 !important;
 }
 
 .vst-404-title em {
-  color: #8e5f2b;
-  font-style: italic;
-  font-family: 'Playfair Display', Georgia, serif;
+  color: #8e5f2b !important;
+  font-style: italic !important;
+  font-family: 'Dancing Script', 'Playfair Display', cursive, serif !important;
+  text-transform: capitalize !important;
 }
 
 .vst-404-lead {
-  font-family: 'EB Garamond', Georgia, serif;
-  font-size: clamp(15.5px, 1.8vw, 18px);
-  line-height: 1.65;
-  color: #533618;
-  max-width: 640px;
-  margin: 0 auto;
+  font-family: var(--font-family-base, 'EB Garamond', Georgia, serif) !important;
+  font-size: clamp(15px, 1.7vw, 17px) !important;
+  line-height: 1.6 !important;
+  color: #4a3017 !important;
+  max-width: 620px !important;
+  margin: 0 auto !important;
 }
 
-/* ─── Interactive Squeeze Mini-Box ─── */
+/* Interactive Mini-Box */
 .vst-404-interactive-box {
-  background: linear-gradient(135deg, #f7ebd7 0%, #edd8bc 100%);
-  border: 1.5px dashed #8e622d;
-  border-radius: 8px;
-  padding: 16px 22px;
-  margin: 0 auto 28px;
-  max-width: 620px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  box-shadow: inset 0 0 12px rgba(142, 98, 45, 0.1);
+  background: linear-gradient(135deg, #fdf8ee 0%, #f6e4cb 100%) !important;
+  border: 1.5px solid #8e622d !important;
+  border-radius: 6px !important;
+  padding: 16px 20px !important;
+  margin: 0 auto 26px !important;
+  max-width: 580px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 12px !important;
+  box-shadow: 
+    inset 0 0 0 1px #caa06d,
+    0 4px 14px rgba(42, 26, 12, 0.1) !important;
+  filter: url(#rough-button-cut-sm) !important;
+  -webkit-filter: url(#rough-button-cut-sm) !important;
 }
 
 .vst-404-interactive-box__content {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  text-align: left;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  text-align: left !important;
 }
 
 .vst-404-interactive-box__icon {
-  font-size: 32px;
-  flex-shrink: 0;
-}
-
-.vst-404-interactive-box__text {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
+  font-size: 28px !important;
+  flex-shrink: 0 !important;
 }
 
 .vst-404-interactive-box__text strong {
-  font-family: 'Cinzel', serif;
-  font-size: 13px;
-  color: #172b15;
-  letter-spacing: 0.04em;
+  display: block !important;
+  font-family: 'Cinzel', serif !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  color: #172b15 !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
 }
 
 .vst-404-interactive-box__text span {
-  font-family: 'EB Garamond', Georgia, serif;
-  font-size: 14px;
-  color: #5c3c1a;
+  font-family: var(--font-family-base, 'EB Garamond', Georgia, serif) !important;
+  font-size: 14px !important;
+  color: #5c3c1a !important;
 }
 
 .vst-404-press-btn {
-  padding: 10px 24px !important;
-  font-size: 12px !important;
-  letter-spacing: 0.1em !important;
-  cursor: pointer;
+  font-size: 11px !important;
 }
 
 .vst-404-secret-perk {
-  background: linear-gradient(180deg, #11381b 0%, #09200e 100%);
-  border: 1.5px solid #caa06d;
-  box-shadow: inset 0 0 0 1px #8e622d, 0 8px 24px rgba(0,0,0,0.35);
-  border-radius: 6px;
-  padding: 16px 20px;
-  color: #fbf2e6;
-  width: 100%;
-  animation: vst-fade-in 0.4s ease forwards;
-}
-
-@keyframes vst-fade-in {
-  from { opacity: 0; transform: translateY(8px); }
-  to   { opacity: 1; transform: translateY(0); }
+  background: linear-gradient(180deg, #11381b 0%, #09200e 100%) !important;
+  border: 1.5px solid #caa06d !important;
+  box-shadow: inset 0 0 0 1px #8e622d, 0 8px 24px rgba(0,0,0,0.35) !important;
+  border-radius: 6px !important;
+  padding: 14px 18px !important;
+  color: #fbf2e6 !important;
+  width: 100% !important;
 }
 
 .vst-perk-badge {
-  display: inline-block;
-  font-family: 'Cinzel', serif;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  color: #f6d599;
-  margin-bottom: 6px;
+  display: inline-block !important;
+  font-family: 'Cinzel', serif !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.12em !important;
+  color: #f6d599 !important;
+  margin-bottom: 4px !important;
 }
 
 .vst-perk-msg {
-  font-family: 'EB Garamond', Georgia, serif;
-  font-size: 15px;
-  line-height: 1.5;
-  color: #f3dfc8;
-  margin: 0;
+  font-family: var(--font-family-base, 'EB Garamond', serif) !important;
+  font-size: 14.5px !important;
+  line-height: 1.45 !important;
+  color: #f3dfc8 !important;
+  margin: 0 !important;
 }
 
 .vst-perk-code {
-  display: inline-block;
-  background: #2a1406;
-  color: #f6d599;
-  border: 1px solid #caa06d;
-  padding: 2px 10px;
-  border-radius: 4px;
-  font-family: monospace;
-  font-size: 14px;
-  letter-spacing: 0.08em;
+  display: inline-block !important;
+  background: #2a1406 !important;
+  color: #f6d599 !important;
+  border: 1px solid #caa06d !important;
+  padding: 2px 8px !important;
+  border-radius: 4px !important;
+  font-family: monospace !important;
+  font-size: 13px !important;
 }
 
-/* ─── Search Bar ─── */
+/* Search Bar */
 .vst-404-search-wrap {
-  max-width: 580px;
-  margin: 0 auto 36px;
-  width: 100%;
+  max-width: 540px !important;
+  margin: 0 auto 32px !important;
+  width: 100% !important;
 }
 
 .vst-404-search-form {
-  width: 100%;
+  width: 100% !important;
 }
 
 .vst-404-search-input-group {
-  display: flex;
-  align-items: center;
-  background: #ffffff;
-  border: 2px solid #8e622d;
-  border-radius: 6px;
-  box-shadow: inset 0 0 0 1px #caa06d, 0 4px 16px rgba(42, 26, 12, 0.12);
-  overflow: hidden;
-  padding: 4px 6px 4px 14px;
-  transition: border-color 0.25s ease, box-shadow 0.25s ease;
-}
-
-.vst-404-search-input-group:focus-within {
-  border-color: #d49842;
-  box-shadow: inset 0 0 0 1px #d49842, 0 6px 20px rgba(212, 152, 66, 0.25);
+  display: flex !important;
+  align-items: center !important;
+  background: #fdf8ef !important;
+  border: 1.5px solid #8e622d !important;
+  border-radius: 6px !important;
+  box-shadow: inset 0 0 0 1px #caa06d, 0 4px 14px rgba(42, 26, 12, 0.12) !important;
+  padding: 4px 6px 4px 12px !important;
 }
 
 .vst-404-search-icon {
-  font-size: 16px;
-  opacity: 0.6;
-  margin-right: 10px;
+  font-size: 15px !important;
+  opacity: 0.7 !important;
+  margin-right: 8px !important;
 }
 
 .vst-404-search-field {
-  flex: 1;
-  border: none;
-  background: transparent;
-  font-family: 'EB Garamond', Georgia, serif;
-  font-size: 16px;
-  color: #172b15;
-  outline: none;
-  padding: 8px 0;
+  flex: 1 !important;
+  border: none !important;
+  background: transparent !important;
+  font-family: var(--font-family-base, 'EB Garamond', Georgia, serif) !important;
+  font-size: 15px !important;
+  color: #172b15 !important;
+  outline: none !important;
+  padding: 6px 0 !important;
 }
 
 .vst-404-search-field::placeholder {
-  color: #8e6d4c;
-  font-style: italic;
-  font-size: 14px;
+  color: #8e6d4c !important;
+  font-style: italic !important;
+  font-size: 13.5px !important;
 }
 
 .vst-404-search-submit {
-  background: linear-gradient(180deg, #184b25 0%, #0d2f16 100%);
-  color: #f6d599;
-  border: 1.5px solid #8e622d;
-  border-radius: 4px;
-  padding: 8px 18px;
-  font-family: 'Cinzel', serif;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: inset 0 0 0 1px #caa06d;
+  padding: 6px 16px !important;
+  font-size: 10.5px !important;
 }
 
-.vst-404-search-submit:hover {
-  background: linear-gradient(180deg, #1f5d2f 0%, #123d1e 100%);
-  border-color: #f6d599;
-  color: #ffffff;
-  transform: translateY(-1px);
-}
-
-/* ─── Destination Navigation Grid ─── */
+/* Destination Navigation Grid */
 .vst-404-nav-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-  margin-bottom: 36px;
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 14px !important;
+  margin-bottom: 30px !important;
+}
+
+@media (max-width: 768px) {
+  .vst-404-nav-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
 }
 
 .vst-404-dest-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  padding: 20px 16px;
-  background: linear-gradient(135deg, #fdf8ee 0%, #f6e6ce 100%);
-  border: 1.5px solid #8e622d;
-  border-radius: 6px;
-  text-decoration: none;
-  box-shadow: inset 0 0 0 1px #caa06d, 0 4px 14px rgba(42, 26, 12, 0.1);
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  box-sizing: border-box;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  text-align: center !important;
+  padding: 16px 14px !important;
+  background: linear-gradient(135deg, #fdf8ee 0%, #f6e4cb 100%) !important;
+  border: 1.5px solid #8e622d !important;
+  border-radius: 6px !important;
+  text-decoration: none !important;
+  box-shadow: inset 0 0 0 1px #caa06d, 0 3px 10px rgba(42, 26, 12, 0.08) !important;
+  filter: url(#rough-button-cut-sm) !important;
+  -webkit-filter: url(#rough-button-cut-sm) !important;
+  transition: all 0.25s ease !important;
+  box-sizing: border-box !important;
 }
 
 .vst-404-dest-card:hover {
-  transform: translateY(-4px);
-  background: linear-gradient(135deg, #ffffff 0%, #fbf1e2 100%);
-  border-color: #d49842;
-  box-shadow: inset 0 0 0 1.5px #d49842, 0 10px 24px rgba(142, 98, 45, 0.22);
+  transform: translateY(-3px) !important;
+  background: linear-gradient(135deg, #ffffff 0%, #faecd7 100%) !important;
+  border-color: #caa06d !important;
+  box-shadow: inset 0 0 0 1.5px #f6d599, 0 8px 20px rgba(142, 98, 45, 0.2) !important;
 }
 
 .vst-404-dest-card__icon {
-  font-size: 28px;
-  margin-bottom: 8px;
-  filter: drop-shadow(0 2px 4px rgba(42, 26, 12, 0.15));
+  font-size: 24px !important;
+  margin-bottom: 6px !important;
 }
 
 .vst-404-dest-card__title {
-  font-family: 'Cinzel', serif;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  color: #172b15;
-  margin: 0 0 6px;
-  text-transform: uppercase;
+  font-family: 'Cinzel', serif !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  color: #172b15 !important;
+  margin: 0 0 4px !important;
+  text-transform: uppercase !important;
 }
 
 .vst-404-dest-card__desc {
-  font-family: 'EB Garamond', Georgia, serif;
-  font-size: 13px;
-  line-height: 1.45;
-  color: #5c3c1a;
-  margin: 0 0 10px;
-  flex: 1;
+  font-family: var(--font-family-base, 'EB Garamond', Georgia, serif) !important;
+  font-size: 12.5px !important;
+  line-height: 1.4 !important;
+  color: #5c3c1a !important;
+  margin: 0 0 8px !important;
+  flex: 1 !important;
 }
 
 .vst-404-dest-card__cta {
-  font-family: 'Cinzel', serif;
-  font-size: 10.5px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  color: #8e5f2b;
-  text-transform: uppercase;
-  margin-top: auto;
-  transition: color 0.2s ease;
+  font-family: 'Cinzel', serif !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  color: #8e5f2b !important;
+  text-transform: uppercase !important;
+  margin-top: auto !important;
+  transition: color 0.2s ease !important;
 }
 
 .vst-404-dest-card:hover .vst-404-dest-card__cta {
-  color: #11381b;
+  color: #11381b !important;
 }
 
-/* ─── Footer Proverb ─── */
+/* Footer Proverb */
 .vst-404-footer-proverb {
-  border-top: 1px solid #8e622d;
-  padding-top: 24px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
+  border-top: 1px dashed rgba(142, 98, 45, 0.35) !important;
+  padding-top: 20px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 4px !important;
 }
 
 .vst-proverb-ornament {
-  font-size: 18px;
-  color: #8e5f2b;
+  font-size: 16px !important;
+  color: #8e5f2b !important;
 }
 
 .vst-proverb-text {
-  font-family: 'Dancing Script', cursive, serif;
-  font-size: clamp(16px, 2.2vw, 20px);
-  color: #5c3c1a;
-  font-style: italic;
-  margin: 0;
-  max-width: 580px;
+  font-family: 'Dancing Script', cursive, serif !important;
+  font-size: 18px !important;
+  color: #3b220e !important;
+  margin: 0 !important;
+  line-height: 1.4 !important;
 }
 
 .vst-proverb-author {
-  font-family: 'Cinzel', serif;
-  font-size: 9.5px;
-  letter-spacing: 0.14em;
-  color: #8e5f2b;
-  text-transform: uppercase;
-}
-
-/* ─── Responsive Adjustments ─── */
-@media (max-width: 860px) {
-  .vst-404-nav-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 560px) {
-  .vst-404-card {
-    padding: 48px 18px 32px;
-  }
-  .vst-404-nav-grid {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-  .vst-404-interactive-box__content {
-    flex-direction: column;
-    text-align: center;
-  }
-  .vst-404-search-input-group {
-    flex-direction: column;
-    gap: 8px;
-    padding: 10px;
-  }
-  .vst-404-search-submit {
-    width: 100%;
-  }
+  font-family: 'Cinzel', serif !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  color: #8e5f2b !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
 }
 </style>
 

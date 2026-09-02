@@ -18,11 +18,10 @@ $items   = (array) ( $items ?? ( $testimonials_data['items'] ?? array() ) );
 		View::component(
 			'section-header/section-header',
 			array(
-				'tag'     => ! empty( $tag ) ? $tag : 'Customer Stories',
-				'title'   => 'WHAT PEOPLE <em>Say</em>',
-				'eyebrow' => "Loved Across Generations",
-				'sub'     => ! empty( $sub ) ? $sub : 'Treasured feedback from festivals, private parties, and daily visitors.',
-				'ribbon'  => true,
+				'tag'    => ! empty( $tag ) ? $tag : 'Customer Stories',
+				'title'  => 'WHAT PEOPLE <em>Say</em>',
+				'sub'    => ! empty( $sub ) ? $sub : 'Treasured feedback from festivals, private parties, and daily visitors.',
+				'ribbon' => true,
 			)
 		);
 		?>

@@ -14,11 +14,10 @@ body.page-history,
   max-width: 100%;
   background-color: #f5e6d0 !important;
   background-image:
-    url("../../images/textures/paper/parchment-stained-master.svg"),
     url("../../images/textures/paper/paper-fiber-a.svg"),
     radial-gradient(ellipse at 50% 0%, #fdf8ef 0%, #f5e6d0 55%, #edd5ad 100%) !important;
-  background-size: 600px 1200px, 300px 300px, 100% 100% !important;
-  background-repeat: repeat-y, repeat, no-repeat !important;
+  background-size: 300px 300px, 100% 100% !important;
+  background-repeat: repeat, no-repeat !important;
   color: #2a1a0c !important;
   font-family: var(--font-family-base, 'EB Garamond', Georgia, serif) !important;
   font-size: 15px !important;
@@ -140,10 +139,7 @@ body.page-history,
 /* --- Section Headings with Engraved Cuts --- */
 .section-header__title,
 .history-section-title {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 14px;
+  display: block !important;
   font-family: 'Cinzel', 'Playfair Display', Georgia, serif;
   font-size: clamp(22px, 4.5vw, 32px);
   text-transform: uppercase;
@@ -156,16 +152,8 @@ body.page-history,
 .section-header__title::after,
 .history-section-title::before,
 .history-section-title::after {
-  content: "";
-  display: inline-block;
-  width: 36px;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, #8e622d);
-  flex-shrink: 0;
-}
-.section-header__title::after,
-.history-section-title::after {
-  background: linear-gradient(90deg, #8e622d, transparent);
+  display: none !important;
+  content: none !important;
 }
 .section-header__tag {
   font-family: 'Dancing Script', cursive, serif;
@@ -1163,27 +1151,351 @@ body.page-history,
   margin: 0 !important;
 }
 
-.vintage-carousel-ctrl {
-  width: 36px !important;
-  height: 36px !important;
+/* ═══════════ BOTANICAL LIFE CYCLE INTERACTIVE STEPPER & SHOWCASE ═══════════ */
+.history-lifecycle-section {
+  position: relative !important;
+  padding: 56px 0 64px !important;
+}
+
+/* 1. Horizontal Stepper Timeline Track */
+.lifecycle-stepper-wrap {
+  width: 100% !important;
+  max-width: 1080px !important;
+  margin: 0 auto 40px !important;
+  overflow-x: auto !important;
+  padding: 16px 12px 24px !important;
+  scrollbar-width: thin !important;
+  scrollbar-color: #11381b #f4e3cd !important;
+}
+
+.lifecycle-stepper-track {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  min-width: 720px !important;
+  position: relative !important;
+  padding: 0 10px !important;
+}
+
+/* Individual Stepper Button */
+.lifecycle-step-btn {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 8px !important;
+  background: transparent !important;
+  border: none !important;
+  cursor: pointer !important;
+  padding: 4px 8px !important;
+  position: relative !important;
+  z-index: 2 !important;
+  transition: transform 0.22s ease !important;
+}
+
+.lifecycle-step-btn:hover {
+  transform: translateY(-3px) !important;
+}
+
+.lifecycle-step-btn__circle {
+  width: 58px !important;
+  height: 58px !important;
   border-radius: 50% !important;
-  background: linear-gradient(180deg, #184b25 0%, #0d2a14 100%) !important;
-  color: #f6d599 !important;
-  border: 1.5px solid #caa06d !important;
-  font-size: 20px !important;
-  font-weight: bold !important;
+  background: linear-gradient(135deg, #fdf8ef 0%, #f7e6ce 60%, #eed2ae 100%) !important;
+  border: 2px solid #8e622d !important;
+  box-shadow:
+    inset 0 0 0 1.5px #caa06d,
+    0 4px 12px rgba(42, 26, 12, 0.15) !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  cursor: pointer !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  position: relative !important;
+}
+
+.lifecycle-step-btn__circle svg {
+  stroke: #8e622d !important;
+  width: 22px !important;
+  height: 22px !important;
+  transition: all 0.25s ease !important;
+}
+
+.lifecycle-step-btn__label {
+  font-family: 'Cinzel', serif !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase !important;
+  color: #5c3e1c !important;
+  transition: color 0.22s ease !important;
+}
+
+.lifecycle-step-btn__num {
+  font-family: 'Cinzel', serif !important;
+  font-size: 9.5px !important;
+  font-weight: 700 !important;
+  color: #8e622d !important;
+  opacity: 0.75 !important;
+}
+
+/* Active Step Highlight */
+.lifecycle-step-btn.is-active .lifecycle-step-btn__circle {
+  background: linear-gradient(145deg, #184b25 0%, #0d2a14 100%) !important;
+  border-color: #ffffff !important;
+  box-shadow:
+    inset 0 0 0 2px #f6d599,
+    0 0 20px rgba(246, 213, 153, 0.95),
+    0 6px 18px rgba(0, 0, 0, 0.35) !important;
+  transform: scale(1.18) !important;
+}
+
+.lifecycle-step-btn.is-active .lifecycle-step-btn__circle svg {
+  stroke: #f6d599 !important;
+  transform: scale(1.1) !important;
+}
+
+.lifecycle-step-btn.is-active .lifecycle-step-btn__label {
+  color: #11381b !important;
+  font-weight: 900 !important;
+}
+
+/* Connector Line & Arrow */
+.lifecycle-step-connector {
+  flex: 1 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  position: relative !important;
+  margin: -24px 6px 0 !important;
+  z-index: 1 !important;
+}
+
+.lifecycle-step-connector__line {
+  width: 100% !important;
+  height: 2px !important;
+  background: linear-gradient(90deg, #caa06d 0%, #8e622d 50%, #caa06d 100%) !important;
+  box-shadow: 0 1px 2px rgba(202, 160, 109, 0.3) !important;
+}
+
+.lifecycle-step-connector__arrow {
+  position: absolute !important;
+  color: #8e622d !important;
+  font-size: 16px !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  top: -8px !important;
+}
+
+/* 2. Master Showcase Stage Panels Container */
+.lifecycle-showcase-container {
+  width: 100% !important;
+  max-width: 1080px !important;
+  margin: 0 auto !important;
+  position: relative !important;
+  min-height: 420px !important;
+}
+
+.lifecycle-panel {
+  display: none !important;
+  opacity: 0 !important;
+  transform: translateY(12px) !important;
+  transition: opacity 0.35s ease, transform 0.35s ease !important;
+  padding: 36px 36px !important;
+  border-radius: 12px !important;
+}
+
+.lifecycle-panel.is-active {
+  display: block !important;
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+  animation: lifecycle-panel-fade 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+}
+
+@keyframes lifecycle-panel-fade {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.lifecycle-panel__inner {
+  display: grid !important;
+  grid-template-columns: 1.15fr 0.85fr !important;
+  gap: 36px !important;
+  align-items: center !important;
+}
+
+@media (max-width: 900px) {
+  .lifecycle-panel__inner {
+    grid-template-columns: 1fr !important;
+    gap: 28px !important;
+  }
+}
+
+/* Left Column: Details */
+.lifecycle-panel__content {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 12px !important;
+}
+
+.lifecycle-panel__meta {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  flex-wrap: wrap !important;
+}
+
+.lifecycle-panel__stage-tag {
+  display: inline-flex !important;
+  align-items: center !important;
+  font-family: 'Cinzel', serif !important;
+  font-size: 10.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.14em !important;
+  color: #11381b !important;
+  background: rgba(24, 75, 37, 0.12) !important;
+  border: 1px solid rgba(24, 75, 37, 0.3) !important;
+  border-radius: 4px !important;
+  padding: 4px 10px !important;
+  text-transform: uppercase !important;
+}
+
+.lifecycle-panel__dur-tag {
+  display: inline-flex !important;
+  align-items: center !important;
+  font-family: 'Cinzel', serif !important;
+  font-size: 10.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.1em !important;
+  color: #8e5f2b !important;
+  text-transform: uppercase !important;
+}
+
+.lifecycle-panel__title {
+  font-family: 'Cinzel', 'Playfair Display', Georgia, serif !important;
+  font-size: clamp(24px, 3.2vw, 32px) !important;
+  font-weight: 700 !important;
+  color: #172b15 !important;
+  margin: 0 !important;
+  line-height: 1.25 !important;
+}
+
+.lifecycle-panel__desc {
+  font-family: var(--font-family-base, 'EB Garamond', Georgia, serif) !important;
+  font-size: 15.5px !important;
+  line-height: 1.6 !important;
+  color: #2d2012 !important;
+  margin: 0 !important;
+}
+
+/* Bullet Points */
+.lifecycle-panel__bullets {
+  list-style: none !important;
+  padding: 0 !important;
+  margin: 6px 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+}
+
+.lifecycle-panel__bullets li {
+  display: flex !important;
+  align-items: baseline !important;
+  gap: 10px !important;
+  font-family: var(--font-family-base, 'EB Garamond', Georgia, serif) !important;
+  font-size: 14.5px !important;
+  color: #1a1209 !important;
+  font-weight: 500 !important;
+}
+
+.lifecycle-bullet-dot {
+  color: #1b542a !important;
+  font-weight: 900 !important;
+  font-size: 14px !important;
   flex-shrink: 0 !important;
-  transition: all 0.2s ease !important;
 }
 
-.vintage-carousel-ctrl:hover {
-  background: #0d2a14 !important;
-  color: #ffffff !important;
-  transform: scale(1.08) !important;
+/* Fact Highlight Note */
+.lifecycle-panel__fact-box {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  background: rgba(246, 213, 153, 0.35) !important;
+  border-left: 3px solid #8e622d !important;
+  padding: 8px 14px !important;
+  border-radius: 0 6px 6px 0 !important;
+  margin: 4px 0 10px !important;
 }
 
+.lifecycle-panel__fact-icon {
+  font-size: 16px !important;
+}
+
+.lifecycle-panel__fact-text {
+  font-family: var(--font-family-base, 'EB Garamond', Georgia, serif) !important;
+  font-size: 13.5px !important;
+  color: #4a341b !important;
+}
+
+/* Navigation Buttons */
+.lifecycle-panel__nav {
+  display: flex !important;
+  align-items: center !important;
+  gap: 14px !important;
+  margin-top: 8px !important;
+}
+
+.lifecycle-nav-btn {
+  padding: 8px 20px !important;
+  font-size: 11.5px !important;
+  cursor: pointer !important;
+}
+
+/* Right Column: Photo Frame */
+.lifecycle-panel__media {
+  position: relative !important;
+  width: 100% !important;
+}
+
+.lifecycle-panel__photo-frame {
+  position: relative !important;
+  width: 100% !important;
+  height: 320px !important;
+  overflow: hidden !important;
+  border-radius: 8px !important;
+}
+
+.lifecycle-panel__img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  display: block !important;
+  transition: transform 0.4s ease !important;
+}
+
+.lifecycle-panel:hover .lifecycle-panel__img {
+  transform: scale(1.04) !important;
+}
+
+.lifecycle-panel__photo-overlay {
+  position: absolute !important;
+  inset: 0 !important;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 50%, rgba(17, 56, 27, 0.5) 100%) !important;
+  pointer-events: none !important;
+}
+
+.lifecycle-panel__photo-badge {
+  position: absolute !important;
+  bottom: 14px !important;
+  left: 14px !important;
+  background: linear-gradient(145deg, #184b25 0%, #0d2a14 100%) !important;
+  color: #f6d599 !important;
+  border: 1px solid #caa06d !important;
+  border-radius: 4px !important;
+  padding: 4px 10px !important;
+  font-family: 'Cinzel', serif !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4) !important;
+}
 

@@ -85,12 +85,15 @@
   background-color: var(--vintage-green-dark, #11381b);
   background-image:
     url("../../images/textures/roughness/roughness-a.svg"),
-    linear-gradient(180deg, var(--vintage-green-mid, #1b542a) 0%, var(--vintage-green-deep, #0a2512) 100%);
+    radial-gradient(ellipse 120% 80% at 50% -10%, #2a7a42 0%, #175228 40%, #0d2f16 80%, #061a0c 100%);
+  background-size: 140px 140px, 100% 100%;
   color: var(--vintage-gold-bright, #f6d599);
-  border: var(--border-vintage-outer, 2px solid #8e622d);
+  border: var(--border-vintage-outer, 1.5px solid #8e622d);
   box-shadow:
-    var(--shadow-vintage-inner-gold, inset 0 0 0 1.5px #caa06d),
-    var(--shadow-vintage-card, 0 4px 12px rgba(0, 0, 0, 0.4));
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    inset 0 0 0 1px rgba(202, 160, 109, 0.6),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.45),
+    var(--shadow-vintage-card, 0 4px 12px rgba(6, 26, 12, 0.4));
 }
 
 /* ═══════════ SECONDARY BUTTON (Roasted Mahogany / Dark Sepia) ═══════════ */
@@ -100,12 +103,15 @@
   background-color: var(--vintage-bark-dark, #2b1406);
   background-image:
     url("../../images/textures/roughness/roughness-a.svg"),
-    linear-gradient(180deg, #44220c 0%, #1e0c03 100%);
+    radial-gradient(ellipse 120% 80% at 50% -10%, #5a2e12 0%, #3d1c08 40%, #251004 80%, #130702 100%);
+  background-size: 140px 140px, 100% 100%;
   color: var(--vintage-parchment-light, #fbf2e6);
-  border: var(--border-vintage-outer, 2px solid #8e622d);
+  border: var(--border-vintage-outer, 1.5px solid #8e622d);
   box-shadow:
-    var(--shadow-vintage-inner-gold, inset 0 0 0 1.5px #caa06d),
-    var(--shadow-vintage-card, 0 4px 12px rgba(0, 0, 0, 0.4));
+    inset 0 1px 0 rgba(246, 213, 153, 0.35),
+    inset 0 0 0 1px rgba(202, 160, 109, 0.5),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.55),
+    var(--shadow-vintage-card, 0 4px 12px rgba(19, 7, 2, 0.45));
 }
 .btn--secondary:hover,
 .btn--secondary-vintage:hover,
@@ -272,5 +278,4 @@ button[type="submit"],
   text-rendering: optimizeLegibility !important;
   -webkit-font-smoothing: antialiased !important;
 }
-
 

@@ -5,7 +5,7 @@ defined( 'ABSPATH' ) || exit;
 return array(
 	'css' => array(
 
-		'fonts'      => 'https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Cinzel:wght@600;700;800;900&family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500;1,700&family=Dancing+Script:wght@400..700&family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Lora:ital,wght@0,400..700;1,400..700&family=Patua+One&family=Playfair+Display:ital,wght@0,600;0,800;0,900;1,600;1,800;1,900&family=Rubik+Dirt&display=swap',
+		'fonts'      => 'https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Cinzel:wght@600;700;800;900&family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500;1,700&family=Dancing+Script:wght@400..700&family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Lora:ital,wght@0,400..700;1,400..700&family=Metal+Mania&family=Patua+One&family=Playfair+Display:ital,wght@0,600;0,800;0,900;1,600;1,800;1,900&family=Rubik+Dirt&family=Rubik+Distressed&display=swap',
 
 		'variables'  => 'assets/css/variables.css',
 		'base'       => 'assets/css/base.css',
@@ -59,6 +59,7 @@ return array(
 		'ui-showcase'             => 'assets/css/components/showcase.css',
 		'ui-section-nav'          => 'assets/css/components/section-nav.css',
 		'ui-loader'               => 'assets/css/components/loader.css',
+		'ui-cookie-consent'       => 'assets/css/components/cookie-consent.css',
 		'page-home'     => 'assets/css/pages/home.css',
 		'page-history'  => 'assets/css/pages/history.css',
 		'page-about'    => 'assets/css/pages/about.css',
@@ -104,5 +105,7 @@ return array(
 		'ui-loader'               => 'assets/js/components/loader.js',
 		'ui-card-stream'          => 'assets/js/components/card-stream.js',
 		'ui-vintage-carousel'     => 'assets/js/components/vintage-carousel.js',
+		'ui-live-badge'           => 'assets/js/components/live-badge.js',
+		'ui-cookie-consent'       => 'assets/js/components/cookie-consent.js',
 	),
 );

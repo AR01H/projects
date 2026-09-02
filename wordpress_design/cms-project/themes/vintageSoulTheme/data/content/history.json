@@ -104,58 +104,107 @@
         "items": [
             {
                 "number": "1",
-                "label": "Sett Planting & Sprouting",
+                "label": "Planting",
+                "icon": "sprout",
+                "headline": "Sett Planting & Soil Preparation",
                 "duration": "Months 1 – 2",
                 "fact": "Selected 2-3 eye cuttings in fertile furrows",
-                "desc": "Prime mature cane cuttings (setts) are planted horizontally in deep, nutrient-rich compost beds, sprouting tender roots and vigorous green shoots.",
+                "desc": "Prime mature cane cuttings (setts) are planted horizontally in deep, nutrient-rich volcanic compost beds, sprouting tender roots and vigorous green shoots.",
+                "bullets": [
+                    "Selected 2-3 eye mature cuttings",
+                    "Planted in fertile, well-drained volcanic soil",
+                    "Hydrated with pure natural mountain runoff"
+                ],
                 "image": "assets/images/sugarcane/sugarcane_stalks_etching.jpg"
             },
             {
                 "number": "2",
-                "label": "Tillering & Canopy Growth",
-                "duration": "Months 3 – 5",
+                "label": "Growing",
+                "icon": "sun",
+                "headline": "Months of Sun and Soil",
+                "duration": "Months 3 – 9",
                 "fact": "6 to 8 healthy secondary shoots per plant",
-                "desc": "Under abundant rainfall and tropical sunlight, dense emerald foliage unfurls, creating a natural soil-shading canopy that conserves moisture.",
+                "desc": "The cane rises up to 4 metres tall over 6–12 months, drinking in tropical sunlight and rain. Farmers tend the crop naturally with zero synthetic chemicals.",
+                "bullets": [
+                    "Grows up to 4 metres tall under steady sun",
+                    "6–12 month natural botanical growing cycle",
+                    "Zero synthetic fertilisers or pesticides used"
+                ],
                 "image": "assets/images/sugarcane/stacks.jpg"
             },
             {
                 "number": "3",
-                "label": "Grand Growth & Jointing",
-                "duration": "Months 6 – 9",
-                "fact": "Reaches 3 to 5 metres with thick sucrose nodes",
-                "desc": "The fibrous stalks surge upward, developing segmented bamboo-like nodes that synthesize and store pure sweet sucrose through natural photosynthesis.",
+                "label": "Harvesting",
+                "icon": "sugarcane",
+                "headline": "Peak Sweetness Dawn Harvest",
+                "duration": "Months 10 – 14",
+                "fact": "Hand-cut at soil level to preserve root ratoon",
+                "desc": "Stalks are cut close to ground level by hand during cool dawn hours, locking in maximum natural sucrose content, rich minerals, and crisp freshness.",
+                "bullets": [
+                    "Harvested at peak 18°–22° Brix sweetness",
+                    "Hand-harvested at soil line to protect living roots",
+                    "Living ratoon regrows organically for the next cycle"
+                ],
                 "image": "assets/images/sugarcane/sugarcane_stalks_etching.jpg"
             },
             {
                 "number": "4",
-                "label": "Ripening & Sucrose Peak",
-                "duration": "Months 10 – 14",
-                "fact": "Peak 18°–22° Brix natural sweetness reading",
-                "desc": "As vegetative growth subsides in the cooler season, the stalks concentrate natural complex sugars, iron, magnesium, potassium, and active antioxidants.",
-                "image": "assets/images/sugarcane/stacks.jpg"
-            },
-            {
-                "number": "5",
-                "label": "Sustainable Hand Harvest",
-                "duration": "Dawn Harvest Hours",
-                "fact": "Hand-cut at soil level to preserve root ratoon",
-                "desc": "Skilled farmers hand-harvest only prime stalks at soil level, allowing the living ratoon root system to regrow organically for the next cycle.",
+                "label": "Transport",
+                "icon": "tractor",
+                "headline": "Cold-Chain Farm-to-Bar Logistics",
+                "duration": "Within 24 Hours",
+                "fact": "Direct traceability to sustainable family farms",
+                "desc": "Freshly bundled stalks are transported under temperature-monitored conditions without storage delays, preserving live botanical enzymes.",
+                "bullets": [
+                    "Transported swiftly within hours of morning harvest",
+                    "Zero chemical waxes or synthetic preservatives",
+                    "Direct farm-to-glass traceable botanical integrity"
+                ],
                 "image": "assets/images/sugarcane/story_moments.jpg"
             },
             {
-                "number": "6",
-                "label": "Cold-Press & Micro-Filtration",
-                "duration": "Within 24 Hours",
-                "fact": "Chilled single-pass heavy stainless steel press",
-                "desc": "Stalks are washed in pure filtered water and cold-pressed through heavy calibrated rollers, extracting vibrant green raw juice with zero heat friction.",
+                "number": "5",
+                "label": "Pressing",
+                "icon": "machine",
+                "headline": "Cold-Press Live Extraction",
+                "duration": "Instant Fresh Crush",
+                "fact": "Heavy-duty calibrated food-grade rollers",
+                "desc": "Stalks pass through industrial-grade stainless steel calibrated rollers, gently drawing out 100% pure raw botanical juice with zero friction heat.",
+                "bullets": [
+                    "Single-pass cold crush technology",
+                    "Raw, unheated & unpasteurised living juice",
+                    "100% natural — zero added water, sugar, or syrups"
+                ],
                 "image": "assets/images/sugarcane/hero_juice.jpg"
             },
             {
+                "number": "6",
+                "label": "Zero Waste",
+                "icon": "recycle",
+                "headline": "Full-Circle Fiber Upcycling",
+                "duration": "100% Circular",
+                "fact": "Bagasse fiber returns to nature as nutrient mulch",
+                "desc": "Residual crushed fiber (bagasse) is collected and repurposed into organic soil mulch, biodegradable packaging, and renewable biofuel.",
+                "bullets": [
+                    "100% of the sugarcane plant is utilized",
+                    "Bagasse upcycled into compost & eco packaging",
+                    "Zero landfill waste throughout the production loop"
+                ],
+                "image": "assets/images/sugarcane/stacks.jpg"
+            },
+            {
                 "number": "7",
-                "label": "Pure London Pour",
-                "duration": "Instant Fresh Serve",
-                "fact": "100% pure raw botanical nectar • 0% additives",
-                "desc": "Poured straight over ice with crushed organic ginger and zesty lemon for an unadulterated, mineral-rich superfood beverage.",
+                "label": "Full Circle",
+                "icon": "globe",
+                "headline": "Pure London Pour & Celebration",
+                "duration": "Served Fresh Daily",
+                "fact": "Ancient wellness drink poured in modern London",
+                "desc": "Served straight over ice with crushed organic ginger, mint, and lemon — reconnecting guests with timeless agricultural heritage and vitality.",
+                "bullets": [
+                    "Rich in iron, magnesium, calcium & potassium",
+                    "Instant electrolyte & antioxidant replenishment",
+                    "Loved across London weddings, festivals & markets"
+                ],
                 "image": "assets/images/sugarcane/drink_classic.jpg"
             }
         ]

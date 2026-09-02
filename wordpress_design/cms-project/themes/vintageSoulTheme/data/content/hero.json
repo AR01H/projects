@@ -10,48 +10,25 @@
     },
     "slides": [
         {
-            "id": "slide-cane-video",
-            "media": {
-                "type": "video",
-                "src": "assets/videos/hero_bg.mp4",
-                "video": "assets/videos/hero_bg.mp4",
-                "poster": "assets/images/sugarcane/hero_juice.jpg",
-                "alt": "Live fresh sugarcane extraction and pouring"
-            },
-            "content": {
-                "eyebrow": "A Taste of Tradition",
-                "title": "WATCH IT. TASTE IT. LOVE IT.",
-                "description": "Pure, natural sugarcane juice pressed fresh right before your eyes.",
-                "checklist": [
-                    "Freshly pressed right before your eyes.",
-                    "100% pure sugarcane — nothing added.",
-                    "A taste of tradition, crafted with love."
-                ],
-                "buttons": [
-                    { "label": "Visit Us", "icon": "📍", "route": "contact" },
-                    { "label": "Book Us For Your Event", "icon": "📅", "route": "contact", "style": "ghost" }
-                ]
-            }
-        },
-        {
             "id": "slide-cane-1",
             "media": {
                 "type": "image",
-                "src": "assets/images/sugarcane/hero_juice.jpg",
-                "alt": "Fresh sugarcane juice being poured"
+                "src": "assets/images/gallery/stall_event_3.jpg",
+                "alt": "The Cane House live fresh sugarcane stall on Sutton High Street"
             },
             "content": {
-                "eyebrow": "Pure Cold Pressed",
-                "title": "COLD EXTRACTED JUICE",
-                "description": "Pure, natural sugarcane juice pressed right before your eyes.",
+                "eyebrow": "Freshly Pressed · Naturally Refreshing",
+                "title": "WELCOME TO THE TASTE OF TRADITION",
+                "subtitle": "100% Natural · No Additives · Freshly Pressed",
+                "description": "Pure, natural sugarcane juice pressed fresh right before your eyes in Sutton.",
                 "checklist": [
-                    "Freshly pressed right before your eyes.",
-                    "100% pure sugarcane — nothing added.",
+                    "100% Natural · No Additives · Freshly Pressed",
+                    "Freshly cold-pressed right before your eyes.",
                     "A taste of tradition, crafted with love."
                 ],
                 "buttons": [
-                    { "label": "Visit Us", "icon": "📍", "route": "contact" },
-                    { "label": "Book Us For Your Event", "icon": "📅", "route": "contact", "style": "ghost" }
+                    { "label": "Visit Our Live Stall", "icon": "📍", "route": "contact" },
+                    { "label": "Book Live Bar", "icon": "📅", "route": "contact", "style": "ghost" }
                 ]
             }
         },
@@ -59,17 +36,41 @@
             "id": "slide-cane-2",
             "media": {
                 "type": "image",
-                "src": "assets/images/sugarcane/stacks.jpg",
+                "src": "assets/images/gallery/stall_event_4.jpg",
+                "alt": "The Cane House live wedding and event catering setup"
+            },
+            "content": {
+                "eyebrow": "Welcome to the Taste of Tradition",
+                "title": "FRESHLY PRESSED. NATURALLY REFRESHING.",
+                "subtitle": "100% Natural · No Additives · Freshly Pressed",
+                "description": "Bringing the cherished tradition of raw sugarcane nectar to Sutton.",
+                "checklist": [
+                    "100% Natural · No Additives · Freshly Pressed",
+                    "Never diluted with water or artificial syrups.",
+                    "Shared with family and friends on Sutton High Street."
+                ],
+                "buttons": [
+                    { "label": "Visit Us In Sutton", "icon": "📍", "route": "contact" },
+                    { "label": "Book Event Catering", "icon": "📅", "route": "contact", "style": "ghost" }
+                ]
+            }
+        },
+        {
+            "id": "slide-cane-2",
+            "media": {
+                "type": "image",
+                "src": "assets/images/gallery/stall_event_1.jpg",
                 "alt": "Freshly harvested natural sugarcane stalks"
             },
             "content": {
-                "eyebrow": "From Farm To Stall",
+                "eyebrow": "100% Natural · Freshly Harvested",
                 "title": "HARVESTED PURE. PRESSED COLD.",
+                "subtitle": "100% Natural · No Additives · Freshly Pressed",
                 "description": "Selected premium stalks freshly pressed for authentic natural sweetness.",
                 "checklist": [
-                    "Hand-picked premium sugarcane.",
-                    "Cold extraction for maximum nutrients.",
-                    "Rich in iron, magnesium & potassium."
+                    "100% Natural · No Additives · Freshly Pressed",
+                    "Handpicked mature sugarcane stalks.",
+                    "Cold extraction locking in live nutrients & minerals."
                 ],
                 "buttons": [
                     { "label": "All About Cane", "icon": "🌾", "route": "history" },
@@ -85,39 +86,18 @@
                 "alt": "Refreshing natural sugarcane juice combinations"
             },
             "content": {
-                "eyebrow": "Handcrafted Flavours",
-                "title": "SIGNATURE VINTAGE COMBOS",
+                "eyebrow": "Artisanal Mocktail Blends",
+                "title": "HANDCRAFTED BOTANICAL COMBOS",
+                "subtitle": "100% Natural · No Additives · Freshly Pressed",
                 "description": "Ginger, mint, lemon, and chaat masala infused freshly upon order.",
                 "checklist": [
-                    "Fresh ginger, mint & lime infusions.",
-                    "No added sugar, ice dilution or preservatives.",
-                    "Crafted to order in seconds."
+                    "100% Natural · No Additives · Freshly Pressed",
+                    "Fresh ginger, mint & Sicilian lemon infusions.",
+                    "Crafted fresh to order in seconds."
                 ],
                 "buttons": [
                     { "label": "Explore Drinks", "icon": "🥤", "route": "history" },
                     { "label": "Book Live Bar", "icon": "🎪", "route": "contact" }
-                ]
-            }
-        },
-        {
-            "id": "slide-cane-4",
-            "media": {
-                "type": "image",
-                "src": "assets/images/sugarcane/story_moments.jpg",
-                "alt": "Heritage sugarcane pressing moments"
-            },
-            "content": {
-                "eyebrow": "Heritage & Community",
-                "title": "MORE THAN JUST A DRINK",
-                "description": "Creating joyful shared moments at London markets, weddings & festivals.",
-                "checklist": [
-                    "Live pressing counter for weddings & private events.",
-                    "London Borough & weekend market stall favourite.",
-                    "Loved by thousands of happy customers."
-                ],
-                "buttons": [
-                    { "label": "Our Heritage", "icon": "📖", "route": "about" },
-                    { "label": "Get In Touch", "icon": "✉️", "route": "contact" }
                 ]
             }
         }

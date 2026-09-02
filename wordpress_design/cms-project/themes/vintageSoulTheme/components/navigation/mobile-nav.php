@@ -44,19 +44,32 @@ $has_cta      = true;
 
 	<!-- Navigation Links -->
 	<ul class="mobile-nav__list">
-		<?php foreach ( $items as $item ) :
+		<?php
+		$current_route = (string) ( \VintageSoul\Services\RouteService::current_key() ?? 'home' );
+
+		foreach ( $items as $item ) :
 			$item  = (array) $item;
 			$label = trim( (string) ( $item['label'] ?? '' ) );
 			if ( '' === $label ) {
 				continue;
 			}
-			$url      = UrlHelper::resolve( (string) ( $item['url'] ?? '#' ) );
-			$children = ( isset( $item['children'] ) && is_array( $item['children'] ) ) ? $item['children'] : array();
-			$has_kids = ! empty( $children );
+			$url       = UrlHelper::resolve( (string) ( $item['url'] ?? '#' ) );
+			$item_path = trim( (string) parse_url( $url, PHP_URL_PATH ), '/' );
+			$children  = ( isset( $item['children'] ) && is_array( $item['children'] ) ) ? $item['children'] : array();
+			$has_kids  = ! empty( $children );
+
+			// Exact 1-to-1 active route matching
+			$is_active = false;
+			if ( 'home' === $current_route ) {
+				$is_active = ( '' === $item_path || '/' === ( $item['url'] ?? '' ) || '#' === ( $item['url'] ?? '' ) );
+			} else {
+				$is_active = ( $item_path === $current_route || ltrim( (string) ( $item['url'] ?? '' ), '/' ) === $current_route );
+			}
+			$m_href = $has_kids ? 'javascript:void(0)' : esc_url( $url );
 		?>
-			<li class="mobile-nav__item">
+			<li class="mobile-nav__item<?php echo $is_active ? ' is-active' : ''; ?>">
 				<div class="mobile-nav__row">
-					<a class="mobile-nav__link" href="<?php echo esc_url( $url ); ?>"><?php echo esc_html( $label ); ?></a>
+					<a class="mobile-nav__link<?php echo $is_active ? ' is-active' : ''; ?>" href="<?php echo esc_attr( $m_href ); ?>"<?php echo ( ! $has_kids && $is_active ) ? ' aria-current="page"' : ''; ?>><?php echo esc_html( $label ); ?></a>
 					<?php if ( $has_kids ) : ?>
 						<button type="button" class="mobile-nav__toggle" aria-expanded="false"
 							aria-label="<?php echo esc_attr( sprintf( __( '%s submenu', 'vintagesoul' ), $label ) ); ?>">

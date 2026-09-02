@@ -27,30 +27,24 @@ $total_posts = $wp_query->found_posts;
 	<?php View::component( 'background/parchment-botanical-bg', array( 'seed' => 88 ) ); ?>
 
 	<!-- ═══════════ 1. SEARCH HEADER HERO ═══════════ -->
-	<section class="section search-hero-section">
+	<?php
+	$search_title = '' !== trim( $query_str ) ? 'SEARCH <em>“' . esc_html( $query_str ) . '”</em>' : 'SEARCH <em>The Archives</em>';
+	$search_sub   = $total_posts > 0 ? sprintf( 'Discovered %d matching chronicle(s) across our recipes, menu items, and heritage notes.', (int) $total_posts ) : 'Explore our botanical stories, catering packages, and craft sugarcane chronicles.';
+	View::component(
+		'subpage-hero/subpage-hero',
+		array(
+			'id'    => 'search-hero',
+			'tag'   => 'Cane House Archives',
+			'title' => $search_title,
+			'sub'   => $search_sub,
+			'image' => 'assets/images/backgrounds/pure_sugarcane_forest_trees_engraving.jpg',
+		)
+	);
+	?>
+
+	<div class="section search-hero-section" style="padding-top: 32px; padding-bottom: 20px;">
 		<div class="container container--narrow">
-			<div class="search-hero-box frame--ornate">
-				<span class="vintage-ribbon-tag"><?php esc_html_e( 'Cane House Archives', 'vintagesoul' ); ?></span>
-				<h1 class="search-hero-title">
-					<?php
-					if ( '' !== trim( $query_str ) ) {
-						/* translators: %s: search query */
-						printf( esc_html__( 'Search Results For: %s', 'vintagesoul' ), '<em>“' . esc_html( $query_str ) . '”</em>' );
-					} else {
-						esc_html_e( 'Search The Archives', 'vintagesoul' );
-					}
-					?>
-				</h1>
-				<p class="search-hero-sub">
-					<?php
-					if ( $total_posts > 0 ) {
-						/* translators: %d: number of results */
-						printf( esc_html__( 'Discovered %d matching chronicle(s) across our recipes, menu items, and heritage notes.', 'vintagesoul' ), (int) $total_posts );
-					} else {
-						esc_html_e( 'Explore our botanical stories, catering packages, and craft sugarcane chronicles.', 'vintagesoul' );
-					}
-					?>
-				</p>
+			<div class="search-hero-box frame--ornate" style="margin-bottom: 0;">
 
 				<!-- On-Page Search Input Bar -->
 				<form role="search" method="get" class="search-hero-form" action="<?php echo esc_url( home_url( '/' ) ); ?>">

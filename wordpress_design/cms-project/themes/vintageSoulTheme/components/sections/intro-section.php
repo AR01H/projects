@@ -38,7 +38,7 @@ if ( empty( $images ) ) {
 			<span class="vintage-ribbon-tag">
 				<span><?php echo esc_html( $tag ); ?></span>
 			</span>
-			<h2 class="intro-vintage__title">MORE THAN JUST A <em>Drink</em></h2>
+			<h2 class="intro-vintage__title"><?php echo wp_kses_post( $title ); ?></h2>
 			<p class="section-eyebrow"><?php echo esc_html( strip_tags( $subtitle ) ); ?></p>
 		</div>
 
@@ -46,9 +46,9 @@ if ( empty( $images ) ) {
 		<div class="intro-vintage__grid">
 			<!-- Left: Story Narrative & Heritage Highlights -->
 			<div class="intro-vintage__text-col">
-				<p class="intro-vintage__lead">
-					<?php echo esc_html( $body ); ?>
-				</p>
+				<div class="intro-vintage__lead">
+					<?php echo wp_kses_post( wpautop( $body ) ); ?>
+				</div>
 				
 				<div class="intro-vintage__highlights">
 					<div class="intro-highlight-item">

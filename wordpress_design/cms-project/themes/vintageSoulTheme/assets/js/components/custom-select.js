@@ -1,6 +1,6 @@
 /**
- * VintageSoulTheme - Custom Select Dropdown Component
- * Replaces ugly browser-default system select dropdowns with luxury vintage parchment styled popovers.
+ * VintageSoulTheme - Clean Custom Select Component
+ * Replaces OS default blue highlight with theme botanical green & gold selection.
  */
 
 (function (window, document) {
@@ -25,25 +25,25 @@
 
 			// Create wrapper
 			var wrapper = document.createElement('div');
-			wrapper.className = 'vst-custom-select';
+			wrapper.className = 'vst-select-wrapper';
 			select.parentNode.insertBefore(wrapper, select);
 			wrapper.appendChild(select);
 
-			// Create trigger button
+			// Create trigger
 			var trigger = document.createElement('button');
 			trigger.type = 'button';
-			trigger.className = 'vst-custom-select__trigger form-input';
+			trigger.className = 'vst-select-trigger';
 			trigger.setAttribute('aria-haspopup', 'listbox');
 			trigger.setAttribute('aria-expanded', 'false');
 
 			var selectedOption = select.options[select.selectedIndex] || select.options[0];
 			var labelSpan = document.createElement('span');
-			labelSpan.className = 'vst-custom-select__label';
+			labelSpan.className = 'vst-select-label';
 			labelSpan.textContent = selectedOption ? selectedOption.text : 'Select...';
 
 			var arrowSpan = document.createElement('span');
-			arrowSpan.className = 'vst-custom-select__arrow';
-			arrowSpan.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>';
+			arrowSpan.className = 'vst-select-arrow';
+			arrowSpan.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>';
 
 			trigger.appendChild(labelSpan);
 			trigger.appendChild(arrowSpan);
@@ -51,26 +51,24 @@
 
 			// Create dropdown list
 			var dropdown = document.createElement('div');
-			dropdown.className = 'vst-custom-select__dropdown frame--rough-cut';
+			dropdown.className = 'vst-select-dropdown';
 			dropdown.setAttribute('role', 'listbox');
 			dropdown.style.display = 'none';
 
 			Array.prototype.forEach.call(select.options, function (opt, idx) {
 				var item = document.createElement('div');
-				item.className = 'vst-custom-select__option' + (idx === select.selectedIndex ? ' is-selected' : '');
+				item.className = 'vst-select-option' + (idx === select.selectedIndex ? ' is-selected' : '');
 				item.setAttribute('role', 'option');
 				item.setAttribute('data-value', opt.value);
 				item.setAttribute('aria-selected', idx === select.selectedIndex ? 'true' : 'false');
-				
-				item.innerHTML = '<span class="vst-custom-select__option-text">' + opt.text + '</span>' + 
-				                 '<span class="vst-custom-select__option-check" aria-hidden="true">✦</span>';
+				item.textContent = opt.text;
 
 				item.addEventListener('click', function (e) {
 					e.stopPropagation();
 					select.value = opt.value;
 					labelSpan.textContent = opt.text;
 
-					dropdown.querySelectorAll('.vst-custom-select__option').forEach(function (el) {
+					dropdown.querySelectorAll('.vst-select-option').forEach(function (el) {
 						el.classList.remove('is-selected');
 						el.setAttribute('aria-selected', 'false');
 					});
@@ -80,7 +78,6 @@
 					closeDropdown();
 					trigger.focus();
 
-					// Trigger native events
 					var changeEvt = new Event('change', { bubbles: true });
 					var inputEvt = new Event('input', { bubbles: true });
 					select.dispatchEvent(changeEvt);
@@ -93,12 +90,11 @@
 			wrapper.appendChild(dropdown);
 
 			function openDropdown() {
-				// Close all other open custom selects first
-				document.querySelectorAll('.vst-custom-select.is-open').forEach(function (other) {
+				document.querySelectorAll('.vst-select-wrapper.is-open').forEach(function (other) {
 					if (other !== wrapper) {
 						other.classList.remove('is-open');
-						var otherDrop = other.querySelector('.vst-custom-select__dropdown');
-						var otherTrig = other.querySelector('.vst-custom-select__trigger');
+						var otherDrop = other.querySelector('.vst-select-dropdown');
+						var otherTrig = other.querySelector('.vst-select-trigger');
 						if (otherDrop) otherDrop.style.display = 'none';
 						if (otherTrig) otherTrig.setAttribute('aria-expanded', 'false');
 					}
@@ -130,7 +126,7 @@
 				var opt = select.options[select.selectedIndex];
 				if (opt) {
 					labelSpan.textContent = opt.text;
-					dropdown.querySelectorAll('.vst-custom-select__option').forEach(function (el) {
+					dropdown.querySelectorAll('.vst-select-option').forEach(function (el) {
 						var isSel = el.getAttribute('data-value') === opt.value;
 						el.classList.toggle('is-selected', isSel);
 						el.setAttribute('aria-selected', isSel ? 'true' : 'false');
@@ -142,11 +138,11 @@
 
 	// Close on outside click
 	document.addEventListener('click', function (e) {
-		if (!e.target.closest('.vst-custom-select')) {
-			document.querySelectorAll('.vst-custom-select.is-open').forEach(function (openWrapper) {
+		if (!e.target.closest('.vst-select-wrapper')) {
+			document.querySelectorAll('.vst-select-wrapper.is-open').forEach(function (openWrapper) {
 				openWrapper.classList.remove('is-open');
-				var drop = openWrapper.querySelector('.vst-custom-select__dropdown');
-				var trig = openWrapper.querySelector('.vst-custom-select__trigger');
+				var drop = openWrapper.querySelector('.vst-select-dropdown');
+				var trig = openWrapper.querySelector('.vst-select-trigger');
 				if (drop) drop.style.display = 'none';
 				if (trig) trig.setAttribute('aria-expanded', 'false');
 			});
@@ -156,10 +152,10 @@
 	// Close on Escape key
 	document.addEventListener('keydown', function (e) {
 		if (e.key === 'Escape') {
-			document.querySelectorAll('.vst-custom-select.is-open').forEach(function (openWrapper) {
+			document.querySelectorAll('.vst-select-wrapper.is-open').forEach(function (openWrapper) {
 				openWrapper.classList.remove('is-open');
-				var drop = openWrapper.querySelector('.vst-custom-select__dropdown');
-				var trig = openWrapper.querySelector('.vst-custom-select__trigger');
+				var drop = openWrapper.querySelector('.vst-select-dropdown');
+				var trig = openWrapper.querySelector('.vst-select-trigger');
 				if (drop) drop.style.display = 'none';
 				if (trig) trig.setAttribute('aria-expanded', 'false');
 			});

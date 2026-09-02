@@ -147,41 +147,73 @@ View::component(
 			</p>
 
 			<div class="vintage-carousel-wrapper">
-				<button class="vintage-carousel-ctrl vintage-carousel-ctrl--prev" type="button" aria-label="Previous Package" onclick="document.getElementById('packages-carousel-track').scrollBy({left: -320, behavior: 'smooth'})">‹</button>
+				<button class="vintage-carousel-ctrl vintage-carousel-ctrl--prev" type="button" aria-label="Previous Package" onclick="document.getElementById('packages-carousel-track').scrollBy({left: -350, behavior: 'smooth'})">‹</button>
 				<div class="vintage-card-carousel" id="packages-carousel-track">
 					<?php foreach ( (array) $packages['items'] as $pkg ) :
-						$pkg_name  = (string) ( $pkg['name'] ?? '' );
-						$pkg_tag   = (string) ( $pkg['tagline'] ?? '' );
-						$pkg_guest = (string) ( $pkg['guests'] ?? '' );
-						$pkg_badge = (string) ( $pkg['badge'] ?? '' );
-						$pkg_feats = (array) ( $pkg['features'] ?? array() );
+						$pkg_name     = (string) ( $pkg['name'] ?? '' );
+						$pkg_tag      = (string) ( $pkg['tagline'] ?? '' );
+						$pkg_guest    = (string) ( $pkg['guests'] ?? '' );
+						$pkg_badge    = (string) ( $pkg['badge'] ?? '' );
+						$pkg_price    = (string) ( $pkg['price'] ?? 'From £350' );
+						$pkg_duration = (string) ( $pkg['duration'] ?? '3 Hours' );
+						$pkg_servings = (string) ( $pkg['servings'] ?? 'Unlimited' );
+						$pkg_foot     = (string) ( $pkg['footprint'] ?? 'Live Bar' );
+						$pkg_feats    = (array) ( $pkg['features'] ?? array() );
 					?>
-						<div class="vintage-carousel-card frame--rough-cut" style="flex:0 0 320px; max-width:320px; padding:22px 18px;">
-							<div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px;">
-								<span style="font-family:'Cinzel',serif; font-size:10px; font-weight:700; color:#8e5f2b; letter-spacing:0.1em; text-transform:uppercase;">👥 <?php echo esc_html( $pkg_guest ); ?></span>
+						<div class="vintage-carousel-card frame--rough-cut" style="flex:0 0 350px; max-width:350px; padding:24px 20px; display:flex; flex-direction:column;">
+							<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
 								<?php if ( $pkg_badge ) : ?>
-									<span class="lifecycle-carousel-card__badge" style="position:static;"><?php echo esc_html( $pkg_badge ); ?></span>
+									<span class="lifecycle-carousel-card__badge" style="position:static; font-size:10px;"><?php echo esc_html( $pkg_badge ); ?></span>
 								<?php endif; ?>
+								<span style="font-family:'Cinzel',serif; font-size:11px; font-weight:700; color:#8e5222; letter-spacing:0.06em;">👥 <?php echo esc_html( $pkg_guest ); ?></span>
 							</div>
-							<h4 class="goodness-carousel-card__title" style="font-size:17px; margin-bottom:4px;"><?php echo esc_html( $pkg_name ); ?></h4>
-							<p style="font-size:13px; font-style:italic; color:#8e5222; margin:0 0 14px;"><?php echo esc_html( $pkg_tag ); ?></p>
 							
-							<ul style="list-style:none; padding:0; margin:0 0 18px; display:flex; flex-direction:column; gap:8px;">
+							<h4 class="goodness-carousel-card__title" style="font-size:18px; margin-bottom:4px;"><?php echo esc_html( $pkg_name ); ?></h4>
+							<p style="font-family:'Dancing Script',cursive; font-size:15px; color:#8e5222; margin:0 0 12px;"><?php echo esc_html( $pkg_tag ); ?></p>
+							
+							<!-- ═══════════ CATERING SETUP METRICS ═══════════ -->
+							<div style="background:rgba(23,43,21,0.06); border:1.5px dashed #8e622d; border-radius:6px; padding:12px 14px; margin-bottom:14px;">
+								<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; border-bottom:1px solid rgba(142,98,45,0.2); padding-bottom:6px;">
+									<span style="font-family:'Cinzel',serif; font-size:11px; font-weight:700; color:#11381b; letter-spacing:0.08em; text-transform:uppercase;">CATERING SPECS</span>
+									<span style="font-family:'Cinzel',serif; font-size:10.5px; font-weight:700; color:#8e5222; text-transform:uppercase;">ALL-INCLUSIVE</span>
+								</div>
+								<div style="display:grid; grid-template-columns:1fr 1fr; gap:8px 12px;">
+									<div>
+										<span style="font-size:10px; font-family:'Cinzel',serif; color:#8e5222; display:block; text-transform:uppercase;">Live Duration</span>
+										<strong style="font-size:12.5px; font-family:'Cinzel',serif; color:#172b15;"><?php echo esc_html( $pkg_duration ); ?></strong>
+									</div>
+									<div>
+										<span style="font-size:10px; font-family:'Cinzel',serif; color:#8e5222; display:block; text-transform:uppercase;">Capacity</span>
+										<strong style="font-size:12.5px; font-family:'Cinzel',serif; color:#172b15;"><?php echo esc_html( $pkg_servings ); ?></strong>
+									</div>
+									<div>
+										<span style="font-size:10px; font-family:'Cinzel',serif; color:#8e5222; display:block; text-transform:uppercase;">Guest Scale</span>
+										<strong style="font-size:12px; font-family:'Cinzel',serif; color:#172b15;"><?php echo esc_html( $pkg_guest ); ?></strong>
+									</div>
+									<div>
+										<span style="font-size:10px; font-family:'Cinzel',serif; color:#8e5222; display:block; text-transform:uppercase;">Bar Setup</span>
+										<strong style="font-size:12px; font-family:'Cinzel',serif; color:#172b15;"><?php echo esc_html( $pkg_foot ); ?></strong>
+									</div>
+								</div>
+							</div>
+
+							<div style="font-family:'Cinzel',serif; font-size:11px; font-weight:700; color:#11381b; margin-bottom:8px; text-transform:uppercase; letter-spacing:0.06em;">Package Includes:</div>
+							<ul style="list-style:none; padding:0; margin:0 0 18px; display:flex; flex-direction:column; gap:7px; flex-grow:1;">
 								<?php foreach ( $pkg_feats as $feat ) : ?>
-									<li style="font-size:13.5px; line-height:1.4; color:#3a2814; display:flex; align-items:flex-start; gap:6px;">
-										<span style="color:#11381b; font-weight:700;">✓</span>
+									<li style="font-size:12.5px; line-height:1.35; color:#3a2814; display:flex; align-items:flex-start; gap:6px;">
+										<span style="color:#11381b; font-weight:700; font-size:13px;">✓</span>
 										<span><?php echo esc_html( $feat ); ?></span>
 									</li>
 								<?php endforeach; ?>
 							</ul>
 
 							<a href="#event-booking" class="btn btn--order-now" style="width:100%; text-align:center; justify-content:center; margin-top:auto;">
-								BOOK THIS PACKAGE
+								BOOK THIS PACKAGE ✦
 							</a>
 						</div>
 					<?php endforeach; ?>
 				</div>
-				<button class="vintage-carousel-ctrl vintage-carousel-ctrl--next" type="button" aria-label="Next Package" onclick="document.getElementById('packages-carousel-track').scrollBy({left: 320, behavior: 'smooth'})">›</button>
+				<button class="vintage-carousel-ctrl vintage-carousel-ctrl--next" type="button" aria-label="Next Package" onclick="document.getElementById('packages-carousel-track').scrollBy({left: 350, behavior: 'smooth'})">›</button>
 			</div>
 		</div>
 	</section>

@@ -96,47 +96,68 @@
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><filter id='mqdp'><feTurbulence type='fractalNoise' baseFrequency='0.025' numOctaves='3' seed='93' stitchTiles='stitch' result='n'/><feColorMatrix in='n' type='matrix' values='0 0 0 0 0.1  0 0 0 0 0.08  0 0 0 0 0.04  0 0 0 1 0' result='tinted'/><feComponentTransfer in='tinted'><feFuncA type='discrete' tableValues='0 0 0 0.3 0.3 0.6 0.6 1'/></feComponentTransfer></filter><rect width='100%25' height='100%25' filter='url(%23mqdp)'/></svg>");
 }
 
-/* ═══════════ REUSABLE VINTAGE RIBBON TICKER BANNERS ═══════════ */
+/* ═══════════ REUSABLE VINTAGE RIBBON TICKER BANNERS (SHARP TEXT + AUTHENTIC DECKLED CUTS) ═══════════ */
 .ribbon-ticker {
   background: linear-gradient(180deg, var(--vintage-bark-dark, #2b1406) 0%, #1a0b03 100%);
   color: var(--vintage-gold-bright, #f6d599);
-  padding: 4px 0 !important;
+  padding: 6px 0 !important;
   margin: 0;
   overflow: hidden;
   white-space: nowrap;
-  border-top: 1px solid #8e622d;
-  border-bottom: 1px solid #8e622d;
   position: relative;
-  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
   z-index: 2;
+  border: none !important;
+  filter: none !important;
+  -webkit-filter: none !important;
 }
-.ribbon-ticker::before {
-  content: "";
-  position: absolute;
-  inset: 0;
+
+.ribbon-ticker::before,
+.marquee::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: -2px 0 !important;
+  border-top: 1.5px solid #8e622d !important;
+  border-bottom: 1.5px solid #8e622d !important;
+  box-shadow:
+    inset 0 1px 0 rgba(202, 160, 109, 0.45),
+    inset 0 -1px 0 rgba(202, 160, 109, 0.45) !important;
   background-image: url("../../images/textures/grain/grain-a.svg");
   background-size: 240px 240px;
   mix-blend-mode: screen;
-  opacity: 0.12;
-  pointer-events: none;
+  opacity: 0.95;
+  filter: url(#rough-button-cut-sm) !important;
+  -webkit-filter: url(#rough-button-cut-sm) !important;
+  pointer-events: none !important;
+  z-index: 1 !important;
 }
+
 .ribbon-ticker__track {
   display: inline-flex;
   align-items: center;
   gap: 16px;
   animation: marquee-slide 28s linear infinite;
+  position: relative;
+  z-index: 2;
+  filter: none !important;
+  -webkit-filter: none !important;
 }
+
 .ribbon-ticker__heart {
   color: var(--vintage-gold-accent, #cb924d);
   font-size: 9px !important;
 }
+
 .ribbon-ticker__text {
   font-family: var(--font-family-heading, 'Cinzel', 'Playfair Display', serif);
-  font-size: 10px !important;
+  font-size: 11px !important;
   letter-spacing: 0.12em !important;
   text-transform: uppercase;
   font-weight: 700;
   color: var(--vintage-gold-bright, #f6d599);
+  filter: none !important;
+  -webkit-filter: none !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
 }
 
 .ribbon-ticker--green {
@@ -144,6 +165,7 @@
   border-color: var(--vintage-bark-border, #8e622d);
   box-shadow: inset 0 1px 0 var(--vintage-gold-inner, #caa06d), inset 0 -1px 0 var(--vintage-gold-inner, #caa06d), 0 2px 6px rgba(0, 0, 0, 0.3);
 }
+
 .ribbon-ticker--green .ribbon-ticker__heart {
   color: var(--vintage-gold-bright, #f6d599);
 }
@@ -157,14 +179,12 @@
   to { transform: translateX(-50%); }
 }
 
-/* ═══════════ AUTHENTIC DECKLE ROUGH CUT MARQUEES & TICKERS ═══════════ */
+/* ═══════════ CRISP TEXT ENFORCEMENT ═══════════ */
 .marquee,
 .ribbon-ticker,
-.trust-ribbon,
-.ribbon-ticker--green,
-.ribbon-ticker--dark {
-  filter: url(#rough-button-cut-sm) !important;
-  -webkit-filter: url(#rough-button-cut-sm) !important;
+.trust-ribbon {
+  filter: none !important;
+  -webkit-filter: none !important;
 }
 
 .marquee span,

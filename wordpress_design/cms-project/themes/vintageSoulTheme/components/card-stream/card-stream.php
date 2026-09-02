@@ -191,55 +191,32 @@ $track_class = 'social-stream__track social-stream__track--' . $direction;
 					</div>
 
 				<?php elseif ( 'social' === $card_type ) :
-					$platform = (string) ( $item['platform'] ?? 'instagram' );
-					$badge    = (string) ( $item['badge'] ?? 'Social Post' );
-					$handle   = (string) ( $item['handle'] ?? '@thecanehouse.uk' );
-					$caption  = (string) ( $item['caption'] ?? '' );
-					$likes    = (string) ( $item['likes'] ?? '1k' );
-					$comments = (string) ( $item['comments'] ?? '50' );
-					$raw_img  = (string) ( $item['image'] ?? 'assets/images/sugarcane/hero_juice.jpg' );
-					$img      = UrlHelper::resolve( $raw_img );
-					$raw_vid  = (string) ( $item['video'] ?? 'assets/videos/hero_bg.mp4' );
-					$video    = str_starts_with( $raw_vid, 'http' ) ? $raw_vid : UrlHelper::resolve( $raw_vid );
-					$link     = (string) ( $item['link'] ?? 'https://instagram.com' );
+					$raw_input = is_string( $item ) ? $item : (string) ( $item['embed'] ?? ( $item['html'] ?? ( $item['embed_code'] ?? ( $item['link'] ?? ( $item['url'] ?? ( $item['video'] ?? '' ) ) ) ) ) );
+					
+					// If full HTML blockquote or iframe snippet is provided, extract the URL automatically
+					if ( preg_match( '/data-instgrm-permalink=["\']([^"\']+)["\']/i', $raw_input, $matches ) ) {
+						$raw_link = $matches[1];
+					} elseif ( preg_match( '/src=["\']([^"\']+)["\']/i', $raw_input, $matches ) ) {
+						$raw_link = $matches[1];
+					} else {
+						$raw_link = $raw_input;
+					}
+
+					if ( '' === $raw_link ) {
+						$raw_link = 'https://www.instagram.com/p/DbgIbW4h42y/';
+					}
+
+					$embed_url = UrlHelper::resolve_video_embed( $raw_link );
 				?>
-					<div class="social-card card--rough-cut"
-						 tabindex="0" 
-						 role="button" 
-						 aria-haspopup="dialog" 
-						 aria-label="<?php echo esc_attr( $badge . ': ' . $caption ); ?>"
-						 data-story-modal="true"
-						 data-story-platform="<?php echo esc_attr( $platform ); ?>"
-						 data-story-badge="<?php echo esc_attr( $badge ); ?>"
-						 data-story-author="<?php echo esc_attr( $handle ); ?>"
-						 data-story-quote="<?php echo esc_attr( $caption ); ?>"
-						 data-story-image="<?php echo esc_url( $img ); ?>"
-						 data-story-video="<?php echo esc_url( $video ); ?>"
-						 data-story-link="<?php echo esc_url( $link ); ?>"
-						 data-story-likes="<?php echo esc_attr( $likes ); ?>"
-						 data-story-comments="<?php echo esc_attr( $comments ); ?>">
-						<div class="social-card__media">
-							<img src="<?php echo esc_url( $img ); ?>" alt="<?php echo esc_attr( $caption ); ?>" loading="lazy">
-							<span class="social-card__platform-badge social-card__platform-badge--<?php echo esc_attr( $platform ); ?>">
-								<?php if ( 'instagram' === $platform ) : ?>
-									<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
-								<?php elseif ( 'youtube' === $platform ) : ?>
-									<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/><polygon points="10 15 15 12 10 9"/></svg>
-								<?php else : ?>
-									<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
-								<?php endif; ?>
-								<span><?php echo esc_html( $badge ); ?></span>
-							</span>
-							<div class="social-card__play-btn" aria-hidden="true">▶</div>
-						</div>
-						<div class="social-card__content">
-							<span class="social-card__handle"><?php echo esc_html( $handle ); ?></span>
-							<p class="social-card__caption"><?php echo esc_html( $caption ); ?></p>
-							<div class="social-card__meta">
-								<span>❤️ <?php echo esc_html( $likes ); ?></span>
-								<span>💬 <?php echo esc_html( $comments ); ?></span>
-							</div>
-						</div>
+					<div class="social-card social-card--embed card--rough-cut">
+						<iframe class="social-card__instagram-embed"
+								src="<?php echo esc_url( $embed_url ); ?>"
+								loading="lazy"
+								frameborder="0"
+								scrolling="no"
+								allowtransparency="true"
+								allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share">
+						</iframe>
 					</div>
 				<?php endif; ?>
 			<?php endforeach; ?>
