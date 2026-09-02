@@ -10,30 +10,22 @@
         {
             "icon": "stall",
             "title": "LIVE SUGARCANE BAR",
-            "desc": "Our signature live cold-pressing setup for weddings, birthdays, corporate events, and festivals. Fresh juice served before your guests' eyes.",
-            "btn_label": "BOOK NOW",
-            "btn_link": "contact"
+            "desc": "Our signature live cold-pressing setup for weddings, birthdays, corporate events, and festivals. Fresh juice served before your guests' eyes."
         },
         {
             "icon": "leaf",
             "title": "FRESH JUICE STALL",
-            "desc": "Visit our permanent stall in Sutton for freshly pressed classic, lemon ginger, mint, masala, pineapple, and mix-fruit sugarcane juice.",
-            "btn_label": "VIEW MENU",
-            "btn_link": "/#our-drinks"
+            "desc": "Visit our permanent stall in Sutton for freshly pressed classic, lemon ginger, mint, masala, pineapple, and mix-fruit sugarcane juice."
         },
         {
             "icon": "handshake",
             "title": "FRANCHISE PARTNERSHIP",
-            "desc": "Join The Cane House family. We offer end-to-end franchise support including training, branding, equipment, and ongoing mentorship.",
-            "btn_label": "LEARN MORE",
-            "btn_link": "/#franchise"
+            "desc": "Join The Cane House family. We offer end-to-end franchise support including training, branding, equipment, and ongoing mentorship."
         },
         {
             "icon": "growth",
             "title": "WHOLESALE SUPPLY",
-            "desc": "Bulk fresh sugarcane juice supply for restaurants, cafes, and health food stores. Consistent quality, reliable delivery.",
-            "btn_label": "ENQUIRE",
-            "btn_link": "contact"
+            "desc": "Bulk fresh sugarcane juice supply for restaurants, cafes, and health food stores. Consistent quality, reliable delivery."
         }
     ],
     "closing": {

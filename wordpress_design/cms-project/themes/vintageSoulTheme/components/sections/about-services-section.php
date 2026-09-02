@@ -37,9 +37,6 @@ if ( empty( $services ) ) {
 				$srv_icon  = (string) ( $srv['icon'] ?? 'stall' );
 				$srv_title = (string) ( $srv['title'] ?? '' );
 				$srv_desc  = (string) ( $srv['desc'] ?? '' );
-				$srv_lbl   = (string) ( $srv['btn_label'] ?? '' );
-				$srv_link  = (string) ( $srv['btn_link'] ?? 'contact' );
-				$srv_url   = 0 === strpos( $srv_link, '/' ) || 0 === strpos( $srv_link, 'http' ) ? $srv_link : RouteService::url( $srv_link );
 			?>
 				<div class="service-card frame--rough-cut">
 					<div class="service-card__icon-wrap">
@@ -47,9 +44,6 @@ if ( empty( $services ) ) {
 					</div>
 					<h3 class="service-card__title"><?php echo esc_html( $srv_title ); ?></h3>
 					<p class="service-card__desc"><?php echo esc_html( $srv_desc ); ?></p>
-					<?php if ( '' !== $srv_lbl ) : ?>
-						<a class="btn btn--primary-vintage btn--sm" href="<?php echo esc_url( $srv_url ); ?>"><?php echo esc_html( $srv_lbl ); ?></a>
-					<?php endif; ?>
 				</div>
 			<?php endforeach; ?>
 		</div>

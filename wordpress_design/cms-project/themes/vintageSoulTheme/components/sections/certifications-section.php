@@ -98,6 +98,12 @@ $first_seal_img = (string) ( $master_item['seal_img'] ?? '' );
 					<?php foreach ( $slides as $slide_idx => $slide_data ) :
 						$slide_items  = (array) ( $slide_data['items'] ?? array() );
 						$slide_master = (array) ( $slide_data['master'] ?? array() );
+						if ( ! empty( $slide_master['seal_img'] ) ) {
+							$slide_master['seal_img'] = UrlHelper::resolve( (string) $slide_master['seal_img'] );
+						}
+						if ( ! empty( $slide_master['url'] ) ) {
+							$slide_master['url'] = UrlHelper::resolve( (string) $slide_master['url'] );
+						}
 					?>
 						<div class="certs-slide <?php echo 0 === $slide_idx ? 'is-active' : ''; ?>" 
 							 data-slide-index="<?php echo esc_attr( (string) $slide_idx ); ?>"
@@ -240,7 +246,6 @@ $first_seal_img = (string) ( $master_item['seal_img'] ?? '' );
 		card.classList.add('is-active');
 
 		// 2. Read Card Data Attributes
-		var title = card.getAttribute('data-cert-title') || '';
 		var badge = card.getAttribute('data-cert-badge') || '';
 
 		// 3. Subtle highlight on master card badge if clicked
@@ -254,10 +259,19 @@ $first_seal_img = (string) ( $master_item['seal_img'] ?? '' );
 		var section = document.getElementById('certifications');
 		if (!section) return;
 
-		var dots = section.querySelectorAll('.certs-nav-dot');
-		var slides = section.querySelectorAll('.certs-slide');
-		var prevBtn = document.getElementById('certs-prev-btn');
-		var nextBtn = document.getElementById('certs-next-btn');
+		var dots             = section.querySelectorAll('.certs-nav-dot');
+		var slides           = section.querySelectorAll('.certs-slide');
+		var prevBtn          = document.getElementById('certs-prev-btn');
+		var nextBtn          = document.getElementById('certs-next-btn');
+
+		var masterCard       = document.getElementById('cert-master-card');
+		var badgeText        = document.getElementById('cert-master-badge-text');
+		var masterImg        = document.getElementById('cert-master-img');
+		var masterAuth       = document.getElementById('cert-master-auth');
+		var masterTitle      = document.getElementById('cert-master-title');
+		var masterAction     = document.getElementById('cert-master-action');
+		var masterLink       = document.getElementById('cert-master-link');
+		var masterActionLink = document.getElementById('cert-master-action-link');
 
 		if (!slides.length) return;
 
@@ -291,30 +305,30 @@ $first_seal_img = (string) ( $master_item['seal_img'] ?? '' );
 				if (rawMaster) {
 					try {
 						var parsedMaster = JSON.parse(rawMaster);
-						if (parsedMaster && parsedMaster.title) {
+						if (parsedMaster) {
 							if (masterCard) {
-								masterCard.style.opacity = '0.4';
-								masterCard.style.transform = 'scale(0.99)';
+								masterCard.style.opacity = '0.3';
+								masterCard.style.transform = 'scale(0.98)';
 								setTimeout(function() {
-									masterCard.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
+									if (badgeText && parsedMaster.badge) badgeText.textContent = parsedMaster.badge;
+									if (masterImg && parsedMaster.seal_img) {
+										masterImg.src = parsedMaster.seal_img;
+										masterImg.alt = parsedMaster.title || '';
+									}
+									if (masterAuth) masterAuth.innerHTML = parsedMaster.authority ? '<span class="chk-icon">✓</span> ' + parsedMaster.authority : '';
+									if (masterTitle) masterTitle.innerHTML = parsedMaster.title || '';
+									if (masterAction) masterAction.innerHTML = '🛡️ ' + (parsedMaster.action_label || '') + ' ↗';
+									if (masterLink && parsedMaster.url) {
+										masterLink.href = parsedMaster.url;
+										masterLink.title = parsedMaster.title || '';
+									}
+									if (masterActionLink && parsedMaster.url) {
+										masterActionLink.href = parsedMaster.url;
+									}
+									masterCard.style.transition = 'opacity 0.28s ease, transform 0.28s ease';
 									masterCard.style.opacity = '1';
 									masterCard.style.transform = 'scale(1)';
-								}, 50);
-							}
-							if (badgeText && parsedMaster.badge) badgeText.textContent = parsedMaster.badge;
-							if (masterImg && parsedMaster.seal_img) {
-								masterImg.src = parsedMaster.seal_img;
-								masterImg.alt = parsedMaster.title;
-							}
-							if (masterAuth) masterAuth.innerHTML = parsedMaster.authority ? '<span class="chk-icon">✓</span> ' + parsedMaster.authority : '';
-							if (masterTitle) masterTitle.innerHTML = parsedMaster.title;
-							if (masterAction) masterAction.innerHTML = '🛡️ ' + (parsedMaster.action_label || '') + ' ↗';
-							if (masterLink && parsedMaster.url) {
-								masterLink.href = parsedMaster.url;
-								masterLink.title = parsedMaster.title;
-							}
-							if (masterActionLink && parsedMaster.url) {
-								masterActionLink.href = parsedMaster.url;
+								}, 80);
 							}
 						}
 					} catch(e) {}
