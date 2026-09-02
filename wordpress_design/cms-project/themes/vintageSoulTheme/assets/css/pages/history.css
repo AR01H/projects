@@ -1862,6 +1862,9 @@ body.page-history,
   flex-direction: column !important;
   justify-content: space-between !important;
 }
+.use-ecosystem-card.is-hidden {
+  display: none !important;
+}
 .use-ecosystem-card:hover {
   transform: translateY(-4px) !important;
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.14) !important;

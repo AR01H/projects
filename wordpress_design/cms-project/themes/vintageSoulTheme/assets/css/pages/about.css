@@ -241,33 +241,54 @@ body.page-about,
   }
 }
 .service-card {
-  background: linear-gradient(135deg, #fcf2e3 0%, #f6e0c3 100%);
-  border: 1.5px solid #8e622d;
-  border-radius: 6px;
-  padding: 22px 16px;
-  text-align: center;
-  position: relative;
-  box-shadow:
-    0 3px 14px rgba(42, 26, 12, 0.12),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 8px !important;
+  padding: 24px 18px !important;
+  text-align: center !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  transition: transform 0.25s ease !important;
+  box-sizing: border-box !important;
 }
+
+.service-card::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  border-radius: 8px !important;
+  background:
+    url("../../images/textures/paper/paper-fiber-a.svg"),
+    linear-gradient(135deg, #fdf8ef 0%, #f7e6cf 55%, #edd2ae 100%) !important;
+  border: 1.5px solid #8e622d !important;
+  box-shadow:
+    inset 0 0 0 1.5px #caa06d,
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    0 6px 18px rgba(42, 26, 12, 0.12) !important;
+  filter: url(#rough-button-cut-sm) !important;
+  -webkit-filter: url(#rough-button-cut-sm) !important;
+  z-index: 0 !important;
+  pointer-events: none !important;
+  transition: all 0.25s ease !important;
+}
+
 .service-card:hover {
-  transform: translateY(-4px);
-  box-shadow:
-    0 8px 24px rgba(42, 26, 12, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  transform: translateY(-4px) !important;
 }
-.service-card::after {
-  content: "";
-  position: absolute;
-  inset: 3px;
-  border: 1.5px solid #caa06d;
-  border-radius: 4px;
-  pointer-events: none;
+
+.service-card:hover::before {
+  border-color: #caa06d !important;
+  box-shadow:
+    inset 0 0 0 2px #f6d599,
+    0 10px 24px rgba(142, 98, 45, 0.28) !important;
+}
+
+.service-card > * {
+  position: relative !important;
+  z-index: 1 !important;
 }
 .service-card__icon-wrap {
   width: 52px;
@@ -365,30 +386,54 @@ body.page-about,
 }
 
 .value-card {
-  background: linear-gradient(135deg, #fcf2e3 0%, #f6e0c3 100%);
-  border: 1.5px solid #8e622d;
-  border-radius: 5px;
-  padding: 22px 16px;
-  text-align: center;
-  position: relative;
-  box-shadow:
-    0 3px 12px rgba(42, 26, 12, 0.12),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 8px !important;
+  padding: 26px 20px !important;
+  text-align: center !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  transition: transform 0.25s ease !important;
+  box-sizing: border-box !important;
 }
+
+.value-card::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  border-radius: 8px !important;
+  background:
+    url("../../images/textures/paper/paper-fiber-a.svg"),
+    linear-gradient(135deg, #fdf8ef 0%, #f7e6cf 55%, #edd2ae 100%) !important;
+  border: 1.5px solid #8e622d !important;
+  box-shadow:
+    inset 0 0 0 1.5px #caa06d,
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    0 6px 18px rgba(42, 26, 12, 0.12) !important;
+  filter: url(#rough-button-cut-sm) !important;
+  -webkit-filter: url(#rough-button-cut-sm) !important;
+  z-index: 0 !important;
+  pointer-events: none !important;
+  transition: all 0.25s ease !important;
+}
+
 .value-card:hover {
-  transform: translateY(-3px);
-  box-shadow:
-    0 6px 20px rgba(42, 26, 12, 0.18),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  transform: translateY(-4px) !important;
 }
-.value-card::after {
-  content: "";
-  position: absolute;
-  inset: 3px;
-  border: 1.5px solid #caa06d;
-  border-radius: 3px;
-  pointer-events: none;
+
+.value-card:hover::before {
+  border-color: #caa06d !important;
+  box-shadow:
+    inset 0 0 0 2px #f6d599,
+    0 10px 24px rgba(142, 98, 45, 0.28) !important;
+}
+
+.value-card > * {
+  position: relative !important;
+  z-index: 1 !important;
 }
 .value-card__badge {
   display: inline-flex;

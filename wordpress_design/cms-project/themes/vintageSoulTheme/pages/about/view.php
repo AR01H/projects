@@ -112,7 +112,20 @@ $milestone_items = (array) ( $milestones['items'] ?? array() );
 		</section>
 	<?php endif; ?>
 
-	<!-- ═══════════ 8. PHOTO GALLERY ARCHIVE ═══════════ -->
+	<!-- Deckled Edge Divider -->
+	<div class="deckled-divider" aria-hidden="true">
+		<img src="<?php echo esc_url( UrlHelper::resolve( 'assets/images/textures/border/deckled-edge.svg' ) ); ?>" alt="" loading="lazy">
+	</div>
+
+	<!-- ═══════════ 8. QUALITY & CERTIFICATIONS (Food Safety Registered) ═══════════ -->
+	<?php View::component( 'sections/certifications-section' ); ?>
+
+	<!-- Gold Wave Divider -->
+	<div class="gold-wave-divider" aria-hidden="true">
+		<img src="<?php echo esc_url( UrlHelper::resolve( 'assets/images/textures/border/gold-wave.svg' ) ); ?>" alt="" loading="lazy">
+	</div>
+
+	<!-- ═══════════ 9. PHOTO GALLERY ARCHIVE ═══════════ -->
 	<?php View::component( 'sections/gallery-section' ); ?>
 
 	<!-- Gold Wave Divider -->
@@ -120,14 +133,14 @@ $milestone_items = (array) ( $milestones['items'] ?? array() );
 		<img src="<?php echo esc_url( UrlHelper::resolve( 'assets/images/textures/border/gold-wave.svg' ) ); ?>" alt="" loading="lazy">
 	</div>
 
-	<!-- ═══════════ 9. LOGO STRIP / PARTNERS ═══════════ -->
+	<!-- ═══════════ 10. LOGO STRIP / PARTNERS ═══════════ -->
 	<?php View::component( 'sections/logo-strip-section' ); ?>
 
-	<!-- ═══════════ 10. CLOSING CTA BANNER ═══════════ -->
+	<!-- ═══════════ 11. CLOSING CTA BANNER ═══════════ -->
 	<?php if ( ! empty( $intro['closing'] ) ) : ?>
 		<?php View::component( 'cta-banner/cta-banner', (array) $intro['closing'] ); ?>
 	<?php endif; ?>
 
-	<!-- ═══════════ 11. TRUST RIBBON ═══════════ -->
+	<!-- ═══════════ 12. TRUST RIBBON ═══════════ -->
 	<?php View::component( 'sections/trust-ribbon-section' ); ?>
 </div>

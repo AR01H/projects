@@ -20,22 +20,59 @@ $certs_data = (array) ( JsonFileProvider::read( 'data/content/certifications.jso
 $tag          = (string) ( $tag ?? ( $certs_data['tag'] ?? '' ) );
 $title        = (string) ( $title ?? ( $certs_data['title'] ?? '' ) );
 $body         = (string) ( $body ?? ( $certs_data['body'] ?? '' ) );
-$items        = (array) ( $items ?? ( $certs_data['items'] ?? array() ) );
+$raw_groups   = (array) ( $groups ?? ( $certs_data['groups'] ?? array() ) );
+$raw_items    = (array) ( $items ?? ( $certs_data['items'] ?? array() ) );
 $bg_watermark = (string) ( $bg_watermark ?? ( $certs_data['bg_watermark'] ?? '' ) );
 
-if ( empty( $items ) ) {
+// Build standardized slide structure from either groups or items
+$slides = array();
+
+if ( ! empty( $raw_groups ) ) {
+	foreach ( $raw_groups as $g_idx => $grp ) {
+		$g_master = (array) ( $grp['master'] ?? array() );
+		$g_items  = (array) ( $grp['items'] ?? array() );
+		$slides[] = array(
+			'name'   => (string) ( $grp['name'] ?? ( 'Group ' . ( $g_idx + 1 ) ) ),
+			'master' => $g_master,
+			'items'  => $g_items,
+		);
+	}
+} elseif ( ! empty( $raw_items ) ) {
+	$chunks = array_chunk( $raw_items, 4 );
+	$def_master = (array) ( $master ?? ( $certs_data['master'] ?? ( $raw_items[0] ?? array() ) ) );
+	foreach ( $chunks as $c_idx => $c_items ) {
+		$slides[] = array(
+			'name'   => 'Page ' . ( $c_idx + 1 ),
+			'master' => $def_master,
+			'items'  => $c_items,
+		);
+	}
+}
+
+if ( empty( $slides ) ) {
 	return;
 }
 
-// Split into slides of 4 cards each (2x2 grid per page)
-$slides         = array_chunk( $items, 4 );
-$first_item     = ! empty( $items[0] ) ? (array) $items[0] : array();
-$first_seal_img = (string) ( $first_item['seal_img'] ?? '' );
+$first_slide    = $slides[0];
+$master_item    = (array) ( $first_slide['master'] ?? array() );
+$first_seal_img = (string) ( $master_item['seal_img'] ?? '' );
 ?>
-<section class="section section--certs certs-vintage paper-rough" id="certifications">
+<section class="section section--certs section--dark-botanical certs-vintage" id="certifications">
+	<!-- 1. Ambient Animated Glowing Gradient Aura -->
+	<div class="certs-vintage__ambient-glow" aria-hidden="true"></div>
+
+	<!-- 2. Botanical Watermark with Gentle Parallax Drift -->
 	<?php if ( '' !== $bg_watermark ) : ?>
-		<div class="section-cane-watermark" style="background-image: url('<?php echo esc_url( UrlHelper::resolve( $bg_watermark ) ); ?>');" aria-hidden="true"></div>
+		<div class="certs-vintage__watermark section-cane-watermark" style="background-image: url('<?php echo esc_url( UrlHelper::resolve( $bg_watermark ) ); ?>');" aria-hidden="true"></div>
 	<?php endif; ?>
+
+	<!-- 3. Floating Vintage Botanical Light Particles -->
+	<div class="certs-vintage__particles" aria-hidden="true">
+		<span class="certs-particle certs-particle--1"></span>
+		<span class="certs-particle certs-particle--2"></span>
+		<span class="certs-particle certs-particle--3"></span>
+	</div>
+
 	<div class="container certs-vintage__container">
 		
 		<!-- 1. Section Header -->
@@ -43,10 +80,11 @@ $first_seal_img = (string) ( $first_item['seal_img'] ?? '' );
 		View::component(
 			'section-header/section-header',
 			array(
-				'tag'    => $tag,
-				'title'  => $title,
-				'sub'    => $body,
-				'ribbon' => true,
+				'tag'     => $tag,
+				'title'   => $title,
+				'sub'     => $body,
+				'variant' => 'dark',
+				'ribbon'  => true,
 			)
 		);
 		?>
@@ -57,36 +95,34 @@ $first_seal_img = (string) ( $first_item['seal_img'] ?? '' );
 			<!-- Left Side: Paginated Accreditation Cards Grid -->
 			<div class="certs-showcase-left">
 				<div class="certs-slider-container" id="certs-slider-container">
-					<?php foreach ( $slides as $slide_idx => $slide_cards ) : ?>
-						<div class="certs-slide <?php echo 0 === $slide_idx ? 'is-active' : ''; ?>" data-slide-index="<?php echo esc_attr( (string) $slide_idx ); ?>">
+					<?php foreach ( $slides as $slide_idx => $slide_data ) :
+						$slide_items  = (array) ( $slide_data['items'] ?? array() );
+						$slide_master = (array) ( $slide_data['master'] ?? array() );
+					?>
+						<div class="certs-slide <?php echo 0 === $slide_idx ? 'is-active' : ''; ?>" 
+							 data-slide-index="<?php echo esc_attr( (string) $slide_idx ); ?>"
+							 data-slide-name="<?php echo esc_attr( (string) ( $slide_data['name'] ?? '' ) ); ?>"
+							 data-slide-master='<?php echo esc_attr( (string) wp_json_encode( $slide_master ) ); ?>'>
 							<div class="certs-grid-2x2">
-								<?php foreach ( $slide_cards as $card_idx => $item ) :
-									$global_idx = ( $slide_idx * 4 ) + $card_idx;
+								<?php foreach ( $slide_items as $card_idx => $item ) :
+									$global_idx = ( $slide_idx * 100 ) + $card_idx;
 									$code       = (string) ( $item['code'] ?? 'CERT' );
 									$c_name     = (string) ( $item['title'] ?? '' );
 									$c_desc     = (string) ( $item['desc'] ?? '' );
-									$c_auth     = (string) ( $item['authority'] ?? '' );
 									$c_icon     = (string) ( $item['icon'] ?? 'star' );
 									$c_badge    = (string) ( $item['badge'] ?? '' );
-									$c_action   = (string) ( $item['action_label'] ?? '' );
-									$c_seal_img = UrlHelper::resolve( (string) ( $item['seal_img'] ?? '' ) );
-									$c_chk      = (array) ( $item['checklist'] ?? array() );
 								?>
 									<button type="button" 
-											class="cert-h-card frame--rough-cut<?php echo 0 === $global_idx ? ' is-active' : ''; ?>"
+											class="cert-h-card frame--rough-cut<?php echo ( 0 === $slide_idx && 0 === $card_idx ) ? ' is-active' : ''; ?>"
 											onclick="window.selectCertificationCard && window.selectCertificationCard(this)"
 											data-cert-idx="<?php echo esc_attr( (string) $global_idx ); ?>"
 											data-cert-code="<?php echo esc_attr( $code ); ?>"
 											data-cert-title="<?php echo esc_attr( $c_name ); ?>"
-											data-cert-authority="<?php echo esc_attr( $c_auth ); ?>"
 											data-cert-desc="<?php echo esc_attr( $c_desc ); ?>"
 											data-cert-icon="<?php echo esc_attr( $c_icon ); ?>"
-											data-cert-badge="<?php echo esc_attr( $c_badge ); ?>"
-											data-cert-action="<?php echo esc_attr( $c_action ); ?>"
-											data-cert-seal-img="<?php echo esc_url( $c_seal_img ); ?>"
-											data-cert-checklist='<?php echo esc_attr( (string) wp_json_encode( $c_chk ) ); ?>'>
+											data-cert-badge="<?php echo esc_attr( $c_badge ); ?>">
 										
-										<!-- Left Circle Icon Seal (No text clutter, perfectly centered) -->
+										<!-- Left Circle Icon Seal -->
 										<div class="cert-h-card__seal-wrap">
 											<div class="cert-h-card__seal">
 												<span class="cert-h-card__seal-icon"><?php echo IconHelper::render( $c_icon, '#f6d599', 24 ); ?></span>
@@ -95,10 +131,10 @@ $first_seal_img = (string) ( $first_item['seal_img'] ?? '' );
 
 										<!-- Right Details -->
 										<div class="cert-h-card__details">
-											<?php if ( '' !== $c_auth ) : ?>
+											<?php if ( '' !== $c_badge ) : ?>
 												<span class="cert-h-card__auth">
-													<span class="cert-h-card__check">✓</span>
-													<?php echo esc_html( $c_auth ); ?>
+													<span class="cert-h-card__check">✦</span>
+													<?php echo esc_html( $c_badge ); ?>
 												</span>
 											<?php endif; ?>
 											<h3 class="cert-h-card__title"><?php echo esc_html( $c_name ); ?></h3>
@@ -135,26 +171,50 @@ $first_seal_img = (string) ( $first_item['seal_img'] ?? '' );
 					
 					<!-- Top Wax Seal Stamp -->
 					<div class="certs-featured-logo-card__seal" id="cert-master-badge-box">
-						<span class="certs-seal-text" id="cert-master-badge-text"><?php echo esc_html( (string) ( $first_item['badge'] ?? '' ) ); ?></span>
+						<span class="certs-seal-icon">✦</span>
+						<span class="certs-seal-text" id="cert-master-badge-text"><?php echo esc_html( (string) ( $master_item['badge'] ?? 'VERIFIED' ) ); ?></span>
 					</div>
 
-					<!-- Master Accreditation Certifying Seal Image Container -->
-					<div class="certs-featured-logo-card__image-wrap" id="cert-master-image-wrap">
-						<img id="cert-master-img" 
-							src="<?php echo esc_url( UrlHelper::resolve( $first_seal_img ) ); ?>" 
-							alt="<?php echo esc_attr( (string) ( $first_item['title'] ?? '' ) ); ?>" 
-							class="certs-featured-logo-card__img" 
-							loading="lazy">
-					</div>
+					<!-- Master Accreditation Certifying Seal Image Container (Linked) -->
+					<?php $master_url = (string) ( $master_item['url'] ?? '#' ); ?>
+					<a id="cert-master-link" 
+					   href="<?php echo esc_url( UrlHelper::resolve( $master_url ) ); ?>" 
+					   target="_blank" 
+					   rel="noopener noreferrer" 
+					   class="certs-featured-logo-card__image-link" 
+					   title="<?php echo esc_attr( (string) ( $master_item['title'] ?? 'Verify Accreditation' ) ); ?>">
+						<div class="certs-featured-logo-card__image-wrap" id="cert-master-image-wrap">
+							<img id="cert-master-img" 
+								src="<?php echo esc_url( UrlHelper::resolve( $first_seal_img ) ); ?>" 
+								alt="<?php echo esc_attr( (string) ( $master_item['title'] ?? '' ) ); ?>" 
+								class="certs-featured-logo-card__img" 
+								loading="lazy">
+						</div>
+					</a>
 
-					<!-- Title & Subtitle Banner -->
+					<!-- Title, Authority & Verified Action Badge -->
 					<div class="certs-featured-logo-card__footer">
+						<?php if ( ! empty( $master_item['authority'] ) ) : ?>
+							<span class="certs-featured-logo-card__auth" id="cert-master-auth">
+								<span class="chk-icon">✓</span> <?php echo esc_html( (string) $master_item['authority'] ); ?>
+							</span>
+						<?php endif; ?>
+
 						<h3 class="certs-featured-logo-card__title" id="cert-master-title">
-							<?php echo esc_html( (string) ( $first_item['title'] ?? '' ) ); ?>
+							<?php echo esc_html( (string) ( $master_item['title'] ?? '' ) ); ?>
 						</h3>
-						<span class="certs-featured-logo-card__action-text" id="cert-master-action">
-							<?php echo esc_html( (string) ( $first_item['action_label'] ?? '' ) ); ?>
-						</span>
+
+						<div class="certs-featured-logo-card__action-wrap">
+							<a id="cert-master-action-link" 
+							   href="<?php echo esc_url( UrlHelper::resolve( $master_url ) ); ?>" 
+							   target="_blank" 
+							   rel="noopener noreferrer" 
+							   class="certs-featured-logo-card__action-btn">
+								<span class="certs-featured-logo-card__action-text" id="cert-master-action">
+									🛡️ <?php echo esc_html( (string) ( $master_item['action_label'] ?? '' ) ); ?> ↗
+								</span>
+							</a>
+						</div>
 					</div>
 
 				</div>
@@ -181,51 +241,12 @@ $first_seal_img = (string) ( $first_item['seal_img'] ?? '' );
 
 		// 2. Read Card Data Attributes
 		var title = card.getAttribute('data-cert-title') || '';
-		var authority = card.getAttribute('data-cert-authority') || '';
-		var desc = card.getAttribute('data-cert-desc') || '';
 		var badge = card.getAttribute('data-cert-badge') || '';
-		var action = card.getAttribute('data-cert-action') || '';
-		var sealImg = card.getAttribute('data-cert-seal-img') || '';
-		var checklistRaw = card.getAttribute('data-cert-checklist') || '';
 
-		// 3. Elements in Master Card
-		var masterCard = document.getElementById('cert-master-card');
+		// 3. Subtle highlight on master card badge if clicked
 		var badgeText = document.getElementById('cert-master-badge-text');
-		var masterImg = document.getElementById('cert-master-img');
-		var masterTitle = document.getElementById('cert-master-title');
-		var masterDesc = document.getElementById('cert-master-desc');
-		var masterChecklist = document.getElementById('cert-master-checklist');
-		var masterAction = document.getElementById('cert-master-action');
-
-		// Visual update transition
-		if (masterCard) {
-			masterCard.style.opacity = '0.4';
-			masterCard.style.transform = 'scale(0.99)';
-			setTimeout(function() {
-				masterCard.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
-				masterCard.style.opacity = '1';
-				masterCard.style.transform = 'scale(1)';
-			}, 50);
-		}
-
-		if (badgeText) badgeText.textContent = badge;
-		if (masterImg && sealImg) {
-			masterImg.src = sealImg;
-			masterImg.alt = title;
-		}
-		if (masterTitle) masterTitle.innerHTML = title;
-		if (masterDesc) masterDesc.textContent = desc;
-		if (masterAction) masterAction.textContent = action;
-
-		if (masterChecklist && checklistRaw) {
-			try {
-				var parsedChk = JSON.parse(checklistRaw);
-				if (Array.isArray(parsedChk) && parsedChk.length > 0) {
-					masterChecklist.innerHTML = parsedChk.map(function(item) {
-						return '<li><span class="chk-icon">✓</span> <span>' + item + '</span></li>';
-					}).join('');
-				}
-			} catch(e) {}
+		if (badgeText && badge) {
+			badgeText.textContent = badge;
 		}
 	};
 
@@ -263,12 +284,48 @@ $first_seal_img = (string) ( $first_item['seal_img'] ?? '' );
 				}
 			});
 
-			// Select the first card on the newly visible slide
+			// Sync the Master Card with the newly active group's master data
 			var activeSlideEl = slides[currentSlide];
 			if (activeSlideEl) {
+				var rawMaster = activeSlideEl.getAttribute('data-slide-master');
+				if (rawMaster) {
+					try {
+						var parsedMaster = JSON.parse(rawMaster);
+						if (parsedMaster && parsedMaster.title) {
+							if (masterCard) {
+								masterCard.style.opacity = '0.4';
+								masterCard.style.transform = 'scale(0.99)';
+								setTimeout(function() {
+									masterCard.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
+									masterCard.style.opacity = '1';
+									masterCard.style.transform = 'scale(1)';
+								}, 50);
+							}
+							if (badgeText && parsedMaster.badge) badgeText.textContent = parsedMaster.badge;
+							if (masterImg && parsedMaster.seal_img) {
+								masterImg.src = parsedMaster.seal_img;
+								masterImg.alt = parsedMaster.title;
+							}
+							if (masterAuth) masterAuth.innerHTML = parsedMaster.authority ? '<span class="chk-icon">✓</span> ' + parsedMaster.authority : '';
+							if (masterTitle) masterTitle.innerHTML = parsedMaster.title;
+							if (masterAction) masterAction.innerHTML = '🛡️ ' + (parsedMaster.action_label || '') + ' ↗';
+							if (masterLink && parsedMaster.url) {
+								masterLink.href = parsedMaster.url;
+								masterLink.title = parsedMaster.title;
+							}
+							if (masterActionLink && parsedMaster.url) {
+								masterActionLink.href = parsedMaster.url;
+							}
+						}
+					} catch(e) {}
+				}
+
+				// Highlight first card on slide
+				var allCards = section.querySelectorAll('.cert-h-card');
+				allCards.forEach(function(c) { c.classList.remove('is-active'); });
 				var firstCardOnSlide = activeSlideEl.querySelector('.cert-h-card');
 				if (firstCardOnSlide) {
-					window.selectCertificationCard(firstCardOnSlide);
+					firstCardOnSlide.classList.add('is-active');
 				}
 			}
 		}

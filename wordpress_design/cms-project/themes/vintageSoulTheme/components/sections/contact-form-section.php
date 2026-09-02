@@ -6,7 +6,9 @@
 
 use VintageSoul\DataProviders\JsonFileProvider;
 use VintageSoul\Services\SettingsService;
+use VintageSoul\Support\IconHelper;
 use VintageSoul\Support\UrlHelper;
+use VintageSoul\Support\View;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -23,8 +25,17 @@ $hours        = (string) ( $hours ?? ( $c_info['hours'] ?? SettingsService::open
 
 <section class="section contact-home-section" id="connect">
 	<div class="container">
-		<h2 class="events-vintage__title"><?php echo esc_html( (string) ( $contact_data['hero']['title'] ?? 'GET IN TOUCH' ) ); ?></h2>
-		<p class="events-vintage__sub" style="text-align:center; margin-bottom:24px;"><?php echo esc_html( (string) ( $contact_data['hero']['sub'] ?? 'Have questions, want to book us for an event, or looking to franchise? We\'d love to hear from you.' ) ); ?></p>
+		<?php
+		View::component(
+			'section-header/section-header',
+			array(
+				'tag'    => (string) ( $contact_data['hero']['tag'] ?? 'Let\'s Connect' ),
+				'title'  => (string) ( $contact_data['hero']['title'] ?? 'GET IN <em>Touch</em>' ),
+				'sub'    => (string) ( $contact_data['hero']['sub'] ?? 'Have questions, want to book us for an event, or looking to franchise? We\'d love to hear from you.' ),
+				'ribbon' => true,
+			)
+		);
+		?>
 
 		<div class="contact-home-grid">
 			<!-- Left: Form -->
@@ -106,7 +117,7 @@ $hours        = (string) ( $hours ?? ( $c_info['hours'] ?? SettingsService::open
 						<?php if ( '' !== $whatsapp ) : ?>
 							<div class="contact-info-item">
 								<div class="contact-info-item__icon-box">
-									<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f6d599" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+									<?php echo IconHelper::render( 'whatsapp', '#f6d599', 20 ); // phpcs:ignore ?>
 								</div>
 								<div class="contact-info-item__body">
 									<span class="contact-info-item__label">WHATSAPP CHAT</span>
@@ -173,7 +184,7 @@ $hours        = (string) ( $hours ?? ( $c_info['hours'] ?? SettingsService::open
 						<span>Instagram</span>
 					</a>
 					<a class="social-pill" href="<?php echo esc_url( SettingsService::whatsapp_url() ); ?>" target="_blank" rel="noopener" aria-label="WhatsApp">
-						<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+						<?php echo IconHelper::render( 'whatsapp', 'currentColor', 14 ); // phpcs:ignore ?>
 						<span>WhatsApp</span>
 					</a>
 				</div>

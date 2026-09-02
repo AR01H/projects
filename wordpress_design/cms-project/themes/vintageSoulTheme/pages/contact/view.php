@@ -125,7 +125,7 @@ $socials = (array) ( $contact_info['socials'] ?? array() );
 							$wa_url = (string) ( $contact_info['whatsapp_url'] ?? \VintageSoul\Services\SettingsService::whatsapp_url() );
 							if ( '' !== $wa_num ) : ?>
 								<li class="side-info-item">
-									<span class="side-info-item__icon"><?php echo IconHelper::get( 'phone', '#172b15', 18 ); // phpcs:ignore ?></span>
+									<span class="side-info-item__icon"><?php echo IconHelper::get( 'whatsapp', '#172b15', 18 ); // phpcs:ignore ?></span>
 									<div class="contact-card-v2__info">
 										<span class="contact-card-v2__label">WHATSAPP CHAT</span>
 										<a href="<?php echo esc_url( $wa_url ); ?>" target="_blank" rel="noopener"><?php echo esc_html( $wa_num ); ?></a>

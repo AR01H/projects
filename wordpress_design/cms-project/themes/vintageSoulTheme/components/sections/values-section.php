@@ -36,7 +36,7 @@ if ( empty( $items ) ) {
 				$v_title = (string) ( $val_item['title'] ?? '' );
 				$v_text  = (string) ( $val_item['text'] ?? '' );
 			?>
-				<div class="value-card">
+				<div class="value-card frame--rough-cut">
 					<span class="value-card__badge"><?php echo esc_html( $v_num ); ?></span>
 					<h3 class="value-card__title"><?php echo esc_html( $v_title ); ?></h3>
 					<p class="value-card__text"><?php echo esc_html( $v_text ); ?></p>

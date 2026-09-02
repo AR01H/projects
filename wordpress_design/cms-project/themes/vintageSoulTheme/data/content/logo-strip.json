@@ -5,7 +5,7 @@
     "marquee": true,
     "items": [
         { "name": "LONDON BOROUGH OF SUTTON", "image": "assets/images/partners/lb-sutton-council.svg", "subtitle": "Local Authority", "url": "https://www.sutton.gov.uk" },
-        { "name": "FOOD HYGIENE RATING", "image": "assets/images/partners/food-hygiene-5.svg", "subtitle": "5 Star Rating", "url": "https://ratings.food.gov.uk" },
+        { "name": "FOOD HYGIENE RATING", "image": "assets/images/certifications/food-hygiene-rating-5.png", "subtitle": "5 Star Rating", "url": "https://ratings.food.gov.uk" },
         { "name": "SOIL ASSOCIATION", "image": "assets/images/partners/soil-association.svg", "subtitle": "Organic Partner", "url": "https://www.soilassociation.org" },
         { "name": "BBC GOOD FOOD", "image": "assets/images/partners/bbc-good-food.svg", "subtitle": "Featured Stalls", "url": "https://www.bbcgoodfood.com" },
         { "name": "TIME OUT LONDON", "image": "assets/images/partners/timeout-london.svg", "subtitle": "Editor's Pick", "url": "https://www.timeout.com/london" },

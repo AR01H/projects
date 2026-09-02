@@ -68,15 +68,16 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 12px;
+  gap: 14px;
 }
 .site-footer__tagline {
   font-family: 'Dancing Script', cursive !important;
-  font-size: 19px !important;
-  color: #d6b88b !important;
+  font-size: 21px !important;
+  color: #f6d599 !important;
   line-height: 1.35 !important;
-  margin: 0 !important;
+  margin: 2px 0 0 !important;
   max-width: 320px;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.45) !important;
 }
 
 /* Social Buttons */
@@ -101,7 +102,6 @@
     0 4px 10px rgba(0, 0, 0, 0.4) !important;
   transition: all 0.25s ease !important;
   text-decoration: none !important;
-
 }
 .site-footer__social-btn svg {
   width: 18px !important;
@@ -128,16 +128,16 @@
 /* Headings */
 .site-footer__heading {
   font-family: 'Cinzel', serif !important;
-  font-size: 12px !important;
+  font-size: 13px !important;
   font-weight: 700 !important;
-  letter-spacing: 0.1em !important;
+  letter-spacing: 0.12em !important;
   text-transform: uppercase !important;
   color: #f6d599 !important;
   margin: 0 0 16px 0 !important;
   padding-bottom: 6px !important;
-  border-bottom: 1px dashed rgba(202, 160, 109, 0.4) !important;
+  border-bottom: 1px dashed rgba(202, 160, 109, 0.45) !important;
   display: inline-block;
-  min-width: 100px;
+  min-width: 110px;
 }
 
 /* Navigation Links */
@@ -147,40 +147,59 @@
   margin: 0 !important;
   display: flex !important;
   flex-direction: column !important;
-  gap: 8px !important;
+  gap: 9px !important;
 }
 .site-footer__links a {
   font-family: var(--font-family-base, 'EB Garamond', serif) !important;
-  font-size: 15px !important;
-  color: #d6b88b !important;
+  font-size: 15.5px !important;
+  color: #e5cdab !important;
   text-decoration: none !important;
-  transition: all 0.2s ease !important;
-  display: inline-block;
+  transition: all 0.22s ease !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.site-footer__links a::before {
+  content: "›";
+  color: #caa06d;
+  font-size: 14px;
+  font-weight: 700;
+  transition: transform 0.2s ease, color 0.2s ease;
 }
 .site-footer__links a:hover {
   color: #ffffff !important;
-  transform: translateX(3px);
-  text-shadow: 0 0 8px rgba(246, 213, 153, 0.4);
+  transform: translateX(4px);
+  text-shadow: 0 0 8px rgba(246, 213, 153, 0.45);
+}
+.site-footer__links a:hover::before {
+  color: #f6d599;
+  transform: translateX(2px);
 }
 
 /* Contact Details */
 .site-footer__contact-items {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 .site-footer__contact-row {
   display: flex;
   align-items: center;
   gap: 10px;
   font-family: var(--font-family-base, 'EB Garamond', serif) !important;
-  font-size: 14.5px !important;
-  color: #d6b88b !important;
+  font-size: 15px !important;
+  color: #e5cdab !important;
   text-decoration: none !important;
-  transition: color 0.2s ease;
+  transition: color 0.2s ease, transform 0.2s ease;
 }
 .site-footer__contact-row:hover {
-  color: #f6d599 !important;
+  color: #ffffff !important;
+  transform: translateX(3px);
+}
+.site-footer__contact-row:hover .site-footer__contact-icon {
+  background: #236332;
+  border-color: #f6d599;
+  box-shadow: 0 0 10px rgba(246, 213, 153, 0.45);
 }
 .site-footer__contact-icon {
   width: 28px;
@@ -202,89 +221,35 @@
   align-items: flex-start;
 }
 
-.footer-hygiene-badge {
-  background: #081d0f !important;
-  border: 1.5px solid #8e622d !important;
-  border-radius: 6px !important;
-  padding: 10px 14px !important;
-  box-shadow: inset 0 0 0 1px #caa06d, 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+.footer-hygiene-badge-link {
+  display: block !important;
+  max-width: 240px !important;
   width: 100% !important;
-  max-width: 260px !important;
-  box-sizing: border-box !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+  border: 1.5px solid #8e622d !important;
+  box-shadow:
+    inset 0 0 0 1px #caa06d,
+    0 4px 14px rgba(0, 0, 0, 0.35) !important;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease !important;
+  background: #ffffff !important;
+  text-decoration: none !important;
   margin-bottom: 12px !important;
-  transition: transform 0.2s ease, border-color 0.2s ease !important;
 }
 
-.footer-hygiene-badge:hover {
-  transform: translateY(-2px);
+.footer-hygiene-badge-link:hover {
+  transform: translateY(-2px) scale(1.02) !important;
   border-color: #f6d599 !important;
+  box-shadow:
+    inset 0 0 0 1.5px #caa06d,
+    0 8px 20px rgba(184, 134, 11, 0.3) !important;
 }
 
-.footer-hygiene-badge__header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 6px;
-}
-
-.fsa-title {
-  font-family: 'Cinzel', serif !important;
-  font-size: 9.5px !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.08em !important;
-  text-transform: uppercase !important;
-  color: #caa06d !important;
-}
-
-.footer-hygiene-badge__score-row {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  margin-bottom: 6px;
-}
-
-.fsa-num {
-  flex: 1;
-  text-align: center;
-  font-family: 'Cinzel', serif;
-  font-size: 11px;
-  font-weight: 700;
-  color: rgba(255, 255, 255, 0.35);
-  background: rgba(255, 255, 255, 0.08);
-  padding: 3px 0;
-  border-radius: 3px;
-  border: 1px solid rgba(142, 98, 45, 0.3);
-}
-
-.fsa-num--active {
-  background: linear-gradient(180deg, #1c7a36 0%, #114e21 100%) !important;
-  color: #ffffff !important;
-  border: 1.5px solid #55e67e !important;
-  box-shadow: 0 0 8px rgba(85, 230, 126, 0.6) !important;
-  font-size: 13px !important;
-  font-weight: 900 !important;
-}
-
-.footer-hygiene-badge__verdict {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-top: 1px dashed rgba(202, 160, 109, 0.3);
-  padding-top: 4px;
-}
-
-.fsa-rating-text {
-  font-family: 'Cinzel', serif;
-  font-size: 11px;
-  font-weight: 700;
-  color: #55e67e;
-  letter-spacing: 0.06em;
-}
-
-.fsa-star-icon {
-  font-size: 11px;
-  color: #f6d599;
-  letter-spacing: 1px;
+.footer-hygiene-badge__img {
+  width: 100% !important;
+  height: auto !important;
+  display: block !important;
+  object-fit: contain !important;
 }
 
 .footer-accreditations-row {

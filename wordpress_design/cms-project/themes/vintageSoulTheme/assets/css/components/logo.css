@@ -100,16 +100,25 @@
 .logo--footer {
   display: inline-flex !important;
   align-items: center !important;
+  text-decoration: none !important;
 }
+
 .logo--footer img,
 .logo--footer .logo__mark {
-  max-height: 115px !important;
+  max-height: 165px !important;
   width: auto !important;
   object-fit: contain !important;
-  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.5)) !important;
-  -webkit-filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.5)) !important;
-  transition: transform 0.25s ease !important;
+  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.6)) !important;
+  -webkit-filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.6)) !important;
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), filter 0.28s ease !important;
 }
+
+.logo--footer:hover img,
+.logo--footer:hover .logo__mark {
+  transform: scale(1.05) translateY(-2px) !important;
+  filter: drop-shadow(0 8px 20px rgba(246, 213, 153, 0.35)) drop-shadow(0 4px 10px rgba(0, 0, 0, 0.7)) !important;
+}
+
 .logo--footer .logo__title {
   color: #f6d599 !important;
 }
@@ -120,7 +129,7 @@
 @media (max-width: 768px) {
   .logo--footer img,
   .logo--footer .logo__mark {
-    max-height: 90px !important;
+    max-height: 130px !important;
   }
   .logo__brand-icon {
     width: 26px;

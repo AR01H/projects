@@ -41,7 +41,7 @@ if ( empty( $services ) ) {
 				$srv_link  = (string) ( $srv['btn_link'] ?? 'contact' );
 				$srv_url   = 0 === strpos( $srv_link, '/' ) || 0 === strpos( $srv_link, 'http' ) ? $srv_link : RouteService::url( $srv_link );
 			?>
-				<div class="service-card">
+				<div class="service-card frame--rough-cut">
 					<div class="service-card__icon-wrap">
 						<?php echo IconHelper::get( $srv_icon, '#f3d49d', 28 ); // phpcs:ignore ?>
 					</div>

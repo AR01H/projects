@@ -84,38 +84,46 @@ if ( empty( $items ) ) {
 
 <!-- Interactive Category Filter Script -->
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-	var filterButtons = document.querySelectorAll('[data-filter-category]');
-	var cards = document.querySelectorAll('[data-use-category]');
-	if (!filterButtons.length || !cards.length) return;
+(function() {
+	function initUsesFilter() {
+		var filterButtons = document.querySelectorAll('[data-filter-category]');
+		var cards = document.querySelectorAll('[data-use-category]');
+		if (!filterButtons.length || !cards.length) return;
 
-	filterButtons.forEach(function(btn) {
-		btn.addEventListener('click', function() {
-			var cat = this.getAttribute('data-filter-category');
-			
-			filterButtons.forEach(function(b) {
-				b.classList.remove('is-active');
-				b.setAttribute('aria-selected', 'false');
-			});
-			this.classList.add('is-active');
-			this.setAttribute('aria-selected', 'true');
+		filterButtons.forEach(function(btn) {
+			btn.addEventListener('click', function() {
+				var cat = this.getAttribute('data-filter-category');
+				
+				filterButtons.forEach(function(b) {
+					b.classList.remove('is-active');
+					b.setAttribute('aria-selected', 'false');
+				});
+				this.classList.add('is-active');
+				this.setAttribute('aria-selected', 'true');
 
-			cards.forEach(function(card) {
-				var cardCat = card.getAttribute('data-use-category');
-				if (cat === 'all' || cardCat === cat) {
-					card.style.display = '';
-					card.style.opacity = '0';
-					card.style.transform = 'translateY(8px)';
-					setTimeout(function() {
-						card.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
-						card.style.opacity = '1';
-						card.style.transform = 'translateY(0)';
-					}, 20);
-				} else {
-					card.style.display = 'none';
-				}
+				cards.forEach(function(card) {
+					var cardCat = card.getAttribute('data-use-category');
+					if (cat === 'all' || cardCat === cat) {
+						card.classList.remove('is-hidden');
+						card.style.opacity = '0';
+						card.style.transform = 'translateY(8px)';
+						setTimeout(function() {
+							card.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
+							card.style.opacity = '1';
+							card.style.transform = 'translateY(0)';
+						}, 20);
+					} else {
+						card.classList.add('is-hidden');
+					}
+				});
 			});
 		});
-	});
-});
+	}
+
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', initUsesFilter);
+	} else {
+		initUsesFilter();
+	}
+})();
 </script>

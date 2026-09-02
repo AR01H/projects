@@ -12,12 +12,20 @@ $ticker_data = (array) ( JsonFileProvider::read( 'data/content/ticker.json' ) ??
 
 $ticker_items = (array) ( $ticker_data['items'] ?? array() );
 $labels       = (array) ( $footer_data['labels'] ?? array() );
+$quick_links  = (array) ( $footer_data['quick_links'] ?? array() );
+$standards    = (array) ( $footer_data['standards'] ?? array() );
 
-$phone   = (string) ( $phone ?? SettingsService::phone() );
-$email   = (string) ( $email ?? SettingsService::email() );
-$address = (string) ( $address ?? SettingsService::address() );
-$tagline = (string) ( $tagline ?? ( $footer_data['brand']['tagline'] ?? SettingsService::tagline_fallback() ) );
-$year    = gmdate( 'Y' );
+$phone             = (string) ( $phone ?? SettingsService::phone() );
+$email             = (string) ( $email ?? SettingsService::email() );
+$address           = (string) ( $address ?? SettingsService::address() );
+$tagline           = (string) ( $tagline ?? ( $footer_data['brand']['tagline'] ?? SettingsService::tagline_fallback() ) );
+$watermark_img     = (string) ( $footer_data['brand']['watermark'] ?? 'assets/images/backgrounds/pure_sugarcane_forest_trees_engraving.jpg' );
+$standards_heading = (string) ( $standards['heading'] ?? ( $labels['standards_heading'] ?? 'FOOD HYGIENE & TRUST' ) );
+$standards_img     = (string) ( $standards['badge_img'] ?? 'assets/images/certifications/food-hygiene-rating-5.png' );
+$standards_alt     = (string) ( $standards['alt'] ?? 'Food Hygiene Rating 5 — Very Good' );
+$standards_title   = (string) ( $standards['title'] ?? 'Verify 5-Star Food Hygiene Rating' );
+$standards_url     = (string) ( $standards['url'] ?? 'https://ratings.food.gov.uk/' );
+$year              = gmdate( 'Y' );
 ?>
 <!-- Pre-Footer Ticker Ribbon -->
 <?php if ( ! empty( $ticker_items ) ) : ?>
@@ -39,7 +47,7 @@ $year    = gmdate( 'Y' );
 	<div class="site-footer__gold-bar" aria-hidden="true"></div>
 
 	<!-- Sugarcane Stalk Botanical Watermark on Right Edge -->
-	<div class="site-footer__cane-watermark" aria-hidden="true" style="background-image: url('<?php echo esc_url( UrlHelper::resolve( 'assets/images/backgrounds/pure_sugarcane_forest_trees_engraving.jpg' ) ); ?>');"></div>
+	<div class="site-footer__cane-watermark" aria-hidden="true" style="background-image: url('<?php echo esc_url( UrlHelper::resolve( $watermark_img ) ); ?>');"></div>
 
 	<div class="container site-footer__container">
 		<div class="site-footer__grid">
@@ -64,18 +72,20 @@ $year    = gmdate( 'Y' );
 				</div>
 			</div>
 
-			<!-- Column 2: Quick Links -->
+			<!-- Column 2: Quick Links (Dynamic from JSON) -->
 			<div class="site-footer__col">
 				<h3 class="site-footer__heading"><?php echo esc_html( (string) ( $labels['quick_links_heading'] ?? 'QUICK LINKS' ) ); ?></h3>
-				<ul class="site-footer__links">
-					<li><a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a></li>
-					<li><a href="<?php echo esc_url( home_url( '/history' ) ); ?>">All About Cane</a></li>
-					<li><a href="<?php echo esc_url( home_url( '/about' ) ); ?>">About Us</a></li>
-					<li><a href="<?php echo esc_url( home_url( '/events' ) ); ?>">Events & Catering</a></li>
-					<li><a href="<?php echo esc_url( home_url( '/franchise' ) ); ?>">Franchise</a></li>
-					<li><a href="<?php echo esc_url( home_url( '/blog' ) ); ?>">The Cane Chronicle</a></li>
-					<li><a href="<?php echo esc_url( home_url( '/contact' ) ); ?>">Contact</a></li>
-				</ul>
+				<?php if ( ! empty( $quick_links ) ) : ?>
+					<ul class="site-footer__links">
+						<?php foreach ( $quick_links as $q_link ) :
+							$q_label = (string) ( $q_link['label'] ?? '' );
+							$q_path  = (string) ( $q_link['url'] ?? '/' );
+							$q_url   = 0 === strpos( $q_path, 'http' ) ? $q_path : home_url( $q_path );
+						?>
+							<li><a href="<?php echo esc_url( $q_url ); ?>"><?php echo esc_html( $q_label ); ?></a></li>
+						<?php endforeach; ?>
+					</ul>
+				<?php endif; ?>
 			</div>
 
 			<!-- Column 3: Direct Contact -->
@@ -109,29 +119,22 @@ $year    = gmdate( 'Y' );
 				</div>
 			</div>
 
-			<!-- Column 4: Food Hygiene & Standards (Right Side) -->
-			<div class="site-footer__col site-footer__col--standards">
-				<h3 class="site-footer__heading">FOOD HYGIENE & TRUST</h3>
-				
-				<!-- Official 5-Star Food Hygiene Stamp -->
-				<div class="footer-hygiene-badge">
-					<div class="footer-hygiene-badge__header">
-						<span class="fsa-title">FOOD HYGIENE RATING</span>
-					</div>
-					<div class="footer-hygiene-badge__score-row">
-						<span class="fsa-num">0</span>
-						<span class="fsa-num">1</span>
-						<span class="fsa-num">2</span>
-						<span class="fsa-num">3</span>
-						<span class="fsa-num">4</span>
-						<span class="fsa-num fsa-num--active">5</span>
-					</div>
-					<div class="footer-hygiene-badge__verdict">
-						<span class="fsa-rating-text">VERY GOOD</span>
-						<span class="fsa-star-icon">★★★★★</span>
-					</div>
+			<!-- Column 4: Food Hygiene & Standards (Right Side - Dynamic from JSON) -->
+			<?php if ( '' !== $standards_img ) : ?>
+				<div class="site-footer__col site-footer__col--standards">
+					<h3 class="site-footer__heading"><?php echo esc_html( $standards_heading ); ?></h3>
+					
+					<!-- Official 5-Star Food Hygiene Stamp Image -->
+					<a href="<?php echo esc_url( $standards_url ); ?>" target="_blank" rel="noopener noreferrer" class="footer-hygiene-badge-link" title="<?php echo esc_attr( $standards_title ); ?>">
+						<img src="<?php echo esc_url( UrlHelper::resolve( $standards_img ) ); ?>" 
+							 alt="<?php echo esc_attr( $standards_alt ); ?>" 
+							 class="footer-hygiene-badge__img" 
+							 width="260" 
+							 height="110" 
+							 loading="lazy">
+					</a>
 				</div>
-			</div>
+			<?php endif; ?>
 
 		</div>
 	</div>

@@ -2,22 +2,32 @@
     "_source": "Footer content wired to components/footer/footer.php via FooterController. Site contact & socials are read from data/content/contact-info.json.",
 
     "labels": {
-        "quick_links_heading": "Quick Links",
-        "services_heading": "Our Services",
-        "contact_heading": "Contact Us",
-        "follow_heading": "Follow Us",
+        "quick_links_heading": "QUICK LINKS",
+        "contact_heading": "CONTACT US",
+        "standards_heading": "FOOD HYGIENE & TRUST",
         "rights_text": "All Rights Reserved."
     },
     "brand": {
         "tagline": "Freshly Pressed. Naturally Refreshing. Always Made With Care.",
-        "bg_image": "assets/images/backgrounds/minibackground.webp"
+        "bg_image": "assets/images/backgrounds/minibackground.webp",
+        "watermark": "assets/images/backgrounds/pure_sugarcane_forest_trees_engraving.jpg"
     },
-    "services": [
-        { "label": "Events", "url": "/#events" },
-        { "label": "Catering", "url": "/#events" },
-        { "label": "Home Delivery", "url": "/#order" },
-        { "label": "Bulk Orders", "url": "/#order" }
+    "quick_links": [
+        { "label": "Home", "url": "/" },
+        { "label": "All About Cane", "url": "/history" },
+        { "label": "About Us", "url": "/about" },
+        { "label": "Events & Catering", "url": "/events" },
+        { "label": "Franchise", "url": "/franchise" },
+        { "label": "The Cane Chronicle", "url": "/blog" },
+        { "label": "Contact", "url": "/contact" }
     ],
+    "standards": {
+        "heading": "FOOD HYGIENE & TRUST",
+        "badge_img": "assets/images/certifications/food-hygiene-rating-5.png",
+        "alt": "Food Hygiene Rating 5 — Very Good",
+        "title": "Verify 5-Star Food Hygiene Rating",
+        "url": "https://ratings.food.gov.uk/"
+    },
     "bottom_links": [
         { "label": "Privacy Policy", "url": "/privacy-policy/" },
         { "label": "Terms & Conditions", "url": "/terms/" }

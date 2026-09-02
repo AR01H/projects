@@ -105,13 +105,6 @@ $deckled_edge_url = UrlHelper::resolve( 'assets/images/textures/border/deckled-e
 	</div>
 <?php endif; ?>
 
-<?php if ( ! empty( $certs['items'] ) ) : ?>
-	<?php View::component( 'sections/certifications-section', $certs ); ?>
-	<div class="deckled-divider" aria-hidden="true">
-		<img src="<?php echo esc_url( $deckled_edge_url ); ?>" alt="" loading="lazy">
-	</div>
-<?php endif; ?>
-
 <?php
 // ══════════════════════════════════════════════════════════════════════════
 // 4. SOCIAL PROOF & REVIEWS
@@ -165,6 +158,13 @@ $deckled_edge_url = UrlHelper::resolve( 'assets/images/textures/border/deckled-e
 ?>
 <?php if ( ! empty( $faqs['items'] ) ) : ?>
 	<?php View::component( 'sections/faq-section', $faqs ); ?>
+	<div class="deckled-divider" aria-hidden="true">
+		<img src="<?php echo esc_url( $deckled_edge_url ); ?>" alt="" loading="lazy">
+	</div>
+<?php endif; ?>
+
+<?php if ( ! empty( $certs['groups'] ) || ! empty( $certs['items'] ) ) : ?>
+	<?php View::component( 'sections/certifications-section', $certs ); ?>
 	<div class="deckled-divider" aria-hidden="true">
 		<img src="<?php echo esc_url( $deckled_edge_url ); ?>" alt="" loading="lazy">
 	</div>
