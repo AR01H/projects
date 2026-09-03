@@ -36,21 +36,21 @@
 .step-chain-card {
   position: relative;
   background: linear-gradient(135deg, #fdf6ec 0%, #f6e4cc 100%);
-  border: 1.5px solid #8e622d;
+  border: 1.5px solid var(--vintage-bark-border, #8e622d);
   border-radius: 6px;
   padding: 22px 18px 20px;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-  box-shadow: inset 0 0 0 1px #caa06d, 0 4px 14px rgba(42, 26, 12, 0.12);
+  box-shadow: inset 0 0 0 1px var(--vintage-gold-inner, #caa06d), 0 4px 14px rgba(42, 26, 12, 0.12);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
   box-sizing: border-box;
 }
 
 .step-chain-card:hover {
   transform: translateY(-4px);
-  box-shadow: inset 0 0 0 1px #d49842, 0 8px 24px rgba(42, 26, 12, 0.22);
+  box-shadow: inset 0 0 0 1px var(--vintage-gold-amber, #d49842), 0 8px 24px rgba(42, 26, 12, 0.22);
 }
 
 .step-chain-card__header {
@@ -67,13 +67,13 @@
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  background: linear-gradient(180deg, #184b25 0%, #0d2f16 100%);
-  color: #f6d599;
-  border: 1.5px solid #8e622d;
+  background: linear-gradient(180deg, var(--client-brand-rich, #184b25) 0%, var(--client-brand-deep, #0d2f16) 100%);
+  color: var(--vintage-gold-bright, #f6d599);
+  border: 1.5px solid var(--vintage-bark-border, #8e622d);
   border-radius: 20px;
   padding: 3px 12px;
   font-family: 'Cinzel', serif;
-  box-shadow: inset 0 0 0 1px #caa06d, 0 2px 6px rgba(0, 0, 0, 0.25);
+  box-shadow: inset 0 0 0 1px var(--vintage-gold-inner, #caa06d), 0 2px 6px rgba(0, 0, 0, 0.25);
 }
 
 .step-chain-card__step-text {
@@ -104,8 +104,8 @@
   height: 64px;
   border-radius: 50%;
   overflow: hidden;
-  border: 1.5px solid #8e622d;
-  box-shadow: inset 0 0 0 1px #caa06d;
+  border: 1.5px solid var(--vintage-bark-border, #8e622d);
+  box-shadow: inset 0 0 0 1px var(--vintage-gold-inner, #caa06d);
 }
 
 .step-chain-card__media img {
@@ -130,7 +130,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: #172b15;
+  color: var(--client-brand-moss, #172b15);
   margin: 0;
   line-height: 1.3;
 }
@@ -160,15 +160,15 @@
     width: 28px !important;
     height: 28px !important;
     border-radius: 50% !important;
-    background: linear-gradient(180deg, #fdf8ef 0%, #edd8ba 100%) !important;
-    border: 1.5px solid #8e622d !important;
-    color: #172b15 !important;
+    background: linear-gradient(180deg, var(--vintage-parchment-warm, #fdf8ef) 0%, #edd8ba 100%) !important;
+    border: 1.5px solid var(--vintage-bark-border, #8e622d) !important;
+    color: var(--client-brand-moss, #172b15) !important;
     font-size: 14px !important;
     font-weight: 800 !important;
     line-height: 1 !important;
     z-index: 10 !important;
     box-shadow:
-      inset 0 0 0 1px #caa06d,
+      inset 0 0 0 1px var(--vintage-gold-inner, #caa06d),
       0 3px 8px rgba(42, 26, 12, 0.25) !important;
     pointer-events: none !important;
   }

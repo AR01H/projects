@@ -28,18 +28,18 @@
     url("../../images/textures/roughness/roughness-a.svg"),
     radial-gradient(ellipse 100% 80% at 50% 20%, #1e5a2f 0%, #0d2c16 55%, #05180b 100%) !important;
   background-size: 160px 160px, 100% 100% !important;
-  border: 2px solid #caa06d !important;
+  border: 2px solid var(--vintage-gold-inner, #caa06d) !important;
   box-shadow:
-    inset 0 0 0 1.5px #8e622d,
+    inset 0 0 0 1.5px var(--vintage-bark-border, #8e622d),
     0 16px 48px rgba(0, 0, 0, 0.45) !important;
-  color: #fbf2e6 !important;
+  color: var(--vintage-parchment-light, #fbf2e6) !important;
 }
 
 .cta-banner-box--dark .cta-banner__title {
   font-family: 'Cinzel', 'Playfair Display', Georgia, serif !important;
   font-size: clamp(24px, 4vw, 36px) !important;
   font-weight: 700 !important;
-  color: #f6d599 !important;
+  color: var(--vintage-gold-bright, #f6d599) !important;
   text-transform: uppercase !important;
   letter-spacing: 0.08em !important;
   margin: 0 0 16px !important;
@@ -67,19 +67,19 @@
 
 /* Light Parchment CTA Box */
 .cta-banner-box--light {
-  background: linear-gradient(135deg, #fcf2e3 0%, #f6e0c3 100%) !important;
-  border: 2px solid #8e622d !important;
+  background: linear-gradient(135deg, var(--vintage-parchment-light, #fcf2e3) 0%, var(--paper-100, #f6e0c3) 100%) !important;
+  border: 2px solid var(--vintage-bark-border, #8e622d) !important;
   box-shadow:
     inset 0 0 0 1.5px rgba(202, 160, 109, 0.4),
     0 12px 32px rgba(0, 0, 0, 0.15) !important;
-  color: #172b15 !important;
+  color: var(--client-brand-moss, #172b15) !important;
 }
 
 .cta-banner-box--light .cta-banner__title {
   font-family: 'Cinzel', 'Playfair Display', Georgia, serif !important;
   font-size: clamp(24px, 4vw, 36px) !important;
   font-weight: 700 !important;
-  color: #172b15 !important;
+  color: var(--client-brand-moss, #172b15) !important;
   text-transform: uppercase !important;
   letter-spacing: 0.08em !important;
   margin: 0 0 16px !important;
@@ -87,7 +87,7 @@
 }
 
 .cta-banner-box--light .cta-banner__title em {
-  color: #8e622d !important;
+  color: var(--vintage-bark-border, #8e622d) !important;
   font-style: italic !important;
 }
 

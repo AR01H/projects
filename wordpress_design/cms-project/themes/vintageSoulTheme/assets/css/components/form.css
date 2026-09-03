@@ -211,16 +211,16 @@ input, textarea, select {
 .contact-detail-card,
 .contact-method-card {
 
-  border: 2px solid #8e622d !important;
+  border: 2px solid var(--vintage-bark-border, #8e622d) !important;
   border-radius: 8px !important;
-  box-shadow: inset 0 0 0 1.5px #caa06d, 0 8px 24px rgba(42, 26, 12, 0.16) !important;
+  box-shadow: inset 0 0 0 1.5px var(--vintage-gold-inner, #caa06d), 0 8px 24px rgba(42, 26, 12, 0.16) !important;
   transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease !important;
 }
 
 .contact-card:hover,
 .contact-form-card:hover,
 .contact-info-card:hover {
-  border-color: #f6d599 !important;
-  box-shadow: inset 0 0 0 1.5px #f6d599, 0 12px 32px rgba(42, 26, 12, 0.24) !important;
+  border-color: var(--vintage-gold-bright, #f6d599) !important;
+  box-shadow: inset 0 0 0 1.5px var(--vintage-gold-bright, #f6d599), 0 12px 32px rgba(42, 26, 12, 0.24) !important;
   transform: translateY(-2px) !important;
 }

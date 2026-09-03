@@ -17,9 +17,9 @@
   top: 0 !important;
   margin-bottom: 0 !important;
   background: linear-gradient(180deg, #fdf8ee 0%, #f6e6cf 100%) !important;
-  border-bottom: 1.5px solid #8e622d !important;
+  border-bottom: 1.5px solid var(--vintage-bark-border, #8e622d) !important;
   box-shadow:
-    inset 0 -1px 0 0 #caa06d,
+    inset 0 -1px 0 0 var(--vintage-gold-inner, #caa06d),
     inset 0 1px 0 0 rgba(255, 255, 255, 0.8),
     0 6px 24px rgba(42, 26, 12, 0.18) !important;
   z-index: 10000 !important;
@@ -153,7 +153,7 @@ body.admin-bar .site-header.is-scrolled {
   align-items: center !important;
   gap: 8px !important;
   padding: 8px 18px !important;
-  color: #f6d599 !important;
+  color: var(--vintage-gold-bright, #f6d599) !important;
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
@@ -167,11 +167,11 @@ body.admin-bar .site-header.is-scrolled {
   content: "" !important;
   position: absolute !important;
   inset: 0 !important;
-  background: linear-gradient(135deg, #11381b 0%, #1c522b 100%) !important;
-  border: 1.5px solid #8e622d !important;
+  background: linear-gradient(135deg, var(--client-brand-dark, #11381b) 0%, #1c522b 100%) !important;
+  border: 1.5px solid var(--vintage-bark-border, #8e622d) !important;
   border-radius: 4px !important;
   box-shadow:
-    inset 0 0 0 1px #caa06d,
+    inset 0 0 0 1px var(--vintage-gold-inner, #caa06d),
     0 3px 8px rgba(0, 0, 0, 0.25) !important;
   filter: url(#rough-button-cut-sm) !important;
   -webkit-filter: url(#rough-button-cut-sm) !important;
@@ -185,10 +185,10 @@ body.admin-bar .site-header.is-scrolled {
 }
 
 .header-cta-button:hover::before {
-  background: linear-gradient(135deg, #184b25 0%, #0d2a14 100%) !important;
-  border-color: #f6d599 !important;
+  background: linear-gradient(135deg, var(--client-brand-rich, #184b25) 0%, #0d2a14 100%) !important;
+  border-color: var(--vintage-gold-bright, #f6d599) !important;
   box-shadow:
-    inset 0 0 0 1px #f6d599,
+    inset 0 0 0 1px var(--vintage-gold-bright, #f6d599),
     0 6px 16px rgba(17, 56, 27, 0.45) !important;
 }
 
@@ -215,7 +215,7 @@ body.admin-bar .site-header.is-scrolled {
   font-weight: 700 !important;
   letter-spacing: 0.12em !important;
   text-transform: uppercase !important;
-  color: #f6d599 !important;
+  color: var(--vintage-gold-bright, #f6d599) !important;
 }
 .header-cta-button:hover .header-cta__line1 {
   color: #ffffff !important;
@@ -223,7 +223,7 @@ body.admin-bar .site-header.is-scrolled {
 .header-cta__line2 {
   font-family: var(--font-family-base, 'EB Garamond', serif) !important;
   font-size: 9.5px !important;
-  color: #d49842 !important;
+  color: var(--vintage-gold-amber, #d49842) !important;
   letter-spacing: 0.04em !important;
   text-transform: uppercase !important;
 }
@@ -305,12 +305,12 @@ body.admin-bar .site-header.is-scrolled {
   background: linear-gradient(
     90deg,
     transparent 0%,
-    #8e622d 8%,
-    #caa06d 22%,
-    #8e622d 42%,
-    #d49842 58%,
-    #8e622d 74%,
-    #caa06d 90%,
+    var(--vintage-bark-border, #8e622d) 8%,
+    var(--vintage-gold-inner, #caa06d) 22%,
+    var(--vintage-bark-border, #8e622d) 42%,
+    var(--vintage-gold-amber, #d49842) 58%,
+    var(--vintage-bark-border, #8e622d) 74%,
+    var(--vintage-gold-inner, #caa06d) 90%,
     transparent 100%
   ) !important;
   filter: url(#rough-button-cut-sm) !important;
@@ -368,16 +368,16 @@ body.admin-bar .site-header.is-scrolled {
   align-items: center !important;
   gap: 8px !important;
   padding: 5px 12px 5px 10px !important;
-  background: linear-gradient(135deg, #fdf8ef 0%, #f6e4cb 100%) !important;
-  border: 1.5px solid #8e622d !important;
+  background: linear-gradient(135deg, var(--vintage-parchment-warm, #fdf8ef) 0%, #f6e4cb 100%) !important;
+  border: 1.5px solid var(--vintage-bark-border, #8e622d) !important;
   border-radius: 20px !important;
   box-shadow:
-    inset 0 0 0 1px #caa06d,
+    inset 0 0 0 1px var(--vintage-gold-inner, #caa06d),
     inset 0 1px 0 rgba(255, 255, 255, 0.8),
     0 2px 8px rgba(42, 26, 12, 0.12) !important;
   font-family: var(--font-family-display, 'Cinzel', serif) !important;
   font-size: 11px !important;
-  color: #172b15 !important;
+  color: var(--client-brand-moss, #172b15) !important;
   line-height: 1 !important;
   white-space: nowrap !important;
   transition: all 0.25s ease !important;
@@ -428,7 +428,7 @@ body.admin-bar .site-header.is-scrolled {
 }
 
 .vst-live-badge__divider {
-  color: #caa06d !important;
+  color: var(--vintage-gold-inner, #caa06d) !important;
   font-size: 10px !important;
   opacity: 0.75 !important;
 }
@@ -438,7 +438,7 @@ body.admin-bar .site-header.is-scrolled {
   font-size: 11.5px !important;
   font-weight: 800 !important;
   letter-spacing: 0.05em !important;
-  color: #11381b !important;
+  color: var(--client-brand-dark, #11381b) !important;
 }
 
 @media (max-width: 991px) {

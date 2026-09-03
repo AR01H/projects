@@ -15,7 +15,7 @@ body.page-about,
   background-color: #f5e6d0 !important;
   background-image:
     url("../../images/textures/paper/paper-fiber-a.svg"),
-    radial-gradient(ellipse at 50% 0%, #fdf8ef 0%, #f5e6d0 55%, #edd5ad 100%) !important;
+    radial-gradient(ellipse at 50% 0%, var(--vintage-parchment-warm, #fdf8ef) 0%, #f5e6d0 55%, var(--vintage-parchment-deep, #edd5ad) 100%) !important;
   background-size: 300px 300px, 100% 100% !important;
   background-repeat: repeat, no-repeat !important;
   color: #2a1a0c !important;
@@ -54,8 +54,8 @@ body.page-about,
   width: 100%;
   padding: 48px 20px 40px;
   text-align: center;
-  background: linear-gradient(180deg, #fbf2e6 0%, #f4dcc0 100%);
-  border-bottom: 2px solid #8e622d;
+  background: linear-gradient(180deg, var(--vintage-parchment-light, #fbf2e6) 0%, var(--vintage-parchment-mid, #f4dcc0) 100%);
+  border-bottom: 2px solid var(--vintage-bark-border, #8e622d);
   box-shadow: inset 0 -6px 18px rgba(142, 98, 45, 0.10);
   box-sizing: border-box;
   overflow: hidden;
@@ -94,7 +94,7 @@ body.page-about,
   font-weight: 400;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: #172b15;
+  color: var(--client-brand-moss, #172b15);
   margin: 0 0 8px;
 }
 .about-hero__title::before,
@@ -103,11 +103,11 @@ body.page-about,
   display: inline-block;
   width: 44px;
   height: 2px;
-  background: linear-gradient(90deg, transparent, #8e622d);
+  background: linear-gradient(90deg, transparent, var(--vintage-bark-border, #8e622d));
   flex-shrink: 0;
 }
 .about-hero__title::after {
-  background: linear-gradient(90deg, #8e622d, transparent);
+  background: linear-gradient(90deg, var(--vintage-bark-border, #8e622d), transparent);
 }
 .about-hero__tag {
   font-family: 'Dancing Script', cursive, serif;
@@ -131,7 +131,7 @@ body.page-about,
   font-size: clamp(22px, 4.5vw, 30px);
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: #172b15;
+  color: var(--client-brand-moss, #172b15);
   margin: 0 0 6px;
   text-align: center;
 }
@@ -188,9 +188,9 @@ body.page-about,
   position: relative;
   border-radius: 6px;
   overflow: hidden;
-  border: 2px solid #8e622d;
+  border: 2px solid var(--vintage-bark-border, #8e622d);
   box-shadow:
-    inset 0 0 0 3px #caa06d,
+    inset 0 0 0 3px var(--vintage-gold-inner, #caa06d),
     0 6px 22px rgba(42, 26, 12, 0.22);
   max-width: 600px;
   margin: 0 auto;
@@ -270,9 +270,9 @@ body.page-about,
   background:
     url("../../images/textures/paper/paper-fiber-a.svg"),
     linear-gradient(145deg, #fdf9f1 0%, #f6e6d1 60%, #edcfad 100%) !important;
-  border: 1.5px solid #8e622d !important;
+  border: 1.5px solid var(--vintage-bark-border, #8e622d) !important;
   box-shadow:
-    inset 0 0 0 1.5px #caa06d,
+    inset 0 0 0 1.5px var(--vintage-gold-inner, #caa06d),
     inset 0 1px 0 rgba(255, 255, 255, 0.9),
     0 6px 18px rgba(42, 26, 12, 0.12) !important;
   filter: url(#rough-button-cut-sm) !important;
@@ -289,9 +289,9 @@ body.page-about,
 
 .about-offering-card:hover::before,
 .service-card:hover::before {
-  border-color: #caa06d !important;
+  border-color: var(--vintage-gold-inner, #caa06d) !important;
   box-shadow:
-    inset 0 0 0 2px #f6d599,
+    inset 0 0 0 2px var(--vintage-gold-bright, #f6d599),
     0 12px 28px rgba(142, 98, 45, 0.3) !important;
 }
 
@@ -317,8 +317,8 @@ body.page-about,
   min-width: 50px;
   border-radius: 50%;
   background: radial-gradient(circle at 35% 30%, #1e5c2f 0%, #123e1d 65%, #08210f 100%);
-  border: 1.5px solid #8e622d;
-  box-shadow: inset 0 0 0 1px #caa06d, 0 3px 8px rgba(0, 0, 0, 0.25);
+  border: 1.5px solid var(--vintage-bark-border, #8e622d);
+  box-shadow: inset 0 0 0 1px var(--vintage-gold-inner, #caa06d), 0 3px 8px rgba(0, 0, 0, 0.25);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -345,7 +345,7 @@ body.page-about,
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: #172b15;
+  color: var(--client-brand-moss, #172b15);
   margin: 0 0 3px;
   line-height: 1.25;
 }
@@ -354,7 +354,7 @@ body.page-about,
   font-family: var(--font-family-base, 'EB Garamond', serif);
   font-size: 13px;
   font-style: italic;
-  color: #8e622d;
+  color: var(--vintage-bark-border, #8e622d);
   margin: 0 0 10px;
   line-height: 1.3;
 }
@@ -389,7 +389,7 @@ body.page-about,
 }
 
 .about-offering-card__features .chk {
-  color: #184b25;
+  color: var(--client-brand-rich, #184b25);
   font-weight: 700;
   font-size: 11px;
 }
@@ -495,10 +495,10 @@ body.page-about,
   border-radius: 8px !important;
   background:
     url("../../images/textures/paper/paper-fiber-a.svg"),
-    linear-gradient(135deg, #fdf8ef 0%, #f7e6cf 55%, #edd2ae 100%) !important;
-  border: 1.5px solid #8e622d !important;
+    linear-gradient(135deg, var(--vintage-parchment-warm, #fdf8ef) 0%, #f7e6cf 55%, #edd2ae 100%) !important;
+  border: 1.5px solid var(--vintage-bark-border, #8e622d) !important;
   box-shadow:
-    inset 0 0 0 1.5px #caa06d,
+    inset 0 0 0 1.5px var(--vintage-gold-inner, #caa06d),
     inset 0 1px 0 rgba(255, 255, 255, 0.8),
     0 6px 18px rgba(42, 26, 12, 0.12) !important;
   filter: url(#rough-button-cut-sm) !important;
@@ -513,9 +513,9 @@ body.page-about,
 }
 
 .value-card:hover::before {
-  border-color: #caa06d !important;
+  border-color: var(--vintage-gold-inner, #caa06d) !important;
   box-shadow:
-    inset 0 0 0 2px #f6d599,
+    inset 0 0 0 2px var(--vintage-gold-bright, #f6d599),
     0 10px 24px rgba(142, 98, 45, 0.28) !important;
 }
 
@@ -535,8 +535,8 @@ body.page-about,
   font-family: 'Cinzel', 'Playfair Display', Georgia, serif;
   font-size: 16px;
   font-weight: 400;
-  border: 1.5px solid #8e622d;
-  box-shadow: inset 0 0 0 1px #caa06d, 0 2px 6px rgba(0, 0, 0, 0.25);
+  border: 1.5px solid var(--vintage-bark-border, #8e622d);
+  box-shadow: inset 0 0 0 1px var(--vintage-gold-inner, #caa06d), 0 2px 6px rgba(0, 0, 0, 0.25);
   margin-bottom: 14px;
 }
 .value-card__title {
@@ -545,7 +545,7 @@ body.page-about,
   font-weight: 400;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: #172b15;
+  color: var(--client-brand-moss, #172b15);
   margin: 0 0 8px;
 }
 .value-card__text {
@@ -583,8 +583,8 @@ body.page-about,
   width: 2px;
   background: repeating-linear-gradient(
     180deg,
-    #8e622d 0px,
-    #8e622d 6px,
+    var(--vintage-bark-border, #8e622d) 0px,
+    var(--vintage-bark-border, #8e622d) 6px,
     transparent 6px,
     transparent 10px
   );
@@ -606,7 +606,7 @@ body.page-about,
   height: 12px;
   border-radius: 50%;
   background: linear-gradient(180deg, #0f3b1d 0%, #092612 100%);
-  border: 2px solid #caa06d;
+  border: 2px solid var(--vintage-gold-inner, #caa06d);
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
   z-index: 1;
 }
@@ -621,8 +621,8 @@ body.page-about,
   text-transform: uppercase;
 }
 .milestone-item__content {
-  background: linear-gradient(135deg, #fcf2e3 0%, #f6e0c3 100%);
-  border: 1.5px solid #8e622d;
+  background: linear-gradient(135deg, var(--vintage-parchment-light, #fcf2e3) 0%, var(--paper-100, #f6e0c3) 100%);
+  border: 1.5px solid var(--vintage-bark-border, #8e622d);
   border-radius: 4px;
   padding: 14px 16px;
   position: relative;
@@ -633,7 +633,7 @@ body.page-about,
   content: "";
   position: absolute;
   inset: 2.5px;
-  border: 1px solid #caa06d;
+  border: 1px solid var(--vintage-gold-inner, #caa06d);
   border-radius: 2px;
   pointer-events: none;
 }
@@ -643,7 +643,7 @@ body.page-about,
   font-weight: 400;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: #172b15;
+  color: var(--client-brand-moss, #172b15);
   margin: 0 0 4px;
 }
 .milestone-item__desc {
@@ -668,8 +668,8 @@ body.page-about,
   }
 }
 .team-card {
-  background: linear-gradient(135deg, #fcf2e3 0%, #f6e0c3 100%);
-  border: 1.5px solid #8e622d;
+  background: linear-gradient(135deg, var(--vintage-parchment-light, #fcf2e3) 0%, var(--paper-100, #f6e0c3) 100%);
+  border: 1.5px solid var(--vintage-bark-border, #8e622d);
   border-radius: 6px;
   padding: 20px 16px;
   text-align: center;
@@ -680,7 +680,7 @@ body.page-about,
   content: "";
   position: absolute;
   inset: 3px;
-  border: 1.5px solid #caa06d;
+  border: 1.5px solid var(--vintage-gold-inner, #caa06d);
   border-radius: 4px;
   pointer-events: none;
 }
@@ -689,8 +689,8 @@ body.page-about,
   height: 80px;
   border-radius: 50%;
   overflow: hidden;
-  border: 2px solid #8e622d;
-  box-shadow: inset 0 0 0 2px #caa06d, 0 3px 10px rgba(0, 0, 0, 0.2);
+  border: 2px solid var(--vintage-bark-border, #8e622d);
+  box-shadow: inset 0 0 0 2px var(--vintage-gold-inner, #caa06d), 0 3px 10px rgba(0, 0, 0, 0.2);
   margin: 0 auto 12px;
 }
 .team-card__photo img {
@@ -703,7 +703,7 @@ body.page-about,
   font-size: 14px;
   font-weight: 400;
   text-transform: uppercase;
-  color: #172b15;
+  color: var(--client-brand-moss, #172b15);
   margin: 0 0 2px;
 }
 .team-card__role {
@@ -798,9 +798,9 @@ body.page-about,
 .site-footer {
   width: 100%;
   background: linear-gradient(180deg, #143d1e 0%, #0c2b15 50%, #06170b 100%) !important;
-  color: #fbf2e6 !important;
-  border-top: 2px solid #8e622d;
-  box-shadow: inset 0 2px 0 #caa06d, 0 -6px 20px rgba(0, 0, 0, 0.4);
+  color: var(--vintage-parchment-light, #fbf2e6) !important;
+  border-top: 2px solid var(--vintage-bark-border, #8e622d);
+  box-shadow: inset 0 2px 0 var(--vintage-gold-inner, #caa06d), 0 -6px 20px rgba(0, 0, 0, 0.4);
   padding-top: 36px;
   position: relative;
   overflow: hidden;
@@ -823,11 +823,11 @@ body.page-about,
   transition: color 0.2s ease;
 }
 .site-footer a:hover {
-  color: #f6d599 !important;
+  color: var(--vintage-gold-bright, #f6d599) !important;
   text-shadow: 0 0 8px rgba(246, 213, 153, 0.4);
 }
 .site-footer__bottom {
-  background: #06150a;
+  background: var(--client-brand-deep, #06150a);
   border-top: 1px solid rgba(142, 98, 45, 0.4);
 }
 

@@ -35,7 +35,7 @@
   display: inline-block;
   width: 32px;
   height: 1.5px;
-  background: linear-gradient(90deg, transparent 0%, #8e622d 50%, #caa06d 100%);
+  background: linear-gradient(90deg, transparent 0%, var(--vintage-bark-border, #8e622d) 50%, var(--vintage-gold-inner, #caa06d) 100%);
 }
 
 .section-header__tag::before {
@@ -127,7 +127,7 @@ h3 em {
 
 .section-header--dark .section-header__tag::before,
 .section-header--dark .section-header__tag::after {
-  background: linear-gradient(90deg, transparent 0%, #caa06d 50%, #f6d599 100%) !important;
+  background: linear-gradient(90deg, transparent 0%, var(--vintage-gold-inner, #caa06d) 50%, var(--vintage-gold-bright, #f6d599) 100%) !important;
 }
 
 .section-header--dark .section-header__title {
@@ -141,12 +141,12 @@ h3 em {
 }
 
 .section-header--dark .section-eyebrow {
-  color: #f6d599 !important;
+  color: var(--vintage-gold-bright, #f6d599) !important;
 }
 
 .section-header--dark .section-header__sub,
 .section-header--dark .section-header__body {
-  color: #caa06d !important;
+  color: var(--vintage-gold-inner, #caa06d) !important;
   opacity: 0.95 !important;
 }
 

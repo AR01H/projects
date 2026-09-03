@@ -85,7 +85,7 @@
   background-color: var(--vintage-green-dark, #11381b);
   background-image:
     url("../../images/textures/roughness/roughness-a.svg"),
-    radial-gradient(ellipse 120% 80% at 50% -10%, #2a7a42 0%, #175228 40%, #0d2f16 80%, #061a0c 100%);
+    radial-gradient(ellipse 120% 80% at 50% -10%, #2a7a42 0%, #175228 40%, var(--client-brand-deep, #0d2f16) 80%, var(--client-brand-deep, #061a0c) 100%);
   background-size: 140px 140px, 100% 100%;
   color: var(--vintage-gold-bright, #f6d599);
   border: var(--border-vintage-outer, 1.5px solid #8e622d);

@@ -27,11 +27,11 @@
   min-width: 30px;
   border-radius: 50%;
   background: #fcf6ec;
-  border: 1.5px solid #8e622d;
+  border: 1.5px solid var(--vintage-bark-border, #8e622d);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: inset 0 0 0 1px #caa06d;
+  box-shadow: inset 0 0 0 1px var(--vintage-gold-inner, #caa06d);
 
 }
 .logo__brand-text {
@@ -43,7 +43,7 @@
   font-family: 'Cinzel', serif !important;
   font-size: 15px !important;
   font-weight: 700 !important;
-  color: #172b15 !important;
+  color: var(--client-brand-moss, #172b15) !important;
   letter-spacing: 0.08em !important;
   text-transform: uppercase !important;
 }
@@ -51,7 +51,7 @@
   font-family: 'Cinzel', sans-serif !important;
   font-size: 7.5px !important;
   font-weight: 700 !important;
-  color: #8e622d !important;
+  color: var(--vintage-bark-border, #8e622d) !important;
   letter-spacing: 0.14em !important;
   margin-top: 2px !important;
 }
@@ -120,10 +120,10 @@
 }
 
 .logo--footer .logo__title {
-  color: #f6d599 !important;
+  color: var(--vintage-gold-bright, #f6d599) !important;
 }
 .logo--footer .logo__sub {
-  color: #caa06d !important;
+  color: var(--vintage-gold-inner, #caa06d) !important;
 }
 
 @media (max-width: 768px) {

@@ -14,15 +14,15 @@
   display: flex !important;
   align-items: center !important;
   justify-content: space-between !important;
-  background: #fdfaf4 !important;
-  border: 1.5px solid #8e622d !important;
+  background: var(--vintage-parchment-clean, #fdfaf4) !important;
+  border: 1.5px solid var(--vintage-bark-border, #8e622d) !important;
   border-radius: 4px !important;
   padding: 10px 12px !important;
   font-family: var(--font-family-base, 'EB Garamond', Georgia, serif) !important;
   font-size: 14.5px !important;
   color: #2a1a0c !important;
   box-sizing: border-box !important;
-  box-shadow: inset 0 0 0 1px #caa06d, inset 0 1px 3px rgba(42, 26, 12, 0.08) !important;
+  box-shadow: inset 0 0 0 1px var(--vintage-gold-inner, #caa06d), inset 0 1px 3px rgba(42, 26, 12, 0.08) !important;
   cursor: pointer !important;
   text-align: left !important;
   transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease !important;
@@ -31,9 +31,9 @@
 .vst-select-wrapper.is-open .vst-select-trigger,
 .vst-select-trigger:focus {
   outline: none !important;
-  border-color: #8e622d !important;
+  border-color: var(--vintage-bark-border, #8e622d) !important;
   background-color: #ffffff !important;
-  box-shadow: inset 0 0 0 1.5px #caa06d, 0 0 10px rgba(202, 160, 109, 0.35) !important;
+  box-shadow: inset 0 0 0 1.5px var(--vintage-gold-inner, #caa06d), 0 0 10px rgba(202, 160, 109, 0.35) !important;
 }
 
 .vst-select-label {
@@ -49,7 +49,7 @@
   align-items: center !important;
   justify-content: center !important;
   margin-left: 8px !important;
-  color: #8e622d !important;
+  color: var(--vintage-bark-border, #8e622d) !important;
   transition: transform 0.2s ease !important;
 }
 
@@ -64,10 +64,10 @@
   left: 0 !important;
   right: 0 !important;
   z-index: 9999 !important;
-  background: #fdfaf4 !important;
-  border: 1.5px solid #8e622d !important;
+  background: var(--vintage-parchment-clean, #fdfaf4) !important;
+  border: 1.5px solid var(--vintage-bark-border, #8e622d) !important;
   border-radius: 4px !important;
-  box-shadow: inset 0 0 0 1px #caa06d, 0 8px 24px rgba(42, 26, 12, 0.2) !important;
+  box-shadow: inset 0 0 0 1px var(--vintage-gold-inner, #caa06d), 0 8px 24px rgba(42, 26, 12, 0.2) !important;
   overflow: hidden !important;
   padding: 4px 0 !important;
 }
@@ -84,12 +84,12 @@
 
 /* Theme Selection & Hover Color: Botanical Green with Gold Text (NO BLUE) */
 .vst-select-option:hover {
-  background-color: #184b25 !important;
-  color: #f6d599 !important;
+  background-color: var(--client-brand-rich, #184b25) !important;
+  color: var(--vintage-gold-bright, #f6d599) !important;
 }
 
 .vst-select-option.is-selected {
-  background-color: #184b25 !important;
-  color: #f6d599 !important;
+  background-color: var(--client-brand-rich, #184b25) !important;
+  color: var(--vintage-gold-bright, #f6d599) !important;
   font-weight: 600 !important;
 }

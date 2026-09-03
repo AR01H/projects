@@ -14,7 +14,7 @@
     url("../../images/textures/roughness/roughness-a.svg"),
     linear-gradient(180deg, #133a1f 0%, #0c2613 100%) !important;
   background-size: 140px 140px, 100% 100% !important;
-  border-top: 2px solid #8e622d !important;
+  border-top: 2px solid var(--vintage-bark-border, #8e622d) !important;
   box-shadow:
     inset 0 1px 0 rgba(246, 213, 153, 0.4),
     0 -8px 28px rgba(0, 0, 0, 0.45) !important;
@@ -59,7 +59,7 @@
 }
 
 .vst-cookie-banner__policy-link {
-  color: #f6d599 !important;
+  color: var(--vintage-gold-bright, #f6d599) !important;
   text-decoration: underline !important;
   font-weight: 600 !important;
   transition: color 0.2s ease !important;
@@ -73,7 +73,7 @@
   background: none !important;
   border: none !important;
   padding: 0 0 0 8px !important;
-  color: #f6d599 !important;
+  color: var(--vintage-gold-bright, #f6d599) !important;
   font-family: inherit !important;
   font-size: 14.5px !important;
   font-weight: 600 !important;
@@ -161,12 +161,12 @@
 
 .vst-cookie-modal__panel {
   position: relative !important;
-  background: linear-gradient(135deg, #fdf8ef 0%, #f6e6ce 60%, #eed5b3 100%) !important;
-  border: 1.5px solid #8e622d !important;
+  background: linear-gradient(135deg, var(--vintage-parchment-warm, #fdf8ef) 0%, var(--paper-100, #f6e6ce) 60%, #eed5b3 100%) !important;
+  border: 1.5px solid var(--vintage-bark-border, #8e622d) !important;
   border-radius: 10px !important;
   padding: 30px 28px 26px !important;
   box-shadow:
-    inset 0 0 0 1.5px #caa06d,
+    inset 0 0 0 1.5px var(--vintage-gold-inner, #caa06d),
     inset 0 1px 0 rgba(255, 255, 255, 0.8),
     0 16px 40px rgba(17, 10, 4, 0.5) !important;
   filter: url(#rough-button-cut-sm) !important;
@@ -181,20 +181,20 @@
   height: 32px !important;
   border-radius: 50% !important;
   background: #f7eedb !important;
-  border: 1.5px solid #8e622d !important;
-  color: #172b15 !important;
+  border: 1.5px solid var(--vintage-bark-border, #8e622d) !important;
+  color: var(--client-brand-moss, #172b15) !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
   cursor: pointer !important;
-  box-shadow: inset 0 0 0 1px #caa06d, 0 2px 6px rgba(0, 0, 0, 0.15) !important;
+  box-shadow: inset 0 0 0 1px var(--vintage-gold-inner, #caa06d), 0 2px 6px rgba(0, 0, 0, 0.15) !important;
   transition: all 0.2s ease !important;
 }
 
 .vst-cookie-modal__close:hover {
-  background: #11381b !important;
-  color: #f6d599 !important;
-  border-color: #f6d599 !important;
+  background: var(--client-brand-dark, #11381b) !important;
+  color: var(--vintage-gold-bright, #f6d599) !important;
+  border-color: var(--vintage-gold-bright, #f6d599) !important;
   transform: rotate(90deg) !important;
 }
 
@@ -221,7 +221,7 @@
 }
 
 .vst-cookie-modal__subtitle a {
-  color: #184b25 !important;
+  color: var(--client-brand-rich, #184b25) !important;
   text-decoration: underline !important;
   font-weight: 600 !important;
 }
@@ -302,7 +302,7 @@
   position: absolute !important;
   inset: 0 !important;
   background-color: #cbb89e !important;
-  border: 1px solid #8e622d !important;
+  border: 1px solid var(--vintage-bark-border, #8e622d) !important;
   border-radius: 24px !important;
   transition: all 0.25s ease !important;
 }
@@ -314,8 +314,8 @@
   width: 16px !important;
   left: 3px !important;
   bottom: 3px !important;
-  background-color: #fdf8ef !important;
-  border: 1px solid #8e622d !important;
+  background-color: var(--vintage-parchment-warm, #fdf8ef) !important;
+  border: 1px solid var(--vintage-bark-border, #8e622d) !important;
   border-radius: 50% !important;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25) !important;
   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
@@ -323,12 +323,12 @@
 
 .vst-cookie-switch input:checked + .vst-cookie-slider {
   background-color: #1b4e26 !important;
-  border-color: #8e622d !important;
+  border-color: var(--vintage-bark-border, #8e622d) !important;
 }
 
 .vst-cookie-switch input:checked + .vst-cookie-slider::before {
   transform: translateX(20px) !important;
-  background-color: #f6d599 !important;
+  background-color: var(--vintage-gold-bright, #f6d599) !important;
 }
 
 /* ═══════════ FOOTER ACTIONS ═══════════ */

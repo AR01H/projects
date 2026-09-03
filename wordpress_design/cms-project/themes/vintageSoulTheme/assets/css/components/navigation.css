@@ -19,18 +19,18 @@
   align-items: center !important;
   gap: 6px !important;
   padding: 6px 4px 8px !important;
-  color: #172b15 !important;
+  color: var(--vintage-green-moss, #172b15) !important;
   font-family: var(--font-family-nav, 'Cinzel', 'EB Garamond', Georgia, serif) !important;
   font-size: 13.5px !important;
   font-weight: 700 !important;
   text-transform: uppercase !important;
-  letter-spacing: 0.08em !important;
+  letter-spacing: var(--tracking-wider, 0.08em) !important;
   white-space: nowrap !important;
   text-decoration: none !important;
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
-  transition: color 0.22s ease !important;
+  transition: color var(--transition-fast, 0.22s) ease !important;
 }
 
 .nav__link::before {
@@ -45,36 +45,36 @@
   right: 6px !important;
   bottom: 0px !important;
   height: 2.5px !important;
-  background: linear-gradient(90deg, #8e622d 0%, #caa06d 50%, #8e622d 100%) !important;
-  border-radius: 99px !important;
+  background: linear-gradient(90deg, var(--vintage-bark-border, #8e622d) 0%, var(--vintage-gold-inner, #caa06d) 50%, var(--vintage-bark-border, #8e622d) 100%) !important;
+  border-radius: var(--radius-pill, 99px) !important;
   box-shadow: 0 1px 4px rgba(202, 160, 109, 0.6) !important;
   transform: scaleX(0) !important;
   transform-origin: center center !important;
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease !important;
+  transition: transform var(--transition-fast, 0.25s) var(--ease-standard, cubic-bezier(0.16, 1, 0.3, 1)), opacity var(--transition-fast, 0.25s) ease !important;
   opacity: 0 !important;
   pointer-events: none !important;
 }
 
 .nav__link:hover {
-  color: #0c6434 !important;
+  color: var(--vintage-green-brand, #0c6434) !important;
 }
 
 .nav__link:hover::after {
   transform: scaleX(0.85) !important;
   opacity: 0.9 !important;
-  background: linear-gradient(90deg, #8e622d 0%, #caa06d 50%, #8e622d 100%) !important;
+  background: linear-gradient(90deg, var(--vintage-bark-border, #8e622d) 0%, var(--vintage-gold-inner, #caa06d) 50%, var(--vintage-bark-border, #8e622d) 100%) !important;
 }
 
 .nav__link.is-active,
 .nav__item.is-active > .nav__link {
-  color: #0c6434 !important;
+  color: var(--vintage-green-brand, #0c6434) !important;
 }
 
 .nav__link.is-active::after,
 .nav__item.is-active > .nav__link::after {
   transform: scaleX(1) !important;
   opacity: 1 !important;
-  background: linear-gradient(90deg, #0c6434 0%, #caa06d 50%, #0c6434 100%) !important;
+  background: linear-gradient(90deg, var(--vintage-green-brand, #0c6434) 0%, var(--vintage-gold-inner, #caa06d) 50%, var(--vintage-green-brand, #0c6434) 100%) !important;
   box-shadow: 0 2px 6px rgba(12, 100, 52, 0.4) !important;
 }
 
@@ -119,7 +119,7 @@
   mask-size: contain;
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
-  transition: transform 0.25s ease;
+  transition: transform var(--transition-fast, 0.25s) ease;
 }
 
 .nav__item--has-children:hover .nav__chevron,
@@ -147,7 +147,7 @@
   visibility: hidden;
   pointer-events: none;
   transform: translate(-50%, 8px);
-  transition: opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1), transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), visibility 0s linear 0.22s;
+  transition: opacity var(--transition-fast, 0.22s) var(--ease-standard, cubic-bezier(0.16, 1, 0.3, 1)), transform var(--transition-fast, 0.22s) var(--ease-standard, cubic-bezier(0.16, 1, 0.3, 1)), visibility 0s linear 0.22s;
   z-index: 10002 !important;
 }
 
@@ -156,13 +156,13 @@
   content: "" !important;
   position: absolute !important;
   inset: 0 !important;
-  border-radius: 8px !important;
+  border-radius: var(--radius-lg, 8px) !important;
   background:
     url("../../images/textures/paper/paper-fiber-a.svg"),
-    linear-gradient(180deg, #fefaf2 0%, #f6e6ce 100%) !important;
-  border: 1.5px solid #8e622d !important;
+    linear-gradient(180deg, var(--vintage-parchment-paper, #fefaf2) 0%, var(--paper-100, #f6e6ce) 100%) !important;
+  border: var(--border-vintage-outer-sm, 1.5px solid #8e622d) !important;
   box-shadow:
-    inset 0 0 0 1.5px #caa06d,
+    inset 0 0 0 1.5px var(--vintage-gold-inner, #caa06d),
     inset 0 1px 0 rgba(255, 255, 255, 0.9),
     0 16px 40px rgba(35, 18, 5, 0.42) !important;
   filter: url(#rough-button-cut-sm) !important;
@@ -189,7 +189,7 @@
   visibility: visible !important;
   pointer-events: auto !important;
   transform: translate(-50%, 0) !important;
-  transition: opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1), transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), visibility 0s linear;
+  transition: opacity var(--transition-fast, 0.22s) var(--ease-standard, cubic-bezier(0.16, 1, 0.3, 1)), transform var(--transition-fast, 0.22s) var(--ease-standard, cubic-bezier(0.16, 1, 0.3, 1)), visibility 0s linear;
 }
 
 .nav__submenu li {
@@ -205,12 +205,12 @@
   align-items: center !important;
   gap: 10px !important;
   padding: 9px 12px !important;
-  border-radius: 4px !important;
+  border-radius: var(--radius-sm, 4px) !important;
   border-left: 3px solid transparent !important;
-  color: #2b1705 !important;
+  color: var(--color-text-strong, #2b1705) !important;
   text-decoration: none !important;
   white-space: nowrap !important;
-  transition: all 0.18s ease !important;
+  transition: all var(--transition-fast, 0.18s) ease !important;
 }
 
 .nav__submenu-icon {
@@ -225,23 +225,23 @@
 
 .nav__submenu-text {
   flex-grow: 1 !important;
-  font-family: 'Cinzel', serif !important;
+  font-family: var(--font-family-heading, 'Cinzel', serif) !important;
   font-size: 11.5px !important;
   font-weight: 700 !important;
-  letter-spacing: 0.06em !important;
+  letter-spacing: var(--tracking-wider, 0.06em) !important;
   text-transform: uppercase !important;
   color: inherit !important;
 }
 
 .nav__submenu li + li {
-  border-top: 1px dashed rgba(142, 98, 45, 0.3) !important;
+  border-top: var(--border-dashed-bark, 1px dashed rgba(142, 98, 45, 0.3)) !important;
 }
 
 .nav__submenu-link:hover,
 .nav__submenu-link:focus-visible {
   background: rgba(17, 56, 27, 0.1) !important;
-  color: #11381b !important;
-  border-left-color: #11381b !important;
+  color: var(--vintage-green-dark, #11381b) !important;
+  border-left-color: var(--vintage-green-dark, #11381b) !important;
   padding-left: 15px !important;
   transform: translateX(2px) !important;
 }

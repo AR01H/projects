@@ -33,13 +33,13 @@
   background: linear-gradient(
     90deg,
     transparent 0%,
-    #8e622d 6%,
-    #caa06d 20%,
-    #8e622d 40%,
-    #d49842 55%,
-    #8e622d 70%,
-    #caa06d 85%,
-    #8e622d 95%,
+    var(--vintage-bark-border, #8e622d) 6%,
+    var(--vintage-gold-inner, #caa06d) 20%,
+    var(--vintage-bark-border, #8e622d) 40%,
+    var(--vintage-gold-amber, #d49842) 55%,
+    var(--vintage-bark-border, #8e622d) 70%,
+    var(--vintage-gold-inner, #caa06d) 85%,
+    var(--vintage-bark-border, #8e622d) 95%,
     transparent 100%
   ) !important;
   filter: url(#rough-button-cut-sm) !important;
@@ -163,10 +163,10 @@
 /* ═══════════ MASTER STANDARD WORDPRESS PAGE STYLING ═══════════ */
 .page-standard-section {
   padding: 40px clamp(16px, 2.5vw, 48px) 64px !important;
-  background-color: #edd5ad !important;
+  background-color: var(--vintage-parchment-deep, #edd5ad) !important;
   background-image:
     url("../images/textures/paper/paper-fiber-a.svg"),
-    linear-gradient(180deg, #f7e8cb 0%, #edd5ad 50%, #dfbe88 100%) !important;
+    linear-gradient(180deg, #f7e8cb 0%, var(--vintage-parchment-deep, #edd5ad) 50%, #dfbe88 100%) !important;
   min-height: 50vh !important;
 }
 
@@ -177,12 +177,12 @@
 
 .page-standard-card {
   position: relative !important;
-  background: linear-gradient(135deg, #fdf8ef 0%, #f7e6ce 55%, #eed5b3 100%) !important;
-  border: 1.5px solid #8e622d !important;
+  background: linear-gradient(135deg, var(--vintage-parchment-warm, #fdf8ef) 0%, var(--paper-50, #f7e6ce) 55%, #eed5b3 100%) !important;
+  border: 1.5px solid var(--vintage-bark-border, #8e622d) !important;
   border-radius: 8px !important;
   padding: 48px 40px 42px !important;
   box-shadow:
-    inset 0 0 0 1.5px #caa06d,
+    inset 0 0 0 1.5px var(--vintage-gold-inner, #caa06d),
     inset 0 1px 0 rgba(255, 255, 255, 0.8),
     0 16px 44px rgba(42, 26, 12, 0.2) !important;
   filter: url(#rough-button-cut-sm) !important;
@@ -221,7 +221,7 @@
 .entry-content h5,
 .entry-content h6 {
   font-family: 'Cinzel', 'Playfair Display', Georgia, serif !important;
-  color: #172b15 !important;
+  color: var(--client-brand-moss, #172b15) !important;
   font-weight: 800 !important;
   letter-spacing: 0.04em !important;
   margin: 32px 0 14px !important;
@@ -278,7 +278,7 @@
   position: absolute !important;
   left: 4px !important;
   top: 0 !important;
-  color: #8e622d !important;
+  color: var(--vintage-bark-border, #8e622d) !important;
   font-size: 11px !important;
   line-height: 1.6 !important;
 }
@@ -377,9 +377,9 @@
   position: absolute !important;
   inset: 0 !important;
   background: linear-gradient(135deg, #fdf8ee 0%, #f6e4cb 100%) !important;
-  border: 1.5px solid #8e622d !important;
+  border: 1.5px solid var(--vintage-bark-border, #8e622d) !important;
   border-radius: 6px !important;
-  box-shadow: inset 0 0 0 1px #caa06d, 0 4px 12px rgba(42, 26, 12, 0.08) !important;
+  box-shadow: inset 0 0 0 1px var(--vintage-gold-inner, #caa06d), 0 4px 12px rgba(42, 26, 12, 0.08) !important;
   filter: url(#rough-button-cut-sm) !important;
   -webkit-filter: url(#rough-button-cut-sm) !important;
   z-index: 0 !important;
@@ -392,47 +392,47 @@
 }
 
 .acard:hover::before {
-  box-shadow: inset 0 0 0 1.5px #8e622d, 0 8px 20px rgba(42, 26, 12, 0.16) !important;
+  box-shadow: inset 0 0 0 1.5px var(--vintage-bark-border, #8e622d), 0 8px 20px rgba(42, 26, 12, 0.16) !important;
 }
 
 /* ACARD Outline & Parchment Variants */
 .acard.acard-ol::before {
-  background: #fdfaf4 !important;
-  border: 1.5px solid #8e622d !important;
+  background: var(--vintage-parchment-clean, #fdfaf4) !important;
+  border: 1.5px solid var(--vintage-bark-border, #8e622d) !important;
   box-shadow: inset 0 0 0 1px rgba(202, 160, 109, 0.5), 0 3px 10px rgba(42, 26, 12, 0.06) !important;
 }
 
 .acard.acard-ol-green::before {
   background: linear-gradient(135deg, #f8fbf5 0%, #edf5e5 100%) !important;
-  border: 1.5px solid #184b25 !important;
+  border: 1.5px solid var(--client-brand-rich, #184b25) !important;
   box-shadow: inset 0 0 0 1px #5a9e6b, 0 4px 12px rgba(24, 75, 37, 0.1) !important;
 }
 
 .acard.acard-ol-gold::before {
   background: linear-gradient(135deg, #fefcf6 0%, #faecd7 100%) !important;
-  border: 1.5px solid #caa06d !important;
-  box-shadow: inset 0 0 0 1px #8e622d, 0 4px 12px rgba(142, 98, 45, 0.12) !important;
+  border: 1.5px solid var(--vintage-gold-inner, #caa06d) !important;
+  box-shadow: inset 0 0 0 1px var(--vintage-bark-border, #8e622d), 0 4px 12px rgba(142, 98, 45, 0.12) !important;
 }
 
 /* ACARD Solid Color Variants */
 .acard.acard-green::before {
-  background: linear-gradient(135deg, #184b25 0%, #0d2814 100%) !important;
-  border: 1.5px solid #caa06d !important;
-  box-shadow: inset 0 0 0 1px #8e622d, 0 6px 16px rgba(13, 40, 20, 0.3) !important;
+  background: linear-gradient(135deg, var(--client-brand-rich, #184b25) 0%, #0d2814 100%) !important;
+  border: 1.5px solid var(--vintage-gold-inner, #caa06d) !important;
+  box-shadow: inset 0 0 0 1px var(--vintage-bark-border, #8e622d), 0 6px 16px rgba(13, 40, 20, 0.3) !important;
 }
 
 .acard.acard-green {
-  color: #f6d599 !important;
+  color: var(--vintage-gold-bright, #f6d599) !important;
 }
 
 .acard.acard-gold::before {
-  background: linear-gradient(135deg, #f6d599 0%, #caa06d 100%) !important;
-  border: 1.5px solid #8e622d !important;
+  background: linear-gradient(135deg, var(--vintage-gold-bright, #f6d599) 0%, var(--vintage-gold-inner, #caa06d) 100%) !important;
+  border: 1.5px solid var(--vintage-bark-border, #8e622d) !important;
 }
 
 .acard.acard-dark::before {
   background: linear-gradient(135deg, #24160a 0%, #150c05 100%) !important;
-  border: 1.5px solid #8e622d !important;
+  border: 1.5px solid var(--vintage-bark-border, #8e622d) !important;
 }
 
 .acard.acard-dark {
@@ -447,7 +447,7 @@
   font-family: 'Cinzel', serif !important;
   font-size: 14.5px !important;
   font-weight: 800 !important;
-  color: #172b15 !important;
+  color: var(--client-brand-moss, #172b15) !important;
   letter-spacing: 0.04em !important;
   text-transform: uppercase !important;
   margin: 0 0 4px 0 !important;
@@ -485,7 +485,7 @@
   position: absolute !important;
   left: 0 !important;
   top: 0 !important;
-  color: #8e622d !important;
+  color: var(--vintage-bark-border, #8e622d) !important;
   font-size: 10px !important;
 }
 
@@ -500,7 +500,7 @@
   padding: 2px 8px !important;
   border-radius: 3px !important;
   background: rgba(24, 75, 37, 0.12) !important;
-  color: #184b25 !important;
+  color: var(--client-brand-rich, #184b25) !important;
   border: 1px solid rgba(24, 75, 37, 0.3) !important;
   align-self: flex-start !important;
 }
@@ -508,8 +508,8 @@
 .acard.acard-green .acard-tag,
 .acard.acard-green .acard-badge {
   background: rgba(246, 213, 153, 0.15) !important;
-  color: #f6d599 !important;
-  border-color: #caa06d !important;
+  color: var(--vintage-gold-bright, #f6d599) !important;
+  border-color: var(--vintage-gold-inner, #caa06d) !important;
 }
 
 .acard .acard-icon {
@@ -523,7 +523,7 @@
   position: relative !important;
   margin: 28px 0 32px 18px !important;
   padding-left: 28px !important;
-  border-left: 2px dashed #caa06d !important;
+  border-left: 2px dashed var(--vintage-gold-inner, #caa06d) !important;
   display: flex !important;
   flex-direction: column !important;
   gap: 20px !important;
@@ -538,8 +538,8 @@
   width: 10px !important;
   height: 10px !important;
   border-radius: 50% !important;
-  background: #184b25 !important;
-  border: 2px solid #caa06d !important;
+  background: var(--client-brand-rich, #184b25) !important;
+  border: 2px solid var(--vintage-gold-inner, #caa06d) !important;
 }
 
 .acard-timeline::after {
@@ -550,24 +550,24 @@
   width: 10px !important;
   height: 10px !important;
   border-radius: 50% !important;
-  background: #184b25 !important;
-  border: 2px solid #caa06d !important;
+  background: var(--client-brand-rich, #184b25) !important;
+  border: 2px solid var(--vintage-gold-inner, #caa06d) !important;
 }
 
 .acard-titem {
   position: relative !important;
   background: linear-gradient(135deg, #fdf8ee 0%, #f6e4cb 100%) !important;
-  border: 1.5px solid #8e622d !important;
+  border: 1.5px solid var(--vintage-bark-border, #8e622d) !important;
   border-radius: 6px !important;
   padding: 16px 20px !important;
-  box-shadow: inset 0 0 0 1px #caa06d, 0 4px 12px rgba(42, 26, 12, 0.08) !important;
+  box-shadow: inset 0 0 0 1px var(--vintage-gold-inner, #caa06d), 0 4px 12px rgba(42, 26, 12, 0.08) !important;
   box-sizing: border-box !important;
   transition: transform 0.25s ease, box-shadow 0.25s ease !important;
 }
 
 .acard-titem:hover {
   transform: translateX(4px) !important;
-  box-shadow: inset 0 0 0 1px #caa06d, 0 8px 18px rgba(42, 26, 12, 0.14) !important;
+  box-shadow: inset 0 0 0 1px var(--vintage-gold-inner, #caa06d), 0 8px 18px rgba(42, 26, 12, 0.14) !important;
 }
 
 /* Timeline Node Marker */
@@ -580,12 +580,12 @@
   height: 22px !important;
   border-radius: 50% !important;
   background: #fdf8ee !important;
-  border: 1.5px solid #8e622d !important;
-  box-shadow: inset 0 0 0 1px #caa06d, 0 2px 6px rgba(42, 26, 12, 0.18) !important;
+  border: 1.5px solid var(--vintage-bark-border, #8e622d) !important;
+  box-shadow: inset 0 0 0 1px var(--vintage-gold-inner, #caa06d), 0 2px 6px rgba(42, 26, 12, 0.18) !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  color: #8e622d !important;
+  color: var(--vintage-bark-border, #8e622d) !important;
   font-size: 11px !important;
   line-height: 20px !important;
   z-index: 2 !important;
@@ -598,7 +598,7 @@
   font-family: 'Cinzel', serif !important;
   font-size: 14.5px !important;
   font-weight: 800 !important;
-  color: #172b15 !important;
+  color: var(--client-brand-moss, #172b15) !important;
   letter-spacing: 0.04em !important;
   text-transform: uppercase !important;
   margin: 0 0 6px 0 !important;
@@ -625,9 +625,9 @@
   text-transform: uppercase !important;
   padding: 2px 8px !important;
   border-radius: 3px !important;
-  background: #184b25 !important;
-  color: #f6d599 !important;
-  border: 1px solid #caa06d !important;
+  background: var(--client-brand-rich, #184b25) !important;
+  color: var(--vintage-gold-bright, #f6d599) !important;
+  border: 1px solid var(--vintage-gold-inner, #caa06d) !important;
   margin-bottom: 6px !important;
 }
 
@@ -645,10 +645,10 @@
   align-items: flex-start !important;
   gap: 16px !important;
   background: linear-gradient(135deg, #fdf8ee 0%, #f6e4cb 100%) !important;
-  border: 1.5px solid #8e622d !important;
+  border: 1.5px solid var(--vintage-bark-border, #8e622d) !important;
   border-radius: 6px !important;
   padding: 18px 22px !important;
-  box-shadow: inset 0 0 0 1px #caa06d, 0 4px 12px rgba(42, 26, 12, 0.08) !important;
+  box-shadow: inset 0 0 0 1px var(--vintage-gold-inner, #caa06d), 0 4px 12px rgba(42, 26, 12, 0.08) !important;
   box-sizing: border-box !important;
 }
 
@@ -657,15 +657,15 @@
   height: 34px !important;
   min-width: 34px !important;
   border-radius: 50% !important;
-  background: #184b25 !important;
-  color: #f6d599 !important;
+  background: var(--client-brand-rich, #184b25) !important;
+  color: var(--vintage-gold-bright, #f6d599) !important;
   font-family: 'Cinzel', serif !important;
   font-size: 14px !important;
   font-weight: 800 !important;
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  border: 1.5px solid #caa06d !important;
+  border: 1.5px solid var(--vintage-gold-inner, #caa06d) !important;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15) !important;
   flex-shrink: 0 !important;
 }
@@ -682,9 +682,9 @@
   text-align: center !important;
   padding: 18px 14px !important;
   background: linear-gradient(135deg, #fdf8ee 0%, #f6e4cb 100%) !important;
-  border: 1.5px solid #8e622d !important;
+  border: 1.5px solid var(--vintage-bark-border, #8e622d) !important;
   border-radius: 6px !important;
-  box-shadow: inset 0 0 0 1px #caa06d, 0 3px 10px rgba(42, 26, 12, 0.06) !important;
+  box-shadow: inset 0 0 0 1px var(--vintage-gold-inner, #caa06d), 0 3px 10px rgba(42, 26, 12, 0.06) !important;
 }
 
 /* ═══════════ ACARD STATS & METRICS COMPONENT (Layer-Isolated Rough Deckled Cut) ═══════════ */
@@ -717,9 +717,9 @@
   position: absolute !important;
   inset: 0 !important;
   background: linear-gradient(135deg, #fdf8ee 0%, #f6e4cb 100%) !important;
-  border: 1.5px solid #8e622d !important;
+  border: 1.5px solid var(--vintage-bark-border, #8e622d) !important;
   border-radius: 6px !important;
-  box-shadow: inset 0 0 0 1px #caa06d, 0 4px 12px rgba(42, 26, 12, 0.08) !important;
+  box-shadow: inset 0 0 0 1px var(--vintage-gold-inner, #caa06d), 0 4px 12px rgba(42, 26, 12, 0.08) !important;
   filter: url(#rough-button-cut-sm) !important;
   -webkit-filter: url(#rough-button-cut-sm) !important;
   z-index: 0 !important;
@@ -734,7 +734,7 @@
 
 .acard-stat:hover::before,
 .acard-stat-card:hover::before {
-  box-shadow: inset 0 0 0 1.5px #8e622d, 0 8px 20px rgba(42, 26, 12, 0.16) !important;
+  box-shadow: inset 0 0 0 1.5px var(--vintage-bark-border, #8e622d), 0 8px 20px rgba(42, 26, 12, 0.16) !important;
 }
 
 .acard-stat .acard-num,
@@ -742,7 +742,7 @@
   font-family: 'Cinzel', serif !important;
   font-size: clamp(30px, 4.5vw, 40px) !important;
   font-weight: 900 !important;
-  color: #184b25 !important;
+  color: var(--client-brand-rich, #184b25) !important;
   line-height: 1 !important;
   display: block !important;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.06) !important;
@@ -752,7 +752,7 @@
   font-family: 'Cinzel', serif !important;
   font-size: 13px !important;
   font-weight: 700 !important;
-  color: #8e622d !important;
+  color: var(--vintage-bark-border, #8e622d) !important;
   letter-spacing: 0.06em !important;
   text-transform: uppercase !important;
   display: block !important;
@@ -837,12 +837,12 @@
 /* Pros Card: Botanical Sage Emerald Theme */
 .acard-pro::before {
   background: linear-gradient(135deg, #f8fbf5 0%, #edf6e5 100%) !important;
-  border: 1.5px solid #184b25 !important;
+  border: 1.5px solid var(--client-brand-rich, #184b25) !important;
   box-shadow: inset 0 0 0 1px #5a9e6b, 0 4px 14px rgba(24, 75, 37, 0.08) !important;
 }
 
 .acard-pro:hover {
-  box-shadow: inset 0 0 0 1.5px #184b25, 0 8px 22px rgba(24, 75, 37, 0.16) !important;
+  box-shadow: inset 0 0 0 1.5px var(--client-brand-rich, #184b25), 0 8px 22px rgba(24, 75, 37, 0.16) !important;
 }
 
 .acard-pro-label {
@@ -854,9 +854,9 @@
   font-weight: 800 !important;
   letter-spacing: 0.1em !important;
   text-transform: uppercase !important;
-  color: #11381b !important;
+  color: var(--client-brand-dark, #11381b) !important;
   background: rgba(24, 75, 37, 0.12) !important;
-  border: 1px solid #184b25 !important;
+  border: 1px solid var(--client-brand-rich, #184b25) !important;
   padding: 3px 10px !important;
   border-radius: 3px !important;
   align-self: flex-start !important;
@@ -865,7 +865,7 @@
 .acard-pro-label::before {
   content: "✓" !important;
   font-weight: 900 !important;
-  color: #184b25 !important;
+  color: var(--client-brand-rich, #184b25) !important;
 }
 
 .acard-pro .acard-list {
@@ -891,7 +891,7 @@
   position: absolute !important;
   left: 0 !important;
   top: 0 !important;
-  color: #184b25 !important;
+  color: var(--client-brand-rich, #184b25) !important;
   font-weight: 800 !important;
   font-size: 13px !important;
 }
@@ -972,18 +972,18 @@
 .entry-content dl {
   position: relative !important;
   background: linear-gradient(135deg, #fdf8ee 0%, #f6e4cb 100%) !important;
-  border: 1.5px solid #8e622d !important;
+  border: 1.5px solid var(--vintage-bark-border, #8e622d) !important;
   border-radius: 6px !important;
   padding: 20px 24px !important;
   margin: 22px 0 !important;
-  box-shadow: inset 0 0 0 1px #caa06d, 0 4px 14px rgba(42, 26, 12, 0.08) !important;
+  box-shadow: inset 0 0 0 1px var(--vintage-gold-inner, #caa06d), 0 4px 14px rgba(42, 26, 12, 0.08) !important;
   box-sizing: border-box !important;
 }
 
 /* Callout Variants */
 .entry-content .callout--tip,
 .entry-content .callout--info {
-  border-left: 4px solid #11381b !important;
+  border-left: 4px solid var(--client-brand-dark, #11381b) !important;
   background: linear-gradient(135deg, #f7faee 0%, #edf3dc 100%) !important;
 }
 
@@ -1009,9 +1009,9 @@
   width: 38px !important;
   height: 38px !important;
   background: #fdf8ee !important;
-  border: 1px solid #caa06d !important;
+  border: 1px solid var(--vintage-gold-inner, #caa06d) !important;
   border-radius: 50% !important;
-  box-shadow: inset 0 0 0 1px #8e622d, 0 2px 5px rgba(0, 0, 0, 0.1) !important;
+  box-shadow: inset 0 0 0 1px var(--vintage-bark-border, #8e622d), 0 2px 5px rgba(0, 0, 0, 0.1) !important;
   flex-shrink: 0 !important;
 }
 
@@ -1019,7 +1019,7 @@
   font-family: 'Cinzel', serif !important;
   font-size: 14.5px !important;
   font-weight: 800 !important;
-  color: #172b15 !important;
+  color: var(--client-brand-moss, #172b15) !important;
   letter-spacing: 0.04em !important;
   text-transform: uppercase !important;
 }
@@ -1052,7 +1052,7 @@
   font-family: 'Cinzel', serif !important;
   font-size: 15px !important;
   font-weight: 700 !important;
-  color: #172b15 !important;
+  color: var(--client-brand-moss, #172b15) !important;
   letter-spacing: 0.04em !important;
   text-transform: uppercase !important;
   margin-bottom: 4px !important;
@@ -1071,7 +1071,7 @@
 .entry-content .wp-block-quote,
 .entry-content .wp-block-pullquote {
   position: relative !important;
-  border-left: 3.5px solid #8e622d !important;
+  border-left: 3.5px solid var(--vintage-bark-border, #8e622d) !important;
   padding: 16px 24px !important;
   margin: 26px 0 !important;
   background: rgba(202, 160, 109, 0.14) !important;
@@ -1083,8 +1083,8 @@
 }
 
 .entry-content .wp-block-pullquote {
-  border: 1.5px solid #8e622d !important;
-  border-left: 4px solid #8e622d !important;
+  border: 1.5px solid var(--vintage-bark-border, #8e622d) !important;
+  border-left: 4px solid var(--vintage-bark-border, #8e622d) !important;
   background: linear-gradient(135deg, #fdf8ee 0%, #f6e4cb 100%) !important;
   border-radius: 6px !important;
   text-align: center !important;
@@ -1098,7 +1098,7 @@
   font-size: 12px !important;
   font-style: normal !important;
   font-weight: 700 !important;
-  color: #172b15 !important;
+  color: var(--client-brand-moss, #172b15) !important;
   letter-spacing: 0.08em !important;
   text-transform: uppercase !important;
   margin-top: 10px !important;
@@ -1109,8 +1109,8 @@
 .entry-content .wp-block-table table {
   width: 100% !important;
   border-collapse: collapse !important;
-  background: #fdf8ef !important;
-  border: 1.5px solid #8e622d !important;
+  background: var(--vintage-parchment-warm, #fdf8ef) !important;
+  border: 1.5px solid var(--vintage-bark-border, #8e622d) !important;
   border-radius: 6px !important;
   overflow: hidden !important;
   margin: 24px 0 !important;
@@ -1119,15 +1119,15 @@
 
 .entry-content th,
 .entry-content .wp-block-table th {
-  background: #11381b !important;
-  color: #f6d599 !important;
+  background: var(--client-brand-dark, #11381b) !important;
+  color: var(--vintage-gold-bright, #f6d599) !important;
   font-family: 'Cinzel', serif !important;
   font-size: 12px !important;
   font-weight: 700 !important;
   letter-spacing: 0.08em !important;
   text-transform: uppercase !important;
   padding: 12px 16px !important;
-  border: 1px solid #8e622d !important;
+  border: 1px solid var(--vintage-bark-border, #8e622d) !important;
 }
 
 .entry-content td,
@@ -1149,8 +1149,8 @@
   margin: 26px 0 !important;
   border-radius: 6px !important;
   overflow: hidden !important;
-  border: 1.5px solid #8e622d !important;
-  box-shadow: inset 0 0 0 1px #caa06d, 0 8px 24px rgba(42, 26, 12, 0.15) !important;
+  border: 1.5px solid var(--vintage-bark-border, #8e622d) !important;
+  box-shadow: inset 0 0 0 1px var(--vintage-gold-inner, #caa06d), 0 8px 24px rgba(42, 26, 12, 0.15) !important;
 }
 
 .entry-content figure img {
@@ -1177,7 +1177,7 @@
   font-family: 'Cinzel', serif !important;
   font-size: 15px !important;
   font-weight: 700 !important;
-  color: #172b15 !important;
+  color: var(--client-brand-moss, #172b15) !important;
   padding: 4px 0 !important;
   outline: none !important;
 }
@@ -1187,7 +1187,7 @@
 .entry-content .wp-block-separator {
   border: none !important;
   height: 1px !important;
-  background: linear-gradient(90deg, transparent 0%, #8e622d 50%, transparent 100%) !important;
+  background: linear-gradient(90deg, transparent 0%, var(--vintage-bark-border, #8e622d) 50%, transparent 100%) !important;
   margin: 32px 0 !important;
 }
 
@@ -1196,8 +1196,8 @@
 .entry-content .wp-block-code,
 .entry-content .wp-block-preformatted {
   background: #0d2614 !important;
-  color: #f6d599 !important;
-  border: 1.5px solid #8e622d !important;
+  color: var(--vintage-gold-bright, #f6d599) !important;
+  border: 1.5px solid var(--vintage-bark-border, #8e622d) !important;
   border-radius: 6px !important;
   padding: 18px 22px !important;
   font-family: 'Courier New', Courier, monospace !important;
@@ -1255,8 +1255,8 @@
 }
 
 .event-type-card__tag {
-  background: #11381b !important;
-  color: #f6d599 !important;
+  background: var(--client-brand-dark, #11381b) !important;
+  color: var(--vintage-gold-bright, #f6d599) !important;
   font-family: 'Cinzel', serif !important;
   font-size: 9px !important;
   font-weight: 700 !important;
@@ -1264,7 +1264,7 @@
   text-transform: uppercase !important;
   padding: 3px 8px !important;
   border-radius: 3px !important;
-  border: 1px solid #8e622d !important;
+  border: 1px solid var(--vintage-bark-border, #8e622d) !important;
 }
 
 .event-type-card__title {
@@ -1273,7 +1273,7 @@
   font-weight: 800 !important;
   text-transform: uppercase !important;
   letter-spacing: 0.04em !important;
-  color: #172b15 !important;
+  color: var(--client-brand-moss, #172b15) !important;
   line-height: 1.35 !important;
   margin: 0 !important;
 }

@@ -3,10 +3,10 @@
    ========================================================================== */
 
 .frame {
-  border: 1.5px solid #8e622d;
-  border-radius: 6px;
-  background: linear-gradient(135deg, #fcf2e3 0%, #f6e0c3 100%);
-  box-shadow: inset 0 0 0 1px #caa06d, 0 4px 14px rgba(42, 26, 12, 0.1);
+  border: var(--border-vintage-outer-sm, 1.5px solid #8e622d);
+  border-radius: var(--radius-md, 6px);
+  background: linear-gradient(135deg, var(--vintage-parchment-light, #fcf2e3) 0%, var(--paper-100, #f6e0c3) 100%);
+  box-shadow: inset 0 0 0 1px var(--vintage-gold-inner, #caa06d), var(--shadow-vintage-xs, 0 4px 14px rgba(42, 26, 12, 0.1));
 }
 
 /* ═══════════ CLEAN VINTAGE CARD & PHOTO FRAMES (LAYER ISOLATED FOR 100% SHARP TEXT) ═══════════ */
@@ -424,7 +424,7 @@
 .frame--ornate-sm,
 .sourcing-vintage__photo-frame {
   border-radius: 6px !important;
-  border: 1.5px solid #8e622d !important;
+  border: 1.5px solid var(--vintage-bark-border, #8e622d) !important;
   overflow: hidden !important;
   position: relative !important;
 }
@@ -553,15 +553,15 @@
 /* ═══════════ DARK CARDS ═══════════ */
 .card--rough-cut-dark {
   border-radius: 6px !important;
-  border: 1.5px solid #8e622d !important;
-  background-color: #11381b !important;
+  border: 1.5px solid var(--vintage-bark-border, #8e622d) !important;
+  background-color: var(--client-brand-dark, #11381b) !important;
   background-image:
     url("../images/textures/roughness/roughness-a.svg"),
-    linear-gradient(135deg, #184b25 0%, #0d2f16 100%) !important;
+    linear-gradient(135deg, var(--client-brand-rich, #184b25) 0%, var(--client-brand-deep, #0d2f16) 100%) !important;
   background-size: 140px 140px, 100% 100% !important;
-  color: #fbf2e6 !important;
+  color: var(--vintage-parchment-light, #fbf2e6) !important;
   box-shadow:
-    inset 0 0 0 1.5px #caa06d,
+    inset 0 0 0 1.5px var(--vintage-gold-inner, #caa06d),
     0 6px 18px rgba(0, 0, 0, 0.35) !important;
 
   transition: all 0.25s ease !important;
@@ -569,9 +569,9 @@
 
 .card--rough-cut-dark:hover {
   transform: none !important;
-  border-color: #f6d599 !important;
+  border-color: var(--vintage-gold-bright, #f6d599) !important;
   box-shadow:
-    inset 0 0 0 1.5px #f6d599,
+    inset 0 0 0 1.5px var(--vintage-gold-bright, #f6d599),
     0 12px 28px rgba(0, 0, 0, 0.5) !important;
 }
 
@@ -609,8 +609,8 @@
   height: 76px;
   border-radius: 50%;
   background: radial-gradient(circle, #6b2f18 0%, #2f200e 100%);
-  border: 2px dashed #f6d599;
-  color: #fbf2e6;
+  border: 2px dashed var(--vintage-gold-bright, #f6d599);
+  color: var(--vintage-parchment-light, #fbf2e6);
   display: flex;
   flex-direction: column;
   align-items: center;

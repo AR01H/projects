@@ -177,21 +177,58 @@
   --border-frame: var(--border-width-thick) var(--border-style) var(--color-border-strong);
   --border-hairline: var(--border-width) var(--border-style) var(--color-border);
 
+  /* ═════════════════════════════════════════════════════════════════════════
+     DYNAMIC CLIENT BRAND & SEASONAL THEME VARIABLES
+     ==========================================================================
+     Easily re-theme the entire website for new clients or seasons:
+     - Cane House (Default): Emerald / Forest Greens (#0c6434, #11381b, #184b25)
+     - Mango / Summer: Saffron Amber / Mango Gold (#d97706, #92400e, #b45309)
+     - Citrus / Orange: Warm Tangerine / Terracotta (#c2410c, #7c2d12, #9a3412)
+     - Berry / Festive: Ruby Royal / Crimson Wine (#852220, #4e0f0d, #7a1f1d)
+     ═════════════════════════════════════════════════════════════════════════ */
+  --client-brand-primary: #0c6434;
+  --client-brand-dark: #11381b;
+  --client-brand-deep: #0a2512;
+  --client-brand-rich: #184b25;
+  --client-brand-mid: #1b542a;
+  --client-brand-glow: #236836;
+  --client-brand-moss: #172b15;
+  --client-brand-forest: #2d6e3c;
+  --client-brand-accent: #f6d599;
+  --client-brand-accent-gold: #caa06d;
+
   /* ═══════════ VINTAGE HERITAGE DESIGN SYSTEM TOKENS ═══════════ */
-  --vintage-green-dark: #11381b;
-  --vintage-green-mid: #1b542a;
-  --vintage-green-deep: #0a2512;
-  --vintage-green-glow: #236836;
+  --vintage-green-dark: var(--client-brand-dark, #11381b);
+  --vintage-green-mid: var(--client-brand-mid, #1b542a);
+  --vintage-green-deep: var(--client-brand-deep, #0a2512);
+  --vintage-green-glow: var(--client-brand-glow, #236836);
+  --vintage-green-brand: var(--client-brand-primary, #0c6434);
+  --vintage-green-rich: var(--client-brand-rich, #184b25);
+  --vintage-green-moss: var(--client-brand-moss, #172b15);
+  --vintage-green-forest: var(--client-brand-forest, #2d6e3c);
+  --vintage-green-emerald: var(--client-brand-primary, #3d854e);
+
+  --vintage-ruby-bright: #a82d2a;
+  --vintage-ruby-mid: #852220;
+  --vintage-ruby-dark: #7a1f1d;
+  --vintage-ruby-deep: #4a0e0c;
 
   --vintage-bark-dark: #2b1406;
+  --vintage-bark-deep: #1a0b03;
   --vintage-bark-border: #8e622d;
   --vintage-bark-border-subtle: #7d582c;
   --vintage-gold-inner: #caa06d;
   --vintage-gold-bright: #f6d599;
   --vintage-gold-accent: #cb924d;
+  --vintage-gold-amber: #d49842;
+  --vintage-gold-light: #fff4d9;
 
   --vintage-parchment-light: #fbf2e6;
+  --vintage-parchment-clean: #fdfaf4;
+  --vintage-parchment-paper: #fefaf2;
+  --vintage-parchment-warm: #fdf8ef;
   --vintage-parchment-mid: #f4dcc0;
+  --vintage-parchment-sand: #eed6b6;
   --vintage-parchment-deep: #edd5ad;
   --vintage-parchment-aged: #e2c290;
 
@@ -200,6 +237,18 @@
   --border-vintage-inner: 1.5px solid var(--vintage-gold-inner);
   --border-vintage-inner-sm: 1px solid var(--vintage-gold-inner);
   --border-vintage-gold: 1.5px solid var(--vintage-gold-bright);
+  --border-dashed-bark: 1px dashed rgba(142, 98, 45, 0.35);
+  --border-dashed-bark-thick: 1.5px dashed rgba(142, 98, 45, 0.45);
+  --border-dashed-gold: 1px dashed rgba(202, 160, 109, 0.45);
+
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-card: 16px;
+  --radius-pill: 999px;
+  --radius-circle: 50%;
 
   --shadow-vintage-xs: 0 1px 3px rgba(42, 26, 12, 0.12);
   --shadow-vintage-card: 0 4px 14px rgba(42, 26, 12, 0.16);
@@ -238,4 +287,44 @@
     --transition-normal: 0ms;
     --transition-slow: 0ms;
   }
+}
+
+/* ==========================================================================
+   DYNAMIC SEASONAL & CLIENT THEME PRESETS
+   Usage: Add data-theme="mango" (or "citrus", "ruby") to <html> or <body>
+   ========================================================================== */
+[data-theme="mango"],
+.theme-mango {
+  --client-brand-primary: #d97706;
+  --client-brand-dark: #78350f;
+  --client-brand-deep: #451a03;
+  --client-brand-rich: #92400e;
+  --client-brand-mid: #b45309;
+  --client-brand-glow: #f59e0b;
+  --client-brand-moss: #3a1d08;
+  --client-brand-forest: #b45309;
+}
+
+[data-theme="citrus"],
+.theme-citrus {
+  --client-brand-primary: #ea580c;
+  --client-brand-dark: #7c2d12;
+  --client-brand-deep: #431407;
+  --client-brand-rich: #9a3412;
+  --client-brand-mid: #c2410c;
+  --client-brand-glow: #f97316;
+  --client-brand-moss: #381408;
+  --client-brand-forest: #c2410c;
+}
+
+[data-theme="ruby"],
+.theme-ruby {
+  --client-brand-primary: #852220;
+  --client-brand-dark: #4e0f0d;
+  --client-brand-deep: #2e0807;
+  --client-brand-rich: #6b1816;
+  --client-brand-mid: #7a1f1d;
+  --client-brand-glow: #a82d2a;
+  --client-brand-moss: #2b0b0a;
+  --client-brand-forest: #7a1f1d;
 }

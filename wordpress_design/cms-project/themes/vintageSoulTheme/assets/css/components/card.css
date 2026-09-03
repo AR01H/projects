@@ -418,9 +418,9 @@
 .drink-row-card:hover::before,
 .feature-box-vintage:hover::before,
 .craft-story-card:hover::before {
-  border-color: #f6d599 !important;
+  border-color: var(--vintage-gold-bright, #f6d599) !important;
   box-shadow:
-    inset 0 0 0 1.5px #f6d599,
+    inset 0 0 0 1.5px var(--vintage-gold-bright, #f6d599),
     0 10px 28px rgba(42, 26, 12, 0.25) !important;
   transform: translateY(-2px) !important;
 }
@@ -501,11 +501,11 @@ p, h1, h2, h3, h4, h5, h6, span, a, label, input, textarea, select, button,
   content: "" !important;
   position: absolute !important;
   inset: 0 !important;
-  background: linear-gradient(135deg, #fdf8ef 0%, #f7e6cf 50%, #f1d7b3 100%) !important;
-  border: 1.5px solid #8e622d !important;
+  background: linear-gradient(135deg, var(--vintage-parchment-warm, #fdf8ef) 0%, #f7e6cf 50%, #f1d7b3 100%) !important;
+  border: 1.5px solid var(--vintage-bark-border, #8e622d) !important;
   border-radius: 6px !important;
   box-shadow:
-    inset 0 0 0 1.5px #caa06d,
+    inset 0 0 0 1.5px var(--vintage-gold-inner, #caa06d),
     0 6px 20px rgba(42, 26, 12, 0.15) !important;
   filter: url(#rough-button-cut-sm) !important;
   -webkit-filter: url(#rough-button-cut-sm) !important;
@@ -516,9 +516,9 @@ p, h1, h2, h3, h4, h5, h6, span, a, label, input, textarea, select, button,
 
 .section--dark-botanical .team-card::before,
 .section--dark-botanical .vintage-carousel-card::before {
-  background: linear-gradient(180deg, #102d18 0%, #07170b 100%) !important;
-  border-color: #8e622d !important;
-  box-shadow: inset 0 0 0 1.5px #caa06d, 0 8px 24px rgba(0, 0, 0, 0.45) !important;
+  background: linear-gradient(180deg, var(--client-brand-dark, #102d18) 0%, #07170b 100%) !important;
+  border-color: var(--vintage-bark-border, #8e622d) !important;
+  box-shadow: inset 0 0 0 1.5px var(--vintage-gold-inner, #caa06d), 0 8px 24px rgba(0, 0, 0, 0.45) !important;
 }
 
 .vintage-carousel-card:hover,
@@ -563,9 +563,9 @@ p, h1, h2, h3, h4, h5, h6, span, a, label, input, textarea, select, button,
 .team-card:hover::before,
 .lifecycle-carousel-card:hover::before,
 .goodness-carousel-card:hover::before {
-  border-color: #f6d599 !important;
+  border-color: var(--vintage-gold-bright, #f6d599) !important;
   box-shadow:
-    inset 0 0 0 1.5px #f6d599,
+    inset 0 0 0 1.5px var(--vintage-gold-bright, #f6d599),
     0 12px 30px rgba(42, 26, 12, 0.25) !important;
 }
 
@@ -577,8 +577,8 @@ p, h1, h2, h3, h4, h5, h6, span, a, label, input, textarea, select, button,
   border-radius: 4px !important;
   overflow: hidden !important;
   margin-bottom: 14px !important;
-  border: 1.5px solid #8e622d !important;
-  box-shadow: inset 0 0 0 1px #caa06d !important;
+  border: 1.5px solid var(--vintage-bark-border, #8e622d) !important;
+  box-shadow: inset 0 0 0 1px var(--vintage-gold-inner, #caa06d) !important;
   position: relative !important;
 }
 
@@ -613,13 +613,13 @@ p, h1, h2, h3, h4, h5, h6, span, a, label, input, textarea, select, button,
   font-family: 'Cinzel', serif !important;
   font-size: 16px !important;
   font-weight: 700 !important;
-  color: #172b15 !important;
+  color: var(--client-brand-moss, #172b15) !important;
   margin: 0 !important;
   letter-spacing: 0.04em !important;
 }
 
 .section--dark-botanical .team-card__name {
-  color: #f6d599 !important;
+  color: var(--vintage-gold-bright, #f6d599) !important;
 }
 
 .team-card__role,
@@ -633,7 +633,7 @@ p, h1, h2, h3, h4, h5, h6, span, a, label, input, textarea, select, button,
 }
 
 .section--dark-botanical .team-card__role {
-  color: #caa06d !important;
+  color: var(--vintage-gold-inner, #caa06d) !important;
 }
 
 .team-card__bio,
@@ -654,7 +654,7 @@ p, h1, h2, h3, h4, h5, h6, span, a, label, input, textarea, select, button,
   position: absolute !important;
   top: 8px !important;
   right: 8px !important;
-  background: linear-gradient(135deg, #f6d599 0%, #d49842 100%) !important;
+  background: linear-gradient(135deg, var(--vintage-gold-bright, #f6d599) 0%, var(--vintage-gold-amber, #d49842) 100%) !important;
   border: 1px solid #ffffff !important;
   border-radius: 3px !important;
   color: #0c2b14 !important;
@@ -684,9 +684,9 @@ p, h1, h2, h3, h4, h5, h6, span, a, label, input, textarea, select, button,
   font-size: 12.5px !important;
   font-style: italic !important;
   font-weight: 600 !important;
-  color: #11381b !important;
+  color: var(--client-brand-dark, #11381b) !important;
   background: rgba(202, 160, 109, 0.18) !important;
-  border: 1px dashed #caa06d !important;
+  border: 1px dashed var(--vintage-gold-inner, #caa06d) !important;
   border-radius: 3px !important;
   padding: 3px 8px !important;
   margin: 4px 0 !important;
@@ -694,7 +694,7 @@ p, h1, h2, h3, h4, h5, h6, span, a, label, input, textarea, select, button,
 }
 
 .section--dark-botanical .team-card__bio {
-  color: #d6b88b !important;
+  color: var(--vintage-gold-inner, #d6b88b) !important;
 }
 
 /* Vintage Carousel Arrow Controls */
@@ -705,10 +705,10 @@ p, h1, h2, h3, h4, h5, h6, span, a, label, input, textarea, select, button,
   width: 42px !important;
   height: 42px !important;
   border-radius: 50% !important;
-  background: linear-gradient(180deg, #184b25 0%, #0d2f16 100%) !important;
-  border: 1.5px solid #8e622d !important;
-  box-shadow: inset 0 0 0 1px #caa06d, 0 4px 12px rgba(0, 0, 0, 0.4) !important;
-  color: #f6d599 !important;
+  background: linear-gradient(180deg, var(--client-brand-rich, #184b25) 0%, var(--client-brand-deep, #0d2f16) 100%) !important;
+  border: 1.5px solid var(--vintage-bark-border, #8e622d) !important;
+  box-shadow: inset 0 0 0 1px var(--vintage-gold-inner, #caa06d), 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+  color: var(--vintage-gold-bright, #f6d599) !important;
   font-size: 24px !important;
   line-height: 1 !important;
   cursor: pointer !important;
@@ -730,9 +730,9 @@ p, h1, h2, h3, h4, h5, h6, span, a, label, input, textarea, select, button,
 }
 
 .vintage-carousel-ctrl:hover {
-  background: linear-gradient(180deg, #0d2f16 0%, #061a0c 100%) !important;
-  border-color: #f6d599 !important;
+  background: linear-gradient(180deg, var(--client-brand-deep, #0d2f16) 0%, var(--client-brand-deep, #061a0c) 100%) !important;
+  border-color: var(--vintage-gold-bright, #f6d599) !important;
   color: #ffffff !important;
-  box-shadow: inset 0 0 0 1.5px #f6d599, 0 6px 16px rgba(0, 0, 0, 0.55), 0 0 10px rgba(246, 213, 153, 0.5) !important;
+  box-shadow: inset 0 0 0 1.5px var(--vintage-gold-bright, #f6d599), 0 6px 16px rgba(0, 0, 0, 0.55), 0 0 10px rgba(246, 213, 153, 0.5) !important;
   transform: translateY(-50%) scale(1.1) !important;
 }

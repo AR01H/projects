@@ -20,13 +20,13 @@
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  background: radial-gradient(circle at 40% 30%, #1c582c 0%, #0d2f16 65%, #05180b 100%) !important;
-  border: 1.5px solid #8e622d !important;
+  background: radial-gradient(circle at 40% 30%, #1c582c 0%, var(--client-brand-deep, #0d2f16) 65%, #05180b 100%) !important;
+  border: 1.5px solid var(--vintage-bark-border, #8e622d) !important;
   box-shadow:
-    inset 0 0 0 1px #caa06d,
+    inset 0 0 0 1px var(--vintage-gold-inner, #caa06d),
     inset 0 1px 0 rgba(246, 213, 153, 0.4),
     0 6px 20px rgba(0, 0, 0, 0.4) !important;
-  color: #f6d599 !important;
+  color: var(--vintage-gold-bright, #f6d599) !important;
   text-decoration: none !important;
   transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1) !important;
   cursor: pointer !important;
@@ -35,9 +35,9 @@
 .floating-whatsapp-btn:hover {
   transform: translateY(-3px) scale(1.08) !important;
   background: radial-gradient(circle at 40% 30%, #246a36 0%, #123e1e 65%, #082410 100%) !important;
-  border-color: #f6d599 !important;
+  border-color: var(--vintage-gold-bright, #f6d599) !important;
   box-shadow:
-    inset 0 0 0 1px #f6d599,
+    inset 0 0 0 1px var(--vintage-gold-bright, #f6d599),
     0 10px 24px rgba(0, 0, 0, 0.45),
     0 0 14px rgba(246, 213, 153, 0.5) !important;
 }
@@ -52,7 +52,7 @@
   width: 26px !important;
   height: 26px !important;
   display: block !important;
-  fill: #f6d599 !important;
+  fill: var(--vintage-gold-bright, #f6d599) !important;
   stroke: none !important;
   transition: fill 0.2s ease, transform 0.2s ease !important;
 }

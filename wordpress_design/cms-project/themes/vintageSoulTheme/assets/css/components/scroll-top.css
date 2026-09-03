@@ -4,9 +4,9 @@
 
 .scroll-top {
   position: fixed !important;
-  right: 20px !important;
-  bottom: 24px !important;
-  z-index: 1000 !important;
+  right: var(--space-md, 20px) !important;
+  bottom: var(--space-lg, 24px) !important;
+  z-index: var(--z-header, 1000) !important;
   width: 44px !important;
   height: 44px !important;
   display: flex !important;
@@ -21,7 +21,7 @@
   visibility: hidden !important;
   pointer-events: none !important;
   transform: translateY(12px) !important;
-  transition: opacity 0.25s ease, transform 0.25s ease !important;
+  transition: opacity var(--transition-fast, 0.25s) ease, transform var(--transition-fast, 0.25s) ease !important;
 }
 
 /* Layer-Isolated Rough-Cut Border & Background */
@@ -29,17 +29,17 @@
   content: "" !important;
   position: absolute !important;
   inset: 0 !important;
-  border-radius: 50% !important;
-  background: linear-gradient(180deg, #184b25 0%, #0d2f16 100%) !important;
-  border: 2px solid #8e622d !important;
+  border-radius: var(--radius-circle, 50%) !important;
+  background: linear-gradient(180deg, var(--vintage-green-rich, #184b25) 0%, var(--vintage-green-deep, #0d2f16) 100%) !important;
+  border: var(--border-vintage-outer, 2px solid #8e622d) !important;
   box-shadow:
-    inset 0 0 0 1.5px #caa06d,
-    0 4px 14px rgba(0, 0, 0, 0.45) !important;
+    var(--shadow-vintage-inner-gold, inset 0 0 0 1.5px #caa06d),
+    var(--shadow-vintage-card, 0 4px 14px rgba(0, 0, 0, 0.45)) !important;
   filter: url(#rough-button-cut-sm) !important;
   -webkit-filter: url(#rough-button-cut-sm) !important;
   pointer-events: none !important;
   z-index: -1 !important;
-  transition: all 0.25s ease !important;
+  transition: all var(--transition-fast, 0.25s) ease !important;
 }
 
 .scroll-top.is-visible {
@@ -54,10 +54,10 @@
 }
 
 .scroll-top:hover::before {
-  background: linear-gradient(180deg, #0d2f16 0%, #061a0c 100%) !important;
-  border-color: #f6d599 !important;
+  background: linear-gradient(180deg, var(--vintage-green-deep, #0d2f16) 0%, var(--client-brand-deep, #061a0c) 100%) !important;
+  border-color: var(--vintage-gold-bright, #f6d599) !important;
   box-shadow:
-    inset 0 0 0 1.5px #f6d599,
+    inset 0 0 0 1.5px var(--vintage-gold-bright, #f6d599),
     0 6px 18px rgba(0, 0, 0, 0.55),
     0 0 12px rgba(246, 213, 153, 0.4) !important;
 }
@@ -73,15 +73,15 @@
   width: 22px !important;
   height: 22px !important;
   display: block !important;
-  color: #f6d599 !important;
+  color: var(--vintage-gold-bright, #f6d599) !important;
   filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5)) !important;
   -webkit-filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5)) !important;
-  transition: color 0.22s ease, transform 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  transition: color var(--transition-fast, 0.22s) ease, transform var(--transition-fast, 0.22s) var(--ease-standard, cubic-bezier(0.16, 1, 0.3, 1)) !important;
 }
 
 .scroll-top:hover .scroll-top__svg,
 .scroll-top:hover svg {
-  color: #fff4d9 !important;
+  color: var(--vintage-gold-light, #fff4d9) !important;
   transform: translateY(-3px) scale(1.08) !important;
 }
 

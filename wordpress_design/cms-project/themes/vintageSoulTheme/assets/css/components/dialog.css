@@ -44,10 +44,10 @@
   max-height: calc(100vh - 40px);
   overflow-y: auto;
   background-color: var(--color-surface-paper, #fbf2e6);
-  border: 1.5px solid #8e622d;
+  border: 1.5px solid var(--vintage-bark-border, #8e622d);
   border-radius: 8px;
   box-shadow:
-    inset 0 0 0 1px #caa06d,
+    inset 0 0 0 1px var(--vintage-gold-inner, #caa06d),
     0 20px 50px rgba(0, 0, 0, 0.6);
   filter: url(#rough-button-cut-sm) !important;
   -webkit-filter: url(#rough-button-cut-sm) !important;
@@ -91,9 +91,9 @@
   border-radius: 50%;
   color: var(--color-text-muted);
   cursor: pointer;
-  background: #fdf8ef;
-  border: 1.5px solid #8e622d;
-  box-shadow: inset 0 0 0 1px #caa06d;
+  background: var(--vintage-parchment-warm, #fdf8ef);
+  border: 1.5px solid var(--vintage-bark-border, #8e622d);
+  box-shadow: inset 0 0 0 1px var(--vintage-gold-inner, #caa06d);
   transition: all 0.2s ease;
 }
 
@@ -107,8 +107,8 @@
 }
 
 .dialog__close:hover {
-  background: #11381b;
-  color: #f6d599;
+  background: var(--client-brand-dark, #11381b);
+  color: var(--vintage-gold-bright, #f6d599);
 }
 
 .dialog__body {
@@ -164,14 +164,14 @@
   overflow-y: auto !important;
   margin: auto !important;
   background: #110e0a !important;
-  border: 2px solid #8e622d !important;
+  border: 2px solid var(--vintage-bark-border, #8e622d) !important;
   border-radius: 6px !important;
   box-shadow:
-    inset 0 0 0 1.5px #caa06d,
+    inset 0 0 0 1.5px var(--vintage-gold-inner, #caa06d),
     0 24px 64px rgba(0, 0, 0, 0.92) !important;
   filter: url(#rough-button-cut-sm) !important;
   -webkit-filter: url(#rough-button-cut-sm) !important;
-  color: #fbf2e6 !important;
+  color: var(--vintage-parchment-light, #fbf2e6) !important;
   position: relative !important;
   padding: 0 !important;
   transform: none !important;
@@ -200,8 +200,8 @@
   margin: 0 !important;
   border-radius: 50% !important;
   background: rgba(12, 10, 8, 0.85) !important;
-  border: 1.5px solid #caa06d !important;
-  color: #f6d599 !important;
+  border: 1.5px solid var(--vintage-gold-inner, #caa06d) !important;
+  color: var(--vintage-gold-bright, #f6d599) !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -222,7 +222,7 @@
 }
 
 .vintage-story-panel__close:hover {
-  background: #f6d599 !important;
+  background: var(--vintage-gold-bright, #f6d599) !important;
   border-color: #ffffff !important;
   color: #06180b !important;
   transform: scale(1.1) rotate(90deg) !important;
@@ -237,7 +237,7 @@
   align-items: center !important;
   justify-content: center !important;
   overflow: hidden !important;
-  border-bottom: 1.5px solid #8e622d !important;
+  border-bottom: 1.5px solid var(--vintage-bark-border, #8e622d) !important;
   background: #000000 !important;
 }
 
@@ -263,7 +263,7 @@
   font-family: 'Cinzel', serif !important;
   font-size: 17px !important;
   font-weight: 700 !important;
-  color: #f6d599 !important;
+  color: var(--vintage-gold-bright, #f6d599) !important;
   margin: 0 0 6px !important;
   letter-spacing: 0.04em !important;
 }
@@ -295,7 +295,7 @@
   font-family: 'Cinzel', serif !important;
   font-size: 14px !important;
   font-weight: 700 !important;
-  color: #f6d599 !important;
+  color: var(--vintage-gold-bright, #f6d599) !important;
   letter-spacing: 0.08em !important;
   text-transform: uppercase !important;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9) !important;
@@ -304,7 +304,7 @@
 .vintage-story-panel__meta {
   font-family: var(--font-family-base, 'EB Garamond', serif) !important;
   font-size: 13px !important;
-  color: #caa06d !important;
+  color: var(--vintage-gold-inner, #caa06d) !important;
   font-style: italic !important;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8) !important;
 }
@@ -315,7 +315,7 @@
   width: 100% !important;
   aspect-ratio: 16 / 9 !important;
   background: #000000 !important;
-  border-bottom: 2px solid #8e622d !important;
+  border-bottom: 2px solid var(--vintage-bark-border, #8e622d) !important;
   overflow: hidden !important;
 }
 
@@ -346,7 +346,7 @@
   padding: 12px 16px !important;
   margin-bottom: 16px !important;
   background: rgba(6, 24, 11, 0.7) !important;
-  border: 1px solid #8e622d !important;
+  border: 1px solid var(--vintage-bark-border, #8e622d) !important;
   border-radius: 6px !important;
   box-shadow: inset 0 0 0 1px rgba(202, 160, 109, 0.3) !important;
 }
@@ -358,7 +358,7 @@
   font-family: 'Cinzel', serif !important;
   font-size: 13px !important;
   font-weight: 700 !important;
-  color: #f6d599 !important;
+  color: var(--vintage-gold-bright, #f6d599) !important;
 }
 
 .vsm-stat {
