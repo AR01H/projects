@@ -1,0 +1,20 @@
+# Reference copy only - see config/README.md.
+# Not read by WordPress from this location - to make this the live
+# robots.txt, paste it into Rank Math -> General Settings -> Edit robots.txt.
+#
+# The current LIVE robots.txt is just "Disallow:" (allows everything), which
+# is why Search Console's crawl reports show Google spending crawl budget on
+# /wp-admin/*, /wp-includes/*, .php system files and /feed/ URLs - none of
+# which are content and none of which should ever be crawled. The rules
+# below block only non-content system paths; nothing that affects real
+# pages, guides, calculators or the sitemap.
+
+User-agent: *
+Disallow: /wp-admin/
+Allow: /wp-admin/admin-ajax.php
+Disallow: /wp-includes/
+Disallow: /wp-login.php
+Disallow: /xmlrpc.php
+Disallow: /*/feed/
+Disallow: /*?s=
+Sitemap: https://advaithhomes.co.uk/sitemap_index.xml

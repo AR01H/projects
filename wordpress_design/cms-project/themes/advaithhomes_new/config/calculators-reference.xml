@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Reference copy only - see config/README.md. Not served anywhere; not
+     read by WordPress or the theme. Lists the calculator tool pages
+     currently `status = 'active'` in the wp_ah_calculators table (see
+     admin/tabs/calculators/SubList.php), rendered live via
+     calculators/calculators.php at the pretty URL form /calculators/{key}/
+     (?ah_calc={key} is the underlying query-string form).
+
+     Regenerate by hand whenever a calculator is activated/deactivated in
+     wp-admin, so this stays an accurate snapshot - it does not update
+     itself. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+	<url>
+		<loc>https://advaithhomes.co.uk/calculators/total-cost-to-buy-a-home/</loc>
+		<!-- Total Cost of Buying a Home -->
+	</url>
+	<url>
+		<loc>https://advaithhomes.co.uk/calculators/house-affordability-calculator/</loc>
+		<!-- Local House Affordability by ONS -->
+	</url>
+	<url>
+		<loc>https://advaithhomes.co.uk/calculators/sdlt-calculator/</loc>
+		<!-- Stampduty Calculator -->
+	</url>
+	<url>
+		<loc>https://advaithhomes.co.uk/calculators/monthly-costs-calculator/</loc>
+		<!-- Monthly Costs -->
+	</url>
+	<url>
+		<loc>https://advaithhomes.co.uk/calculators/house-price-affordability/</loc>
+		<!-- Property Search Budget Calculator -->
+	</url>
+	<url>
+		<loc>https://advaithhomes.co.uk/calculators/moving-cost-calculator/</loc>
+		<!-- Home Moving Cost -->
+	</url>
+	<url>
+		<loc>https://advaithhomes.co.uk/calculators/deposit-saving-goad/</loc>
+		<!-- First-Time Buyer Savings Calculator -->
+	</url>
+	<url>
+		<loc>https://advaithhomes.co.uk/calculators/monthly-homeownership-budget/</loc>
+		<!-- Monthly Homeownership Budget -->
+	</url>
+	<url>
+		<loc>https://advaithhomes.co.uk/calculators/new-build-home-charges-cal/</loc>
+		<!-- New Build Home Costs & Charges Planner -->
+	</url>
+</urlset>
