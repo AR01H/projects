@@ -294,7 +294,9 @@ class SeoService {
 		$canonical = trim( (string) ( $reg['canonical'] ?? '' ) );
 		// If canonical is explicitly set in SEO registration, use it (includes seo.json values)
 		if ( '' !== $canonical ) {
-			// Already set via adn_seo_register(), use as-is
+			if ( ! preg_match( '~^https?://~i', $canonical ) ) {
+				$canonical = home_url( '/' . ltrim( $canonical, '/' ) );
+			}
 		} elseif ( $post instanceof \WP_Post ) {
 			$custom = (string) get_post_meta( $post->ID, \ADN_META_CANONICAL, true );
 			$canonical = '' !== $custom ? $custom : (string) get_permalink( $post->ID );
@@ -360,6 +362,9 @@ class SeoService {
 		
 		// Self-referencing Hreflang for UK English
 		$_href_url = ! empty( $_canonical ) ? $_canonical : home_url( '/' );
+		if ( ! preg_match( '~^https?://~i', $_href_url ) ) {
+			$_href_url = home_url( '/' . ltrim( $_href_url, '/' ) );
+		}
 		echo '<link rel="alternate" hreflang="en-GB" href="' . esc_url( $_href_url ) . '">' . "\n";
 		echo '<link rel="alternate" hreflang="x-default" href="' . esc_url( $_href_url ) . '">' . "\n";
 
@@ -368,10 +373,12 @@ class SeoService {
 		$_is_dialog  = isset( $_GET['dialog'] )  || isset( $_GET['embed'] );
 		$_is_thin    = is_author() || is_date() || is_attachment() || is_search() || is_404();
 		$_noindex    = ! empty( $reg['noindex'] ) || $_is_bare || $_is_search || $_is_dialog || $_is_thin;
-		if ( $_noindex ) {
-			echo '<meta name="robots" content="noindex, follow">' . "\n";
-		} else {
-			echo '<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">' . "\n";
+		if ( ! $yoast_on && ! $rankmath_on ) {
+			if ( $_noindex ) {
+				echo '<meta name="robots" content="noindex, follow">' . "\n";
+			} else {
+				echo '<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">' . "\n";
+			}
 		}
 
 		$_total_pages = isset( $reg['total_pages'] ) ? (int) $reg['total_pages'] : 0;

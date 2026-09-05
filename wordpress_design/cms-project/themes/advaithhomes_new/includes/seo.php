@@ -19,14 +19,44 @@ add_filter( 'pre_get_document_title', 'adn_seo_document_title', 99 );
 
 add_filter( 'rank_math/frontend/title', 'adn_seo_document_title', 99 );
 
+add_filter( 'rank_math/frontend/canonical', function( $canonical ) {
+	$s = \Adn\Theme\Service\SeoService::resolve();
+	if ( ! empty( $s['canonical'] ) ) {
+		return $s['canonical'];
+	}
+	return $canonical;
+}, 99 );
+
+add_filter( 'rank_math/frontend/description', function( $desc ) {
+	$s = \Adn\Theme\Service\SeoService::resolve();
+	if ( ! empty( $s['desc'] ) ) {
+		return $s['desc'];
+	}
+	return $desc;
+}, 99 );
+
 add_filter( 'rank_math/frontend/robots', function( array $robots ): array {
-	$reg    = (array) $GLOBALS['adn_seo'];
-	$custom = trim( (string) ( $reg['title'] ?? '' ) );
-	if ( '' === $custom ) { return $robots; }
-	$noindex_key = array_search( 'noindex', $robots, true );
-	if ( false !== $noindex_key ) { unset( $robots[ $noindex_key ] ); }
-	if ( ! in_array( 'index', $robots, true ) ) { array_unshift( $robots, 'index' ); }
-	return $robots;
+	$reg        = (array) ( $GLOBALS['adn_seo'] ?? array() );
+	$_is_bare   = isset( $_GET['content'] ) && 'true' === (string) $_GET['content'];
+	$_is_search = isset( $_GET['search'] )  && '' !== (string) $_GET['search'];
+	$_is_dialog = isset( $_GET['dialog'] )  || isset( $_GET['embed'] );
+	$_is_thin   = is_author() || is_date() || is_attachment() || is_search() || is_404();
+	$_noindex   = ! empty( $reg['noindex'] ) || $_is_bare || $_is_search || $_is_dialog || $_is_thin;
+
+	if ( $_noindex ) {
+		return array(
+			'noindex' => 'noindex',
+			'follow'  => 'follow',
+		);
+	}
+
+	return array(
+		'index'             => 'index',
+		'follow'            => 'follow',
+		'max-snippet'       => 'max-snippet:-1',
+		'max-video-preview' => 'max-video-preview:-1',
+		'max-image-preview' => 'max-image-preview:large',
+	);
 }, 99 );
 
 function adn_seo_resolve(): array {

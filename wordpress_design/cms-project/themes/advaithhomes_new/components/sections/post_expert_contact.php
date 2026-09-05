@@ -19,17 +19,11 @@ $hero      = isset( $expert_data['hero'] ) && is_array( $expert_data['hero'] ) ?
 $cant_find = isset( $expert_data['cant_find_cta'] ) && is_array( $expert_data['cant_find_cta'] ) ? $expert_data['cant_find_cta'] : array();
 
 $nav_tiles = array(
-	array( 'icon' => adn_icon('🤝'), 'label' => 'Ask an Expert', 'url' => '/ask-an-expert/' ),
+	array( 'icon' => adn_icon('🤝'), 'label' => 'Ask an Expert', 'url' => '/ask-expert/' ),
 	array( 'icon' => adn_icon('📰'), 'label' => 'News',        'url' => '/news/' ),
-	array( 'icon' => adn_icon('📞'), 'label' => 'Contact',           'url' => '/contact' ),
+	array( 'icon' => adn_icon('📞'), 'label' => 'Contact',           'url' => '/contact/' ),
 	array( 'icon' => adn_icon('📚'), 'label' => 'Guides',         'url' => '/guides/' ),
 );
-
-/* ── Right panel: contact from JSON only ── */
-$contact_sidebar = isset( $contact_data['contact_sidebar'] ) && is_array( $contact_data['contact_sidebar'] ) ? $contact_data['contact_sidebar'] : array();
-$whatsapp        = isset( $contact_sidebar['whatsapp'] ) && is_array( $contact_sidebar['whatsapp'] ) ? $contact_sidebar['whatsapp'] : array();
-$phone           = isset( $contact_sidebar['phone'] )    && is_array( $contact_sidebar['phone'] )    ? $contact_sidebar['phone']    : array();
-$email           = isset( $contact_sidebar['email'] )    && is_array( $contact_sidebar['email'] )    ? $contact_sidebar['email']    : array();
 ?>
 <div class="pec-wrap">
 

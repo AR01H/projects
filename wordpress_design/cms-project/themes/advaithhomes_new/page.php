@@ -9,11 +9,10 @@
 
 defined( 'ABSPATH' ) || exit;
 
-get_header();
-
 $chrome = function_exists( 'adn_service_site_chrome' ) ? adn_service_site_chrome() : array();
 
 if ( ! have_posts() ) {
+	get_header();
 	adn_page_open( array( 'chrome' => $chrome ) );
 	adn_page_close( array( 'chrome' => $chrome, 'skip_page_content' => true ) );
 	get_footer();
@@ -22,7 +21,7 @@ if ( ! have_posts() ) {
 
 the_post();
 
-$page_title = get_the_title();
+$page_title   = get_the_title();
 $page_excerpt = get_the_excerpt();
 $page_content = get_the_content();
 
@@ -35,6 +34,16 @@ $breadcrumb = array(
 	array( 'label' => 'Home', 'url' => home_url( '/' ) ),
 	array( 'label' => $page_title, 'url' => '' ),
 );
+
+// Register SEO before get_header() so wp_head (priority 1) and Rank Math pick it up
+adn_seo_register( array(
+	'title'       => $page_title,
+	'description' => $page_excerpt,
+	'canonical'   => get_permalink(),
+	'breadcrumb'  => $breadcrumb,
+) );
+
+get_header();
 
 adn_page_open( array( 'chrome' => $chrome, 'breadcrumb' => array() ) );
 
@@ -56,7 +65,10 @@ if ( function_exists( 'adn_component' ) ) {
 			<div class="adn-wp-page__content">
 				<?php
 				remove_filter( 'the_content', 'wpautop' );
-				the_content();
+				// If the post content contains an <h1>, demote to <h2> to maintain single <h1> hierarchy
+				$content_html = apply_filters( 'the_content', get_the_content() );
+				$content_html = preg_replace( '/<h1\b([^>]*)>(.*?)<\/h1>/i', '<h2$1>$2</h2>', $content_html );
+				echo $content_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				add_filter( 'the_content', 'wpautop' );
 				?>
 			</div>

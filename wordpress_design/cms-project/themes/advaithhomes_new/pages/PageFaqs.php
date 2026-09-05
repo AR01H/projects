@@ -22,6 +22,15 @@ foreach ( $faq_groups as $_faq_group_items ) {
 }
 unset( $_faq_group_items );
 
+$_faq_seo_items = array();
+foreach ( $faqs as $f ) {
+    $q = is_object( $f ) ? ( $f->question ?? '' ) : ( $f['question'] ?? '' );
+    $a = is_object( $f ) ? ( $f->answer ?? '' ) : ( $f['answer'] ?? '' );
+    if ( '' !== trim( (string) $q ) && '' !== trim( (string) $a ) ) {
+        $_faq_seo_items[] = array( 'question' => (string) $q, 'answer' => (string) $a );
+    }
+}
+
 $faq_header = null;
 if ( class_exists( 'AH_Faqs_Model' ) ) {
     try {

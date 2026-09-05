@@ -182,7 +182,11 @@ get_header();
 
 			<?php /* WordPress post content - blocks / classic editor HTML */ ?>
 			<div class="article-body">
-				<?php the_content(); ?>
+				<?php
+				$content_html = apply_filters( 'the_content', get_the_content() );
+				$content_html = preg_replace( '/<h1\b([^>]*)>(.*?)<\/h1>/i', '<h2$1>$2</h2>', $content_html );
+				echo $content_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				?>
 			</div>
 
 			<?php /* Feedback row + social share */ ?>

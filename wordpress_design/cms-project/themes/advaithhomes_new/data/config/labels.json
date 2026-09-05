@@ -15,7 +15,7 @@
             { "label": "Guides", "url": "/guides/", "icon": "📚" },
             { "label": "Calculators", "url": "/calculators/", "icon": "🧮" },
             { "label": "News", "url": "/news/", "icon": "📰" },
-            { "label": "Ask an Expert", "url": "/ask-an-expert/", "icon": "🤝" },
+            { "label": "Ask an Expert", "url": "/ask-expert/", "icon": "🤝" },
             { "label": "Contact", "url": "/contact/", "icon": "💬" }
         ],
         "mobile": [
@@ -23,11 +23,11 @@
             { "label": "Guides", "url": "/guides/", "icon": "📚" },
             { "label": "Calculators", "url": "/calculators/", "icon": "🧮" },
             { "label": "News", "url": "/news/", "icon": "📰" },
-            { "label": "Expert", "url": "/ask-an-expert/", "icon": "🤝" },
+            { "label": "Expert", "url": "/ask-expert/", "icon": "🤝" },
             { "label": "Contact", "url": "/contact/", "icon": "💬" }
         ],
         "cta_label": "Get Guidance",
-        "cta_url": "/ask-an-expert/"
+        "cta_url": "/ask-expert/"
     },
 
     "taxonomy": {
@@ -90,7 +90,7 @@
         "guides": "/guides/",
         "news": "/news/",
         "tools": "/calculators/",
-        "expert": "/ask-an-expert/",
+        "expert": "/ask-expert/",
         "guidance": "/guidance/",
         "contact": "/contact/",
         "faqs": "/faqs/"

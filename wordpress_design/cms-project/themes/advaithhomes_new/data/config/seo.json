@@ -47,7 +47,7 @@
                 "home moving guide UK",
                 "property investment UK"
             ],
-            "canonical": "/",
+            "canonical": "",
             "image": "/assets/images/backgrounds/home_hero.jpg"
         },
         "coming_soon": {
@@ -239,8 +239,8 @@
         "name": "ADVAITH HOMES site navigation",
         "footer": {
             "_comment": "Footer link list on EVERY page. mode: \"collapsed\" (a <details> block, closed until clicked - recommended and penalty-free), \"visible\" (plain list), or \"hidden\" (display:none - what Google calls hidden links, use at your own risk).",
-            "enabled": true,
-            "mode": "hidden",
+            "enabled": false,
+            "mode": "collapsed",
             "title": "Quick Links"
         },
         "items": [
@@ -258,7 +258,7 @@
             },
             {
                 "name": "Ask an Expert",
-                "url": "/ask-an-expert/"
+                "url": "/ask-expert/"
             },
             {
                 "name": "Get Expert Guidance",

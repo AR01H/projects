@@ -42,8 +42,8 @@ if ( isset( $ctx['hero']['description'] ) && '' !== trim( (string) $ctx['hero'][
 if ( isset( $ctx['hero']['image'] ) && '' !== trim( (string) $ctx['hero']['image'] ) ) {
 	$_home_seo['image'] = (string) $ctx['hero']['image'];
 }
-// Set canonical URL from seo.json if available, otherwise use home URL
-if ( '' === trim( (string) ( $_home_seo['canonical'] ?? '' ) ) ) {
+// Set canonical URL to absolute home URL
+if ( empty( $_home_seo['canonical'] ) || ! preg_match( '~^https?://~i', (string) $_home_seo['canonical'] ) ) {
 	$_home_seo['canonical'] = home_url( '/' );
 }
 adn_seo_register( $_home_seo );

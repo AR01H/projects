@@ -33,6 +33,22 @@ add_filter( 'template_include', 'adn_route_page_definitions', 98 );
 add_filter( 'template_include', 'adn_route_parent_term_template', 99 );
 add_filter( 'template_include', 'adn_route_news_single_slug', 97 );
 
+add_action( 'template_redirect', 'adn_redirect_sitemap_xml', 0 );
+/**
+ * Redirect /sitemap.xml to /sitemap_index.xml (Rank Math index) to avoid serving stale static files.
+ */
+function adn_redirect_sitemap_xml() {
+	if ( is_admin() ) {
+		return;
+	}
+	$request_uri = isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
+	$path        = trim( (string) parse_url( $request_uri, PHP_URL_PATH ), '/' );
+	if ( 'sitemap.xml' === $path ) {
+		wp_redirect( home_url( '/sitemap_index.xml' ), 301 );
+		exit;
+	}
+}
+
 add_action( 'template_redirect', 'adn_serve_calculators_sitemap', 0 );
 /**
  * Serves /calculators-sitemap.xml live, straight from the theme's
