@@ -18,3 +18,8 @@ Disallow: /xmlrpc.php
 Disallow: /*/feed/
 Disallow: /*?s=
 Sitemap: https://advaithhomes.co.uk/sitemap_index.xml
+# calculators-sitemap.xml (this same folder) is served live by the theme
+# itself - see adn_serve_calculators_sitemap() in includes/core_routing.php.
+# Lists /calculators/{key}/ (the full themed page, already index,follow) -
+# NOT ?ah_calc=key (a bare iframe-embed doc that correctly stays noindex).
+Sitemap: https://advaithhomes.co.uk/calculators-sitemap.xml

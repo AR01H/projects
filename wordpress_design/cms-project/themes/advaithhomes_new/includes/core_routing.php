@@ -33,6 +33,35 @@ add_filter( 'template_include', 'adn_route_page_definitions', 98 );
 add_filter( 'template_include', 'adn_route_parent_term_template', 99 );
 add_filter( 'template_include', 'adn_route_news_single_slug', 97 );
 
+add_action( 'template_redirect', 'adn_serve_calculators_sitemap', 0 );
+/**
+ * Serves /calculators-sitemap.xml live, straight from the theme's
+ * config/calculators-sitemap.xml (see config/README.md) - a single,
+ * version-controlled source of truth instead of a manually-uploaded static
+ * file at the server's document root that would drift out of sync every
+ * time a calculator is activated/deactivated. Referenced (currently
+ * commented out, pending this route existing) from config/robots.txt and
+ * config/sitemap-index-reference.xml.
+ */
+function adn_serve_calculators_sitemap() {
+	$request_uri = isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
+	$path        = trim( (string) parse_url( $request_uri, PHP_URL_PATH ), '/' );
+	if ( 'calculators-sitemap.xml' !== $path ) {
+		return;
+	}
+
+	$file = get_template_directory() . '/config/calculators-sitemap.xml';
+	if ( ! is_file( $file ) ) {
+		return; // fall through to the normal 404 rather than error.
+	}
+
+	status_header( 200 );
+	nocache_headers();
+	header( 'Content-Type: application/xml; charset=UTF-8' );
+	readfile( $file );
+	exit;
+}
+
 /**
  * Single generic router for all entries in adn_get_page_definitions().
  *
