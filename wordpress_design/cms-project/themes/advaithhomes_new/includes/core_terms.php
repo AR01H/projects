@@ -97,6 +97,7 @@ define( 'SITE_GUIDANCE_URL',    adn_term( 'urls.guidance',    '/guidance/' ) );
 define( 'SITE_CONTACT_URL',     adn_term( 'urls.contact',     '/contact/' ) );
 define( 'SITE_FAQS_URL',        adn_term( 'urls.faqs',        '/faqs/' ) );
 define( 'SITE_REVIEWS_URL',     adn_term( 'urls.reviews',     '/reviews/' ) );
+define( 'SITE_HOW_IT_WORKS_URL', adn_term( 'urls.how_it_works', '/how-it-works/' ) );
 
 // ===========================
 // CTA COPY
@@ -125,6 +126,7 @@ define( 'SITE_NEWS_LABEL',     adn_term( 'features.news_label',     'News & Insi
 define( 'SITE_EXPERT_LABEL',   adn_term( 'features.expert_label',   'Ask an Expert' ) );
 define( 'SITE_GUIDANCE_LABEL', adn_term( 'features.guidance_label', 'Get Expert Guidance' ) );
 define( 'SITE_CONTACT_LABEL',  adn_term( 'features.contact_label',  'Contact Us' ) );
+define( 'SITE_HOW_IT_WORKS_LABEL', adn_term( 'features.how_it_works_label', 'How It Works' ) );
 
 // ===========================
 // BUTTON LABELS
@@ -268,6 +270,7 @@ define( 'PAGE_TITLE_GUIDES',   adn_term( 'page_titles.guides',   SITE_CONTENT_PL
 define( 'PAGE_TITLE_TOOLS',    adn_term( 'page_titles.tools',    SITE_TOOLS_PLURAL ) );
 define( 'PAGE_TITLE_EXPERT',   adn_term( 'page_titles.expert',   SITE_EXPERT_LABEL ) );
 define( 'PAGE_TITLE_GUIDANCE', adn_term( 'page_titles.guidance', SITE_GUIDANCE_LABEL ) );
+define( 'PAGE_TITLE_HOW_IT_WORKS', adn_term( 'page_titles.how_it_works', SITE_HOW_IT_WORKS_LABEL ) );
 
 // ===========================
 // PLUGIN TERM INTEGRATION

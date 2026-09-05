@@ -67,14 +67,29 @@ function adn_route_page_definitions( $template ) {
 		$aliases = isset( $def['aliases'] ) && is_array( $def['aliases'] ) ? $def['aliases'] : array();
 		$slugs   = array_merge( array( $slug ), $aliases );
 
-		$is_page = false;
+		$is_page     = false;
+		$matched_slug = '';
 		foreach ( $slugs as $_s ) {
-			if ( is_page( $_s ) ) { $is_page = true; break; }
+			if ( is_page( $_s ) ) { $is_page = true; $matched_slug = $_s; break; }
 		}
 		$is_404 = ! $is_page && $is_global_404 && in_array( $path, $slugs, true );
+		if ( $is_404 ) {
+			$matched_slug = $path;
+		}
 
 		if ( ! $is_page && ! $is_404 ) {
 			continue;
+		}
+
+		// Aliases exist only so an old/alternate URL still resolves - they are
+		// never a second canonical page. Whether the alias is being served as a
+		// real WP page (created by an earlier adn_create_default_pages() run,
+		// back before aliases stopped getting their own page row) or just as a
+		// virtual 404-intercept, always 301 it to the primary slug so there is
+		// exactly one indexable, canonical URL for this page.
+		if ( ! empty( $aliases ) && in_array( $matched_slug, $aliases, true ) ) {
+			wp_redirect( home_url( '/' . $slug . '/' ), 301 );
+			exit;
 		}
 
 		$base = realpath( ADN_THEME_DIR . '/pages' );

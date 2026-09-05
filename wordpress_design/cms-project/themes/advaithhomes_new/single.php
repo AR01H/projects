@@ -37,6 +37,19 @@ if ( have_posts() ) {
 
 $ctx = \Adn\Theme\Feature\Article\Controller\ArticleController::getContext();
 
+/*
+ * Register SEO metadata (breadcrumbs, dates, article type) so SeoService emits complete schema.
+ */
+adn_seo_register( array(
+	'title'       => get_the_title(),
+	'description' => ! empty( $ctx['header']['description'] ) ? $ctx['header']['description'] : wp_strip_all_tags( get_the_excerpt() ),
+	'canonical'   => get_permalink(),
+	'breadcrumb'  => ! empty( $ctx['breadcrumb'] ) ? $ctx['breadcrumb'] : array(),
+	'published'   => get_the_date( 'c' ),
+	'modified'    => get_the_modified_date( 'c' ),
+	'type'        => 'article',
+) );
+
 get_header();
 ?>
 

@@ -1,0 +1,848 @@
+/* how-it-works.css - "How It Works" page (pages/PageHowItWorks.php) */
+
+/* ── Shared section eyebrow (reused by every section header on this page:
+   process, icon-grid/why-choose, benefits, comparison) ──────────────── */
+.section-eyebrow {
+    display: inline-block;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-primary, #1e3a2f);
+    background: var(--color-tag-bg, #e8f0ec);
+    padding: 5px 16px;
+    border-radius: var(--radius-pill, 9999px);
+    margin-bottom: 14px;
+}
+
+/* premium_styles.css draws a gold underline after every .section-header-wrap
+   h2 (a sitewide convention for LEFT-aligned section headers - the wrap
+   class is reused here only to opt into scroll-reveal). Our headers are
+   centered, so recenter that underline for just these two instead of
+   pulling in the unrelated .section-header--center helper (which also
+   resets heading font-size/margins we don't want). */
+.hiw-process-header .contact-section-heading::after,
+.icon-grid-header .contact-section-heading::after {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* ── Process timeline section ──────────────────────────────────────── */
+.hiw-process-section {
+    position: relative;
+    overflow: hidden;
+    background: var(--color-bg, #f9fafb);
+    padding: 40px 0 44px;
+}
+
+/* Container sits above the decorative .phb-circle blobs (see step_timeline.php) */
+.hiw-process-section > .container {
+    position: relative;
+    z-index: 1;
+}
+
+.hiw-process-header {
+    text-align: center;
+    max-width: 640px;
+    margin: 0 auto 32px;
+}
+
+.hiw-process-header .contact-section-heading {
+    margin-bottom: 10px;
+}
+
+.hiw-process-sub {
+    color: var(--color-text-muted, #6b7280);
+    font-size: 1rem;
+    margin: 0;
+}
+
+.hiw-timeline {
+    position: relative;
+    max-width: 880px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+/* Centre connecting line (desktop) */
+.hiw-timeline::before {
+    content: "";
+    position: absolute;
+    top: 8px;
+    bottom: 8px;
+    left: 50%;
+    width: 2px;
+    transform: translateX(-50%);
+    background: repeating-linear-gradient(
+        to bottom,
+        var(--color-accent, #c9a84c) 0,
+        var(--color-accent, #c9a84c) 8px,
+        transparent 8px,
+        transparent 16px
+    );
+    z-index: 0;
+}
+
+.hiw-step {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 24px;
+}
+
+/* Pin both children to row 1 explicitly. Without this, "left" steps place
+   the card in column 1 while the node sits in column 2 - since the card's
+   column comes BEFORE the node's, CSS Grid's forward-only auto-placement
+   cursor pushes the card onto a new implicit row instead of sharing row 1,
+   so the node ends up floating above an un-centred card. "Right" steps
+   never hit this (card's column 3 comes after the node's), which is why
+   only every other step looked misaligned. */
+.hiw-step-node,
+.hiw-step-card {
+    grid-row: 1;
+}
+
+/* Alternate the card left/right of the centre line */
+.hiw-step--left .hiw-step-card  { grid-column: 1; text-align: right; }
+.hiw-step--left .hiw-step-node  { grid-column: 2; }
+.hiw-step--right .hiw-step-card { grid-column: 3; text-align: left; }
+.hiw-step--right .hiw-step-node { grid-column: 2; }
+
+.hiw-step-node {
+    position: relative;
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--color-primary, #1e3a2f) 0%, var(--color-primary-light, #2d5a44) 100%);
+    box-shadow: var(--shadow-md, 0 4px 12px rgba(0,0,0,0.10));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.hiw-step-icon {
+    font-size: 1.5rem;
+    color: var(--color-white, #fff);
+}
+
+.hiw-step-num {
+    position: absolute;
+    bottom: -8px;
+    right: -8px;
+    background: var(--color-accent, #c9a84c);
+    color: var(--color-dark, #1a2332);
+    font-size: 0.7rem;
+    font-weight: 800;
+    line-height: 1;
+    padding: 5px 7px;
+    border-radius: var(--radius-pill, 9999px);
+    border: 2px solid var(--color-bg, #f9fafb);
+}
+
+.hiw-step-card {
+    background: var(--color-white, #fff);
+    border: 1px solid var(--color-border, #e5e0d8);
+    border-radius: var(--radius-md, 12px);
+    box-shadow: var(--shadow-sm, 0 1px 3px rgba(0,0,0,0.08));
+    padding: 22px 20px;
+    transition: transform var(--transition-md, 0.3s ease), box-shadow var(--transition-md, 0.3s ease);
+}
+
+.hiw-step-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg, 0 8px 24px rgba(0,0,0,0.12));
+}
+
+.hiw-step-card h3 {
+    font-family: var(--font-display, 'Playfair Display', serif);
+    font-size: 1.1rem;
+    color: var(--color-heading, #111827);
+    margin: 0 0 6px;
+}
+
+.hiw-step-card p {
+    font-size: 0.92rem;
+    line-height: 1.55;
+    color: var(--color-text-muted, #6b7280);
+    margin: 0;
+}
+
+/* A step card becomes a real link when its step has a `url` (e.g. "Contact
+   Us" -> /contact/) - same box, just clickable, with a small arrow cue. */
+.hiw-step-card--link {
+    display: block;
+    position: relative;
+    text-decoration: none;
+}
+.hiw-step-card--link:hover {
+    border-color: var(--color-accent, #c9a84c);
+}
+.hiw-step-card-cta {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--color-accent, #c9a84c);
+    transition: transform var(--transition, 0.2s ease);
+}
+.hiw-step-card--link:hover .hiw-step-card-cta {
+    transform: translateX(4px);
+}
+
+/* Scroll-reveal support (see ScrollRevealHandler): fade/slide each step in
+   from its own side of the timeline as it enters the viewport. */
+.adn-reveal .hiw-step {
+    opacity: 0;
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.adn-reveal .hiw-step--left  { transform: translateX(-24px); }
+.adn-reveal .hiw-step--right { transform: translateX(24px); }
+.adn-reveal .hiw-step.adn-in {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* ── Mobile: single column, line moves to the left edge ─────────────── */
+@media (max-width: 768px) {
+    .hiw-process-section { padding: 32px 0 36px; }
+
+    .hiw-timeline::before {
+        left: 33px;
+        transform: none;
+    }
+
+    .hiw-step,
+    .hiw-step--left,
+    .hiw-step--right {
+        grid-template-columns: 68px 1fr;
+        gap: 16px;
+    }
+
+    .hiw-step--left .hiw-step-card,
+    .hiw-step--right .hiw-step-card {
+        grid-column: 2;
+        text-align: left;
+    }
+    .hiw-step--left .hiw-step-node,
+    .hiw-step--right .hiw-step-node {
+        grid-column: 1;
+    }
+
+    .hiw-step-node { width: 56px; height: 56px; }
+    .hiw-step-icon { font-size: 1.2rem; }
+
+    .adn-reveal .hiw-step--left,
+    .adn-reveal .hiw-step--right {
+        transform: translateY(16px);
+    }
+}
+
+/* ── Your Story - narrative version of the step timeline ─────────────────
+   Reuses the SAME alternating left/right layout, gradient node, dashed
+   centre line and white card language as the Process timeline just above
+   it (.hiw-step / .hiw-step-node / .hiw-step-card / .hiw-timeline, all
+   defined higher up in this file) - so it reads as part of one page, not
+   a bolted-on design. The only differences: each node holds a small
+   looping animated SVG instead of a static icon, and each card tells one
+   beat of the story. Entrance animation (.adn-reveal .hiw-step) and the
+   dashed line are inherited for free from the Process timeline's own
+   rules further up. */
+.story-section {
+    position: relative;
+    overflow: hidden;
+    background: var(--color-white, #fff);
+    padding: 40px 0 44px;
+}
+
+.story-section > .container {
+    position: relative;
+    z-index: 1;
+}
+
+/* Ambient, inert background: house/key/door/roof line-art drifting very
+   slowly behind the timeline. Kept extremely subtle (low opacity, thin
+   primary-green tint) so it reads as texture, not distraction. */
+.story-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.story-bg-shape {
+    position: absolute;
+    color: var(--color-primary, #1e3a2f);
+    opacity: 0.05;
+}
+
+.story-bg-shape--house {
+    width: 220px;
+    height: 220px;
+    top: -40px;
+    left: -50px;
+    animation: story-bg-drift-a 22s ease-in-out infinite;
+}
+.story-bg-shape--key {
+    width: 120px;
+    height: 120px;
+    top: 55%;
+    right: 6%;
+    color: var(--color-accent, #c9a84c);
+    opacity: 0.07;
+    animation: story-bg-drift-b 18s ease-in-out infinite;
+}
+.story-bg-shape--door {
+    width: 150px;
+    height: 150px;
+    bottom: -30px;
+    left: 8%;
+    animation: story-bg-drift-a 26s ease-in-out infinite reverse;
+}
+.story-bg-shape--roof {
+    width: 180px;
+    height: 180px;
+    top: 8%;
+    right: -40px;
+    animation: story-bg-drift-b 20s ease-in-out infinite;
+}
+
+@keyframes story-bg-drift-a {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    50%      { transform: translate(10px, -14px) rotate(3deg); }
+}
+@keyframes story-bg-drift-b {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    50%      { transform: translate(-12px, 12px) rotate(-3deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .story-bg-shape { animation: none; }
+}
+
+@media (max-width: 900px) {
+    .story-bg-shape--house, .story-bg-shape--door, .story-bg-shape--roof { display: none; }
+}
+
+/* Node badge: same green gradient circle as the Process timeline: the SVG
+   just needs to be sized/coloured to sit inside it. */
+.story-visual {
+    width: 34px;
+    height: 34px;
+    color: var(--color-white, #fff);
+    overflow: visible;
+}
+
+/* 0: question bubble breathes, the "?" fades like a blinking cursor */
+.sv-bubble {
+    transform-origin: center;
+    animation: sv-breathe 3.2s ease-in-out infinite;
+}
+.sv-mark {
+    animation: sv-blink 1.6s steps(1) infinite;
+}
+
+/* 1: paper plane glides forward and drifts back, looping */
+.sv-plane {
+    transform-origin: center;
+    animation: sv-fly 2.8s ease-in-out infinite;
+}
+
+/* 2: listening waves ripple outward, staggered */
+.sv-wave {
+    transform-origin: center;
+    animation: sv-ripple 2.4s ease-out infinite;
+}
+.sv-wave-2 { animation-delay: 0.4s; }
+.sv-wave-3 { animation-delay: 0.8s; }
+
+/* 3: bulb glows, rays fade in/out around it */
+.sv-bulb {
+    transform-origin: center;
+    animation: sv-glow 2.6s ease-in-out infinite;
+}
+.sv-rays {
+    animation: sv-rays-pulse 2.6s ease-in-out infinite;
+}
+
+/* 4: door eases open and closed on its hinge */
+.sv-door {
+    transform-origin: 58px 50px;
+    animation: sv-swing 3.4s ease-in-out infinite;
+}
+
+@keyframes sv-breathe {
+    0%, 100% { transform: scale(1); }
+    50%      { transform: scale(1.05); }
+}
+@keyframes sv-blink {
+    0%, 60%  { opacity: 1; }
+    75%, 100% { opacity: 0.25; }
+}
+@keyframes sv-fly {
+    0%, 100% { transform: translate(0, 0); }
+    50%      { transform: translate(4px, -4px); }
+}
+@keyframes sv-ripple {
+    0%   { transform: scale(0.7); opacity: 0.9; }
+    100% { transform: scale(1.15); opacity: 0; }
+}
+@keyframes sv-glow {
+    0%, 100% { opacity: 0.85; }
+    50%      { opacity: 1; filter: drop-shadow(0 0 4px currentColor); }
+}
+@keyframes sv-rays-pulse {
+    0%, 100% { opacity: 0.4; }
+    50%      { opacity: 1; }
+}
+@keyframes sv-swing {
+    0%, 100% { transform: rotate(0deg); }
+    50%      { transform: rotate(-8deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .sv-bubble, .sv-mark, .sv-plane, .sv-wave, .sv-bulb, .sv-rays, .sv-door {
+        animation: none;
+    }
+}
+
+.story-lede {
+    font-family: var(--font-display, 'Playfair Display', serif);
+    font-style: italic;
+    font-size: 1.15rem;
+    color: var(--color-heading, #111827);
+    margin: 0 0 6px;
+    line-height: 1.3;
+}
+
+.story-cta {
+    margin-top: 12px;
+}
+
+@media (max-width: 600px) {
+    .story-lede { font-size: 1.05rem; }
+}
+
+/* ── Icon feature grid ─────────────────────────────────────────────────
+   Generic icon + title + desc card grid (components/sections/icon_feature_
+   grid.php). Reused for THREE different sections on this page (Why Choose
+   Us, What You Get, Before You Start) plus the Guidance page's own Why
+   Choose section - kept deliberately unnamed after any one of those uses.
+   guidance.css owns this same class set for the Guidance page; this page
+   loads how-it-works.css instead, so it needs its own copy of the styling
+   here (same card/shadow/hover language, same gold+green palette, so both
+   pages still feel like one design system). Default background is white,
+   matching the Guidance page's established look; the --light variant is
+   used only on this page, where the component repeats several times in a
+   row and needs to alternate against its neighbours instead of merging
+   into one long band. */
+.icon-grid-section {
+    background: var(--color-white, #fff);
+    border-top: 1px solid var(--color-border, #e5e0d8);
+    padding: 40px 0 44px;
+}
+
+.icon-grid-section--light {
+    background: var(--color-bg, #f9fafb);
+    border-top: none;
+}
+
+.icon-grid-header {
+    text-align: center;
+    max-width: 640px;
+    margin: 0 auto 32px;
+}
+
+.icon-grid-header .contact-section-heading {
+    margin-bottom: 0;
+}
+
+.icon-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    max-width: 1080px;
+    margin: 0 auto;
+}
+
+/* Exact match to guidance.css's original .icon-grid-item (the established
+   design for this component - see the Guidance page's Why Choose section)
+   so the same component looks identical on every page that uses it. */
+.icon-grid-item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 28px 20px 24px;
+    background: var(--color-surface, #f8f5f0);
+    border: 1px solid var(--color-border, #e5e0d8);
+    border-radius: 14px;
+    transition: box-shadow 0.18s, transform 0.15s, border-color 0.18s;
+}
+
+.icon-grid-item:hover {
+    box-shadow: 0 6px 20px rgba(45, 90, 68, 0.1);
+    transform: translateY(-3px);
+    border-color: rgba(45, 90, 68, 0.25);
+}
+
+.icon-grid-icon {
+    font-size: 1.6rem;
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(45, 90, 68, 0.09);
+    border-radius: 50%;
+    margin-bottom: 14px;
+    flex-shrink: 0;
+}
+
+.icon-grid-item h3 {
+    font-size: 0.93rem;
+    font-weight: 600;
+    color: var(--color-heading, #1a2332);
+    margin-bottom: 8px;
+    line-height: 1.3;
+}
+
+.icon-grid-item p {
+    font-size: 0.81rem;
+    color: var(--color-black, #6b7280);
+    line-height: 1.55;
+    margin: 0;
+}
+
+.adn-reveal .icon-grid-item {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.adn-reveal .icon-grid-item.adn-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@media (max-width: 1024px) {
+    .icon-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 480px) {
+    .icon-grid { grid-template-columns: 1fr; }
+}
+
+/* ── Stats strip (animated count-up, see assets/js/premium.js) ──────── */
+.hiw-stats-section {
+    background: var(--color-primary, #1e3a2f);
+    padding: 28px 0;
+}
+
+.hiw-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    max-width: 1080px;
+    margin: 0 auto;
+}
+
+.hiw-stat {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 4px 8px;
+    position: relative;
+}
+
+/* Vertical divider between stats on desktop */
+.hiw-stat:not(:first-child)::before {
+    content: "";
+    position: absolute;
+    left: -12px;
+    top: 10%;
+    bottom: 10%;
+    width: 1px;
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.hiw-stat-num {
+    font-family: var(--font-display, 'Playfair Display', serif);
+    font-size: 2.2rem;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--color-accent-light, #e6c97a);
+}
+
+.hiw-stat-label {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--color-white, #fff);
+    margin-top: 4px;
+}
+
+.hiw-stat-sub {
+    font-size: 0.76rem;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.4;
+}
+
+.adn-reveal .hiw-stat {
+    opacity: 0;
+    transform: translateY(14px) scale(0.96);
+    transition: opacity 0.55s ease, transform 0.55s ease;
+}
+.adn-reveal .hiw-stat.adn-in {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+@media (max-width: 768px) {
+    .hiw-stats-grid { grid-template-columns: repeat(2, 1fr); gap: 28px 16px; }
+    /* Dividers assume a single row; meaningless once stats wrap to 2x2. */
+    .hiw-stat::before { display: none; }
+}
+
+/* ── Doing it alone vs. with us ───────────────────────────────────────── */
+.hiw-compare-section {
+    background: var(--color-white, #fff);
+    padding: 40px 0 44px;
+}
+
+.hiw-compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    max-width: 980px;
+    margin: 0 auto;
+}
+
+.hiw-compare-col {
+    border-radius: var(--radius-md, 12px);
+    padding: 24px 22px 20px;
+}
+
+.hiw-compare-con {
+    background: rgba(239, 68, 68, 0.04);
+    border: 1.5px solid rgba(239, 68, 68, 0.18);
+    border-top: 3px solid #dc2626;
+}
+
+.hiw-compare-pro {
+    background: rgba(34, 197, 94, 0.05);
+    border: 1.5px solid rgba(34, 197, 94, 0.22);
+    border-top: 3px solid #16a34a;
+}
+
+.hiw-compare-label {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 16px;
+}
+
+.hiw-compare-con .hiw-compare-label { color: #dc2626; }
+.hiw-compare-pro .hiw-compare-label { color: #16a34a; }
+
+.hiw-compare-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.hiw-compare-list li {
+    position: relative;
+    padding-left: 26px;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--color-text, #2c3e50);
+}
+
+.hiw-compare-list li::before {
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-weight: 700;
+}
+
+.hiw-compare-list--cross li::before { content: "✗"; color: #dc2626; }
+.hiw-compare-list--check li::before { content: "✓"; color: #16a34a; }
+
+/* Mirrored slide-in: the "con" column drifts in from the left, "pro" from
+   the right, meeting in the middle - reinforces the two-sided comparison. */
+.adn-reveal .hiw-compare-col {
+    opacity: 0;
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.adn-reveal .hiw-compare-con { transform: translateX(-24px); }
+.adn-reveal .hiw-compare-pro { transform: translateX(24px); }
+.adn-reveal .hiw-compare-col.adn-in {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+@media (max-width: 768px) {
+    .hiw-compare-grid { grid-template-columns: 1fr; gap: 16px; }
+    .adn-reveal .hiw-compare-con,
+    .adn-reveal .hiw-compare-pro { transform: translateY(16px); }
+}
+
+/* ── FAQ teaser card -> /faqs/ ─────────────────────────────────────────
+   A self-contained bordered strip rather than bare floating text, so it
+   still reads as a deliberate element even when this page has no FAQs of
+   its own configured yet (faqs_footer renders nothing in that case, and
+   this would otherwise be the last thing before the footer). */
+.hiw-faq-teaser {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    max-width: 640px;
+    margin: 0 auto 40px;
+    padding: 18px 28px;
+    background: var(--color-tag-bg, #e8f0ec);
+    border: 1px solid var(--color-border, #e5e0d8);
+    border-radius: var(--radius-pill, 9999px);
+    text-align: center;
+}
+
+.hiw-faq-teaser-icon {
+    font-size: 1.1rem;
+    color: var(--color-primary, #1e3a2f);
+    flex-shrink: 0;
+}
+
+.hiw-faq-teaser-text {
+    font-size: 0.92rem;
+    color: var(--color-text, #2c3e50);
+}
+
+/* Matches the sitewide "read more" link convention (.section-header-wrap
+   .read-more in premium_styles.css): uppercase, small, bold, accent gold. */
+.hiw-faq-teaser-link {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--secondary-color, var(--color-accent, #c9a84c));
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.hiw-faq-teaser-link:hover {
+    text-decoration: underline;
+}
+
+.adn-reveal .hiw-faq-teaser {
+    opacity: 0;
+    transform: scale(0.96);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.adn-reveal .hiw-faq-teaser.adn-in {
+    opacity: 1;
+    transform: scale(1);
+}
+
+@media (max-width: 480px) {
+    .hiw-faq-teaser { border-radius: var(--radius-md, 12px); padding: 16px 20px; }
+}
+
+/* ── Client Reviews carousel - exact copy of home.css's established
+   .rvc-carousel design (only loaded there; this page needs its own copy),
+   so the same carousel looks identical wherever it's reused. The review
+   cards themselves (.ah-review-card--carousel) are already styled sitewide
+   by AssetLoader::loadReviewCards() - only the wrapper/track/buttons/dots
+   need duplicating here. ──────────────────────────────────────────────── */
+.hiw-reviews-section {
+    background-color: rgb(175 175 175 / 50%);
+    padding: 40px 0 44px;
+}
+
+.rvc-carousel {
+    position: relative;
+    margin-top: 16px;
+}
+
+.rvc-carousel__track {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+.rvc-carousel__track::-webkit-scrollbar { display: none; }
+.rvc-carousel__track > * { scroll-snap-align: start; }
+
+.rvc-carousel__btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: none;
+    background: #fff;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, .18);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background .15s, box-shadow .15s;
+    color: var(--client-color, #1a3c5e);
+}
+.rvc-carousel__btn:hover {
+    background: var(--client-color, #1a3c5e);
+    color: #fff;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, .22);
+}
+.rvc-carousel__btn svg { width: 18px; height: 18px; }
+.rvc-carousel__btn--prev { left: -8px; }
+.rvc-carousel__btn--next { right: -8px; }
+.rvc-carousel__btn[disabled],
+.rvc-carousel__btn.rvc-hidden { opacity: 0; pointer-events: none; }
+
+.rvc-carousel__dots {
+    display: none;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 14px;
+}
+.rvc-carousel__dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: rgba(28, 22, 15, .18);
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: background .2s, transform .2s;
+}
+.rvc-carousel__dot--active {
+    background: var(--client-color, #1a3c5e);
+    transform: scale(1.3);
+}
+
+@media (max-width: 782px) {
+    .rvc-carousel__btn { display: none; }
+    .rvc-carousel__dots.is-available { display: flex; }
+}
+
+/* ── CTA banner breathing room on this page ──────────────────────────── */
+.hiw-cta-wrap {
+    padding: 8px 0 48px;
+}

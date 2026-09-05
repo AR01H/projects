@@ -32,5 +32,12 @@ if ( empty( $_steps ) ) return;
 				<?php endif; ?>
 			<?php endforeach; ?>
 		</div>
+		<?php if ( defined( 'SITE_HOW_IT_WORKS_URL' ) ) : ?>
+			<p class="contact-process-more">
+				<a href="<?php echo esc_url( home_url( SITE_HOW_IT_WORKS_URL ) ); ?>">
+					<?php esc_html_e( 'See our full process in detail', ADN_TEXT_DOMAIN ); ?> →
+				</a>
+			</p>
+		<?php endif; ?>
 	</div>
 </section>

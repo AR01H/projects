@@ -853,6 +853,24 @@
     padding-top: 26px;
 }
 
+.contact-process-more {
+    text-align: center;
+    margin: 32px 0 0;
+}
+
+.contact-process-more a {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--secondary-color, var(--color-accent, #c9a84c));
+    text-decoration: none;
+}
+
+.contact-process-more a:hover {
+    text-decoration: underline;
+}
+
 /* ── Resources ──────────────────────────────────────────────── */
 .contact-resources-section {
     padding: 52px 0 72px;

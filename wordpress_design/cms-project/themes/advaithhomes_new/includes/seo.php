@@ -37,3 +37,18 @@ function adn_seo_head_output(): void {
 	\Adn\Theme\Service\SeoService::headOutput();
 }
 add_action( 'wp_head', 'adn_seo_head_output', 1 );
+
+// Filter Rank Math JSON-LD to inject alternateName from seo.json
+add_filter( 'rank_math/json_ld', function( $data, $json_ld ) {
+	$_cfg_alts = (array) \Adn\Theme\Service\SeoService::getConfigValue( 'defaults.alternate_names', array() );
+	if ( ! empty( $_cfg_alts ) && isset( $data['WebSite'] ) ) {
+		$data['WebSite']['alternateName'] = array_values( array_filter( array_map( 'trim', $_cfg_alts ) ) );
+	}
+	return $data;
+}, 99, 2 );
+
+// Remove duplicate WordPress core canonical & robots tags since SeoService handles them.
+if ( ! defined( 'WPSEO_VERSION' ) && ! defined( 'RANK_MATH_VERSION' ) ) {
+	remove_action( 'wp_head', 'rel_canonical' );
+	remove_action( 'wp_head', 'wp_robots', 1 );
+}

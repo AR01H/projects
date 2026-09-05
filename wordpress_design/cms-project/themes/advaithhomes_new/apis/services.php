@@ -589,6 +589,13 @@ function adn_service_ask_expert_data() {
 	return class_exists( 'ADN_Real_Loader' ) ? ADN_Real_Loader::json( 'ask-expert' ) : array();
 }
 
+/**
+ * "How It Works" page content - loads data/json/how-it-works.json.
+ */
+function adn_service_how_it_works_data() {
+	return class_exists( 'ADN_Real_Loader' ) ? ADN_Real_Loader::json( 'how-it-works' ) : array();
+}
+
 function adn_service_faqs_data() {
 	// DB-only: return FAQs from the CMS plugin when available, otherwise empty.
 	if ( class_exists( 'AH_Faqs_Model' ) ) {

@@ -1,0 +1,174 @@
+{
+    "meta": {
+        "page_title": "How It Works",
+        "meta_description": "See exactly how ADVAITH HOMES works — from your first message to us finding and investigating the right match for you."
+    },
+    "breadcrumb": [
+        { "label": "Home",         "url": "/" },
+        { "label": "How It Works", "url": null }
+    ],
+    "hero": {
+        "title":       "How It Works",
+        "description": "A simple, transparent process — from your first message to us finding exactly what you need.",
+        "bg_icon":     "🤝",
+        "trust_items": [
+            { "icon": "✅", "label": "100% Free",          "note": "No cost to use our service" },
+            { "icon": "🤝", "label": "Personalised",       "note": "Matched to your exact need" },
+            { "icon": "🛡️", "label": "Independent",        "note": "Never tied to one company" },
+            { "icon": "⚡", "label": "Fast Response",      "note": "We move quickly once you reach out" }
+        ]
+    },
+    "stats": {
+        "items": [
+            { "number": "5",     "label": "Simple Steps",        "sub": "From first message to result" },
+            { "number": "100%",  "label": "Free, Always",        "sub": "No fees, no hidden costs" },
+            { "number": "24hrs", "label": "Avg. First Response", "sub": "We move quickly once you reach out" },
+            { "number": "1",     "label": "Simple Form",         "sub": "That's all it takes to get started" }
+        ]
+    },
+    "process": {
+        "eyebrow":     "Our Process",
+        "heading":     "From first contact to the right result",
+        "subheading":  "Here is exactly what happens when you reach out to us.",
+        "steps": [
+            {
+                "number":      "01",
+                "icon":        "fa-solid fa-comment-dots",
+                "title":       "Contact Us",
+                "description": "Reach out through our contact form, phone or WhatsApp — whichever is easiest for you.",
+                "url":         "/contact/"
+            },
+            {
+                "number":      "02",
+                "icon":        "fa-solid fa-phone-volume",
+                "title":       "We Talk It Through",
+                "description": "One of our team calls you for a free, no-obligation conversation to understand exactly what you need."
+            },
+            {
+                "number":      "03",
+                "icon":        "fa-solid fa-file-signature",
+                "title":       "You Fill In the Form",
+                "description": "We send over a short requirement form so we have all the details in writing, ready to act on."
+            },
+            {
+                "number":      "04",
+                "icon":        "fa-solid fa-magnifying-glass",
+                "title":       "We Investigate Your Requirement",
+                "description": "Our team researches and works through everything needed to match your requirement — properties, experts, paperwork, whatever it takes."
+            },
+            {
+                "number":      "05",
+                "icon":        "fa-solid fa-circle-check",
+                "title":       "We Deliver the Result",
+                "description": "You receive the matched options and clear next steps, with our team on hand to support you the whole way through."
+            }
+        ]
+    },
+    "story": {
+        "eyebrow": "Your Story",
+        "heading": "Every home starts with a story like this",
+        "chapters": [
+            {
+                "lede": "It started with a question.",
+                "body": "“Where do I even begin?” You had questions about buying, selling or moving - and nobody you trusted to ask."
+            },
+            {
+                "lede": "Then you reached out.",
+                "body": "One message. That's all it took. Suddenly you weren't trying to figure it all out on your own anymore."
+            },
+            {
+                "lede": "Someone finally listened.",
+                "body": "A real conversation about your situation, your worries, your goals - not a sales pitch, just honest, independent advice."
+            },
+            {
+                "lede": "And everything got clearer.",
+                "body": "A clear plan. The right expert for your exact need. A way forward you could actually see."
+            },
+            {
+                "lede": "Now it's your turn.",
+                "body": "Your story starts the same simple way every one of ours has - with a single message.",
+                "cta": { "label": "Start Your Story", "url": "/contact/" }
+            }
+        ]
+    },
+    "benefits": {
+        "eyebrow": "What You Get",
+        "variant": "light",
+        "heading": "Support at every step, not just at the start",
+        "items": [
+            { "icon": "fa-solid fa-bullseye",       "title": "Personalised Matching", "desc": "Matched to the right vetted expert for your exact need - never a generic list to work through yourself." },
+            { "icon": "fa-solid fa-shield-halved",  "title": "Independent & Unbiased", "desc": "We're not tied to any lender, agent or solicitor, so the advice is always in your interest." },
+            { "icon": "fa-solid fa-comments",       "title": "One Point of Contact",   "desc": "No juggling multiple companies - our team coordinates everything for you." },
+            { "icon": "fa-solid fa-list-check",     "title": "Clear Next Steps",       "desc": "You always know exactly what happens next and when, from start to finish." }
+        ]
+    },
+    "comparison": {
+        "eyebrow":  "Why It's Worth It",
+        "heading":  "Doing it alone vs. doing it with us",
+        "con": {
+            "label": "Doing It Alone",
+            "items": [
+                "Hours spent researching and comparing on your own",
+                "Hard to tell which quotes or experts are actually trustworthy",
+                "Juggling multiple calls, forms and follow-ups yourself",
+                "Easy to miss a step or make a costly mistake"
+            ]
+        },
+        "pro": {
+            "label": "With ADVAITH HOMES",
+            "items": [
+                "One quick form - we handle the matching for you",
+                "Only vetted, trusted UK property professionals",
+                "One team keeping everything on track for you",
+                "Clear guidance at every stage, completely free"
+            ]
+        }
+    },
+    "fit_check": {
+        "eyebrow":  "Is This For You?",
+        "heading":  "Make sure it's the right fit before you start",
+        "con": {
+            "label": "Maybe Not Right Now If",
+            "items": [
+                "You already have a trusted expert sorted for this",
+                "You're just browsing and not ready to talk yet",
+                "You'd rather manage every step yourself",
+                "You're not able to share any details about your requirement"
+            ]
+        },
+        "pro": {
+            "label": "This Is For You If",
+            "items": [
+                "You want one team coordinating everything for you",
+                "You'd value an honest, independent second opinion",
+                "You're ready to talk within the next few weeks",
+                "You want it done properly, without the guesswork"
+            ]
+        }
+    },
+    "why_choose": {
+        "eyebrow": "Why Us",
+        "variant": "light",
+        "heading": "Why people choose ADVAITH HOMES",
+        "items": [
+            { "icon": "⚖️",  "title": "Independent Advice",  "desc": "We are not tied to any company or service." },
+            { "icon": "🇬🇧", "title": "UK Property Experts", "desc": "Access to a wide network of qualified professionals." },
+            { "icon": "⏱",  "title": "Save Time & Money",  "desc": "Get the right advice and avoid costly mistakes." },
+            { "icon": "🏠",  "title": "Peace of Mind",       "desc": "Make confident property decisions." }
+        ]
+    },
+    "faq_teaser": {
+        "text": "Have a question about the process?",
+        "cta":  { "label": "See all FAQs", "url": "/faqs/" }
+    },
+    "cta_banner": {
+        "icon":        "🤝",
+        "title":       "Ready to get started?",
+        "description": "Tell us what you need and we'll take it from here.",
+        "cta": { "label": "Contact Us", "url": "/contact/" },
+        "trust_items": [ "100% Free", "Personalised Match", "Fast Response" ]
+    },
+    "contact_sidebar": {
+        "cards": ["guides", "experts", "contact"]
+    }
+}

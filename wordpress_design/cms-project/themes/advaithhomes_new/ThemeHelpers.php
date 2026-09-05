@@ -292,6 +292,10 @@ function adn_get_page_definitions() {
             'title'    => PAGE_TITLE_GUIDANCE,
             'template' => 'pages/PageGuidance.php',
         ),
+        trim( SITE_HOW_IT_WORKS_URL, '/' ) => array(
+            'title'    => PAGE_TITLE_HOW_IT_WORKS,
+            'template' => 'pages/PageHowItWorks.php',
+        ),
         trim( SITE_EXPERT_URL, '/' ) => array(
             'title'    => PAGE_TITLE_EXPERT,
             'template' => 'pages/PageAskExpert.php',
@@ -324,29 +328,26 @@ function adn_create_default_pages() {
 
     foreach ( $pages as $slug => $page ) {
 
-        // Build the full list: primary slug + any aliases.
-        $all_slugs = array_merge(
-            array( $slug ),
-            isset( $page['aliases'] ) && is_array( $page['aliases'] ) ? $page['aliases'] : array()
-        );
+        // Only the primary slug gets a real WP Page row. An alias is never a
+        // second canonical page - adn_route_page_definitions() 301s it to the
+        // primary slug (as a virtual 404-intercept when no page exists there,
+        // or by redirecting away from an old real page a past run already
+        // created), so creating one here would just recreate the duplicate.
+        if ( get_page_by_path( $slug ) ) {
+            continue; // already exists
+        }
 
-        foreach ( $all_slugs as $_slug ) {
-            if ( get_page_by_path( $_slug ) ) {
-                continue; // already exists
-            }
+        $page_id = wp_insert_post( array(
+            'post_title'   => $page['title'],
+            'post_name'    => $slug,
+            'post_status'  => 'publish',
+            'post_type'    => 'page',
+            'post_content' => '',
+        ) );
 
-            $page_id = wp_insert_post( array(
-                'post_title'   => $page['title'],
-                'post_name'    => $_slug,
-                'post_status'  => 'publish',
-                'post_type'    => 'page',
-                'post_content' => '',
-            ) );
-
-            if ( $page_id && ! is_wp_error( $page_id ) ) {
-                update_post_meta( $page_id, '_wp_page_template', $page['template'] );
-                $created++;
-            }
+        if ( $page_id && ! is_wp_error( $page_id ) ) {
+            update_post_meta( $page_id, '_wp_page_template', $page['template'] );
+            $created++;
         }
     }
 

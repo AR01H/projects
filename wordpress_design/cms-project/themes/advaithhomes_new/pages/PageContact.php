@@ -52,6 +52,11 @@ adn_page_open( $_open_ctx );
 
 </div>
 
+<?php /* ============================== PROCESS (what happens after you submit) ============================== */ ?>
+<?php if ( ! empty( $ctx['process_steps'] ) ) : ?>
+	<?php adn_component( 'sections/contact_process', array( 'process_steps' => $ctx['process_steps'] ) ); ?>
+<?php endif; ?>
+
 <?php /* ============================== FAQs (only ones attached to Contact) ============================== */ ?>
 <?php adn_component( 'sections/faqs_footer', array(
 	'groups' => adn_get_page_faqs_grouped( adn_get_cms_page_id( 'contact' ), false ),

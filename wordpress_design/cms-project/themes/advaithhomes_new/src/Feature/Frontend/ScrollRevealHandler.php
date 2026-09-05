@@ -21,7 +21,7 @@ class ScrollRevealHandler {
 (function(){
 	var root = document.documentElement;
 	if ( ! root.classList.contains('adn-reveal') ) { return; }
-	var SEL = '.guide-card,.jny-card,.calc-card,.contact-resource-card,.glc,.spotlight-card,.expert-card,.featured-article,.section-header-wrap';
+	var SEL = '.guide-card,.jny-card,.calc-card,.contact-resource-card,.glc,.spotlight-card,.expert-card,.featured-article,.section-header-wrap,.hiw-step,.icon-grid-item,.hiw-compare-col,.hiw-stat,.hiw-faq-teaser,.story-chapter';
 	var io  = null;
 	if ( 'IntersectionObserver' in window ) {
 		io = new IntersectionObserver( function( entries ){

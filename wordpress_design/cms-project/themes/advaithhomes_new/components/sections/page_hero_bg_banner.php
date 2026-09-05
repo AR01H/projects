@@ -46,20 +46,20 @@ $wrapper_class = $is_home ? 'phb-wrapper phb-standard' : 'phb-wrapper phb-premiu
 				<?php if ( 'video' === $_type ) : ?>
 					<video src="<?php echo $_img; ?>" autoplay muted loop playsinline aria-label="Hero background video"></video>
 				<?php else : ?>
-					<img src="<?php echo $_img; ?>" alt="UK Property Hero Background" loading="eager" fetchpriority="high" />
+					<img src="<?php echo $_img; ?>" alt="UK Property Hero Background" loading="eager" fetchpriority="high" width="1920" height="600" />
 				<?php endif; ?>
 			</div>
 			<div class="phb-bg-asset phb-bg-asset--mobile">
 				<?php if ( 'video' === $_mobile_type ) : ?>
 					<video src="<?php echo $_mobile_img; ?>" autoplay muted loop playsinline aria-label="Hero background video"></video>
 				<?php else : ?>
-					<img src="<?php echo $_mobile_img; ?>" alt="UK Property Hero Background" loading="eager" fetchpriority="high" />
+					<img src="<?php echo $_mobile_img; ?>" alt="UK Property Hero Background" loading="eager" fetchpriority="high" width="768" height="500" />
 				<?php endif; ?>
 			</div>
 		<?php elseif ( 'video' === $_type ) : ?>
 			<video src="<?php echo $_img; ?>" autoplay muted loop playsinline aria-label="Hero background video"></video>
 		<?php else : ?>
-			<img src="<?php echo $_img; ?>" alt="UK Property Hero Background" loading="eager" fetchpriority="high" />
+			<img src="<?php echo $_img; ?>" alt="UK Property Hero Background" loading="eager" fetchpriority="high" width="1920" height="600" />
 		<?php endif; ?>
 	</div>
 	<div class="phb-overlay" aria-hidden="true">

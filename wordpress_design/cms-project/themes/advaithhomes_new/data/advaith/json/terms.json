@@ -52,7 +52,8 @@
         "expert":           "/ask-expert/",
         "guidance":         "/guidance/",
         "faqs":             "/faqs/",
-        "contact":          "/contact/"
+        "contact":          "/contact/",
+        "how_it_works":     "/how-it-works/"
     },
 
     "cta": {
@@ -69,7 +70,8 @@
         "news_label":       "News & Insights",
         "expert_label":     "Ask an Expert",
         "guidance_label":   "Get Expert Guidance",
-        "contact_label":    "Contact Us"
+        "contact_label":    "Contact Us",
+        "how_it_works_label": "How It Works"
     },
 
     "buttons": {
@@ -146,7 +148,8 @@
         "faqs":             "Frequently Asked Questions",
         "reviews":          "Client Reviews",
         "search":           "Search Results",
-        "coming_soon":      "Coming Soon"
+        "coming_soon":      "Coming Soon",
+        "how_it_works":     "How It Works"
     },
 
     "coming_soon": {

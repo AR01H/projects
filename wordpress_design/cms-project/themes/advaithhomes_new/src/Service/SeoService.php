@@ -204,8 +204,34 @@ class SeoService {
 		$mode = isset( $cfg['mode'] ) ? sanitize_key( (string) $cfg['mode'] ) : 'hidden';
 		$mode = in_array( $mode, array( 'hidden', 'visible' ), true ) ? $mode : 'hidden';
 
+		// Avoid rendering hidden keyword text on-page (violates Google spam policies)
+		if ( 'hidden' === $mode ) {
+			return '';
+		}
+
 		return '<p class="adn-keywords adn-keywords--' . esc_attr( $mode ) . '">'
 			. esc_html( implode( ', ', $words ) ) . '</p>';
+	}
+
+	/**
+	 * Extract FAQ questions and answers from HTML content (e.g. details/summary blocks).
+	 */
+	public static function extractFaqsFromContent( string $content ): array {
+		if ( false === strpos( $content, '<details' ) ) {
+			return array();
+		}
+		$faqs = array();
+		if ( preg_match_all( '~<details[^>]*>\s*<summary[^>]*>(.*?)</summary>(.*?)</details>~is', $content, $matches, PREG_SET_ORDER ) ) {
+			foreach ( $matches as $m ) {
+				$q = trim( wp_strip_all_tags( $m[1] ) );
+				$a = trim( wp_strip_all_tags( $m[2] ) );
+				// Only treat as FAQ if the summary is formatted as an actual question
+				if ( '' !== $q && '' !== $a && false !== strpos( $q, '?' ) ) {
+					$faqs[] = array( 'question' => $q, 'answer' => $a );
+				}
+			}
+		}
+		return $faqs;
 	}
 
 	public static function pageConfig( string $page, array $default = array() ): array {
@@ -294,6 +320,14 @@ class SeoService {
 			}
 		}
 
+		// Ensure image URL is absolute for OG and Schema
+		if ( '' !== $image && ! preg_match( '~^https?://~i', $image ) ) {
+			$image = get_template_directory_uri() . '/' . ltrim( $image, '/' );
+		}
+		if ( '' !== $image && is_ssl() ) {
+			$image = set_url_scheme( $image, 'https' );
+		}
+
 		$type = trim( (string) ( $reg['type'] ?? '' ) );
 		if ( '' === $type ) {
 			$type = is_singular( 'post' ) ? 'article' : 'website';
@@ -308,6 +342,13 @@ class SeoService {
 		$yoast_on    = defined( 'WPSEO_VERSION' );
 		$rankmath_on = defined( 'RANK_MATH_VERSION' );
 
+		$_canonical = $s['canonical'];
+		$_cur_paged  = isset( $_GET['paged'] ) ? (int) $_GET['paged'] : 1;
+		if ( 1 === $_cur_paged && '' !== $_canonical ) {
+			$_canonical = strtok( $_canonical, '?' );
+			$_canonical = trailingslashit( $_canonical );
+		}
+
 		echo '<link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">' . "\n";
 		echo '<link rel="alternate" type="application/rss+xml" title="' . esc_attr( get_bloginfo( 'name' ) . ' &raquo; Feed' ) . '" href="' . esc_url( get_feed_link() ) . '">' . "\n";
 		
@@ -317,14 +358,16 @@ class SeoService {
 			echo '<link rel="sitemap" type="application/xml" href="' . esc_url( home_url( $sitemap_url ) ) . '">' . "\n";
 		}
 		
-		// Hreflang for UK English
-		echo '<link rel="alternate" hreflang="en-GB" href="' . esc_url( home_url( '/' ) ) . '">' . "\n";
-		echo '<link rel="alternate" hreflang="x-default" href="' . esc_url( home_url( '/' ) ) . '">' . "\n";
+		// Self-referencing Hreflang for UK English
+		$_href_url = ! empty( $_canonical ) ? $_canonical : home_url( '/' );
+		echo '<link rel="alternate" hreflang="en-GB" href="' . esc_url( $_href_url ) . '">' . "\n";
+		echo '<link rel="alternate" hreflang="x-default" href="' . esc_url( $_href_url ) . '">' . "\n";
 
 		$_is_bare    = isset( $_GET['content'] ) && 'true' === (string) $_GET['content'];
 		$_is_search  = isset( $_GET['search'] )  && '' !== (string) $_GET['search'];
-		$_cur_paged  = isset( $_GET['paged'] )   ? (int) $_GET['paged'] : 1;
-		$_noindex    = ! empty( $reg['noindex'] ) || $_is_bare || $_is_search;
+		$_is_dialog  = isset( $_GET['dialog'] )  || isset( $_GET['embed'] );
+		$_is_thin    = is_author() || is_date() || is_attachment() || is_search() || is_404();
+		$_noindex    = ! empty( $reg['noindex'] ) || $_is_bare || $_is_search || $_is_dialog || $_is_thin;
 		if ( $_noindex ) {
 			echo '<meta name="robots" content="noindex, follow">' . "\n";
 		} else {
@@ -343,12 +386,6 @@ class SeoService {
 			}
 		}
 
-		$_canonical = $s['canonical'];
-		if ( 1 === $_cur_paged && '' !== $_canonical ) {
-			$_canonical = strtok( $_canonical, '?' );
-			$_canonical = trailingslashit( $_canonical );
-		}
-
 		if ( $yoast_on || $rankmath_on ) { return; }
 
 		// Description meta tag
@@ -364,8 +401,7 @@ class SeoService {
 		// OpenSearch description
 		echo '<link rel="search" type="application/opensearchdescription+xml" title="' . esc_attr( ' Search' ) . '" href="' . esc_url( home_url( '/osd.xml' ) ) . '">' . "\n";
 
-		// Page keywords, falling back to the site-wide list so every page carries
-		// them, not just the two that had their own.
+		// Page keywords, falling back to the site-wide list so every page carries them
 		$_kw = ! empty( $reg['keywords'] ) ? $reg['keywords'] : array();
 		if ( empty( $_kw ) ) {
 			$_kw = self::getConfigValue( 'defaults.keywords', array() );
@@ -404,6 +440,12 @@ class SeoService {
 		if ( 'article' === $s['type'] ) {
 			$_pub = ! empty( $reg['published'] ) ? $reg['published'] : '';
 			$_mod = ! empty( $reg['modified'] )  ? $reg['modified']  : '';
+			if ( '' === $_pub && is_singular() ) {
+				$_pub = (string) get_the_date( 'c' );
+			}
+			if ( '' === $_mod && is_singular() ) {
+				$_mod = (string) get_the_modified_date( 'c' );
+			}
 			if ( '' !== $_pub ) {
 				echo '<meta property="og:article:published_time" content="' . esc_attr( $_pub ) . '">' . "\n";
 			}
@@ -456,6 +498,10 @@ class SeoService {
 		$co_name   = defined( 'COMPANY_NAME' ) ? COMPANY_NAME : get_bloginfo( 'name' );
 		$co_phone  = defined( 'COMPANY_PHONE_NO' ) ? COMPANY_PHONE_NO : '';
 		$co_email  = defined( 'COMPANY_EMAIL' ) ? COMPANY_EMAIL : '';
+		$logo_url  = get_template_directory_uri() . '/assets/images/logos/logo_with_text.png';
+		if ( is_ssl() ) {
+			$logo_url = set_url_scheme( $logo_url, 'https' );
+		}
 
 		$social_urls = array_filter( array(
 			defined( 'SOCIAL_FACEBOOK' )  ? SOCIAL_FACEBOOK  : '',
@@ -465,15 +511,26 @@ class SeoService {
 			defined( 'SOCIAL_YOUTUBE' )   ? SOCIAL_YOUTUBE   : '',
 		) );
 
+		$addr_cfg = (array) self::getConfigValue( 'schema.organization.address', array() );
 		$org_schema = array(
 			'@context' => 'https://schema.org',
 			'@type'    => 'RealEstateAgent',
 			'name'     => $co_name,
 			'url'      => home_url( '/' ),
-			'logo'     => array( '@type' => 'ImageObject', 'url' => get_template_directory_uri() . '/assets/images/logos/logo_with_text.png' ),
+			'logo'     => array( '@type' => 'ImageObject', 'url' => $logo_url ),
 			'telephone' => $co_phone ? $co_phone : null,
 			'email' => $co_email ? $co_email : null,
 		);
+		if ( ! empty( $addr_cfg ) && ! empty( $addr_cfg['streetAddress'] ) ) {
+			$org_schema['address'] = array(
+				'@type'           => 'PostalAddress',
+				'streetAddress'   => (string) ( $addr_cfg['streetAddress'] ?? '' ),
+				'addressLocality' => (string) ( $addr_cfg['addressLocality'] ?? '' ),
+				'addressRegion'   => (string) ( $addr_cfg['addressRegion'] ?? '' ),
+				'postalCode'      => (string) ( $addr_cfg['postalCode'] ?? '' ),
+				'addressCountry'  => (string) ( $addr_cfg['addressCountry'] ?? 'GB' ),
+			);
+		}
 		// Remove null values
 		$org_schema = array_filter( $org_schema, function( $v ) { return $v !== null; } );
 		
@@ -489,7 +546,10 @@ class SeoService {
 		echo wp_json_encode( $org_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT );
 		echo "\n</script>\n";
 
-		if ( is_front_page() ) {
+		if ( is_front_page() || is_home() ) {
+			$_cfg_alts = (array) ( self::getConfigValue( 'defaults.alternate_names', array() ) ?: self::getConfigValue( 'schema.website.alternateName', array() ) );
+			$_cfg_alts = array_values( array_filter( array_map( 'trim', $_cfg_alts ) ) );
+
 			$website_schema = array(
 				'@context'        => 'https://schema.org',
 				'@type'           => 'WebSite',
@@ -501,6 +561,9 @@ class SeoService {
 					'query-input' => 'required name=search_term_string',
 				),
 			);
+			if ( ! empty( $_cfg_alts ) ) {
+				$website_schema['alternateName'] = $_cfg_alts;
+			}
 			echo '<script type="application/ld+json">' . "\n";
 			echo wp_json_encode( $website_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT );
 			echo "\n</script>\n";
@@ -515,33 +578,68 @@ class SeoService {
 
 		if ( is_singular( 'post' ) && $s['type'] === 'article' ) {
 			$post_obj    = get_queried_object();
-			$author_id   = (int) $post_obj->post_author;
-			$author_name = (string) get_the_author_meta( 'display_name', $author_id );
-			$pub_date    = (string) get_the_date( 'c', $post_obj->ID );
-			$mod_date    = (string) get_the_modified_date( 'c', $post_obj->ID );
+			$author_id   = $post_obj ? (int) $post_obj->post_author : 0;
+			$author_name = $author_id ? (string) get_the_author_meta( 'display_name', $author_id ) : '';
+			if ( '' === $author_name || preg_match( '/^admin/i', $author_name ) ) {
+				$author_name = $co_name;
+			}
+			$pub_date    = $post_obj ? (string) get_the_date( 'c', $post_obj->ID ) : '';
+			$mod_date    = $post_obj ? (string) get_the_modified_date( 'c', $post_obj->ID ) : '';
 			$article_schema = array(
-				'@context'      => 'https://schema.org',
-				'@type'         => 'Article',
-				'headline'      => $s['title'],
-				'description'   => $s['desc'],
-				'url'           => $s['canonical'],
-				'datePublished' => $pub_date,
-				'dateModified'  => $mod_date,
-				'publisher'     => array( '@type' => 'Organization', 'name' => $co_name, 'logo' => array( '@type' => 'ImageObject', 'url' => get_template_directory_uri() . '/assets/images/logos/logo_with_text.png' ) ),
+				'@context'         => 'https://schema.org',
+				'@type'            => 'Article',
+				'mainEntityOfPage' => array(
+					'@type' => 'WebPage',
+					'@id'   => $s['canonical'],
+				),
+				'headline'         => $s['title'],
+				'description'      => $s['desc'],
+				'url'              => $s['canonical'],
+				'datePublished'    => $pub_date,
+				'dateModified'     => $mod_date,
+				'publisher'        => array(
+					'@type' => 'Organization',
+					'name'  => $co_name,
+					'logo'  => array(
+						'@type' => 'ImageObject',
+						'url'   => $logo_url,
+					),
+				),
 			);
-			if ( '' !== $author_name ) { $article_schema['author'] = array( '@type' => 'Person', 'name' => $author_name ); }
-			if ( '' !== $s['image'] ) { $article_schema['image'] = $s['image']; }
+			if ( '' !== $author_name ) {
+				$article_schema['author'] = array(
+					'@type' => 'Person',
+					'name'  => $author_name,
+				);
+			}
+			if ( '' !== $s['image'] ) {
+				$article_schema['image'] = $s['image'];
+			}
 			echo '<script type="application/ld+json">' . "\n";
 			echo wp_json_encode( $article_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT );
 			echo "\n</script>\n";
 		}
 
 		$bc_items = (array) ( $reg['breadcrumb'] ?? array() );
+		if ( empty( $bc_items ) && is_singular( 'post' ) ) {
+			$post_obj = get_queried_object();
+			if ( $post_obj instanceof \WP_Post ) {
+				$bc_items = \Adn\Theme\Shared\BreadcrumbBuilder::post( $post_obj );
+			}
+		}
 		if ( ! empty( $bc_items ) ) {
 			$list_items = array();
 			foreach ( array_values( $bc_items ) as $i => $item ) {
-				$entry = array( '@type' => 'ListItem', 'position' => $i + 1, 'name' => (string) ( $item['label'] ?? $item['name'] ?? '' ) );
-				if ( ! empty( $item['url'] ) ) { $entry['item'] = (string) $item['url']; }
+				$b_name = (string) ( $item['label'] ?? $item['name'] ?? '' );
+				$b_url  = isset( $item['url'] ) && '' !== $item['url'] ? adn_link( (string) $item['url'] ) : '';
+				$entry  = array(
+					'@type'    => 'ListItem',
+					'position' => $i + 1,
+					'name'     => $b_name,
+				);
+				if ( '' !== $b_url ) {
+					$entry['item'] = $b_url;
+				}
 				$list_items[] = $entry;
 			}
 			echo '<script type="application/ld+json">' . "\n";
@@ -550,6 +648,9 @@ class SeoService {
 		}
 
 		$faq_items = ! empty( $reg['schema_faqs'] ) && is_array( $reg['schema_faqs'] ) ? $reg['schema_faqs'] : array();
+		if ( empty( $faq_items ) && is_singular() ) {
+			$faq_items = self::extractFaqsFromContent( get_the_content() );
+		}
 		if ( ! empty( $faq_items ) ) {
 			$faq_entities = array();
 			foreach ( $faq_items as $faq ) {
@@ -589,7 +690,7 @@ class SeoService {
 
 		$_col = ! empty( $reg['schema_collection'] ) && is_array( $reg['schema_collection'] ) ? $reg['schema_collection'] : array();
 		if ( ! empty( $_col ) ) {
-			$_col_schema = array( '@context' => 'https://schema.org', '@type' => 'CollectionPage', 'name' => (string) ( $_col['name'] ?? $s['title'] ), 'url' => (string) ( $_col['url'] ?? $_canonical ), 'description' => (string) ( $_col['description'] ?? $s['desc'] ), 'publisher' => array( '@type' => 'Organization', 'name' => $co_name, 'logo' => array( '@type' => 'ImageObject', 'url' => get_template_directory_uri() . '/assets/images/logos/logo_with_text.png' ) ) );
+			$_col_schema = array( '@context' => 'https://schema.org', '@type' => 'CollectionPage', 'name' => (string) ( $_col['name'] ?? $s['title'] ), 'url' => (string) ( $_col['url'] ?? $_canonical ), 'description' => (string) ( $_col['description'] ?? $s['desc'] ), 'publisher' => array( '@type' => 'Organization', 'name' => $co_name, 'logo' => array( '@type' => 'ImageObject', 'url' => $logo_url ) ) );
 			if ( ! empty( $_col['items'] ) && is_array( $_col['items'] ) ) {
 				$_col_list = array();
 				foreach ( array_values( $_col['items'] ) as $_ci => $_citem ) {
@@ -609,7 +710,7 @@ class SeoService {
 
 		$news = ! empty( $reg['schema_news'] ) && is_array( $reg['schema_news'] ) ? $reg['schema_news'] : array();
 		if ( ! empty( $news ) ) {
-			$news_schema = array( '@context' => 'https://schema.org', '@type' => 'NewsArticle', 'headline' => (string) ( $news['title'] ?? $s['title'] ), 'description' => (string) ( $news['excerpt'] ?? $s['desc'] ), 'url' => (string) ( $news['url'] ?? $s['canonical'] ), 'datePublished' => (string) ( $news['date'] ?? '' ), 'publisher' => array( '@type' => 'Organization', 'name' => ( defined( 'COMPANY_NAME' ) ? COMPANY_NAME : get_bloginfo( 'name' ) ), 'logo' => array( '@type' => 'ImageObject', 'url' => get_template_directory_uri() . '/assets/images/logos/logo_with_text.png' ) ) );
+			$news_schema = array( '@context' => 'https://schema.org', '@type' => 'NewsArticle', 'headline' => (string) ( $news['title'] ?? $s['title'] ), 'description' => (string) ( $news['excerpt'] ?? $s['desc'] ), 'url' => (string) ( $news['url'] ?? $s['canonical'] ), 'datePublished' => (string) ( $news['date'] ?? '' ), 'publisher' => array( '@type' => 'Organization', 'name' => ( defined( 'COMPANY_NAME' ) ? COMPANY_NAME : get_bloginfo( 'name' ) ), 'logo' => array( '@type' => 'ImageObject', 'url' => $logo_url ) ) );
 			if ( ! empty( $news['image'] ) ) { $news_schema['image'] = (string) $news['image']; }
 			if ( ! empty( $news['label'] ) ) { $news_schema['articleSection'] = (string) $news['label']; }
 			echo '<script type="application/ld+json">' . "\n";

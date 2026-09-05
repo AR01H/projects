@@ -283,6 +283,7 @@ class AssetLoader {
 			'PageTools'        => [ 'css' => '/assets/css/tools.css',        'js' => '/assets/js/tools.js' ],
 			'PageToolSingle'  => [ 'css' => '/assets/css/tools.css',        'js' => '/assets/js/tools.js' ],
 			'PageGuidance'     => [ 'css' => '/assets/css/guidance.css',     'js' => '/assets/js/guidance.js' ],
+			'PageHowItWorks'   => [ 'css' => '/assets/css/how-it-works.css' ],
 			'PageAskExpert'   => [ 'css' => '/assets/css/ask_expert.css',   'js' => '/assets/js/ask_expert.js' ],
 			'PageExpertSingle' => [ 'css' => '/assets/css/ask_expert.css',  'js' => '/assets/js/ask_expert.js' ],
 			'PageCategoryGuide' => [ 'css' => '/assets/css/guidance.css',   'js' => '/assets/js/guidance.js' ],

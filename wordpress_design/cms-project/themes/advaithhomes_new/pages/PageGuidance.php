@@ -54,7 +54,10 @@ adn_page_open( $_open_ctx );
 
 </div>
 
-
+<?php /* ============================== WHY CHOOSE US ============================== */ ?>
+<?php if ( ! empty( $ctx['why_choose'] ) ) : ?>
+	<?php adn_component( 'sections/icon_feature_grid', array( 'grid' => $ctx['why_choose'] ) ); ?>
+<?php endif; ?>
 
 <?php adn_page_close( $ctx ); ?>
 

@@ -22,6 +22,10 @@
             "selling my house UK",
             "property advice UK"
         ],
+        "alternate_names": [
+            "Advaith Homes",
+            "ADVAITH"
+        ],
         "image": "/assets/images/backgrounds/default_hero_home_image.jpg"
     },
     "pages": {
@@ -291,9 +295,9 @@
         ]
     },
     "site_keywords": {
-        "_comment": "Footer keyword line on every page. These same words already ship as <meta name=\"keywords\"> via defaults.keywords. mode: \"visible\" (recommended - visible to users) or \"hidden\" (keyword stuffing risk).",
-        "enabled": true,
-        "mode": "hidden",
+        "_comment": "Footer keyword line. Set enabled to false to avoid keyword stuffing penalties.",
+        "enabled": false,
+        "mode": "visible",
         "words": [
             "UK property experts",
             "buyer side agent UK",
@@ -332,28 +336,8 @@
             "name": "Advaith Homes",
             "url": "https://advaithhomes.co.uk",
             "logo": "https://advaithhomes.co.uk/assets/images/logos/logo_with_text.png",
-            "telephone": "+44 20 XXXX XXXX",
+            "telephone": "+44 77 4722 3762",
             "email": "contact@advaithhomes.co.uk",
-            "address": {
-                "type": "PostalAddress",
-                "streetAddress": "123 High Street",
-                "addressLocality": "Sutton",
-                "addressRegion": "Surrey",
-                "postalCode": "SM1 1AA",
-                "addressCountry": "GB"
-            },
-            "openingHoursSpecification": {
-                "type": "OpeningHoursSpecification",
-                "opens": "09:00",
-                "closes": "18:00",
-                "dayOfWeek": [
-                    "Monday",
-                    "Tuesday",
-                    "Wednesday",
-                    "Thursday",
-                    "Friday"
-                ]
-            },
             "sameAs": []
         },
         "faqPage": {

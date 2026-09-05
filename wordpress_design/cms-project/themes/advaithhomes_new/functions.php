@@ -72,6 +72,7 @@ require_once ADN_THEME_DIR . '/src/Feature/Tools/Service/ToolsContext.php';
 require_once ADN_THEME_DIR . '/src/Feature/Tools/Service/ToolSingleContext.php';
 require_once ADN_THEME_DIR . '/src/Feature/AskExpert/Service/ExpertSingleContext.php';
 require_once ADN_THEME_DIR . '/src/Feature/Guidance/Service/GuidanceContext.php';
+require_once ADN_THEME_DIR . '/src/Feature/HowItWorks/Service/HowItWorksContext.php';
 require_once ADN_THEME_DIR . '/src/Feature/CategoryGuide/Service/GuideContext.php';
 require_once ADN_THEME_DIR . '/src/Feature/Article/Service/PostContext.php';
 
@@ -82,6 +83,7 @@ require_once ADN_THEME_DIR . '/src/Feature/Form/Service/FormOptionsRegistry.php'
 require_once ADN_THEME_DIR . '/src/Feature/Home/Controller/HomeController.php';
 require_once ADN_THEME_DIR . '/src/Feature/Contact/Controller/ContactController.php';
 require_once ADN_THEME_DIR . '/src/Feature/Guidance/Controller/GuidanceController.php';
+require_once ADN_THEME_DIR . '/src/Feature/HowItWorks/Controller/HowItWorksController.php';
 require_once ADN_THEME_DIR . '/src/Feature/News/Controller/NewsController.php';
 require_once ADN_THEME_DIR . '/src/Feature/Tools/Controller/ToolsController.php';
 require_once ADN_THEME_DIR . '/src/Feature/Tools/Controller/ToolSingleController.php';
