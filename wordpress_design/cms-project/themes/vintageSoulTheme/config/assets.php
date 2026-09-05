@@ -65,7 +65,6 @@ return array(
 		'page-history'  => 'assets/css/pages/history.css',
 		'page-about'    => 'assets/css/pages/about.css',
 		'page-contact'  => 'assets/css/pages/contact.css',
-		'page-game'     => 'assets/css/pages/game.css',
 		'page-search'   => 'assets/css/pages/search.css',
 
 		'utilities'     => 'assets/css/utilities.css',

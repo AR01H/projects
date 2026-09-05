@@ -15,15 +15,12 @@ final class Theme {
 		add_action( 'after_setup_theme', array( self::class, 'theme_support' ) );
 		add_action( 'wp_enqueue_scripts', array( AssetService::class, 'enqueue' ) );
 		add_action( 'wp_enqueue_scripts', array( AssetService::class, 'enqueue_page_assets' ) );
-		add_action( 'wp_head', array( SeoService::class, 'render_page_seo' ) );
+		SeoService::register_hooks();
 		add_action( 'init', array( RoutePageService::class, 'sync' ) );
 		add_action( 'init', array( PostSeedService::class, 'seed' ) );
 		add_action( 'admin_init', array( RoutePageService::class, 'sync' ) );
 		add_action( 'admin_init', array( PostSeedService::class, 'seed' ) );
 		add_action( 'pre_get_posts', array( self::class, 'filter_search_query' ) );
-		add_filter( 'get_canonical_url', array( SeoService::class, 'filter_canonical_url' ), 10, 2 );
-		add_filter( 'pre_get_document_title', array( SeoService::class, 'page_title' ) );
-		add_filter( 'document_title_separator', array( self::class, 'title_separator' ) );
 		add_filter( 'body_class', array( RouteService::class, 'add_body_class' ) );
 	}
 

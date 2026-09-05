@@ -15,12 +15,6 @@ return array(
 		'styles'     => array(),
 		'scripts'    => array(),
 	),
-	'game'    => array(
-		'path'       => '/game',
-		'alternates' => array( 'play', 'timepass', 'shop', 'portfolio', 'gallery', 'services' ),
-		'styles'     => array(),
-		'scripts'    => array(),
-	),
 	'blog'    => array(
 		'path'       => '/blog',
 		'alternates' => array( 'articles', 'journal', 'news', 'stories', 'posts' ),

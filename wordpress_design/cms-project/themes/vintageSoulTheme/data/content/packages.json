@@ -12,5 +12,5 @@
         { "icon": "🎪", "title": "Private Parties & Festivals", "desc": "From house parties to street festivals, we bring everything needed." },
         { "icon": "🏆", "title": "Milestone Celebrations", "desc": "Celebrate achievements with something everyone will remember." }
     ],
-    "button": { "label": "View All Packages", "route": "game" }
+    "button": { "label": "View All Packages", "route": "events" }
 }

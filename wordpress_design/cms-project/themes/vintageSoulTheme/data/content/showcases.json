@@ -157,7 +157,7 @@
                 "image": "https://images.unsplash.com/photo-1600271886742-f049cd451bba?auto=format&fit=crop&w=600&q=80",
                 "cta": {
                     "label": "Order Now",
-                    "route": "game"
+                    "route": "contact"
                 }
             },
             {
@@ -166,7 +166,7 @@
                 "image": "https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=600&q=80",
                 "cta": {
                     "label": "Order Now",
-                    "route": "game"
+                    "route": "contact"
                 }
             },
             {
@@ -175,7 +175,7 @@
                 "image": "https://images.unsplash.com/photo-1621263764928-df1444c5e859?auto=format&fit=crop&w=600&q=80",
                 "cta": {
                     "label": "Order Now",
-                    "route": "game"
+                    "route": "contact"
                 }
             },
             {

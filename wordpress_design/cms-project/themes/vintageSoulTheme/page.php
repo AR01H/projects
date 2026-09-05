@@ -38,7 +38,12 @@ get_header();
 				<div class="container container--narrow">
 					<article <?php post_class( 'page-standard-card' ); ?> id="post-<?php the_ID(); ?>">
 						<div class="page-standard-content entry-content">
-							<?php the_content(); ?>
+							<?php
+							$standard_content = apply_filters( 'the_content', get_the_content() );
+							$standard_content = preg_replace( '/<h1(\s+[^>]*)?>/i', '<h2$1>', (string) $standard_content );
+							$standard_content = preg_replace( '/<\/h1>/i', '</h2>', (string) $standard_content );
+							echo $standard_content; // phpcs:ignore
+							?>
 						</div>
 					</article>
 					<?php if ( comments_open() || get_comments_number() ) : comments_template(); endif; ?>

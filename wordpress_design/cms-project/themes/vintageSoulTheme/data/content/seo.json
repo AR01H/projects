@@ -1,4 +1,4 @@
-﻿{
+{
   "global": {
     "site_name": "The Cane House",
     "separator": " | ",
@@ -7,6 +7,34 @@
     "twitter_handle": "@thecanehouseuk",
     "locale": "en_GB",
     "author": "The Cane House"
+  },
+  "organization": {
+    "type": "FoodEstablishment",
+    "name": "The Cane House",
+    "legalName": "The Cane House Ltd",
+    "url": "https://thecanehouse.co.uk",
+    "logo": "assets/images/logos/logo.png",
+    "image": "assets/images/backgrounds/og-image.jpg",
+    "telephone": "+44 20 7946 0912",
+    "email": "hello@thecanehouse.co.uk",
+    "address": {
+      "streetAddress": "14 Covent Garden",
+      "addressLocality": "London",
+      "addressRegion": "Greater London",
+      "postalCode": "WC2E 8HB",
+      "addressCountry": "GB"
+    },
+    "geo": {
+      "latitude": 51.5117,
+      "longitude": -0.1240
+    },
+    "priceRange": "££",
+    "servesCuisine": ["Sugarcane Juice", "Natural Beverages", "Botanical Refreshments"],
+    "sameAs": [
+      "https://www.instagram.com/thecanehouseuk",
+      "https://www.facebook.com/thecanehouseuk",
+      "https://twitter.com/thecanehouseuk"
+    ]
   },
   "pages": {
     "home": {

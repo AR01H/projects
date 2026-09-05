@@ -11,11 +11,28 @@ final class NavigationService {
 		$locations = get_nav_menu_locations();
 		if ( ! empty( $locations[ $location ] ) ) {
 			$items = wp_get_nav_menu_items( $locations[ $location ] );
-			if ( $items ) {
-				return array_map(
-					static fn( $item ) => array( 'label' => $item->title, 'url' => $item->url ),
-					$items
-				);
+			if ( ! empty( $items ) && is_array( $items ) ) {
+				$parents  = array();
+				$children = array();
+				foreach ( $items as $item ) {
+					$entry = array(
+						'id'       => (int) $item->ID,
+						'label'    => (string) $item->title,
+						'url'      => (string) $item->url,
+						'children' => array(),
+					);
+					if ( ! empty( $item->menu_item_parent ) ) {
+						$children[ (int) $item->menu_item_parent ][] = $entry;
+					} else {
+						$parents[ (int) $item->ID ] = $entry;
+					}
+				}
+				foreach ( $children as $parent_id => $kids ) {
+					if ( isset( $parents[ $parent_id ] ) ) {
+						$parents[ $parent_id ]['children'] = $kids;
+					}
+				}
+				return array_values( $parents );
 			}
 		}
 

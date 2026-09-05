@@ -64,7 +64,12 @@ get_header();
 
 						<!-- Article Content with Rich Editorial Hierarchy -->
 						<div class="single-article__content entry-content">
-							<?php the_content(); ?>
+							<?php
+							$article_content = apply_filters( 'the_content', get_the_content() );
+							$article_content = preg_replace( '/<h1(\s+[^>]*)?>/i', '<h2$1>', (string) $article_content );
+							$article_content = preg_replace( '/<\/h1>/i', '</h2>', (string) $article_content );
+							echo $article_content; // phpcs:ignore
+							?>
 						</div>
 
 					</article>

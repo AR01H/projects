@@ -5,7 +5,6 @@ use VintageSoul\Support\View;
 
 defined( 'ABSPATH' ) || exit;
 ?>
-</main>
 
 <?php
 View::component( 'footer/footer', ( new FooterController() )->prepare() );

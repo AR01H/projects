@@ -40,7 +40,7 @@ $data = ( new PageController() )->prepare();
 								'description' => 'Freshly pressed. Naturally refreshing. Always made with care.',
 								'position'    => 'bottom-left',
 								'buttons'     => array(
-									array( 'label' => 'Explore More', 'icon' => '📍', 'route' => 'game', 'style' => 'ghost' ),
+									array( 'label' => 'Explore More', 'icon' => '📍', 'route' => 'about', 'style' => 'ghost' ),
 									array( 'label' => 'Book Us For Your Event', 'icon' => '📅', 'route' => 'contact' ),
 								),
 							),
@@ -61,7 +61,7 @@ $data = ( new PageController() )->prepare();
 								'title'       => 'To Your Glass',
 								'description' => 'Video slide - plays to its own end, no fixed timer.',
 								'position'    => 'top-right',
-								'buttons'     => array( array( 'label' => 'Watch More', 'route' => 'game', 'style' => 'ghost' ) ),
+								'buttons'     => array( array( 'label' => 'Watch More', 'route' => 'history', 'style' => 'ghost' ) ),
 							),
 							'cards'   => array(
 								array( 'number' => '01', 'title' => 'Freshly Served', 'text' => 'Made and served while you watch.', 'position' => array( 'top' => '8%', 'left' => '4%' ), 'connector' => false ),
@@ -368,7 +368,7 @@ $data = ( new PageController() )->prepare();
 					'video'   => VINTAGESOUL_URI . '/assets/videos/hero_bg.mp4',
 					'buttons' => array(
 						array( 'label' => 'Get In Touch', 'route' => 'contact' ),
-						array( 'label' => 'See More', 'route' => 'game', 'style' => 'ghost' ),
+						array( 'label' => 'Our Heritage', 'route' => 'about', 'style' => 'ghost' ),
 					),
 				)
 			);
@@ -383,7 +383,7 @@ $data = ( new PageController() )->prepare();
 						'sub'     => 'variant: reverse - image on the left instead.',
 						'image'   => 'https://images.unsplash.com/photo-1546173159-315724a31696?w=800&q=72&auto=format&fit=crop',
 						'variant' => 'reverse',
-						'buttons' => array( array( 'label' => 'View Full Range', 'route' => 'game' ) ),
+						'buttons' => array( array( 'label' => 'View Full Range', 'route' => 'contact' ) ),
 					)
 				);
 				?>
@@ -618,7 +618,7 @@ $data = ( new PageController() )->prepare();
 							'description' => 'Video slide - plays to its own end, no fixed timer.',
 							'image'       => 'https://images.unsplash.com/photo-1560493676-04071c5f467b?w=1200&q=72&auto=format&fit=crop',
 							'video'       => 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',
-							'buttons'     => array( array( 'label' => 'Watch More', 'route' => 'game', 'style' => 'ghost' ) ),
+							'buttons'     => array( array( 'label' => 'Watch More', 'route' => 'history', 'style' => 'ghost' ) ),
 						),
 						array(
 							'subtitle'    => 'Watch It, Taste It',
@@ -759,7 +759,7 @@ $data = ( new PageController() )->prepare();
 						'desc'   => 'Pure and simple - the original.',
 						'price'  => '£3.00',
 						'image'  => 'https://images.unsplash.com/photo-1600271886742-f049cd451bba?auto=format&fit=crop&w=600&q=80',
-						'button' => array( 'label' => 'Order Now', 'route' => 'game' ),
+						'button' => array( 'label' => 'Order Now', 'route' => 'contact' ),
 					)
 				);
 				View::component(
@@ -832,21 +832,21 @@ $data = ( new PageController() )->prepare();
 							'name'   => 'Classic Cane Juice',
 							'desc'   => 'Pure & Natural',
 							'price'  => '₹50.00',
-							'button' => array( 'label' => 'Order Now', 'route' => 'game' ),
+							'button' => array( 'label' => 'Order Now', 'route' => 'contact' ),
 						),
 						array(
 							'image'  => 'https://images.unsplash.com/photo-1560493676-04071c5f467b?w=200&q=70&auto=format&fit=crop',
 							'name'   => 'Pineapple Cane Juice',
 							'desc'   => 'With a twist of pineapple',
 							'price'  => '₹60.00',
-							'button' => array( 'label' => 'Order Now', 'route' => 'game' ),
+							'button' => array( 'label' => 'Order Now', 'route' => 'contact' ),
 						),
 						array(
 							'image'  => 'https://images.unsplash.com/photo-1546173159-315724a31696?w=200&q=70&auto=format&fit=crop',
 							'name'   => 'Lemon Cane Juice',
 							'desc'   => 'Zesty and healthy',
 							'price'  => '₹60.00',
-							'button' => array( 'label' => 'Order Now', 'route' => 'game' ),
+							'button' => array( 'label' => 'Order Now', 'route' => 'contact' ),
 						),
 					),
 				)
