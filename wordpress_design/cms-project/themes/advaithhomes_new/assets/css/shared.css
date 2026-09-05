@@ -6789,7 +6789,7 @@ body .cat-search-btn { flex-shrink: 0; padding: 9px 22px; font-size: .85rem; bor
 .sbm-links { display: flex; gap: var(--space-2); flex-wrap: wrap; flex-shrink: 0; }
 
 /* No results */
-.search-no-results { text-align: center; padding: 64px 24px;
+.search-no-results { text-align: center;
   background: var(--color-white); border: 1px solid var(--color-border); border-radius: var(--radius-md); }
 .search-no-icon { font-size: 3rem; display: block; margin-bottom: var(--space-4); }
 .search-no-title { font-size: 1.35rem; font-weight: 700; color: var(--color-heading); margin: 0 0 8px; }
