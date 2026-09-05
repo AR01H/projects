@@ -14,12 +14,14 @@
  *     same ID twice.
  *   - shares one `window.dataLayer` / `window.gtag` across Analytics, Ads
  *     and Tag Manager, exactly as Google's own gtag.js does.
- *   - is consent-aware but not consent-DEPENDENT: if a page also loads a
- *     cookie-consent manager exposing `window.adnCookieConsent`, init is
- *     deferred until the relevant category (analytics/advertising) is
- *     granted, then re-checked on every consent change. If no such manager
- *     is present, it just initialises immediately - so this file works the
- *     same on any site, consent tooling or not.
+ *   - EXCEPT initGoogleAnalytics(), each is consent-aware but not consent-
+ *     DEPENDENT: if a page also loads a cookie-consent manager exposing
+ *     `window.adnCookieConsent`, init is deferred until the relevant
+ *     category (analytics/advertising) is granted, then re-checked on every
+ *     consent change. If no such manager is present, it just initialises
+ *     immediately - so this file works the same on any site, consent
+ *     tooling or not. initGoogleAnalytics() always fires immediately,
+ *     regardless of consent state (by explicit request).
  *
  * Usage (from anywhere, any time after this script has loaded):
  *   initGoogleAnalytics( [ 'G-LVYFMEWP01', 'G-866V46PGZ9', 'G-8RZM0FP5B8' ] );
@@ -92,18 +94,20 @@
 	/**
 	 * Google Analytics 4 (GA4). Configures one or more measurement IDs
 	 * (e.g. "G-XXXXXXXXXX") against the shared gtag.js.
+	 *
+	 * Deliberately NOT consent-gated: tracks immediately on call, regardless
+	 * of window.adnCookieConsent's state. (Ads/AdSense below still wait for
+	 * the "advertising" category - only Analytics was asked to always fire.)
 	 */
 	window.initGoogleAnalytics = function ( measurementIds ) {
 		var ids = toIdList( measurementIds );
 		if ( ! ids.length ) { return; }
 
-		whenConsented( 'analytics', function () {
-			ensureGtag( ids[ 0 ] );
-			ids.forEach( function ( id ) {
-				if ( window.__ahGaConfigured[ id ] ) { return; }
-				window.__ahGaConfigured[ id ] = true;
-				window.gtag( 'config', id );
-			} );
+		ensureGtag( ids[ 0 ] );
+		ids.forEach( function ( id ) {
+			if ( window.__ahGaConfigured[ id ] ) { return; }
+			window.__ahGaConfigured[ id ] = true;
+			window.gtag( 'config', id );
 		} );
 	};
 
