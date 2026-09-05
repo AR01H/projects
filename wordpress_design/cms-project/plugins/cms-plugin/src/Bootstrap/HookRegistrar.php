@@ -40,6 +40,7 @@ class HookRegistrar {
 		\add_action( 'wp_head', [ 'AH_Custom_Code_Service', 'injectSlugCss' ], 99 );
 		\add_action( 'wp_footer', [ 'AH_Custom_Code_Service', 'injectGlobalJs' ], 98 );
 		\add_action( 'wp_footer', [ 'AH_Custom_Code_Service', 'injectSlugJs' ], 99 );
+		\add_action( 'wp_enqueue_scripts', [ 'AH_Asset_Loader', 'enqueue_google_services' ] );
 	}
 
 	private static function registerShortcodes(): void {

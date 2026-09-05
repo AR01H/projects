@@ -25,4 +25,33 @@ class AH_Asset_Loader {
 			'nonce'   => wp_create_nonce( 'ah_frontend_nonce' ),
 		) );
 	}
+
+	/**
+	 * Plugin-owned Google services JS (initGoogleAnalytics(), etc. - see
+	 * assets/js/google-services.js). Deliberately its own method/hook, kept
+	 * separate from frontend_assets() above: that method also re-enqueues
+	 * main.css/js from the *active theme's* own folder, which is only safe
+	 * to call once per site. This method has no such entanglement, so it's
+	 * registered directly (see src/Bootstrap/HookRegistrar.php) and works
+	 * on any site running this plugin, independent of whether
+	 * frontend_assets()/init() above is ever called by that site's theme.
+	 *
+	 * No hard script dependency on the theme's cookie-consent script: that
+	 * handle may not exist at all on some sites, and depending on a handle
+	 * WordPress never sees registered would make it silently drop this
+	 * whole script. google-services.js instead checks
+	 * window.adnCookieConsent lazily, at call time (not load time), so
+	 * enqueue order between the two doesn't matter.
+	 */
+	public static function enqueue_google_services(): void {
+		$path = AH_PLUGIN_DIR . '/assets/js/google-services.js';
+		$ver  = file_exists( $path ) ? filemtime( $path ) : AH_PLUGIN_VERSION;
+		wp_enqueue_script(
+			'ah-google-services',
+			AH_PLUGIN_URL . '/assets/js/google-services.js',
+			array(),
+			$ver,
+			true
+		);
+	}
 }
