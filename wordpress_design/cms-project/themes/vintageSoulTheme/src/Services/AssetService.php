@@ -49,7 +49,7 @@ final class AssetService {
 			self::HANDLE_PREFIX . $handle,
 			VINTAGESOUL_URI . '/' . ltrim( $path, '/' ),
 			array(),
-			(string) filemtime( $file )
+			self::asset_version( $file )
 		);
 	}
 
@@ -62,8 +62,19 @@ final class AssetService {
 			self::HANDLE_PREFIX . $handle,
 			VINTAGESOUL_URI . '/' . ltrim( $path, '/' ),
 			array(),
-			(string) filemtime( $file ),
+			self::asset_version( $file ),
 			array( 'in_footer' => true )
 		);
+	}
+
+	/**
+	 * Cache-busting version for one enqueued file: VINTAGESOUL_CACHE_VERSION
+	 * when defined (forces every asset to one fixed version), otherwise that
+	 * file's own filemtime() (auto-busts only when that file changes).
+	 */
+	private static function asset_version( string $file ): string {
+		return defined( 'VINTAGESOUL_CACHE_VERSION' )
+			? (string) VINTAGESOUL_CACHE_VERSION
+			: (string) filemtime( $file );
 	}
 }

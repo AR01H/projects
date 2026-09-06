@@ -378,7 +378,7 @@
   -webkit-filter: url(#rough-button-cut-sm) !important;
   z-index: 0 !important;
   pointer-events: none !important;
-  transition: all 0.25s ease !important;
+  transition: transform 0.25s ease, opacity 0.25s ease, background-color 0.25s ease, background 0.25s ease, border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease, width 0.25s ease, height 0.25s ease, max-height 0.25s ease !important;
 }
 
 .cert-h-card:hover::before {
@@ -430,7 +430,7 @@
   justify-content: center !important;
   padding: 4px !important;
   box-sizing: border-box !important;
-  transition: all 0.25s ease !important;
+  transition: transform 0.25s ease, opacity 0.25s ease, background-color 0.25s ease, background 0.25s ease, border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease, width 0.25s ease, height 0.25s ease, max-height 0.25s ease !important;
 }
 
 .cert-h-card.is-active .cert-h-card__seal {
@@ -529,7 +529,7 @@
   justify-content: center !important;
   cursor: pointer !important;
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3) !important;
-  transition: all 0.2s ease !important;
+  transition: transform 0.2s ease, opacity 0.2s ease, background-color 0.2s ease, background 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, width 0.2s ease, height 0.2s ease, max-height 0.2s ease !important;
   line-height: 1 !important;
   padding: 0 0 2px !important;
 }
@@ -556,7 +556,7 @@
   border: 1px solid var(--vintage-bark-border, #8e622d) !important;
   padding: 0 !important;
   cursor: pointer !important;
-  transition: all 0.25s ease !important;
+  transition: transform 0.25s ease, opacity 0.25s ease, background-color 0.25s ease, background 0.25s ease, border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease, width 0.25s ease, height 0.25s ease, max-height 0.25s ease !important;
 }
 
 .certs-nav-dot.is-active {
@@ -594,7 +594,7 @@
   height: 100% !important;
   min-height: 380px !important;
   box-sizing: border-box !important;
-  transition: all 0.25s ease !important;
+  transition: transform 0.25s ease, opacity 0.25s ease, background-color 0.25s ease, background 0.25s ease, border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease, width 0.25s ease, height 0.25s ease, max-height 0.25s ease !important;
 }
 
 /* Wax Seal Badge */
@@ -650,7 +650,7 @@
     inset 0 0 0 1px var(--vintage-bark-border, #8e622d),
     0 6px 18px rgba(42, 26, 12, 0.12) !important;
   margin-bottom: 14px !important;
-  transition: all 0.25s ease !important;
+  transition: transform 0.25s ease, opacity 0.25s ease, background-color 0.25s ease, background 0.25s ease, border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease, width 0.25s ease, height 0.25s ease, max-height 0.25s ease !important;
 }
 
 .certs-featured-logo-card__image-link:hover .certs-featured-logo-card__image-wrap {
@@ -744,7 +744,7 @@
   letter-spacing: 0.08em !important;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25) !important;
   border: 1.5px solid var(--vintage-gold-inner, #caa06d) !important;
-  transition: all 0.25s ease !important;
+  transition: transform 0.25s ease, opacity 0.25s ease, background-color 0.25s ease, background 0.25s ease, border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease, width 0.25s ease, height 0.25s ease, max-height 0.25s ease !important;
 }
 
 .certs-featured-logo-card__action-btn:hover .certs-featured-logo-card__action-text {

@@ -188,7 +188,7 @@
   justify-content: center !important;
   cursor: pointer !important;
   box-shadow: inset 0 0 0 1px var(--vintage-gold-inner, #caa06d), 0 2px 6px rgba(0, 0, 0, 0.15) !important;
-  transition: all 0.2s ease !important;
+  transition: transform 0.2s ease, opacity 0.2s ease, background-color 0.2s ease, background 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, width 0.2s ease, height 0.2s ease, max-height 0.2s ease !important;
 }
 
 .vst-cookie-modal__close:hover {
@@ -304,7 +304,7 @@
   background-color: #cbb89e !important;
   border: 1px solid var(--vintage-bark-border, #8e622d) !important;
   border-radius: 24px !important;
-  transition: all 0.25s ease !important;
+  transition: transform 0.25s ease, opacity 0.25s ease, background-color 0.25s ease, background 0.25s ease, border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease, width 0.25s ease, height 0.25s ease, max-height 0.25s ease !important;
 }
 
 .vst-cookie-slider::before {

@@ -1,0 +1,23 @@
+{
+    "default_key": "contact",
+    "forms": {
+        "contact": {
+            "shortcode": "[ah_form id=\"1\"]",
+            "url": "/contact"
+        },
+        "events_booking": {
+            "shortcode": "[ah_form id=\"2\"]",
+            "url": "/events"
+        },
+        "franchise": {
+            "shortcode": "[ah_form id=\"3\"]",
+            "url": "/franchise"
+        }
+    },
+    "aliases": {
+        "event": "events_booking",
+        "events": "events_booking",
+        "booking": "events_booking",
+        "partner": "franchise"
+    }
+}

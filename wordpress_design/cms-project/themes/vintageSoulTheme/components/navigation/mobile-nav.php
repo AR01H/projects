@@ -14,14 +14,6 @@ $cta_route    = (string) ( $cta['route'] ?? 'contact' );
 $cta_sublabel = (string) ( $cta['sublabel'] ?? 'Weddings & Events' );
 $has_cta      = true;
 ?>
-<!-- Hamburger Trigger Button -->
-<button type="button" class="mobile-nav-toggle" id="mobile-nav-toggle" aria-expanded="false" aria-controls="mobile-nav"
-	aria-label="<?php esc_attr_e( 'Open menu', 'vintagesoul' ); ?>">
-	<span class="mobile-nav-toggle__bar" aria-hidden="true"></span>
-	<span class="mobile-nav-toggle__bar" aria-hidden="true"></span>
-	<span class="mobile-nav-toggle__bar" aria-hidden="true"></span>
-</button>
-
 <!-- Backdrop Overlay -->
 <div class="mobile-nav-scrim" id="mobile-nav-scrim"></div>
 
@@ -95,8 +87,17 @@ $has_cta      = true;
 								if ( '' === $child_label ) {
 									continue;
 								}
+								$icon = (string) ( $child['icon'] ?? '' );
+								$url  = UrlHelper::resolve( (string) ( $child['url'] ?? '#' ) );
 							?>
-								<li><a href="<?php echo esc_url( UrlHelper::resolve( (string) ( $child['url'] ?? '#' ) ) ); ?>"><?php echo esc_html( $child_label ); ?></a></li>
+								<li>
+									<a href="<?php echo esc_url( $url ); ?>">
+										<?php if ( '' !== $icon ) : ?>
+											<span class="mobile-nav__sub-icon"><?php echo esc_html( $icon ); ?></span>
+										<?php endif; ?>
+										<span><?php echo esc_html( $child_label ); ?></span>
+									</a>
+								</li>
 							<?php endforeach; ?>
 						</ul>
 					</div>
@@ -107,7 +108,11 @@ $has_cta      = true;
 
 	<!-- CTA & Quick Contact in Drawer -->
 	<div class="mobile-nav__footer">
-		<a class="mobile-nav__cta" href="<?php echo esc_url( RouteService::url( $cta_route ) ); ?>">
+		<?php
+		$cta_target = (string) ( $cta['url'] ?? ( $cta['route'] ?? 'events' ) );
+		$cta_href   = UrlHelper::resolve( $cta_target );
+		?>
+		<a class="mobile-nav__cta" href="<?php echo esc_url( $cta_href ); ?>">
 			<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 				<rect width="18" height="18" x="3" y="4" rx="2" ry="2"/>
 				<line x1="16" x2="16" y1="2" y2="6"/>

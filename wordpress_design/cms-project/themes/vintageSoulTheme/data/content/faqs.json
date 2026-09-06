@@ -1,15 +1,8 @@
 {
+    "_source": "FAQ content now comes from the CMS FAQ Builder (admin.php?page=ah-faqs&action=add) - leave 'Attach to' on Global there, and set the 'Section' field to match \"section\" below (or edit \"section\" here to match whatever Section label is used). \"items\" is intentionally empty; it's only a fallback for if that admin has nothing yet. tag/title/sub stay here as the static section header text.",
     "tag": "Common Inquiries",
     "title": "FREQUENTLY ASKED <em>Questions</em>",
     "sub": "Everything you need to know about our fresh cold-pressed process, catering, and delivery.",
-    "items": [
-        { "question": "What events do you cater for?", "answer": "We cater for weddings, birthday parties, college fests, corporate events, festivals, and private gatherings of any size." },
-        { "question": "Where do you provide your service?", "answer": "We currently serve Sutton, London, Surrey, and surrounding areas across the United Kingdom." },
-        { "question": "Can I book The Cane House for a wedding?", "answer": "Yes! Our live artisanal sugarcane pressing cart is a unique and popular live beverage counter for wedding receptions." },
-        { "question": "How far in advance should I book?", "answer": "We recommend booking at least 2 to 4 weeks in advance, especially during the busy summer and wedding season." },
-        { "question": "Do you provide custom event packages?", "answer": "Yes, we tailor beverage menus, cup branding, and live counter setups to match your event theme and guest count." },
-        { "question": "Can I order sugarcane juice online?", "answer": "Yes, we provide fresh chilled doorstep delivery in eco-friendly bottles across our local delivery radius." },
-        { "question": "Do you offer franchise opportunities?", "answer": "Yes! We offer low-investment franchise setups including city kiosks, event carts, and full training and operational support." },
-        { "question": "How can I make an enquiry?", "answer": "You can fill out our enquiry form on the website, call us at +44 7770 461 999, or email thecanehouseuk@gmail.com." }
-    ]
+    "section": "Common Questions",
+    "items": []
 }

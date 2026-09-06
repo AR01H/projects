@@ -1,7 +1,9 @@
 <?php
 namespace VintageSoul\Bootstrap;
 
+use VintageSoul\Services\AdminThemeService;
 use VintageSoul\Services\AssetService;
+use VintageSoul\Services\PluginBridgeService;
 use VintageSoul\Services\PostSeedService;
 use VintageSoul\Services\RoutePageService;
 use VintageSoul\Services\RouteService;
@@ -16,6 +18,8 @@ final class Theme {
 		add_action( 'wp_enqueue_scripts', array( AssetService::class, 'enqueue' ) );
 		add_action( 'wp_enqueue_scripts', array( AssetService::class, 'enqueue_page_assets' ) );
 		SeoService::register_hooks();
+		PluginBridgeService::register_hooks();
+		AdminThemeService::register_hooks();
 		add_action( 'init', array( RoutePageService::class, 'sync' ) );
 		add_action( 'init', array( PostSeedService::class, 'seed' ) );
 		add_action( 'admin_init', array( RoutePageService::class, 'sync' ) );

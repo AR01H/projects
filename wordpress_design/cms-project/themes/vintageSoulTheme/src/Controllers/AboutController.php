@@ -2,6 +2,7 @@
 namespace VintageSoul\Controllers;
 
 use VintageSoul\DataProviders\JsonFileProvider;
+use VintageSoul\Services\Plugins\PageBridgeService;
 use VintageSoul\Support\UrlHelper;
 
 defined( 'ABSPATH' ) || exit;
@@ -9,13 +10,15 @@ defined( 'ABSPATH' ) || exit;
 final class AboutController {
 
 	public function prepare(): array {
-		$hero   = (array) JsonFileProvider::read( 'data/content/about-hero.json' );
-		$intro  = (array) JsonFileProvider::read( 'data/content/about-intro.json' );
-		$values = (array) JsonFileProvider::read( 'data/content/values.json' );
-		$story  = (array) JsonFileProvider::read( 'data/content/story.json' );
+		$hero_raw = (array) JsonFileProvider::read( 'data/content/about-hero.json' );
+		$intro    = (array) JsonFileProvider::read( 'data/content/about-intro.json' );
+		$values   = (array) JsonFileProvider::read( 'data/content/values.json' );
+		$story    = (array) JsonFileProvider::read( 'data/content/story.json' );
+
+		$hero = PageBridgeService::resolve_hero( 'about', $this->resolve( $hero_raw ) );
 
 		return array(
-			'hero'   => $this->resolve( $hero ),
+			'hero'   => $hero,
 			'intro'  => $this->resolve( $intro ),
 			'values' => $this->resolve( $values ),
 			'story'  => $this->resolve( $story ),

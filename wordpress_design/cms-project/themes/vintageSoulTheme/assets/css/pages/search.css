@@ -72,7 +72,7 @@
   box-shadow:
     inset 0 2px 6px rgba(0, 0, 0, 0.15),
     0 4px 12px rgba(0, 0, 0, 0.2);
-  transition: all 0.25s ease;
+  transition: transform 0.25s ease, opacity 0.25s ease, background-color 0.25s ease, background 0.25s ease, border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease, width 0.25s ease, height 0.25s ease, max-height 0.25s ease;
 }
 
 .search-hero-input-wrap:focus-within {
@@ -135,7 +135,7 @@
     inset 0 0 0 1px var(--vintage-gold-inner, #caa06d),
     inset 0 1px 0 rgba(255, 255, 255, 0.7),
     0 6px 20px rgba(42, 26, 12, 0.12);
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.25s cubic-bezier(0.16, 1, 0.3, 1), background 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s cubic-bezier(0.16, 1, 0.3, 1), color 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), width 0.25s cubic-bezier(0.16, 1, 0.3, 1), height 0.25s cubic-bezier(0.16, 1, 0.3, 1), max-height 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   box-sizing: border-box;
   position: relative;
 }
@@ -258,7 +258,7 @@
   color: #8e5f2b;
   text-decoration: none;
   text-transform: uppercase;
-  transition: all 0.2s ease;
+  transition: transform 0.2s ease, opacity 0.2s ease, background-color 0.2s ease, background 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, width 0.2s ease, height 0.2s ease, max-height 0.2s ease;
 }
 
 .search-result-card__link .link-arrow {
@@ -342,7 +342,7 @@
   color: var(--client-brand-moss, #172b15);
   text-decoration: none;
   box-shadow: inset 0 0 0 1px var(--vintage-gold-inner, #caa06d);
-  transition: all 0.2s ease;
+  transition: transform 0.2s ease, opacity 0.2s ease, background-color 0.2s ease, background 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, width 0.2s ease, height 0.2s ease, max-height 0.2s ease;
 }
 
 .search-pagination-wrap .page-numbers:hover,

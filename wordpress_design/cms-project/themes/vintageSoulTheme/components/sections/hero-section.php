@@ -155,11 +155,13 @@ $format_hero_title = static function ( $title ) {
 					<?php foreach ( (array) ( $first_content['buttons'] ?? array() ) as $idx => $btn ) :
 						$btn       = (array) $btn;
 						$btn_label = (string) ( $btn['label'] ?? '' );
-						$btn_route = (string) ( $btn['route'] ?? 'contact' );
+						$btn_raw   = (string) ( $btn['url'] ?? ( $btn['route'] ?? 'contact' ) );
+						$btn_url   = ( 0 === strpos( $btn_raw, '/' ) || 0 === strpos( $btn_raw, 'http' ) ) ? UrlHelper::resolve( $btn_raw ) : RouteService::url( $btn_raw );
+						$btn_tgt   = (string) ( $btn['target'] ?? '_self' );
 						$btn_icon  = (string) ( $btn['icon'] ?? '' );
 						$btn_class = 0 === $idx ? 'btn--primary-vintage' : 'btn--secondary-vintage btn--outline-vintage';
 					?>
-						<a class="btn <?php echo esc_attr( $btn_class ); ?>" href="<?php echo esc_url( RouteService::url( $btn_route ) ); ?>">
+						<a class="btn <?php echo esc_attr( $btn_class ); ?>" href="<?php echo esc_url( $btn_url ); ?>"<?php echo '_blank' === $btn_tgt ? ' target="_blank" rel="noopener"' : ''; ?>>
 							<?php if ( '' !== $btn_icon ) : ?>
 								<span class="btn__icon"><?php echo IconHelper::render( $btn_icon, '#f6d599', 15 ); // phpcs:ignore ?></span>
 							<?php endif; ?>
@@ -171,7 +173,8 @@ $format_hero_title = static function ( $title ) {
 
 			<!-- Right Column: 70% Width Frameless Media Stage with Seamless Left Gradient / SVG Cut Blend -->
 			<div class="hero-sugarcane__media-wrap">
-				<div class="hero-carousel-container" id="hero-image-carousel" data-autoplay="5000">
+				<?php $autoplay_ms = (int) ( $hero['settings']['autoplay_delay'] ?? 5000 ); ?>
+				<div class="hero-carousel-container" id="hero-image-carousel" data-autoplay="<?php echo esc_attr( (string) $autoplay_ms ); ?>">
 					
 					<!-- Slides Wrapper -->
 					<div class="hero-carousel-slides">
@@ -189,7 +192,8 @@ $format_hero_title = static function ( $title ) {
 								 data-index="<?php echo esc_attr( (string) $idx ); ?>"
 								 data-title="<?php echo esc_attr( (string) ( $slide_content['title'] ?? '' ) ); ?>"
 								 data-eyebrow="<?php echo esc_attr( (string) ( $slide_content['eyebrow'] ?? '' ) ); ?>"
-								 data-checklist='<?php echo esc_attr( (string) wp_json_encode( (array) ( $slide_content['checklist'] ?? array() ) ) ); ?>'>
+								 data-checklist='<?php echo esc_attr( (string) wp_json_encode( (array) ( $slide_content['checklist'] ?? array() ) ) ); ?>'
+								 data-buttons='<?php echo esc_attr( (string) wp_json_encode( (array) ( $slide_content['buttons'] ?? array() ) ) ); ?>'>
 								<?php if ( $is_video ) : ?>
 									<video class="hero-carousel-video" autoplay muted playsinline poster="<?php echo esc_url( $slide_img ); ?>">
 										<source src="<?php echo esc_url( $slide_video_url ); ?>" type="video/mp4">
@@ -225,7 +229,7 @@ $format_hero_title = static function ( $title ) {
 
 </section>
 
-<!-- Inline script for smooth auto-rotating Hero Carousel (Video Completion + 4s Image Rotation) -->
+<!-- Inline script for smooth auto-rotating Hero Carousel (Video Completion + Configured Duration) -->
 <script>
 (function() {
 	function initHeroCarousel() {
@@ -239,7 +243,7 @@ $format_hero_title = static function ( $title ) {
 		var currentIndex = 0;
 		var autoTimer = null;
 		var isHovered = false;
-		var IMAGE_DURATION = 4000; // 4 seconds for static images
+		var IMAGE_DURATION = parseInt(container.getAttribute('data-autoplay'), 10) || 5000;
 
 		if (slides.length <= 1) return;
 
@@ -342,6 +346,26 @@ $format_hero_title = static function ( $title ) {
 									return '<li><span class="hero-sugarcane__check">✓</span> ' + item + '</li>';
 								}).join('');
 								checklistEl.style.opacity = '1';
+							}, 200);
+						}
+					} catch(e) {}
+				}
+
+				var buttonsEl = document.getElementById('hero-buttons');
+				var buttonsRaw = activeSlide.getAttribute('data-buttons');
+				if (buttonsEl && buttonsRaw) {
+					try {
+						var btns = JSON.parse(buttonsRaw);
+						if (Array.isArray(btns) && btns.length > 0) {
+							buttonsEl.style.opacity = '0';
+							setTimeout(function() {
+								buttonsEl.innerHTML = btns.map(function(btn, bIdx) {
+									var bClass = bIdx === 0 ? 'btn--primary-vintage' : 'btn--secondary-vintage btn--outline-vintage';
+									var bUrl = btn.url || (btn.route ? '/' + btn.route : '/contact');
+									var bTgt = btn.target === '_blank' ? ' target="_blank" rel="noopener"' : '';
+									return '<a class="btn ' + bClass + '" href="' + bUrl + '"' + bTgt + '><span>' + (btn.label || 'Learn More') + '</span></a>';
+								}).join('');
+								buttonsEl.style.opacity = '1';
 							}, 200);
 						}
 					} catch(e) {}

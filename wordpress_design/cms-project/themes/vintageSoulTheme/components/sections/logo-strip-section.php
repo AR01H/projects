@@ -3,6 +3,7 @@
  * VintageSoulTheme - As Featured & Trusted By Partner Logo Strip
  */
 use VintageSoul\DataProviders\JsonFileProvider;
+use VintageSoul\Services\Plugins\FeaturedInBridgeService;
 use VintageSoul\Support\UrlHelper;
 use VintageSoul\Support\View;
 
@@ -12,7 +13,13 @@ $strip_data = (array) ( JsonFileProvider::read( 'data/content/logo-strip.json' )
 $tag        = (string) ( $tag ?? ( $strip_data['tag'] ?? '' ) );
 $title      = (string) ( $title ?? ( $strip_data['title'] ?? '' ) );
 $sub        = (string) ( $sub ?? ( $strip_data['sub'] ?? '' ) );
-$items      = (array) ( $items ?? ( $strip_data['items'] ?? array() ) );
+
+// Primary source: CMS "Featured In" logo strips (admin.php?page=ah-featured-in),
+// section id from logo-strip.json's "cms_section_id" (not hard-coded here).
+// Falls back to the static JSON above until that section is created in the admin.
+$cms_section_id = (string) ( $strip_data['cms_section_id'] ?? 'partners' );
+$db_items       = FeaturedInBridgeService::get_items( $cms_section_id );
+$items          = ! empty( $db_items ) ? $db_items : (array) ( $items ?? ( $strip_data['items'] ?? array() ) );
 
 if ( empty( $items ) ) {
 	return;

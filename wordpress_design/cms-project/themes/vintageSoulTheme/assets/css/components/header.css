@@ -9,7 +9,7 @@
   border-top: none !important;
   border-bottom: none !important;
   box-shadow: none !important;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1), width 0.3s cubic-bezier(0.16, 1, 0.3, 1), height 0.3s cubic-bezier(0.16, 1, 0.3, 1), max-height 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .site-header.is-scrolled {
@@ -177,7 +177,7 @@ body.admin-bar .site-header.is-scrolled {
   -webkit-filter: url(#rough-button-cut-sm) !important;
   z-index: -1 !important;
   pointer-events: none !important;
-  transition: all 0.25s ease !important;
+  transition: transform 0.25s ease, opacity 0.25s ease, background-color 0.25s ease, background 0.25s ease, border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease, width 0.25s ease, height 0.25s ease, max-height 0.25s ease !important;
 }
 
 .header-cta-button:hover {
@@ -240,7 +240,16 @@ body.admin-bar .site-header.is-scrolled {
   transform: scale(1.15) !important;
 }
 
-@media (max-width: 768px) {
+/*
+ * Below this width, the full nav list + header CTA button don't reliably fit
+ * in one row next to the logo - .nav uses flex-wrap:nowrap and
+ * .site-header__actions is flex-shrink:0, so instead of wrapping they simply
+ * overflow past .site-header__inner's edge (and past the viewport itself,
+ * clipped rather than scrollable). Collapsing to the mobile nav here, instead
+ * of at 768px, keeps the desktop nav row from ever being asked to hold more
+ * content than it has room for.
+ */
+@media (max-width: 1100px) {
   .site-header__inner {
     padding: 8px 16px !important;
     display: flex !important;
@@ -380,7 +389,7 @@ body.admin-bar .site-header.is-scrolled {
   color: var(--client-brand-moss, #172b15) !important;
   line-height: 1 !important;
   white-space: nowrap !important;
-  transition: all 0.25s ease !important;
+  transition: transform 0.25s ease, opacity 0.25s ease, background-color 0.25s ease, background 0.25s ease, border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease, width 0.25s ease, height 0.25s ease, max-height 0.25s ease !important;
 }
 
 .vst-live-badge__pulse {

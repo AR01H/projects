@@ -11,6 +11,10 @@ html.js :is(.card, .feature-row__item, .product-list__item, .faq__item, .intro-p
 html.js :is(.card, .feature-row__item, .product-list__item, .faq__item, .intro-photo-card, .pillar-card, .sourcing-pillar-card, .sourcing-vintage__photo-frame, .sourcing-signboard, .cert-h-card, .certs-featured-logo-card, .order-product-card, .memory-card-vintage, .look-back-card, .variety-card, .mineral-card, .storage-step-card, .timeline-step-card, .event-type-card, .franchise-pillar-card, .franchise-step-card, .wholesale-card, .blog-card, .contact-home-info-card, .faq-accordion-item, .social-card).is-revealed {
   opacity: 1;
   transform: none;
+  /* Reveal is one-shot (reveal.js unobserves after it fires) - release the
+     promoted compositor layer once it's done instead of holding it forever
+     on every one of these elements, site-wide. */
+  will-change: auto;
 }
 
 html.js :is(.photo-grid__item, .photo-stamp) {
@@ -26,6 +30,7 @@ html.js :is(.photo-grid__item, .photo-stamp) {
 html.js :is(.photo-grid__item, .photo-stamp).is-revealed {
   opacity: 1;
   transform: none;
+  will-change: auto;
 }
 
 html.js .gallery__item {
@@ -41,6 +46,7 @@ html.js .gallery__item {
 html.js .gallery__item.is-revealed {
   opacity: 1;
   transform: none;
+  will-change: auto;
 }
 
 html.js .stats__item {
@@ -56,6 +62,7 @@ html.js .stats__item {
 html.js .stats__item.is-revealed {
   opacity: 1;
   transform: none;
+  will-change: auto;
 }
 
 html.js :is(.testimonial-card, .video-testimonial-card, .memories__item) {
@@ -71,6 +78,7 @@ html.js :is(.testimonial-card, .video-testimonial-card, .memories__item) {
 html.js :is(.testimonial-card, .video-testimonial-card, .memories__item).is-revealed {
   opacity: 1;
   transform: none;
+  will-change: auto;
 }
 
 html.js .process-steps__item {
@@ -86,6 +94,7 @@ html.js .process-steps__item {
 html.js .process-steps__item.is-revealed {
   opacity: 1;
   transform: none;
+  will-change: auto;
 }
 
 html.js .step-chain__item {
@@ -101,6 +110,7 @@ html.js .step-chain__item {
 html.js .step-chain__item.is-revealed {
   opacity: 1;
   transform: none;
+  will-change: auto;
 }
 
 html.js .banner__media {
@@ -131,6 +141,7 @@ html.js .banner__content {
 html.js .banner.is-revealed .banner__content {
   opacity: 1;
   transform: none;
+  will-change: auto;
 }
 
 html.js .banner__list-item {
@@ -144,6 +155,7 @@ html.js .banner__list-item {
 html.js .banner.is-revealed .banner__list-item {
   opacity: 1;
   transform: none;
+  will-change: auto;
 }
 html.js .banner__list-item:nth-child(1) { transition-delay: 150ms; }
 html.js .banner__list-item:nth-child(2) { transition-delay: 190ms; }
@@ -165,6 +177,7 @@ html.js .section-header {
 html.js .section-header.is-revealed {
   opacity: 1;
   transform: none;
+  will-change: auto;
 }
 
 html.js :is(.container > h1, .container > h2, .container > h3, .container > p) {
@@ -180,6 +193,7 @@ html.js :is(.container > h1, .container > h2, .container > h3, .container > p) {
 html.js :is(.container > h1, .container > h2, .container > h3, .container > p).is-revealed {
   opacity: 1;
   transform: none;
+  will-change: auto;
 }
 
 html.js :is(.container > .btn, .container > .btn--outline, .container > .badge) {
@@ -193,6 +207,7 @@ html.js :is(.container > .btn, .container > .btn--outline, .container > .badge) 
 html.js :is(.container > .btn, .container > .btn--outline, .container > .badge).is-revealed {
   opacity: 1;
   transform: none;
+  will-change: auto;
 }
 
 html.js .site-footer {
@@ -206,6 +221,7 @@ html.js .site-footer {
 html.js .site-footer.is-revealed {
   opacity: 1;
   transform: none;
+  will-change: auto;
 }
 
 /* ═══════════ ULTRA-SMOOTH CARD & BUTTON HOVER PHYSICS ═══════════ */

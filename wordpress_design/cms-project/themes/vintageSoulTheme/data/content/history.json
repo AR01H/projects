@@ -479,14 +479,10 @@
     },
 
     "faq": {
+        "_source": "FAQ content now comes from the CMS FAQ Builder (admin.php?page=ah-faqs&action=add) - attach entries to page slug 'history', Section 'section' below, there. items is empty on purpose; only a fallback for if that admin has nothing yet.",
         "heading": "Frequently Asked Questions",
-        "items": [
-            { "question": "Is sugarcane juice safe for diabetics?", "answer": "In moderation, and best discussed with your doctor - it is naturally sweet with no added sugar, but still a source of natural sugars." },
-            { "question": "Does sugarcane juice have calories?", "answer": "Yes, naturally - it's a whole-plant drink, not a diet product, but it has none of the artificial additives found in most soft drinks." },
-            { "question": "How is your juice different?", "answer": "Pressed fresh in front of you, from cane sourced the same day - never bottled, never stored." },
-            { "question": "Is your juice 100% natural?", "answer": "Yes - no added sugar, colours, or preservatives, ever." },
-            { "question": "How should I store it?", "answer": "It's best enjoyed fresh, right after pressing - like any fresh juice, it doesn't keep well overnight." }
-        ]
+        "section": "Sugarcane & Health Questions",
+        "items": []
     },
 
     "closing": {

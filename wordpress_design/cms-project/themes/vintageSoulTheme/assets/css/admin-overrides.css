@@ -1,0 +1,40 @@
+/* ==========================================================================
+   VintageSoulTheme — Admin Overrides
+   File: assets/css/admin-overrides.css
+   Theme-level admin styles to hide Edit Meta and excluded CMS modules.
+   ========================================================================== */
+
+/* ── 1. Hide "Edit Meta" Button & Modal in ah-posts ─────────────────────── */
+button.ah-qe-open,
+.ah-qe-open,
+.ah-qe-modal {
+	display: none !important;
+}
+
+/* ── 2. Hide Excluded Admin Menus from Sidebar ─────────────────────────── */
+#adminmenu a[href*="page=ah-taxonomy"],
+#adminmenu a[href*="page=ah-newsletter"],
+#adminmenu a[href*="page=ah-news-bar"],
+#adminmenu a[href*="page=ah-media"],
+#adminmenu a[href*="page=ah-import"],
+#adminmenu li:has(> a[href*="page=ah-taxonomy"]),
+#adminmenu li:has(> a[href*="page=ah-newsletter"]),
+#adminmenu li:has(> a[href*="page=ah-news-bar"]),
+#adminmenu li:has(> a[href*="page=ah-media"]),
+#adminmenu li:has(> a[href*="page=ah-import"]) {
+	display: none !important;
+}
+
+/* ── 3. Hide Excluded Cards & Links from CMS Dashboard ──────────────────── */
+.ah-stats-grid a[href*="page=ah-media"],
+.ah-stats-grid a[href*="page=ah-taxonomy"],
+.ah-stats-grid a[href*="page=ah-newsletter"],
+.ah-stats-grid a[href*="page=ah-news-bar"],
+.ah-stats-grid a[href*="page=ah-import"],
+.ah-quick-actions a[href*="page=ah-media"],
+.ah-quick-actions a[href*="page=ah-taxonomy"],
+.ah-quick-actions a[href*="page=ah-newsletter"],
+.ah-quick-actions a[href*="page=ah-news-bar"],
+.ah-quick-actions a[href*="page=ah-import"] {
+	display: none !important;
+}

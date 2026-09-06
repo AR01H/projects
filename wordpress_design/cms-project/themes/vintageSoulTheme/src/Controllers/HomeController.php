@@ -51,38 +51,33 @@ final class HomeController {
 			$data[ $key ] = JsonFileProvider::read( 'data/content/' . $file );
 		}
 
+		// FAQ list: CMS FAQ Builder (admin.php?page=ah-faqs, left on "Global",
+		// Section per faqs.json's "section") first, falls back to faqs.json's
+		// items. Which section to pull is config (from the JSON), not code.
+		$faqs_section = (string) ( $data['faqs']['section'] ?? '' );
+		$faqs_cms     = \VintageSoul\Services\Plugins\FaqBridgeService::get_items( '', $faqs_section );
+		if ( ! empty( $faqs_cms ) ) {
+			$data['faqs']['items'] = $faqs_cms;
+		}
+
+		// Dynamic contact information resolved from CMS Site Settings DB table (wp_ch_ah_site_settings)
+		$data['contact'] = array(
+			'title'        => (string) ( $data['contact']['title'] ?? "Let's Connect" ),
+			'tagline'      => \VintageSoul\Services\SettingsService::tagline_fallback(),
+			'phone'        => \VintageSoul\Services\SettingsService::phone(),
+			'email'        => \VintageSoul\Services\SettingsService::email(),
+			'whatsapp'     => \VintageSoul\Services\SettingsService::whatsapp(),
+			'whatsapp_url' => \VintageSoul\Services\SettingsService::whatsapp_url(),
+			'address'      => \VintageSoul\Services\SettingsService::address(),
+			'hours'        => \VintageSoul\Services\SettingsService::opening_hours(),
+			'socials'      => \VintageSoul\Services\SettingsService::socials(),
+			'social_links' => \VintageSoul\Services\SettingsService::socials(),
+		);
+
 		return $data;
 	}
 
 	private function prepare_hero(): array {
-		$data   = JsonFileProvider::read( 'data/content/hero.json' );
-		$slides = is_array( $data['slides'] ?? null ) ? $data['slides'] : array();
-
-		foreach ( $slides as &$slide ) {
-			$slide          = (array) $slide;
-			$slide['media'] = $this->resolve_media_urls( (array) ( $slide['media'] ?? array() ) );
-		}
-		unset( $slide );
-
-		return array(
-			'enabled'  => ! empty( $data['enabled'] ) && ! empty( $slides ),
-			'settings' => (array) ( $data['settings'] ?? array() ),
-			'slides'   => $slides,
-		);
-	}
-
-	/**
-	 * A theme-relative path (e.g. "assets/videos/hero_bg.mp4") becomes a real
-	 * URL here; anything already starting with "http" is left untouched -
-	 * same rule FranchiseController applies to its own hero image.
-	 */
-	private function resolve_media_urls( array $media ): array {
-		foreach ( array( 'src', 'mobile_src', 'poster' ) as $key ) {
-			$value = (string) ( $media[ $key ] ?? '' );
-			if ( '' !== $value && 0 !== strpos( $value, 'http' ) ) {
-				$media[ $key ] = VINTAGESOUL_URI . '/' . ltrim( $value, '/' );
-			}
-		}
-		return $media;
+		return \VintageSoul\Services\Plugins\BannerBridgeService::get_hero();
 	}
 }

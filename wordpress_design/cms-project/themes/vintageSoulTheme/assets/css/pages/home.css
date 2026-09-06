@@ -530,7 +530,7 @@ body {
   -webkit-filter: url(#rough-button-cut-sm) !important;
   z-index: -1 !important;
   pointer-events: none !important;
-  transition: all 0.25s ease !important;
+  transition: transform 0.25s ease, opacity 0.25s ease, background-color 0.25s ease, background 0.25s ease, border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease, width 0.25s ease, height 0.25s ease, max-height 0.25s ease !important;
 }
 
 .btn--primary-vintage:hover::before {
@@ -573,7 +573,7 @@ body {
   -webkit-filter: url(#rough-button-cut-sm) !important;
   z-index: -1 !important;
   pointer-events: none !important;
-  transition: all 0.25s ease !important;
+  transition: transform 0.25s ease, opacity 0.25s ease, background-color 0.25s ease, background 0.25s ease, border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease, width 0.25s ease, height 0.25s ease, max-height 0.25s ease !important;
 }
 
 .btn--secondary-vintage:hover::before,
@@ -624,7 +624,7 @@ body {
     inset 0 0 0 1px var(--vintage-gold-inner, #caa06d),
     0 3px 8px rgba(0, 0, 0, 0.35) !important;
   filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.35)) !important;
-  transition: all 0.15s ease !important;
+  transition: transform 0.15s ease, opacity 0.15s ease, background-color 0.15s ease, background 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease, width 0.15s ease, height 0.15s ease, max-height 0.15s ease !important;
   z-index: 1 !important;
 }
 .btn--order-now:hover {
@@ -713,7 +713,7 @@ body {
   cursor: pointer;
   z-index: 10;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.45);
-  transition: all 0.2s ease;
+  transition: transform 0.2s ease, opacity 0.2s ease, background-color 0.2s ease, background 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, width 0.2s ease, height 0.2s ease, max-height 0.2s ease;
   user-select: none;
 }
 .carousel-side-btn:hover {
@@ -763,6 +763,10 @@ body {
   white-space: nowrap !important;
   text-rendering: optimizeLegibility !important;
   -webkit-font-smoothing: antialiased !important;
+  /* Match the rough-cut wings (::before/::after below) - the body of the
+     badge itself was still plain rectangular. */
+  filter: url(#rough-button-cut-sm) !important;
+  -webkit-filter: url(#rough-button-cut-sm) !important;
 }
 
 /* Left & Right Swallowtail Ribbon Wings with Rough Cuts */
@@ -1136,7 +1140,7 @@ body {
   line-height: 1;
   cursor: pointer;
   z-index: 10;
-  transition: all 0.2s ease;
+  transition: transform 0.2s ease, opacity 0.2s ease, background-color 0.2s ease, background 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, width 0.2s ease, height 0.2s ease, max-height 0.2s ease;
   user-select: none;
 }
 .hero-carousel-arrow:hover {
@@ -1185,7 +1189,7 @@ body {
   cursor: pointer !important;
   padding: 0 !important;
   outline: none !important;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.25s cubic-bezier(0.16, 1, 0.3, 1), background 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s cubic-bezier(0.16, 1, 0.3, 1), color 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), width 0.25s cubic-bezier(0.16, 1, 0.3, 1), height 0.25s cubic-bezier(0.16, 1, 0.3, 1), max-height 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 .hero-carousel-dot:hover {
@@ -1682,7 +1686,7 @@ body {
   align-items: center !important;
   justify-content: center !important;
   z-index: 4 !important;
-  transition: all 0.2s ease !important;
+  transition: transform 0.2s ease, opacity 0.2s ease, background-color 0.2s ease, background 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, width 0.2s ease, height 0.2s ease, max-height 0.2s ease !important;
 }
 .sourcing-carousel__btn:hover {
   background: var(--vintage-gold-inner, #caa06d) !important;
@@ -1711,7 +1715,7 @@ body {
   border: 1px solid var(--vintage-bark-border, #8e622d) !important;
   padding: 0 !important;
   cursor: pointer !important;
-  transition: all 0.25s ease !important;
+  transition: transform 0.25s ease, opacity 0.25s ease, background-color 0.25s ease, background 0.25s ease, border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease, width 0.25s ease, height 0.25s ease, max-height 0.25s ease !important;
 }
 .sourcing-carousel__dot.is-active {
   background: var(--vintage-gold-bright, #f6d599) !important;
@@ -1924,7 +1928,7 @@ body {
   border: 1.5px solid var(--vintage-bark-border, #8e622d) !important;
   box-shadow: inset 0 0 0 1px var(--vintage-gold-inner, #caa06d), 0 2px 6px rgba(0, 0, 0, 0.25) !important;
   text-decoration: none !important;
-  transition: all 0.2s ease !important;
+  transition: transform 0.2s ease, opacity 0.2s ease, background-color 0.2s ease, background 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, width 0.2s ease, height 0.2s ease, max-height 0.2s ease !important;
 }
 .drink-row-card .btn--order-now:hover {
   background: linear-gradient(180deg, var(--client-brand-deep, #0d2f16) 0%, var(--client-brand-deep, #061a0c) 100%) !important;
@@ -2037,7 +2041,7 @@ body {
   -webkit-filter: url(#rough-button-cut-sm) !important;
   z-index: -1 !important;
   pointer-events: none !important;
-  transition: all 0.25s ease !important;
+  transition: transform 0.25s ease, opacity 0.25s ease, background-color 0.25s ease, background 0.25s ease, border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease, width 0.25s ease, height 0.25s ease, max-height 0.25s ease !important;
 }
 
 .intro-highlight-item:hover {
@@ -2456,7 +2460,7 @@ body {
   align-items: center !important;
   justify-content: center !important;
   box-shadow: inset 0 0 0 1px var(--vintage-gold-inner, #caa06d), 0 2px 6px rgba(0, 0, 0, 0.35) !important;
-  transition: all 0.2s ease !important;
+  transition: transform 0.2s ease, opacity 0.2s ease, background-color 0.2s ease, background 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, width 0.2s ease, height 0.2s ease, max-height 0.2s ease !important;
   z-index: 5 !important;
   user-select: none !important;
 }
@@ -2757,7 +2761,7 @@ img.video-playlist-item__thumb {
   -webkit-filter: url(#rough-button-cut-sm) !important;
   z-index: 0 !important;
   pointer-events: none !important;
-  transition: all 0.25s ease !important;
+  transition: transform 0.25s ease, opacity 0.25s ease, background-color 0.25s ease, background 0.25s ease, border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease, width 0.25s ease, height 0.25s ease, max-height 0.25s ease !important;
 }
 
 .cert-h-card:hover::before {
@@ -2809,7 +2813,7 @@ img.video-playlist-item__thumb {
   justify-content: center !important;
   padding: 4px !important;
   box-sizing: border-box !important;
-  transition: all 0.25s ease !important;
+  transition: transform 0.25s ease, opacity 0.25s ease, background-color 0.25s ease, background 0.25s ease, border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease, width 0.25s ease, height 0.25s ease, max-height 0.25s ease !important;
 }
 
 .cert-h-card.is-active .cert-h-card__seal {
@@ -2908,7 +2912,7 @@ img.video-playlist-item__thumb {
   justify-content: center !important;
   cursor: pointer !important;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1) !important;
-  transition: all 0.2s ease !important;
+  transition: transform 0.2s ease, opacity 0.2s ease, background-color 0.2s ease, background 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, width 0.2s ease, height 0.2s ease, max-height 0.2s ease !important;
   line-height: 1 !important;
   padding: 0 0 2px !important;
 }
@@ -2934,7 +2938,7 @@ img.video-playlist-item__thumb {
   border: 1px solid var(--vintage-bark-border, #8e622d) !important;
   padding: 0 !important;
   cursor: pointer !important;
-  transition: all 0.25s ease !important;
+  transition: transform 0.25s ease, opacity 0.25s ease, background-color 0.25s ease, background 0.25s ease, border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease, width 0.25s ease, height 0.25s ease, max-height 0.25s ease !important;
 }
 
 .certs-nav-dot.is-active {
@@ -2972,7 +2976,7 @@ img.video-playlist-item__thumb {
   height: 100% !important;
   min-height: 380px !important;
   box-sizing: border-box !important;
-  transition: all 0.25s ease !important;
+  transition: transform 0.25s ease, opacity 0.25s ease, background-color 0.25s ease, background 0.25s ease, border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease, width 0.25s ease, height 0.25s ease, max-height 0.25s ease !important;
 }
 
 /* Wax Seal Badge */
@@ -3426,7 +3430,7 @@ img.video-playlist-item__thumb {
   border: 1px solid var(--vintage-gold-inner, #caa06d);
   clip-path: polygon(3px 0, calc(100% - 3px) 0, 100% 3px, 100% calc(100% - 3px), calc(100% - 3px) 100%, 3px 100%, 0 calc(100% - 3px), 0 3px);
   text-decoration: none;
-  transition: all 0.2s ease;
+  transition: transform 0.2s ease, opacity 0.2s ease, background-color 0.2s ease, background 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, width 0.2s ease, height 0.2s ease, max-height 0.2s ease;
 }
 .btn--serve:hover {
   background-color: #1a5e2f;
@@ -3783,10 +3787,11 @@ img.video-playlist-item__thumb {
   display: inline-flex !important;
   align-items: center !important;
   gap: 32px !important;
-  animation: marquee-slide 34s linear infinite !important;
-}
-.logo-strip-vintage:hover .logo-strip-vintage__track {
-  animation-play-state: paused !important;
+  /* Autoplay + hover wheel-scroll are both driven by
+     assets/js/components/logo-strip-marquee.js (a CSS keyframe animation
+     can't coexist with JS setting the same transform - one would fight the
+     other every frame), so no `animation` here. */
+  will-change: transform;
 }
 .logo-strip-item-img {
   display: inline-flex !important;
@@ -3869,7 +3874,7 @@ img.video-playlist-item__thumb {
   letter-spacing: 0.06em !important;
   text-transform: uppercase !important;
   cursor: pointer !important;
-  transition: all 0.25s ease !important;
+  transition: transform 0.25s ease, opacity 0.25s ease, background-color 0.25s ease, background 0.25s ease, border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease, width 0.25s ease, height 0.25s ease, max-height 0.25s ease !important;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06) !important;
   filter: url(#rough-button-cut-sm) !important;
   -webkit-filter: url(#rough-button-cut-sm) !important;
@@ -3929,7 +3934,7 @@ img.video-playlist-item__thumb {
     inset 0 0 0 1px var(--vintage-gold-inner, #caa06d),
     inset 0 1px 0 rgba(255, 255, 255, 0.7),
     0 4px 14px rgba(42, 26, 12, 0.1) !important;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.25s cubic-bezier(0.16, 1, 0.3, 1), background 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s cubic-bezier(0.16, 1, 0.3, 1), color 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), width 0.25s cubic-bezier(0.16, 1, 0.3, 1), height 0.25s cubic-bezier(0.16, 1, 0.3, 1), max-height 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
   cursor: pointer !important;
   box-sizing: border-box !important;
   position: relative !important;
@@ -4364,7 +4369,7 @@ img.video-playlist-item__thumb {
   -webkit-filter: url(#rough-button-cut-sm) !important;
   z-index: 0 !important;
   pointer-events: none !important;
-  transition: all 0.25s ease !important;
+  transition: transform 0.25s ease, opacity 0.25s ease, background-color 0.25s ease, background 0.25s ease, border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease, width 0.25s ease, height 0.25s ease, max-height 0.25s ease !important;
 }
 
 .card--rough-cut-dark > *,
@@ -5093,6 +5098,14 @@ img.video-playlist-item__thumb {
    BLOCK 3: ORDER OUR JUICE (Exact Reference Match)
    ========================================================================== */
 .order-juice-vintage-block {
+  /* section-header is called with variant:'dark' (light title text +
+     dark text-shadow) and the section itself carries torn-dark-block/
+     grain-dark, but no actual dark background was ever set here - the
+     title rendered near-invisible (light text on the page's light
+     parchment background). Matches the same dark green gradient used for
+     .combo-bottom-card and the footer. */
+  background: linear-gradient(180deg, var(--client-brand-dark, #102d18) 0%, var(--client-brand-deep, #0a1f10) 100%);
+  color: var(--vintage-parchment-light, #fbf2e6);
   padding: 32px 20px;
 }
 @media (min-width: 992px) {
@@ -5106,7 +5119,7 @@ img.video-playlist-item__thumb {
 }
 .order-juice-vintage__sub {
   font-size: 13px;
-  color: #6a4a24;
+  color: var(--vintage-gold-amber, #d49842);
   margin: 0;
 }
 
@@ -5333,7 +5346,7 @@ img.video-playlist-item__thumb {
   border-radius: 4px !important;
   border: 1.5px solid var(--vintage-bark-border, #8e622d) !important;
   box-shadow: inset 0 0 0 1px var(--vintage-gold-inner, #caa06d), 0 2px 6px rgba(0, 0, 0, 0.25) !important;
-  transition: all 0.2s ease !important;
+  transition: transform 0.2s ease, opacity 0.2s ease, background-color 0.2s ease, background 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, width 0.2s ease, height 0.2s ease, max-height 0.2s ease !important;
 }
 
 .order-product-card:hover .order-product-card__btn {
@@ -5617,7 +5630,7 @@ img.video-playlist-item__thumb {
   box-shadow:
     inset 0 0 0 1px var(--vintage-gold-inner, #caa06d),
     0 2px 6px rgba(42, 26, 12, 0.06) !important;
-  transition: all 0.25s ease !important;
+  transition: transform 0.25s ease, opacity 0.25s ease, background-color 0.25s ease, background 0.25s ease, border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease, width 0.25s ease, height 0.25s ease, max-height 0.25s ease !important;
 }
 .faq-accordion__item:hover {
   box-shadow:
@@ -5895,7 +5908,7 @@ img.video-playlist-item__thumb {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  transition: all 0.2s ease !important;
+  transition: transform 0.2s ease, opacity 0.2s ease, background-color 0.2s ease, background 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, width 0.2s ease, height 0.2s ease, max-height 0.2s ease !important;
   position: relative !important;
 }
 .form-checkbox:hover {
@@ -5984,7 +5997,7 @@ img.video-playlist-item__thumb {
   -webkit-filter: url(#rough-button-cut-sm) !important;
   z-index: -1 !important;
   pointer-events: none !important;
-  transition: all 0.25s ease !important;
+  transition: transform 0.25s ease, opacity 0.25s ease, background-color 0.25s ease, background 0.25s ease, border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease, width 0.25s ease, height 0.25s ease, max-height 0.25s ease !important;
 }
 
 .contact-home-info-card:hover {
@@ -6140,7 +6153,7 @@ img.video-playlist-item__thumb {
   -webkit-filter: url(#rough-button-cut-sm) !important;
   z-index: -1 !important;
   pointer-events: none !important;
-  transition: all 0.25s ease !important;
+  transition: transform 0.25s ease, opacity 0.25s ease, background-color 0.25s ease, background 0.25s ease, border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease, width 0.25s ease, height 0.25s ease, max-height 0.25s ease !important;
 }
 .contact-home-event-badge:hover {
   transform: translateY(-2px) !important;
@@ -6208,7 +6221,7 @@ img.video-playlist-item__thumb {
     0 4px 10px rgba(0, 0, 0, 0.3) !important;
   text-decoration: none !important;
 
-  transition: all 0.25s ease !important;
+  transition: transform 0.25s ease, opacity 0.25s ease, background-color 0.25s ease, background 0.25s ease, border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease, width 0.25s ease, height 0.25s ease, max-height 0.25s ease !important;
 }
 .social-pill svg {
   flex-shrink: 0 !important;
@@ -6357,7 +6370,7 @@ img.video-playlist-item__thumb {
   -webkit-filter: url(#rough-button-cut-sm) !important;
   z-index: -1 !important;
   pointer-events: none !important;
-  transition: all 0.25s ease !important;
+  transition: transform 0.25s ease, opacity 0.25s ease, background-color 0.25s ease, background 0.25s ease, border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease, width 0.25s ease, height 0.25s ease, max-height 0.25s ease !important;
 }
 
 .social-card:hover {

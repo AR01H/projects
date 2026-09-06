@@ -21,9 +21,11 @@ $title = (string) ( $title ?? '' );
 $sub   = (string) ( $sub ?? '' );
 $id    = (string) ( $id ?? 'subpage-hero' );
 $image = (string) ( $image ?? '' );
+$video = (string) ( $video ?? '' );
 $share_url   = (string) ( $share_url ?? '' );
 $share_title = (string) ( $share_title ?? $title );
 $image_url  = '' !== $image ? UrlHelper::resolve( $image ) : '';
+$video_url  = '' !== $video ? UrlHelper::resolve( $video ) : '';
 $wreath_url = UrlHelper::resolve( 'assets/images/decorative/cane-heart-wreath.png' );
 $gold_wave  = UrlHelper::resolve( 'assets/images/textures/border/gold-wave.svg' );
 
@@ -85,8 +87,14 @@ $format_subpage_title = static function( string $raw_title ): string {
 	<!-- Ambient Botanical Light Glow -->
 	<div class="common-subpage-hero__ambient-glow" aria-hidden="true"></div>
 
-	<!-- Botanical Watermark Layer with Ken-Burns Drift -->
-	<div class="common-subpage-hero__watermark" aria-hidden="true" style="background-image: url('<?php echo esc_url( $image_url ); ?>');"></div>
+	<!-- Botanical Watermark / Video Layer with Ken-Burns Drift -->
+	<?php if ( '' !== $video_url ) : ?>
+		<div class="common-subpage-hero__watermark common-subpage-hero__watermark--video" aria-hidden="true">
+			<video class="common-subpage-hero__video" src="<?php echo esc_url( $video_url ); ?>" autoplay muted loop playsinline<?php echo '' !== $image_url ? ' poster="' . esc_url( $image_url ) . '"' : ''; ?>></video>
+		</div>
+	<?php elseif ( '' !== $image_url ) : ?>
+		<div class="common-subpage-hero__watermark" aria-hidden="true" style="background-image: url('<?php echo esc_url( $image_url ); ?>');"></div>
+	<?php endif; ?>
 	
 	<!-- Roughness Texture -->
 	<div class="common-subpage-hero__texture" aria-hidden="true"></div>

@@ -86,13 +86,10 @@
     },
 
     "faqs": {
+        "_source": "FAQ content now comes from the CMS FAQ Builder (admin.php?page=ah-faqs&action=add) - attach entries to page slug 'events', Section 'section' below, there. items is empty on purpose; only a fallback for if that admin has nothing yet.",
         "tag": "Booking & Service Answers",
         "title": "Frequently Asked <em>Questions</em>",
-        "items": [
-            { "question": "What power and space do you need at the venue?", "answer": "Our specialized commercial cold-press bars only require a standard 13A UK plug socket and a 2m x 2m flat floor space. We bring our own water supply and waste containers." },
-            { "question": "Can you cater outdoor weddings and garden parties?", "answer": "Yes! We operate indoor and outdoor events with all-weather vintage market canopies." },
-            { "question": "How far in advance should we book?", "answer": "We recommend booking 2 to 6 weeks in advance to guarantee fresh cane allocation, though we do accommodate short-notice bookings based on schedule." },
-            { "question": "Are your pressers hygiene certified?", "answer": "All our event artisans hold Level 2 Food Safety certification and adhere strictly to our 5-Star Food Hygiene rating." }
-        ]
+        "section": "Booking & Service Answers",
+        "items": []
     }
 }

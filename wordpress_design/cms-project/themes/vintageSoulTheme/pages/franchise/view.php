@@ -32,6 +32,7 @@ View::component(
 		'title' => (string) ( $hero['title'] ?? '' ),
 		'sub'   => (string) ( $hero['sub'] ?? '' ),
 		'image' => (string) ( $hero['image'] ?? '' ),
+		'video' => (string) ( $hero['video'] ?? '' ),
 	)
 );
 ?>
@@ -132,7 +133,7 @@ View::component(
 
 <!-- ═══════════ 6. DIRECT FRANCHISE APPLICATION & ENQUIRY ═══════════ -->
 <div id="franchise-enquiry">
-	<?php View::component( 'sections/contact-form-section' ); ?>
+	<?php View::component( 'sections/contact-form-section', array( 'form_key' => 'franchise' ) ); ?>
 </div>
 
 <!-- ═══════════ 7. FRANCHISE FAQS ═══════════ -->

@@ -43,21 +43,26 @@ defined( 'ABSPATH' ) || exit;
 	<?php View::component( 'loader/loader' ); ?>
 <?php endif; ?>
 
-<!-- Top Vintage Ticker Ribbon -->
+<!-- Top Vintage Ticker Ribbon (Dynamic from ticker.json / SettingsService) -->
+<?php
+$ticker_data  = (array) ( \VintageSoul\DataProviders\JsonFileProvider::read( 'data/content/ticker.json' ) ?? array() );
+$ticker_items = (array) ( $ticker_data['items'] ?? array() );
+if ( empty( $ticker_items ) ) {
+	$ticker_items = SettingsService::preheader();
+}
+if ( ! empty( $ticker_items ) ) :
+?>
 <div class="ribbon-ticker ribbon-ticker--red" aria-hidden="true">
 	<div class="ribbon-ticker__track">
 		<?php for ( $r = 0; $r < 4; $r++ ) : ?>
-			<span class="ribbon-ticker__heart">♥</span>
-			<span class="ribbon-ticker__text">FRESHLY PRESSED</span>
-			<span class="ribbon-ticker__heart">♥</span>
-			<span class="ribbon-ticker__text">100% NATURAL</span>
-			<span class="ribbon-ticker__heart">♥</span>
-			<span class="ribbon-ticker__text">NATURALLY REFRESHING</span>
-			<span class="ribbon-ticker__heart">♥</span>
-			<span class="ribbon-ticker__text">ALWAYS MADE WITH CARE</span>
+			<?php foreach ( $ticker_items as $t_text ) : ?>
+				<span class="ribbon-ticker__heart">♥</span>
+				<span class="ribbon-ticker__text"><?php echo esc_html( (string) $t_text ); ?></span>
+			<?php endforeach; ?>
 		<?php endfor; ?>
 	</div>
 </div>
+<?php endif; ?>
 
 <header class="site-header" role="banner">
 	<span class="site-header__bg roughness-bottom-b" aria-hidden="true"></span>
@@ -104,20 +109,32 @@ defined( 'ABSPATH' ) || exit;
 									if ( '' === $child_label ) {
 										continue;
 									}
-									$parts    = explode( ' ', $child_label, 2 );
-									$has_icon = ( 2 === count( $parts ) && 1 === mb_strlen( $parts[0] ) );
-									$icon = $has_icon ? $parts[0] : '';
-									$text = $has_icon ? $parts[1] : $child_label;
-									$child_url  = UrlHelper::resolve( (string) ( $child['url'] ?? '#' ) );
-									$child_path = trim( (string) parse_url( $child_url, PHP_URL_PATH ), '/' );
+									$icon = (string) ( $child['icon'] ?? '' );
+									$text = $child_label;
+									if ( '' === $icon ) {
+										$parts = explode( ' ', $child_label, 2 );
+										if ( 2 === count( $parts ) && 1 === mb_strlen( $parts[0] ) ) {
+											$icon = $parts[0];
+											$text = $parts[1];
+										}
+									}
+									$desc        = trim( (string) ( $child['description'] ?? '' ) );
+									$highlight   = ! empty( $child['highlight'] );
+									$child_url   = UrlHelper::resolve( (string) ( $child['url'] ?? '#' ) );
+									$child_path  = trim( (string) parse_url( $child_url, PHP_URL_PATH ), '/' );
 									$is_child_active = ( '' !== $child_path && ( $child_path === $current_route || ltrim( (string) ( $child['url'] ?? '' ), '/' ) === $current_route ) );
 								?>
-									<li>
+									<li<?php echo $highlight ? ' class="nav__submenu-item--highlight"' : ''; ?>>
 										<a class="nav__submenu-link<?php echo $is_child_active ? ' is-active' : ''; ?>" href="<?php echo esc_url( $child_url ); ?>"<?php echo $is_child_active ? ' aria-current="page"' : ''; ?>>
 											<?php if ( '' !== $icon ) : ?>
 												<span class="nav__submenu-icon"><?php echo esc_html( $icon ); ?></span>
 											<?php endif; ?>
-											<span class="nav__submenu-text"><?php echo esc_html( $text ); ?></span>
+											<span class="nav__submenu-body">
+												<span class="nav__submenu-text"><?php echo esc_html( $text ); ?></span>
+												<?php if ( '' !== $desc ) : ?>
+													<span class="nav__submenu-desc"><?php echo esc_html( $desc ); ?></span>
+												<?php endif; ?>
+											</span>
 										</a>
 									</li>
 								<?php endforeach; ?>
@@ -130,34 +147,41 @@ defined( 'ABSPATH' ) || exit;
 		<div class="site-header__actions">
 			<?php
 			$header_cta = NavigationService::header_cta();
-			if ( '' !== $header_cta['label'] && '' !== $header_cta['route'] ) :
+			if ( ! empty( $header_cta['label'] ) ) :
+				$cta_target = (string) ( $header_cta['url'] ?? ( $header_cta['route'] ?? 'events' ) );
+				$cta_url    = UrlHelper::resolve( $cta_target );
 				?>
-				<a class="header-cta-button roughness-a" href="<?php echo esc_url( RouteService::url( $header_cta['route'] ) ); ?>">
+				<a class="header-cta-button roughness-a" href="<?php echo esc_url( $cta_url ); ?>">
 					<span class="header-cta__text">
 						<span class="header-cta__line1"><?php echo esc_html( $header_cta['label'] ); ?></span>
-						<?php if ( '' !== $header_cta['sublabel'] ) : ?>
+						<?php if ( ! empty( $header_cta['sublabel'] ) ) : ?>
 							<span class="header-cta__line2"><?php echo esc_html( $header_cta['sublabel'] ); ?></span>
 						<?php endif; ?>
 					</span>
 					<span class="header-cta__icon" aria-hidden="true"></span>
 				</a>
 			<?php endif; ?>
-<?php
-
-			View::component(
-				'navigation/mobile-nav',
-				array(
-					'items' => NavigationService::menu( 'primary' ),
-					'cta'   => $header_cta,
-				)
-			);
-
-			?>
+				<button type="button" class="mobile-nav-toggle" id="mobile-nav-toggle" aria-expanded="false" aria-controls="mobile-nav"
+					aria-label="<?php esc_attr_e( 'Open menu', 'vintagesoul' ); ?>">
+					<span class="mobile-nav-toggle__bar" aria-hidden="true"></span>
+					<span class="mobile-nav-toggle__bar" aria-hidden="true"></span>
+					<span class="mobile-nav-toggle__bar" aria-hidden="true"></span>
+				</button>
 		</div>
 	</div>
 	<!-- Random Deckle Rough Cut Bottom Edge -->
 	<div class="site-header__deckle-edge" aria-hidden="true"></div>
 </header>
+
+<?php
+View::component(
+	'navigation/mobile-nav',
+	array(
+		'items' => NavigationService::menu( 'primary' ),
+		'cta'   => $header_cta,
+	)
+);
+?>
 <script>
 (function() {
 	function updateHeaderScroll() {

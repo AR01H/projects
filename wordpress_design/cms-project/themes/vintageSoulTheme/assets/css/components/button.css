@@ -20,7 +20,7 @@
   cursor: pointer !important;
   text-decoration: none !important;
   position: relative !important;
-  transition: all var(--transition-normal, 0.2s) var(--ease-settle, ease) !important;
+  transition: transform var(--transition-normal, 0.2s) var(--ease-settle, ease), opacity var(--transition-normal, 0.2s) var(--ease-settle, ease), background-color var(--transition-normal, 0.2s) var(--ease-settle, ease), background var(--transition-normal, 0.2s) var(--ease-settle, ease), border-color var(--transition-normal, 0.2s) var(--ease-settle, ease), color var(--transition-normal, 0.2s) var(--ease-settle, ease), box-shadow var(--transition-normal, 0.2s) var(--ease-settle, ease), width var(--transition-normal, 0.2s) var(--ease-settle, ease), height var(--transition-normal, 0.2s) var(--ease-settle, ease), max-height var(--transition-normal, 0.2s) var(--ease-settle, ease) !important;
   z-index: 1 !important;
 }
 
@@ -40,7 +40,7 @@
   -webkit-filter: url(#rough-button-cut-sm) !important;
   z-index: -1 !important;
   pointer-events: none !important;
-  transition: all 0.25s ease !important;
+  transition: transform 0.25s ease, opacity 0.25s ease, background-color 0.25s ease, background 0.25s ease, border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease, width 0.25s ease, height 0.25s ease, max-height 0.25s ease !important;
 }
 
 .btn > * {

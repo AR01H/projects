@@ -1,4 +1,5 @@
 {
+    "_items_source": "Gallery images now come from the CMS Showcase Gallery admin (admin.php?page=ah-client-stories) - set its header to Visible and add images there. \"items\" is intentionally empty; it's only a fallback for if that admin has none yet. NOTE: that admin only stores plain images (no per-image title/caption) and has no category field, so category tabs and captions only ever appear when this JSON fallback is in use - tag/title/subtitle/categories stay here for that fallback and as the static section header text.",
     "tag": "Our Gallery",
     "title": "LOOK BACK IN <em>Time</em>",
     "subtitle": "A few of our favourite moments capturing the heritage, stall life, and smiles over the years.",
@@ -14,62 +15,5 @@
         "primary": { "label": "VISIT OUR LIVE STALL", "icon": "pin", "route": "contact" },
         "secondary": { "label": "BOOK OUR STALL FOR EVENTS", "icon": "tent", "route": "contact" }
     },
-    "items": [
-        {
-            "image": "assets/images/gallery/stall_event_3.jpg",
-            "title": "Sutton High Street Stall",
-            "caption": "Serving hundreds of fresh cold-pressed cups at our live market stall.",
-            "category": "our-stall",
-            "tag": "Live Stall"
-        },
-        {
-            "image": "assets/images/gallery/stall_event_2.jpg",
-            "title": "Live Pressing & Pour",
-            "caption": "100% pure raw cane nectar extracted fresh on demand.",
-            "category": "events",
-            "tag": "Live Catering"
-        },
-        {
-            "image": "assets/images/gallery/stall_event_1.jpg",
-            "title": "Fresh Bundles Harvest",
-            "caption": "Handpicked, cleaned premium sugarcane stalks ready for pressing.",
-            "category": "sugarcane",
-            "tag": "Raw Stalks"
-        },
-        {
-            "image": "assets/images/gallery/stall_event_4.jpg",
-            "title": "Festival & Event Setup",
-            "caption": "Our mobile botanical bar ready for weddings and summer galas.",
-            "category": "events",
-            "tag": "Event Bar"
-        },
-        {
-            "image": "assets/images/gallery/drink_mint.jpg",
-            "title": "Fresh Mint Infusion",
-            "caption": "Crisp cane juice pressed with crushed garden mint and zesty lime.",
-            "category": "drinks",
-            "tag": "Botanical Drink"
-        },
-        {
-            "image": "assets/images/gallery/drink_ginger.jpg",
-            "title": "Lemon Ginger Zest",
-            "caption": "Spicy organic ginger root crushed with cold sugarcane nectar.",
-            "category": "drinks",
-            "tag": "Craft Flavour"
-        },
-        {
-            "image": "assets/images/gallery/community_cheers.jpg",
-            "title": "Festival Smiles",
-            "caption": "Families and friends enjoying refreshing cold cane cups together.",
-            "category": "community",
-            "tag": "Happy Guests"
-        },
-        {
-            "image": "assets/images/gallery/heritage_field.jpg",
-            "title": "Sustainable Farm Harvest",
-            "caption": "Sunshine-ripened sugarcane grown sustainably with care and passion.",
-            "category": "sugarcane",
-            "tag": "Farm Harvest"
-        }
-    ]
+    "items": []
 }

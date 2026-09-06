@@ -2,8 +2,13 @@
  * VintageSoulTheme - Cookie Consent & Preferences Management
  *
  * Rules:
- * - Reject -> Ask again after 24 Hours (24 * 60 * 60 * 1000 ms)
- * - Accept / Save -> Do NOT ask again until 30 Days (30 * 24 * 60 * 60 * 1000 ms)
+ * - Reject -> Persists indefinitely. The banner does NOT reappear on its own
+ *   after any fixed time - the only way to have it re-ask is an admin
+ *   bumping the consent version (Theme Settings -> Cache & Cookies ->
+ *   "Re-ask Cookie Consent for All"), which every visitor's stored decision
+ *   is checked against below.
+ * - Accept / Save (with anything granted) -> Re-asks after 30 Days
+ *   (30 * 24 * 60 * 60 * 1000 ms), same as before.
  */
 (function () {
   'use strict';
@@ -11,14 +16,20 @@
   var STORAGE_KEY_STATUS = 'vst_cookie_consent_status';
   var STORAGE_KEY_PREFS = 'vst_cookie_consent_prefs';
   var STORAGE_KEY_EXPIRY = 'vst_cookie_consent_expiry';
+  var STORAGE_KEY_VERSION = 'vst_cookie_consent_version';
 
-  var ONE_DAY_MS = 24 * 60 * 60 * 1000;
   var THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
+  // Used for "reject" so it persists until an admin explicitly re-asks
+  // (via the version bump above) rather than expiring on its own. Not
+  // Infinity - that stringifies to "Infinity", which parseInt() can't
+  // read back - 100 years is effectively permanent for this purpose.
+  var PERSISTENT_MS = 100 * 365 * 24 * 60 * 60 * 1000;
 
   function getStorage(key) {
     try {
       return localStorage.getItem(key);
     } catch (e) {
+      if (window.console) console.warn('[vst-cookie-consent] localStorage read blocked - consent can\'t persist:', e);
       return null;
     }
   }
@@ -26,8 +37,48 @@
   function setStorage(key, val) {
     try {
       localStorage.setItem(key, val);
-    } catch (e) {}
+    } catch (e) {
+      if (window.console) console.warn('[vst-cookie-consent] localStorage write blocked - consent can\'t persist:', e);
+    }
   }
+
+  function getPrefs() {
+    try {
+      return JSON.parse(getStorage(STORAGE_KEY_PREFS) || '{}');
+    } catch (e) {
+      return {};
+    }
+  }
+
+  // Expose consent state to anything else on the page (in particular the CMS
+  // Plugin's google-services.js, which gates GTM/Ads/AdSense/etc. behind
+  // window.adnCookieConsent). Defined at top level - not inside
+  // initCookieConsent() below - so it works immediately on script load and on
+  // any page, even one where the banner markup isn't present.
+  var categoryListeners = { analytics: [], advertising: [] };
+
+  function notifyCategoryChange(category, granted) {
+    var listeners = categoryListeners[category] || [];
+    for (var i = 0; i < listeners.length; i++) {
+      try {
+        listeners[i](granted);
+      } catch (e) {}
+    }
+  }
+
+  window.adnCookieConsent = window.adnCookieConsent || {
+    /** True for 'necessary' always; for 'analytics'/'advertising', whatever this visitor last chose (false if they haven't decided yet). */
+    getCategory: function (category) {
+      if ('necessary' === category) return true;
+      return !!getPrefs()[category];
+    },
+    /** Calls back with the new granted/denied state whenever that category's consent changes (accept/reject/save preferences). */
+    onCategoryChange: function (category, callback) {
+      if (typeof callback !== 'function') return;
+      if (!categoryListeners[category]) categoryListeners[category] = [];
+      categoryListeners[category].push(callback);
+    }
+  };
 
   function initCookieConsent() {
     var banner = document.getElementById('vst-cookie-banner');
@@ -47,7 +98,17 @@
     var toggleAnalytics = document.getElementById('vst-cookie-toggle-analytics');
     var toggleAdvertising = document.getElementById('vst-cookie-toggle-advertising');
 
-    // 1. Check current consent state and expiry
+    // 1. If an admin bumped the consent version (Theme Settings -> re-ask
+    // cookie consent), forget this visitor's stored decision so they're
+    // asked again, same as if they'd never decided.
+    var currentVersion = (window.vstCookieConsent && window.vstCookieConsent.version) ? window.vstCookieConsent.version : 1;
+    var storedVersion = parseInt(getStorage(STORAGE_KEY_VERSION) || '0', 10);
+    if (storedVersion !== currentVersion) {
+      setStorage(STORAGE_KEY_EXPIRY, '0');
+      setStorage(STORAGE_KEY_VERSION, String(currentVersion));
+    }
+
+    // 2. Check current consent state and expiry
     var expiry = parseInt(getStorage(STORAGE_KEY_EXPIRY) || '0', 10);
     var now = Date.now();
 
@@ -60,11 +121,9 @@
     }
 
     // Load saved preferences if any
-    try {
-      var savedPrefs = JSON.parse(getStorage(STORAGE_KEY_PREFS) || '{}');
-      if (toggleAnalytics) toggleAnalytics.checked = !!savedPrefs.analytics;
-      if (toggleAdvertising) toggleAdvertising.checked = !!savedPrefs.advertising;
-    } catch (e) {}
+    var savedPrefs = getPrefs();
+    if (toggleAnalytics) toggleAnalytics.checked = !!savedPrefs.analytics;
+    if (toggleAdvertising) toggleAdvertising.checked = !!savedPrefs.advertising;
 
     // Modal open/close handlers
     function openModal() {
@@ -100,12 +159,15 @@
       if (toggleAnalytics) toggleAnalytics.checked = true;
       if (toggleAdvertising) toggleAdvertising.checked = true;
 
+      notifyCategoryChange('analytics', true);
+      notifyCategoryChange('advertising', true);
+
       closeModal();
       hideBanner();
     }
 
     function handleRejectAll() {
-      var expiryTime = Date.now() + ONE_DAY_MS;
+      var expiryTime = Date.now() + PERSISTENT_MS;
       var prefs = { necessary: true, analytics: false, advertising: false };
 
       setStorage(STORAGE_KEY_STATUS, 'rejected');
@@ -114,6 +176,9 @@
 
       if (toggleAnalytics) toggleAnalytics.checked = false;
       if (toggleAdvertising) toggleAdvertising.checked = false;
+
+      notifyCategoryChange('analytics', false);
+      notifyCategoryChange('advertising', false);
 
       closeModal();
       hideBanner();
@@ -124,14 +189,19 @@
       var advertising = toggleAdvertising ? toggleAdvertising.checked : false;
       var prefs = { necessary: true, analytics: analytics, advertising: advertising };
 
-      // If user accepted optional cookies, give 30 days. If all optional rejected, ask again in 24 hours.
+      // If user accepted optional cookies, re-ask in 30 days. If everything
+      // optional was rejected, that persists until an admin re-asks (see
+      // handleRejectAll above) - no automatic re-ask on a timer.
       var hasOptional = analytics || advertising;
-      var duration = hasOptional ? THIRTY_DAYS_MS : ONE_DAY_MS;
+      var duration = hasOptional ? THIRTY_DAYS_MS : PERSISTENT_MS;
       var expiryTime = Date.now() + duration;
 
       setStorage(STORAGE_KEY_STATUS, hasOptional ? 'custom' : 'rejected');
       setStorage(STORAGE_KEY_PREFS, JSON.stringify(prefs));
       setStorage(STORAGE_KEY_EXPIRY, expiryTime.toString());
+
+      notifyCategoryChange('analytics', analytics);
+      notifyCategoryChange('advertising', advertising);
 
       closeModal();
       hideBanner();

@@ -2,6 +2,8 @@
 namespace VintageSoul\Controllers;
 
 use VintageSoul\DataProviders\JsonFileProvider;
+use VintageSoul\Services\Plugins\FaqBridgeService;
+use VintageSoul\Services\Plugins\PageBridgeService;
 use VintageSoul\Support\UrlHelper;
 
 defined( 'ABSPATH' ) || exit;
@@ -13,9 +15,23 @@ final class HistoryController {
 
 		// Recursively resolve all image paths with UrlHelper
 		$resolved = $this->resolveImages( (array) $data );
+		$hero_raw = (array) ( $resolved['hero'] ?? array() );
+
+		$hero = PageBridgeService::resolve_hero( 'history', $hero_raw );
+
+		// FAQ list: CMS FAQ Builder (admin.php?page=ah-faqs, attached to slug
+		// "history", Section per history.json's faq.section) first, falls
+		// back to history.json's faq.items.
+		$faq_json = (array) ( $resolved['faq'] ?? array() );
+		$faq_cms  = FaqBridgeService::get_items( 'history', (string) ( $faq_json['section'] ?? '' ) );
+		$faq      = array(
+			'heading' => (string) ( $faq_json['heading'] ?? '' ),
+			'title'   => (string) ( $faq_json['title'] ?? '' ),
+			'items'   => ! empty( $faq_cms ) ? $faq_cms : (array) ( $faq_json['items'] ?? array() ),
+		);
 
 		return array(
-			'hero'                => (array) ( $resolved['hero'] ?? array() ),
+			'hero'                => $hero,
 			'accent'              => (array) ( $resolved['accent'] ?? array() ),
 			'intro'               => (array) ( $resolved['intro'] ?? array() ),
 			'why'                 => (array) ( $resolved['why'] ?? array() ),
@@ -31,7 +47,7 @@ final class HistoryController {
 			'culture'             => (array) ( $resolved['culture'] ?? array() ),
 			'storage_guide'       => (array) ( $resolved['storage_guide'] ?? array() ),
 			'why_everyone_loves'  => (array) ( $resolved['why_everyone_loves'] ?? array() ),
-			'faq'                 => (array) ( $resolved['faq'] ?? array() ),
+			'faq'                 => $faq,
 			'closing'             => (array) ( $resolved['closing'] ?? array() ),
 		);
 	}

@@ -8,21 +8,11 @@ defined( 'ABSPATH' ) || exit;
 
 $data = ( new BlogController() )->prepare();
 
-$hero       = (array) ( $data['hero'] ?? array() );
-$categories = (array) ( $data['categories'] ?? array() );
-$articles   = (array) ( $data['articles'] ?? array() );
-
-$requested_slug = sanitize_title( (string) ( $_GET['article'] ?? '' ) );
-$current_article = null;
-
-if ( '' !== $requested_slug ) {
-	foreach ( $articles as $art ) {
-		if ( (string) ( $art['slug'] ?? '' ) === $requested_slug ) {
-			$current_article = $art;
-			break;
-		}
-	}
-}
+$hero             = (array) ( $data['hero'] ?? array() );
+$categories       = (array) ( $data['categories'] ?? array() );
+$articles         = (array) ( $data['articles'] ?? array() );
+$current_article  = $data['current_article'] ?? null;
+$related_articles = (array) ( $data['related_articles'] ?? array() );
 ?>
 
 <link rel="stylesheet" href="<?php echo esc_url( \VintageSoul\Support\UrlHelper::resolve( 'assets/css/pages/blog.css' ) ); ?>">
@@ -54,6 +44,47 @@ if ( '' !== $requested_slug ) {
 					<a href="<?php echo esc_url( \VintageSoul\Services\RouteService::url( 'blog' ) ); ?>" class="btn btn--outline-vintage">← Back to Articles</a>
 				</footer>
 			</article>
+
+			<!-- Related Articles -->
+			<?php if ( ! empty( $related_articles ) ) : ?>
+				<div class="blog-related">
+					<h2 class="blog-related__title">You May Also Like</h2>
+					<div class="blog-grid blog-grid--related">
+						<?php foreach ( $related_articles as $art ) :
+							$title   = (string) ( $art['title'] ?? '' );
+							$link    = (string) ( $art['permalink'] ?? '#' );
+							$img     = (string) ( $art['image'] ?? '' );
+							$cat     = (string) ( $art['category'] ?? 'Heritage' );
+							$date    = (string) ( $art['date'] ?? '' );
+							$author  = (string) ( $art['author'] ?? 'The Cane House' );
+							$read    = (int) ( $art['reading_time'] ?? 4 );
+							$excerpt = (string) ( $art['excerpt'] ?? '' );
+						?>
+							<article class="blog-card" data-category="<?php echo esc_attr( $cat ); ?>" onclick="if(event.target.tagName !== 'A' && !event.target.closest('a')) window.location.href='<?php echo esc_url( $link ); ?>';">
+								<a href="<?php echo esc_url( $link ); ?>" class="blog-card__media frame--ornate-sm">
+									<img src="<?php echo esc_url( $img ); ?>" alt="<?php echo esc_attr( $title ); ?>" loading="lazy">
+									<span class="blog-card__category"><?php echo esc_html( $cat ); ?></span>
+								</a>
+								<div class="blog-card__meta">
+									<span>📅 <?php echo esc_html( $date ); ?></span>
+									<span>•</span>
+									<span>⏳ <?php echo esc_html( $read ); ?> MIN READ</span>
+								</div>
+								<h3 class="blog-card__title">
+									<a href="<?php echo esc_url( $link ); ?>"><?php echo esc_html( $title ); ?></a>
+								</h3>
+								<p class="blog-card__excerpt"><?php echo esc_html( $excerpt ); ?></p>
+								<div class="blog-card__footer">
+									<span class="blog-card__author">By <?php echo esc_html( $author ); ?></span>
+									<a href="<?php echo esc_url( $link ); ?>" class="blog-card__btn">
+										READ STORY →
+									</a>
+								</div>
+							</article>
+						<?php endforeach; ?>
+					</div>
+				</div>
+			<?php endif; ?>
 		</div>
 	</div>
 
@@ -69,6 +100,7 @@ if ( '' !== $requested_slug ) {
 			'title' => (string) ( $hero['title'] ?? '' ),
 			'sub'   => (string) ( $hero['sub'] ?? '' ),
 			'image' => (string) ( $hero['image'] ?? 'assets/images/backgrounds/pure_sugarcane_forest_trees_engraving.jpg' ),
+			'video' => (string) ( $hero['video'] ?? '' ),
 		)
 	);
 	?>

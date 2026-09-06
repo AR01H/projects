@@ -8,6 +8,13 @@
         "image": "assets/images/sugarcane/hero_juice.jpg"
     },
 
+    "form": {
+        "key": "contact",
+        "title": "SEND US A <em>Message</em>",
+        "sub": "Fill out the form below and we will respond promptly.",
+        "submit_label": "SEND MESSAGE / ENQUIRY"
+    },
+
     "contact_info": {
         "phone": "+44 7770 461 999",
         "phone_label": "+44 7770 461 999",
@@ -42,22 +49,7 @@
         { "value": "general", "label": "General Enquiry & Feedback" }
     ],
 
-    "faqs": [
-        {
-            "question": "How do I book The Cane House for my wedding or party?",
-            "answer": "Simply fill out the form above with your event date, location, and estimated guest count. Our team will get back to you within 24 hours with package options and availability."
-        },
-        {
-            "question": "What is included with the live sugarcane bar?",
-            "answer": "Our live bar includes our traditional press machine, trained baristas, fresh premium sugarcane stalks, biodegradable cups, and a full range of natural flavor infusions."
-        },
-        {
-            "question": "How far in advance should I book?",
-            "answer": "We recommend booking at least 2 to 4 weeks in advance during peak summer and wedding seasons to secure your preferred date."
-        },
-        {
-            "question": "Where are you currently serving?",
-            "answer": "We are based in Sutton, London, and cater across Greater London, Surrey, and surrounding areas. For larger events and franchises, nationwide service is available."
-        }
-    ]
+    "_faqs_source": "FAQ content now comes from the CMS FAQ Builder (admin.php?page=ah-faqs&action=add) - attach entries to page slug 'contact', Section 'faqs_section' below, there. Empty here on purpose; only a fallback for if that admin has nothing yet.",
+    "faqs_section": "Booking & Enquiry Questions",
+    "faqs": []
 }

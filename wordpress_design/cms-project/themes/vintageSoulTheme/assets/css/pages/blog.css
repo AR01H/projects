@@ -23,7 +23,7 @@
   padding: 6px 14px !important;
   box-shadow: inset 0 0 0 1px var(--vintage-gold-inner, #caa06d) !important;
   text-decoration: none !important;
-  transition: all 0.22s ease !important;
+  transition: transform 0.22s ease, opacity 0.22s ease, background-color 0.22s ease, background 0.22s ease, border-color 0.22s ease, color 0.22s ease, box-shadow 0.22s ease, width 0.22s ease, height 0.22s ease, max-height 0.22s ease !important;
   cursor: pointer !important;
 
 }
@@ -35,6 +35,28 @@
   border-color: var(--vintage-gold-bright, #f6d599) !important;
   box-shadow: inset 0 0 0 1px var(--vintage-gold-bright, #f6d599), 0 4px 10px rgba(17, 56, 27, 0.35) !important;
   transform: translateY(-2px) !important;
+}
+
+/* Related Articles (single-article view) */
+.blog-related {
+  margin-top: 56px !important;
+  padding-top: 40px !important;
+  border-top: 1px dashed var(--vintage-bark-border, #8e622d) !important;
+}
+
+.blog-related__title {
+  font-family: 'Cinzel', 'Playfair Display', Georgia, serif !important;
+  font-size: 22px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.04em !important;
+  color: var(--ink-950, #2f200e) !important;
+  text-align: center !important;
+  margin: 0 0 28px !important;
+}
+
+.blog-grid--related {
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)) !important;
+  margin-bottom: 0 !important;
 }
 
 /* Master Blog Grid */
@@ -105,7 +127,7 @@
 
   z-index: -1 !important;
   pointer-events: none !important;
-  transition: all 0.28s ease !important;
+  transition: transform 0.28s ease, opacity 0.28s ease, background-color 0.28s ease, background 0.28s ease, border-color 0.28s ease, color 0.28s ease, box-shadow 0.28s ease, width 0.28s ease, height 0.28s ease, max-height 0.28s ease !important;
 }
 
 .blog-card:hover {
@@ -228,7 +250,7 @@
   display: inline-flex !important;
   align-items: center !important;
   gap: 4px !important;
-  transition: all 0.2s ease !important;
+  transition: transform 0.2s ease, opacity 0.2s ease, background-color 0.2s ease, background 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, width 0.2s ease, height 0.2s ease, max-height 0.2s ease !important;
 }
 
 .blog-card__btn:hover {
@@ -661,7 +683,7 @@
   border-radius: 6px !important;
   text-decoration: none !important;
   box-shadow: inset 0 0 0 1px var(--vintage-gold-inner, #caa06d), 0 3px 10px rgba(42, 26, 12, 0.08) !important;
-  transition: all 0.25s ease !important;
+  transition: transform 0.25s ease, opacity 0.25s ease, background-color 0.25s ease, background 0.25s ease, border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease, width 0.25s ease, height 0.25s ease, max-height 0.25s ease !important;
   display: flex !important;
   flex-direction: column !important;
   gap: 4px !important;
@@ -765,7 +787,7 @@
   text-decoration: none !important;
   padding: 8px !important;
   border-radius: 6px !important;
-  transition: all 0.2s ease !important;
+  transition: transform 0.2s ease, opacity 0.2s ease, background-color 0.2s ease, background 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, width 0.2s ease, height 0.2s ease, max-height 0.2s ease !important;
   background: rgba(255, 255, 255, 0.45) !important;
   border: 1px solid rgba(142, 98, 45, 0.25) !important;
 }
@@ -881,7 +903,7 @@
   font-size: 10.5px !important;
   font-weight: 700 !important;
   color: var(--client-brand-moss, #172b15) !important;
-  transition: all 0.2s ease !important;
+  transition: transform 0.2s ease, opacity 0.2s ease, background-color 0.2s ease, background 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, width 0.2s ease, height 0.2s ease, max-height 0.2s ease !important;
 }
 
 .sidebar-cat-tag:hover {
@@ -955,7 +977,7 @@
   color: var(--vintage-gold-bright, #f6d599) !important;
   text-decoration: none !important;
 
-  transition: all 0.25s ease !important;
+  transition: transform 0.25s ease, opacity 0.25s ease, background-color 0.25s ease, background 0.25s ease, border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease, width 0.25s ease, height 0.25s ease, max-height 0.25s ease !important;
 }
 
 .share-btn:hover {
@@ -1177,7 +1199,7 @@
     0 3px 8px rgba(0, 0, 0, 0.25) !important;
   cursor: pointer !important;
 
-  transition: all 0.25s ease !important;
+  transition: transform 0.25s ease, opacity 0.25s ease, background-color 0.25s ease, background 0.25s ease, border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease, width 0.25s ease, height 0.25s ease, max-height 0.25s ease !important;
 }
 
 .comment-submit-btn:hover,

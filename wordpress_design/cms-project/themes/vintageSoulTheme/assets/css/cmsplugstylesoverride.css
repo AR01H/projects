@@ -1,0 +1,668 @@
+/* ==========================================================================
+   VintageSoulTheme — CMS Plugin Overrides
+   File: assets/css/cmsplugstylesoverride.css
+   Pure theme-level overrides for AH Site Notice Popup & AH Form Builder.
+   ========================================================================== */
+
+/* ══════════════════════════════════════════════════════════════════════════
+   PART 1: AH SITE NOTICE (POPUP & CORNER) OVERRIDES
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── 1. Layering & Backdrop (Above site header AND the mobile-nav drawer, which
+	   peaks at z-index 2147483640 in components/mobile-nav.css) ── */
+.ah-sn-popup,
+.ah-sn-modal,
+.ah-sn-modal.ah-sn-show,
+.ah-sn-corner,
+.ah-sn-corner.ah-sn-show {
+	z-index: 2147483647 !important;
+}
+
+.ah-sn-popup .ah-sn-backdrop--modal {
+	background: rgba(4, 15, 7, 0.85) !important;
+	backdrop-filter: blur(8px) !important;
+	-webkit-backdrop-filter: blur(8px) !important;
+}
+
+/* ── 2. Card Framing & Rough-Cut Edges ───────────────────────────────────── */
+.ah-sn-popup .ah-sn-card--modal,
+.ah-sn-popup .ah-sn-card--corner {
+	background-color: var(--paper-0, #fbf2e6) !important;
+	background-image: linear-gradient(180deg, var(--paper-0, #fbf2e6) 0%, var(--paper-100, #f4dcc0) 100%) !important;
+	border: 2px solid var(--vintage-bark-border, #8e622d) !important;
+	border-radius: var(--radius-md, 6px) !important;
+	box-shadow:
+		inset 0 0 0 1.5px var(--vintage-gold-inner, #caa06d),
+		0 20px 50px rgba(47, 32, 14, 0.5) !important;
+	filter: url(#rough-button-cut-sm) !important;
+	-webkit-filter: url(#rough-button-cut-sm) !important;
+	position: relative !important;
+	overflow: hidden !important;
+}
+
+/* ── 3. Media Header (Image / Video Framing) ─────────────────────────────── */
+.ah-sn-popup .ah-sn-media--modal {
+	width: 100% !important;
+	height: 200px !important;
+	max-height: 40vh !important;
+	aspect-ratio: auto !important;
+	overflow: hidden !important;
+	background-color: var(--paper-100, #f4dcc0) !important;
+	background-image: linear-gradient(180deg, var(--paper-50, #f8e7d3) 0%, var(--paper-100, #f4dcc0) 100%) !important;
+	border-bottom: 1.5px solid var(--vintage-bark-border, #8e622d) !important;
+	position: relative !important;
+	display: flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+}
+
+.ah-sn-popup .ah-sn-media--corner {
+	width: 100% !important;
+	height: 140px !important;
+	overflow: hidden !important;
+	background-color: var(--paper-100, #f4dcc0) !important;
+	background-image: linear-gradient(180deg, var(--paper-50, #f8e7d3) 0%, var(--paper-100, #f4dcc0) 100%) !important;
+	border-bottom: 1.5px solid var(--vintage-bark-border, #8e622d) !important;
+	position: relative !important;
+	display: flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+}
+
+.ah-sn-popup .ah-sn-image,
+.ah-sn-popup .ah-sn-image--modal,
+.ah-sn-popup .ah-sn-image--corner,
+.ah-sn-popup video.ah-sn-image {
+	width: 100% !important;
+	height: 100% !important;
+	object-fit: cover !important;
+	object-position: center !important;
+	display: block !important;
+}
+
+/* ── 4. Badge / Ribbon ───────────────────────────────────────────────────── */
+.ah-sn-popup .ah-sn-badge {
+	font-family: var(--font-family-heading, 'Cinzel', serif) !important;
+	letter-spacing: var(--tracking-wider, 0.08em) !important;
+	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 2px 8px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* ── 5. Typography: Title & Message ──────────────────────────────────────── */
+.ah-sn-popup .ah-sn-title,
+.ah-sn-popup .ah-sn-title--modal,
+.ah-sn-popup .ah-sn-title--corner,
+.ah-sn-title.ah-sn-title--modal {
+	display: block !important;
+	font-family: var(--font-family-heading, 'Cinzel', serif) !important;
+	font-weight: var(--font-weight-bold, 700) !important;
+	color: var(--ink-950, #2f200e) !important;
+	letter-spacing: var(--tracking-wide, 0.04em) !important;
+	border-bottom: 1px dashed var(--tan-500, #cb924d) !important;
+	padding-bottom: var(--space-2xs, 0.5rem) !important;
+	margin-bottom: var(--space-xs, 0.75rem) !important;
+}
+
+.ah-sn-popup .ah-sn-msg {
+	font-family: var(--font-family-base, 'EB Garamond', Georgia, serif) !important;
+	font-size: var(--font-size-md, 1rem) !important;
+	line-height: var(--line-height-normal, 1.6) !important;
+	color: var(--ink-900, #463016) !important;
+}
+
+/* ── 6. Action Button (Rough-Cut Heritage) ────────────────────────────────── */
+.ah-sn-popup .ah-sn-btn {
+	font-family: var(--font-family-heading, 'Cinzel', serif) !important;
+	font-weight: var(--font-weight-bold, 700) !important;
+	text-transform: uppercase !important;
+	letter-spacing: var(--tracking-wider, 0.08em) !important;
+	background: linear-gradient(135deg, var(--color-brand-3, #1c360d) 0%, var(--color-brand-1, #0c6434) 100%) !important;
+	color: var(--paper-0, #fbf2e6) !important;
+	border: 1.5px solid var(--vintage-gold-inner, #caa06d) !important;
+	border-radius: var(--radius-sm, 2px) !important;
+	box-shadow:
+		inset 0 1px 0 rgba(255, 255, 255, 0.25),
+		0 4px 14px rgba(12, 100, 52, 0.4) !important;
+	filter: url(#rough-button-cut-sm) !important;
+	-webkit-filter: url(#rough-button-cut-sm) !important;
+	transition: transform var(--transition-fast, 180ms) ease, opacity var(--transition-fast, 180ms) ease, background-color var(--transition-fast, 180ms) ease, background var(--transition-fast, 180ms) ease, border-color var(--transition-fast, 180ms) ease, color var(--transition-fast, 180ms) ease, box-shadow var(--transition-fast, 180ms) ease, width var(--transition-fast, 180ms) ease, height var(--transition-fast, 180ms) ease, max-height var(--transition-fast, 180ms) ease !important;
+}
+
+.ah-sn-popup .ah-sn-btn:hover {
+	background: linear-gradient(135deg, var(--color-brand-1, #0c6434) 0%, #15803d 100%) !important;
+	color: #ffffff !important;
+	border-color: var(--color-brand-2, #f3d49d) !important;
+	transform: translateY(-1px) !important;
+}
+
+/* ── 7. Close Button (Brass Round Coin) ──────────────────────────────────── */
+.ah-sn-popup .ah-sn-close {
+	background: var(--ink-950, #2f200e) !important;
+	color: var(--paper-200, #eccaa2) !important;
+	border: 1.5px solid var(--vintage-gold-inner, #caa06d) !important;
+	border-radius: 50% !important;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+	z-index: 10 !important;
+	transition: transform var(--transition-fast, 180ms) ease, opacity var(--transition-fast, 180ms) ease, background-color var(--transition-fast, 180ms) ease, background var(--transition-fast, 180ms) ease, border-color var(--transition-fast, 180ms) ease, color var(--transition-fast, 180ms) ease, box-shadow var(--transition-fast, 180ms) ease, width var(--transition-fast, 180ms) ease, height var(--transition-fast, 180ms) ease, max-height var(--transition-fast, 180ms) ease !important;
+}
+
+.ah-sn-popup .ah-sn-close:hover {
+	background: var(--color-brand-6, #6b2f18) !important;
+	color: #ffffff !important;
+	border-color: var(--vintage-gold-bright, #f6d599) !important;
+	transform: scale(1.1) rotate(90deg) !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   PART 2: AH FORM BUILDER (CONTACT & ENQUIRY FORMS) OVERRIDES
+   ══════════════════════════════════════════════════════════════════════════ */
+
+.ah-fw {
+	font-family: var(--font-family-base, 'EB Garamond', Georgia, serif) !important;
+	width: 100% !important;
+}
+
+.ah-fw form {
+	background: transparent !important;
+	padding: 0 !important;
+	margin: 0 !important;
+}
+
+/* ── Form Labels ─────────────────────────────────────────────────────────── */
+.ah-fw .ch-form-label {
+	font-family: var(--font-family-heading, 'Cinzel', serif) !important;
+	font-size: var(--font-size-xs, 0.75rem) !important;
+	font-weight: var(--font-weight-bold, 700) !important;
+	letter-spacing: var(--tracking-wider, 0.08em) !important;
+	text-transform: uppercase !important;
+	color: var(--ink-950, #2f200e) !important;
+	display: flex !important;
+	align-items: center !important;
+	gap: 4px !important;
+	margin-bottom: var(--space-3xs, 0.25rem) !important;
+}
+
+.ah-fw .ah-req {
+	color: var(--color-danger, #8f3620) !important;
+	font-weight: bold !important;
+}
+
+.ah-fw .ahf-ico-inline {
+	color: var(--vintage-gold-inner, #caa06d) !important;
+	display: inline-flex !important;
+	align-items: center !important;
+}
+
+/* ── Form Inputs, Selects & Textareas ────────────────────────────────────── */
+.ah-fw .ch-form-input,
+.ah-fw .ch-form-select,
+.ah-fw .ch-form-textarea {
+	width: 100% !important;
+	padding: 10px 14px !important;
+	border: 1.5px solid var(--vintage-bark-border, #8e622d) !important;
+	border-radius: var(--radius-sm, 3px) !important;
+	background-color: var(--vintage-parchment-light, #fbf2e6) !important;
+	color: var(--vintage-bark-dark, #2b1406) !important;
+	font-family: var(--font-family-base, 'EB Garamond', Georgia, serif) !important;
+	font-size: var(--font-size-md, 1rem) !important;
+	box-shadow: inset 0 2px 4px rgba(42, 26, 12, 0.12) !important;
+	box-sizing: border-box !important;
+	transition: border-color var(--transition-fast, 180ms) ease, box-shadow var(--transition-fast, 180ms) ease !important;
+}
+
+.ah-fw .ch-form-input:focus,
+.ah-fw .ch-form-select:focus,
+.ah-fw .ch-form-textarea:focus {
+	outline: none !important;
+	border-color: var(--vintage-gold-inner, #caa06d) !important;
+	box-shadow:
+		inset 0 0 0 1px var(--vintage-gold-inner, #caa06d),
+		0 0 8px rgba(202, 160, 109, 0.35) !important;
+}
+
+.ah-fw .ch-form-input::placeholder,
+.ah-fw .ch-form-textarea::placeholder {
+	color: var(--vintage-bark-border-subtle, #7d582c) !important;
+	opacity: 0.65 !important;
+	font-style: italic !important;
+}
+
+.ah-fw .ch-form-textarea {
+	min-height: 110px !important;
+	resize: vertical !important;
+	line-height: var(--line-height-normal, 1.6) !important;
+}
+
+.ah-fw .ch-form-select {
+	appearance: none !important;
+	-webkit-appearance: none !important;
+	padding-right: 32px !important;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%238e622d' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") !important;
+	background-repeat: no-repeat !important;
+	background-position: right 10px center !important;
+	background-size: 14px 14px !important;
+}
+
+/* ── Prefix & Tel Containers ─────────────────────────────────────────────── */
+.ah-fw .ah-affix,
+.ah-fw .ah-tel {
+	border: 1.5px solid var(--vintage-bark-border, #8e622d) !important;
+	border-radius: var(--radius-sm, 3px) !important;
+	background-color: var(--vintage-parchment-light, #fbf2e6) !important;
+}
+
+.ah-fw .ah-affix-txt,
+.ah-fw .ah-tel-cc {
+	background-color: var(--paper-100, #f4dcc0) !important;
+	border-right: 1.5px solid var(--vintage-bark-border, #8e622d) !important;
+	color: var(--ink-950, #2f200e) !important;
+	font-family: var(--font-family-heading, 'Cinzel', serif) !important;
+}
+
+/* ── Hidden Elements Enforcement ─────────────────────────────────────────── */
+.ah-fw [hidden],
+body .ah-fw [hidden],
+.ah-fw button[hidden],
+body .ah-fw button[hidden],
+.ah-fw input[hidden],
+body .ah-fw input[hidden],
+.ah-fw div[hidden],
+body .ah-fw div[hidden] {
+	display: none !important;
+}
+
+/* ── Submit & Navigation Buttons ─────────────────────────────────────────── */
+.ah-fw .ch-form-submit:not([hidden]),
+.ah-fw .ah-form-next:not([hidden]),
+body .ah-fw .ch-form-submit:not([hidden]),
+body .ah-fw .ah-form-next:not([hidden]) {
+	font-family: var(--font-family-heading, 'Cinzel', serif) !important;
+	font-weight: var(--font-weight-bold, 700) !important;
+	text-transform: uppercase !important;
+	letter-spacing: var(--tracking-wider, 0.08em) !important;
+	background: linear-gradient(135deg, var(--color-brand-3, #1c360d) 0%, var(--color-brand-1, #0c6434) 100%) !important;
+	color: var(--paper-0, #fbf2e6) !important;
+	border: 1.5px solid var(--vintage-gold-inner, #caa06d) !important;
+	border-radius: var(--radius-sm, 3px) !important;
+	padding: 13px 32px !important;
+	font-size: var(--font-size-sm, 0.875rem) !important;
+	box-shadow:
+		inset 0 1px 0 rgba(255, 255, 255, 0.25),
+		0 4px 14px rgba(12, 100, 52, 0.4) !important;
+	filter: url(#rough-button-cut-sm) !important;
+	-webkit-filter: url(#rough-button-cut-sm) !important;
+	cursor: pointer !important;
+	transition: transform var(--transition-fast, 180ms) ease, opacity var(--transition-fast, 180ms) ease, background-color var(--transition-fast, 180ms) ease, background var(--transition-fast, 180ms) ease, border-color var(--transition-fast, 180ms) ease, color var(--transition-fast, 180ms) ease, box-shadow var(--transition-fast, 180ms) ease, width var(--transition-fast, 180ms) ease, height var(--transition-fast, 180ms) ease, max-height var(--transition-fast, 180ms) ease !important;
+	display: inline-flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	gap: 8px !important;
+}
+
+.ah-fw .ch-form-submit:hover:not([disabled]),
+.ah-fw .ah-form-next:hover:not([disabled]),
+body .ah-fw .ch-form-submit:hover:not([disabled]),
+body .ah-fw .ah-form-next:hover:not([disabled]) {
+	background: linear-gradient(135deg, var(--color-brand-1, #0c6434) 0%, #15803d 100%) !important;
+	color: #ffffff !important;
+	border-color: var(--color-brand-2, #f3d49d) !important;
+	transform: translateY(-1px) !important;
+	box-shadow:
+		inset 0 1px 0 rgba(255, 255, 255, 0.35),
+		0 6px 18px rgba(12, 100, 52, 0.5) !important;
+}
+
+/* Submit Disabled / Submitted State (e.g. "SENT") */
+.ah-fw .ch-form-submit:disabled,
+.ah-fw .ch-form-submit[disabled],
+.ah-fw .ch-form-submit.is-disabled,
+body .ah-fw .ch-form-submit:disabled,
+body .ah-fw .ch-form-submit[disabled] {
+	background: linear-gradient(135deg, #2b471c 0%, #155e34 100%) !important;
+	color: var(--vintage-gold-bright, #f6d599) !important;
+	border: 1.5px solid var(--vintage-gold-inner, #caa06d) !important;
+	opacity: 0.95 !important;
+	cursor: default !important;
+	transform: none !important;
+	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 2px 8px rgba(12, 100, 52, 0.25) !important;
+}
+
+/* Secondary Navigation & Reset Buttons (e.g. "+ Submit another response", "Back", "Clear") */
+.ah-fw .ah-nav-btn:not([hidden]),
+.ah-fw .ah-form-again:not([hidden]),
+.ah-fw .ah-form-prev:not([hidden]),
+.ah-fw .ah-form-clear:not([hidden]),
+body .ah-fw .ah-nav-btn:not([hidden]),
+body .ah-fw .ah-form-again:not([hidden]),
+body .ah-fw .ah-form-prev:not([hidden]),
+body .ah-fw .ah-form-clear:not([hidden]) {
+	font-family: var(--font-family-heading, 'Cinzel', serif) !important;
+	font-weight: var(--font-weight-bold, 700) !important;
+	font-size: var(--font-size-xs, 0.8125rem) !important;
+	letter-spacing: var(--tracking-wider, 0.06em) !important;
+	text-transform: uppercase !important;
+	background: linear-gradient(180deg, var(--paper-0, #fbf2e6) 0%, var(--paper-100, #f4dcc0) 100%) !important;
+	color: var(--ink-950, #2f200e) !important;
+	border: 1.5px solid var(--vintage-bark-border, #8e622d) !important;
+	border-radius: var(--radius-sm, 3px) !important;
+	padding: 12px 22px !important;
+	box-shadow:
+		inset 0 0 0 1px var(--vintage-gold-inner, #caa06d),
+		0 3px 8px rgba(47, 32, 14, 0.15) !important;
+	filter: url(#rough-button-cut-sm) !important;
+	-webkit-filter: url(#rough-button-cut-sm) !important;
+	cursor: pointer !important;
+	display: inline-flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	gap: 6px !important;
+	transition: transform var(--transition-fast, 180ms) ease, opacity var(--transition-fast, 180ms) ease, background-color var(--transition-fast, 180ms) ease, background var(--transition-fast, 180ms) ease, border-color var(--transition-fast, 180ms) ease, color var(--transition-fast, 180ms) ease, box-shadow var(--transition-fast, 180ms) ease, width var(--transition-fast, 180ms) ease, height var(--transition-fast, 180ms) ease, max-height var(--transition-fast, 180ms) ease !important;
+}
+
+.ah-fw .ah-nav-btn:hover:not([disabled]),
+.ah-fw .ah-form-again:hover:not([disabled]),
+.ah-fw .ah-form-prev:hover:not([disabled]),
+.ah-fw .ah-form-clear:hover:not([disabled]),
+body .ah-fw .ah-nav-btn:hover:not([disabled]),
+body .ah-fw .ah-form-again:hover:not([disabled]),
+body .ah-fw .ah-form-prev:hover:not([disabled]),
+body .ah-fw .ah-form-clear:hover:not([disabled]) {
+	background: linear-gradient(180deg, var(--color-brand-3, #1c360d) 0%, var(--color-brand-1, #0c6434) 100%) !important;
+	color: var(--paper-0, #fbf2e6) !important;
+	border-color: var(--vintage-gold-bright, #f6d599) !important;
+	transform: translateY(-1px) !important;
+	box-shadow:
+		inset 0 0 0 1px var(--vintage-gold-bright, #f6d599),
+		0 4px 12px rgba(12, 100, 52, 0.35) !important;
+}
+
+/* ── Feedback Banners (Success & Error Messages) ─────────────────────────── */
+.ah-fw .ch-form-feedback,
+body .ah-fw .ch-form-feedback,
+.ah-fw .ch-form-feedback:not(.success):not(.error),
+body .ah-fw .ch-form-feedback:not(.success):not(.error),
+.ah-fw .ch-form-feedback:empty,
+body .ah-fw .ch-form-feedback:empty {
+	display: none !important;
+}
+
+.ah-fw .ch-form-feedback.success,
+body .ah-fw .ch-form-feedback.success {
+	display: block !important;
+	font-family: var(--font-family-heading, 'Cinzel', serif) !important;
+	font-weight: var(--font-weight-bold, 700) !important;
+	font-size: var(--font-size-sm, 0.9375rem) !important;
+	letter-spacing: var(--tracking-wide, 0.05em) !important;
+	line-height: 1.6 !important;
+	padding: 18px 24px !important;
+	border-radius: var(--radius-md, 6px) !important;
+	margin-top: var(--space-md, 1.25rem) !important;
+	margin-bottom: var(--space-md, 1.25rem) !important;
+	filter: url(#rough-button-cut-sm) !important;
+	-webkit-filter: url(#rough-button-cut-sm) !important;
+	text-align: center !important;
+	box-sizing: border-box !important;
+	background-color: var(--paper-0, #fbf2e6) !important;
+	background-image: linear-gradient(180deg, rgba(12, 100, 52, 0.08) 0%, rgba(28, 54, 13, 0.16) 100%) !important;
+	border: 2px solid var(--color-brand-1, #0c6434) !important;
+	color: var(--color-brand-3, #1c360d) !important;
+	box-shadow:
+		inset 0 0 0 1.5px var(--vintage-gold-inner, #caa06d),
+		0 8px 24px rgba(12, 100, 52, 0.18) !important;
+}
+
+.ah-fw .ch-form-feedback.error,
+body .ah-fw .ch-form-feedback.error {
+	display: block !important;
+	font-family: var(--font-family-heading, 'Cinzel', serif) !important;
+	font-weight: var(--font-weight-bold, 700) !important;
+	font-size: var(--font-size-sm, 0.9375rem) !important;
+	letter-spacing: var(--tracking-wide, 0.05em) !important;
+	line-height: 1.6 !important;
+	padding: 18px 24px !important;
+	border-radius: var(--radius-md, 6px) !important;
+	margin-top: var(--space-md, 1.25rem) !important;
+	margin-bottom: var(--space-md, 1.25rem) !important;
+	filter: url(#rough-button-cut-sm) !important;
+	-webkit-filter: url(#rough-button-cut-sm) !important;
+	text-align: center !important;
+	box-sizing: border-box !important;
+	background-color: var(--paper-0, #fbf2e6) !important;
+	background-image: linear-gradient(180deg, rgba(143, 54, 32, 0.08) 0%, rgba(107, 47, 24, 0.16) 100%) !important;
+	border: 2px solid var(--color-danger, #8f3620) !important;
+	color: var(--color-danger, #8f3620) !important;
+	box-shadow:
+		inset 0 0 0 1.5px rgba(202, 160, 109, 0.5),
+		0 8px 24px rgba(143, 54, 32, 0.18) !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   PART 3: FORM AGREEMENT & TERMS & CONDITIONS THEME OVERRIDES
+   ══════════════════════════════════════════════════════════════════════════ */
+
+.ah-fw .ch-form-agreement,
+.ch-form-agreement {
+	margin-top: var(--space-xs, 0.75rem) !important;
+	margin-bottom: var(--space-sm, 1rem) !important;
+	padding: 10px 14px !important;
+	background: color-mix(in srgb, var(--paper-0, #fbf2e6) 88%, var(--paper-100, #f4dcc0)) !important;
+	border: 1.5px dashed var(--vintage-gold-inner, #caa06d) !important;
+	border-radius: var(--radius-sm, 4px) !important;
+	box-shadow: inset 0 1px 3px rgba(42, 26, 12, 0.06) !important;
+}
+
+.ah-fw .ch-agreement-label,
+.ch-form-agreement .ch-agreement-label {
+	display: flex !important;
+	align-items: center !important;
+	gap: 12px !important;
+	font-family: var(--font-family-base, 'EB Garamond', Georgia, serif) !important;
+	font-size: var(--font-size-md, 1rem) !important;
+	line-height: var(--line-height-normal, 1.55) !important;
+	color: var(--ink-950, #2f200e) !important;
+	cursor: pointer !important;
+	user-select: none !important;
+}
+
+/* ── Agreement Toggle Switch ─────────────────────────────────────────────── */
+.ah-fw .ch-toggle-switch,
+.ch-toggle-switch {
+	position: relative !important;
+	display: inline-block !important;
+	flex-shrink: 0 !important;
+	width: 44px !important;
+	height: 24px !important;
+	min-width: 44px !important;
+	margin-top: 0 !important;
+}
+
+.ah-fw .ch-toggle-switch .ch-agreement-chk,
+.ch-toggle-switch .ch-agreement-chk {
+	position: absolute !important;
+	inset: 0 !important;
+	width: 100% !important;
+	height: 100% !important;
+	margin: 0 !important;
+	opacity: 0 !important;
+	cursor: pointer !important;
+	z-index: 2 !important;
+}
+
+/* Unchecked Track */
+.ah-fw .ch-toggle-track,
+.ch-toggle-track {
+	position: absolute !important;
+	inset: 0 !important;
+	background: var(--paper-200, #eccaa2) !important;
+	border: 1.5px solid var(--vintage-bark-border, #8e622d) !important;
+	border-radius: 999px !important;
+	box-shadow: inset 0 2px 4px rgba(47, 32, 14, 0.22) !important;
+	transition: transform var(--transition-fast, 180ms) ease, opacity var(--transition-fast, 180ms) ease, background-color var(--transition-fast, 180ms) ease, background var(--transition-fast, 180ms) ease, border-color var(--transition-fast, 180ms) ease, color var(--transition-fast, 180ms) ease, box-shadow var(--transition-fast, 180ms) ease, width var(--transition-fast, 180ms) ease, height var(--transition-fast, 180ms) ease, max-height var(--transition-fast, 180ms) ease !important;
+}
+
+/* Knob / Thumb */
+.ah-fw .ch-toggle-track::before,
+.ch-toggle-track::before {
+	content: "" !important;
+	position: absolute !important;
+	left: 3px !important;
+	top: 2.5px !important;
+	width: 16px !important;
+	height: 16px !important;
+	background: radial-gradient(circle at 35% 35%, #ffffff 0%, var(--paper-0, #fbf2e6) 70%, var(--vintage-gold-inner, #caa06d) 100%) !important;
+	border: 1px solid var(--vintage-gold-inner, #caa06d) !important;
+	border-radius: 50% !important;
+	box-shadow: 0 2px 5px rgba(47, 32, 14, 0.35) !important;
+	transition: transform var(--transition-fast, 180ms) cubic-bezier(0.4, 0, 0.2, 1), background var(--transition-fast, 180ms) ease, border-color var(--transition-fast, 180ms) ease !important;
+}
+
+/* Checked Track: Cane Emerald Brand Green */
+.ah-fw .ch-toggle-switch .ch-agreement-chk:checked + .ch-toggle-track,
+.ch-toggle-switch .ch-agreement-chk:checked + .ch-toggle-track {
+	background: linear-gradient(135deg, var(--color-brand-3, #1c360d) 0%, var(--color-brand-1, #0c6434) 100%) !important;
+	border-color: var(--color-brand-3, #1c360d) !important;
+	box-shadow:
+		inset 0 2px 4px rgba(0, 0, 0, 0.35),
+		0 0 10px rgba(12, 100, 52, 0.45) !important;
+}
+
+/* Checked Knob: Slid Right with Gold Hue */
+.ah-fw .ch-toggle-switch .ch-agreement-chk:checked + .ch-toggle-track::before,
+.ch-toggle-switch .ch-agreement-chk:checked + .ch-toggle-track::before {
+	transform: translateX(20px) !important;
+	background: radial-gradient(circle at 35% 35%, #ffffff 0%, var(--paper-0, #fbf2e6) 65%, var(--vintage-gold-bright, #f6d599) 100%) !important;
+	border-color: var(--vintage-gold-bright, #f6d599) !important;
+}
+
+/* Focus Outline */
+.ah-fw .ch-toggle-switch .ch-agreement-chk:focus-visible + .ch-toggle-track,
+.ch-toggle-switch .ch-agreement-chk:focus-visible + .ch-toggle-track {
+	box-shadow:
+		0 0 0 3px rgba(12, 100, 52, 0.35),
+		inset 0 2px 4px rgba(47, 32, 14, 0.22) !important;
+}
+
+/* ── Agreement Links & Buttons ───────────────────────────────────────────── */
+.ah-fw .ch-terms-link,
+.ch-terms-link,
+.ah-fw .ch-terms-popup-btn,
+.ch-terms-popup-btn {
+	color: var(--color-brand-1, #0c6434) !important;
+	font-weight: var(--font-weight-bold, 700) !important;
+	text-decoration: underline !important;
+	text-decoration-thickness: 1.5px !important;
+	text-decoration-color: var(--vintage-gold-inner, #caa06d) !important;
+	text-underline-offset: 3px !important;
+	background: none !important;
+	border: none !important;
+	padding: 0 !important;
+	cursor: pointer !important;
+	font-family: inherit !important;
+	font-size: inherit !important;
+	margin-left: 3px !important;
+	margin-right: 3px !important;
+	transition: transform var(--transition-fast, 180ms) ease, opacity var(--transition-fast, 180ms) ease, background-color var(--transition-fast, 180ms) ease, background var(--transition-fast, 180ms) ease, border-color var(--transition-fast, 180ms) ease, color var(--transition-fast, 180ms) ease, box-shadow var(--transition-fast, 180ms) ease, width var(--transition-fast, 180ms) ease, height var(--transition-fast, 180ms) ease, max-height var(--transition-fast, 180ms) ease !important;
+}
+
+.ah-fw .ch-terms-link:hover,
+.ch-terms-link:hover,
+.ah-fw .ch-terms-popup-btn:hover,
+.ch-terms-popup-btn:hover {
+	color: var(--color-brand-6, #6b2f18) !important;
+	text-decoration-color: var(--color-brand-6, #6b2f18) !important;
+}
+
+/* ── Agreement Intro & Iframe Blocks ─────────────────────────────────────── */
+.ah-fw .ch-agr-intro,
+.ch-agr-intro {
+	background: var(--paper-0, #fbf2e6) !important;
+	border: 1.5px solid var(--vintage-bark-border, #8e622d) !important;
+	border-radius: var(--radius-sm, 4px) !important;
+	color: var(--ink-900, #463016) !important;
+	font-family: var(--font-family-base, 'EB Garamond', Georgia, serif) !important;
+	font-size: var(--font-size-sm, 0.9375rem) !important;
+	line-height: var(--line-height-normal, 1.6) !important;
+	padding: 12px 16px !important;
+	margin-bottom: var(--space-sm, 1rem) !important;
+}
+
+.ah-fw .ch-agr-iframe-wrap,
+.ch-agr-iframe-wrap {
+	border: 1.5px solid var(--vintage-bark-border, #8e622d) !important;
+	border-radius: var(--radius-sm, 4px) !important;
+	overflow: hidden !important;
+	margin-bottom: var(--space-sm, 1rem) !important;
+	background: var(--paper-0, #fbf2e6) !important;
+}
+
+/* ── Agreement Terms Popup Modal Dialog ──────────────────────────────────── */
+.ah-fw div[role="dialog"],
+div[id^="ch-tpop-"] {
+	background: rgba(4, 15, 7, 0.85) !important;
+	backdrop-filter: blur(8px) !important;
+	-webkit-backdrop-filter: blur(8px) !important;
+	z-index: 2147483647 !important;
+}
+
+div[id^="ch-tpop-"] > div {
+	background-color: var(--paper-0, #fbf2e6) !important;
+	background-image: linear-gradient(180deg, var(--paper-0, #fbf2e6) 0%, var(--paper-100, #f4dcc0) 100%) !important;
+	border: 2px solid var(--vintage-bark-border, #8e622d) !important;
+	border-radius: var(--radius-md, 6px) !important;
+	box-shadow:
+		inset 0 0 0 1.5px var(--vintage-gold-inner, #caa06d),
+		0 20px 50px rgba(47, 32, 14, 0.5) !important;
+	filter: url(#rough-button-cut-sm) !important;
+	-webkit-filter: url(#rough-button-cut-sm) !important;
+	color: var(--ink-900, #463016) !important;
+}
+
+div[id^="ch-tpop-"] .ch-terms-popup-content {
+	font-family: var(--font-family-base, 'EB Garamond', Georgia, serif) !important;
+	color: var(--ink-900, #463016) !important;
+	font-size: var(--font-size-md, 1rem) !important;
+	line-height: var(--line-height-normal, 1.7) !important;
+}
+
+div[id^="ch-tpop-"] .ch-terms-popup-content h1,
+div[id^="ch-tpop-"] .ch-terms-popup-content h2,
+div[id^="ch-tpop-"] .ch-terms-popup-content h3 {
+	font-family: var(--font-family-heading, 'Cinzel', serif) !important;
+	color: var(--ink-950, #2f200e) !important;
+	border-bottom: 1px dashed var(--tan-500, #cb924d) !important;
+	padding-bottom: 4px !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   PART 3: CMS STATIC HTML PAGES (AH-STATIC-PAGES) STYLING
+   ══════════════════════════════════════════════════════════════════════════ */
+
+.ah-static-page-outer {
+	position: relative;
+	min-height: 60vh;
+}
+
+.ah-static-content-wrapper {
+	width: 100%;
+	overflow-wrap: break-word;
+	word-wrap: break-word;
+}
+
+.ah-static-content-wrapper .entry-content {
+	line-height: var(--line-height-relaxed, 1.75);
+	color: var(--text-dark, #2a2015);
+}
+
+.ah-static-content-wrapper .entry-content > *:first-child {
+	margin-top: 0;
+}
+
+.ah-static-content-wrapper .entry-content > *:last-child {
+	margin-bottom: 0;
+}
+
+.ah-static-content-wrapper iframe {
+	width: 100%;
+	border: none;
+	min-height: 480px;
+	background: transparent;
+}

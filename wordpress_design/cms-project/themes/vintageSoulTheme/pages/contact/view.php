@@ -33,6 +33,7 @@ $socials = (array) ( $contact_info['socials'] ?? array() );
 			'title' => (string) ( $hero['title'] ?? '' ),
 			'sub'   => (string) ( $hero['sub'] ?? '' ),
 			'image' => (string) ( $hero['image'] ?? '' ),
+			'video' => (string) ( $hero['video'] ?? '' ),
 		)
 	);
 	?>
@@ -42,60 +43,84 @@ $socials = (array) ( $contact_info['socials'] ?? array() );
 		<div class="container contact-stage-container">
 			<div class="contact-stage-grid">
 				
-				<!-- Left Column: Contact & Booking Form -->
+				<!-- Left Column: Contact & Booking Form (Powered by CMS Plugin Form Builder) -->
 				<div class="contact-form-card frame--rough-cut">
 					<div class="contact-card-header">
-						<h2 class="contact-card-header__title">SEND US A <em>Message</em></h2>
-						<p class="contact-card-header__sub">Fill out the form below and we will respond promptly.</p>
+						<h2 class="contact-card-header__title"><?php echo wp_kses_post( (string) ( $data['form']['title'] ?? 'SEND US A <em>Message</em>' ) ); ?></h2>
+						<p class="contact-card-header__sub"><?php echo esc_html( (string) ( $data['form']['sub'] ?? 'Fill out the form below and we will respond promptly.' ) ); ?></p>
 					</div>
 
-					<form class="vintage-form" method="post" action="#">
-						<div class="form-row form-row--duo">
-							<div class="form-group">
-								<label class="form-label" for="contact-name">YOUR FULL NAME <span class="required">*</span></label>
-								<input class="form-input" type="text" id="contact-name" name="name" placeholder="e.g. Ramesh Patel" required>
-							</div>
-							<div class="form-group">
-								<label class="form-label" for="contact-phone">PHONE / WHATSAPP <span class="required">*</span></label>
-								<input class="form-input" type="tel" id="contact-phone" name="phone" placeholder="+44 7770 000 000" required>
-							</div>
-						</div>
+					<?php
+					$rendered_form = (string) ( $data['rendered_form'] ?? '' );
+					$form_agr      = (array) ( $data['form']['agreement'] ?? array() );
 
-						<div class="form-row form-row--duo">
-							<div class="form-group">
-								<label class="form-label" for="contact-email">EMAIL ADDRESS <span class="required">*</span></label>
-								<input class="form-input" type="email" id="contact-email" name="email" placeholder="you@example.com" required>
+					if ( ! empty( $rendered_form ) ) :
+						echo $rendered_form; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+					else :
+					?>
+						<form class="vintage-form" method="post" action="#">
+							<div class="form-row form-row--duo">
+								<div class="form-group">
+									<label class="form-label" for="contact-name">YOUR FULL NAME <span class="required">*</span></label>
+									<input class="form-input" type="text" id="contact-name" name="name" placeholder="e.g. Ramesh Patel" required>
+								</div>
+								<div class="form-group">
+									<label class="form-label" for="contact-phone">PHONE / WHATSAPP <span class="required">*</span></label>
+									<input class="form-input" type="tel" id="contact-phone" name="phone" placeholder="+44 7770 000 000" required>
+								</div>
 							</div>
-							<div class="form-group">
-								<label class="form-label" for="contact-type">ENQUIRY TYPE</label>
-								<select class="form-select" id="contact-type" name="enquiry_type">
-									<?php foreach ( $enquiry_types as $type ) : ?>
-										<option value="<?php echo esc_attr( (string) ( $type['value'] ?? '' ) ); ?>">
-											<?php echo esc_html( (string) ( $type['label'] ?? '' ) ); ?>
-										</option>
-									<?php endforeach; ?>
-								</select>
+
+							<div class="form-row form-row--duo">
+								<div class="form-group">
+									<label class="form-label" for="contact-email">EMAIL ADDRESS <span class="required">*</span></label>
+									<input class="form-input" type="email" id="contact-email" name="email" placeholder="you@example.com" required>
+								</div>
+								<div class="form-group">
+									<label class="form-label" for="contact-type">ENQUIRY TYPE</label>
+									<select class="form-select" id="contact-type" name="enquiry_type">
+										<?php foreach ( $enquiry_types as $type ) : ?>
+											<option value="<?php echo esc_attr( (string) ( $type['value'] ?? '' ) ); ?>">
+												<?php echo esc_html( (string) ( $type['label'] ?? '' ) ); ?>
+											</option>
+										<?php endforeach; ?>
+									</select>
+								</div>
 							</div>
-						</div>
 
-						<div class="form-group">
-							<label class="form-label" for="contact-date">EVENT DATE (IF APPLICABLE)</label>
-							<input class="form-input" type="date" id="contact-date" name="event_date">
-						</div>
+							<div class="form-group">
+								<label class="form-label" for="contact-date">EVENT DATE (IF APPLICABLE)</label>
+								<input class="form-input" type="date" id="contact-date" name="event_date">
+							</div>
 
-						<div class="form-group">
-							<label class="form-label" for="contact-message">YOUR MESSAGE / EVENT REQUIREMENTS <span class="required">*</span></label>
-							<textarea class="form-textarea" id="contact-message" name="message" rows="4" placeholder="Tell us about your event, location, flavor preferences, or any questions..." required></textarea>
-						</div>
+							<div class="form-group">
+								<label class="form-label" for="contact-message">YOUR MESSAGE / EVENT REQUIREMENTS <span class="required">*</span></label>
+								<textarea class="form-textarea" id="contact-message" name="message" rows="4" placeholder="Tell us about your event, location, flavor preferences, or any questions..." required></textarea>
+							</div>
 
-						<div class="form-actions">
-							<button class="btn btn--primary-vintage btn--submit" type="submit">
-								<span>SEND MESSAGE / ENQUIRY</span>
-								<span class="btn__arrow">➔</span>
-							</button>
-							<span class="form-note">🔒 We respect your privacy. Zero spam guaranteed.</span>
-						</div>
-					</form>
+							<?php if ( ! empty( $form_agr['enabled'] ) ) : ?>
+								<div class="form-group form-group--agree">
+									<label class="form-checkbox-label" for="contact-agree">
+										<input type="checkbox" class="form-checkbox" id="contact-agree" name="agree" required checked>
+										<span class="form-checkbox-text">
+											<?php echo esc_html( (string) ( $form_agr['before'] ?? 'I agree to the' ) ); ?>
+											<a href="<?php echo esc_url( (string) ( $form_agr['url'] ?? '/privacy-policy' ) ); ?>" target="_blank" rel="noopener">
+												<?php echo esc_html( (string) ( $form_agr['link_text'] ?? 'Terms & Conditions' ) ); ?>
+											</a>
+											<?php echo esc_html( (string) ( $form_agr['after'] ?? '' ) ); ?>
+										</span>
+									</label>
+								</div>
+							<?php endif; ?>
+
+							<div class="form-actions">
+								<button class="btn btn--primary-vintage btn--submit" type="submit">
+									<span><?php echo esc_html( (string) ( $data['form']['submit_label'] ?? 'SEND MESSAGE / ENQUIRY' ) ); ?></span>
+									<span class="btn__arrow">➔</span>
+								</button>
+								<span class="form-note">🔒 We respect your privacy. Zero spam guaranteed.</span>
+							</div>
+						</form>
+					<?php endif; ?>
 				</div>
 
 				<!-- Right Column: Side Contact Details & Cards -->

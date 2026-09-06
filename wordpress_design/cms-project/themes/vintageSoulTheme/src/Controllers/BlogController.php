@@ -2,6 +2,7 @@
 namespace VintageSoul\Controllers;
 
 use VintageSoul\DataProviders\JsonFileProvider;
+use VintageSoul\Services\Plugins\PageBridgeService;
 use VintageSoul\Support\UrlHelper;
 
 defined( 'ABSPATH' ) || exit;
@@ -10,7 +11,8 @@ final class BlogController {
 
 	public function prepare(): array {
 		$fallback_data = JsonFileProvider::read( 'data/content/posts.json' );
-		$hero          = (array) ( $fallback_data['hero'] ?? array() );
+		$hero_raw      = (array) ( $fallback_data['hero'] ?? array() );
+		$hero          = PageBridgeService::resolve_hero( 'blog', $hero_raw );
 		$categories    = (array) ( $fallback_data['categories'] ?? array() );
 		$fallback_items = (array) ( $fallback_data['items'] ?? array() );
 
@@ -82,10 +84,83 @@ final class BlogController {
 			}
 		}
 
+		// Single-article view: which one (if any) was requested, and what to
+		// suggest next. Read here (not in the template) so the template stays
+		// a thin render of already-prepared data.
+		$requested_slug   = sanitize_title( (string) ( $_GET['article'] ?? '' ) );
+		$current_article  = null;
+		$related_articles = array();
+
+		if ( '' !== $requested_slug ) {
+			foreach ( $articles as $art ) {
+				if ( (string) ( $art['slug'] ?? '' ) === $requested_slug ) {
+					$current_article = $art;
+					break;
+				}
+			}
+		}
+
+		if ( null !== $current_article ) {
+			$related_articles = $this->related_articles( $articles, $current_article, 3 );
+		}
+
 		return array(
-			'hero'       => $hero,
-			'categories' => $categories,
-			'articles'   => $articles,
+			'hero'              => $hero,
+			'categories'        => $categories,
+			'articles'          => $articles,
+			'current_article'   => $current_article,
+			'related_articles'  => $related_articles,
 		);
+	}
+
+	/**
+	 * Pick articles to suggest after reading one: same category first (most
+	 * recent first, since $articles is already date-DESC), then top up with
+	 * other recent articles if that category doesn't have enough. Never
+	 * includes the article being read.
+	 *
+	 * @param array<int, array<string, mixed>> $articles
+	 * @param array<string, mixed>             $current
+	 * @return array<int, array<string, mixed>>
+	 */
+	private function related_articles( array $articles, array $current, int $limit ): array {
+		$current_id  = $current['id'] ?? null;
+		$current_cat = (string) ( $current['category'] ?? '' );
+
+		$others = array_values(
+			array_filter(
+				$articles,
+				static function ( $art ) use ( $current_id ) {
+					return ( $art['id'] ?? null ) !== $current_id;
+				}
+			)
+		);
+
+		$same_category = array_values(
+			array_filter(
+				$others,
+				static function ( $art ) use ( $current_cat ) {
+					return '' !== $current_cat && (string) ( $art['category'] ?? '' ) === $current_cat;
+				}
+			)
+		);
+
+		$related = array_slice( $same_category, 0, $limit );
+
+		if ( count( $related ) < $limit ) {
+			$related_ids = array_column( $related, 'id' );
+			foreach ( $others as $art ) {
+				if ( count( $related ) >= $limit ) {
+					break;
+				}
+				if ( in_array( $art['id'] ?? null, $related_ids, true ) ) {
+					continue;
+				}
+				$related[]     = $art;
+				$related_ids[] = $art['id'] ?? null;
+			}
+		}
+
+		return $related;
 	}
 }

@@ -29,6 +29,7 @@ View::component(
 		'title' => (string) ( $hero['title'] ?? '' ),
 		'sub'   => (string) ( $hero['sub'] ?? '' ),
 		'image' => (string) ( $hero['image'] ?? '' ),
+		'video' => (string) ( $hero['video'] ?? '' ),
 	)
 );
 ?>
@@ -128,7 +129,7 @@ View::component(
 
 <!-- ═══════════ 6. DIRECT EVENT CONCIERGE BOOKING ═══════════ -->
 <div id="event-booking">
-	<?php View::component( 'sections/contact-form-section' ); ?>
+	<?php View::component( 'sections/contact-form-section', array( 'form_key' => 'events_booking' ) ); ?>
 </div>
 
 <!-- ═══════════ 7. EVENT FAQS ═══════════ -->

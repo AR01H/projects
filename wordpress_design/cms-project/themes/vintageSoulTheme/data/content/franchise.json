@@ -136,26 +136,11 @@
         ]
     },
     "faqs": {
+        "_source": "FAQ content now comes from the CMS FAQ Builder (admin.php?page=ah-faqs&action=add) - attach entries to page slug 'franchise', Section 'section' below, there. items is empty on purpose; only a fallback for if that admin has nothing yet.",
         "tag": "Partnership Q&A",
         "title": "Franchise <em>FAQs</em>",
-        "items": [
-            {
-                "question": "What is the initial investment required?",
-                "answer": "Investment packages are custom-tailored to your desired format (Mobile Vintage Cart, Mall Kiosk, or Flagship Storefront), including commercial cold-press equipment, starter inventory, and complete training."
-            },
-            {
-                "question": "How does the sugarcane stalk supply chain work?",
-                "answer": "We manage centralized agricultural imports and dispatch fresh, temperature-controlled, mature organic sugarcane stalks directly to your local operating hub on a weekly schedule."
-            },
-            {
-                "question": "Do I need prior food & beverage experience?",
-                "answer": "No prior hospitality experience is necessary. Our intensive 2-week training program covers machine operation, hygiene standards, recipe mastery, inventory control, and customer service."
-            },
-            {
-                "question": "Are exclusive territory rights available?",
-                "answer": "Yes, franchise partners receive protected geographic territory rights based on agreed postcode clusters and population demographics."
-            }
-        ]
+        "section": "Partnership Q&A",
+        "items": []
     },
     "closing": {
         "tag": "Ready To Start?",

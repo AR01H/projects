@@ -291,6 +291,61 @@ body.page-contact,
   background: linear-gradient(0deg, var(--client-brand-rich, #184b25) 0%, var(--client-brand-rich, #184b25) 100%) !important;
   color: var(--vintage-gold-bright, #f6d599) !important;
 }
+.form-group--agree {
+  margin: 4px 0 2px !important;
+}
+.form-checkbox-label {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 10px !important;
+  cursor: pointer !important;
+  text-align: left !important;
+}
+.form-checkbox {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  width: 18px !important;
+  height: 18px !important;
+  flex-shrink: 0 !important;
+  margin-top: 2px !important;
+  background: var(--vintage-parchment-clean, #fdfaf4) !important;
+  border: 1.5px solid var(--vintage-bark-border, #8e622d) !important;
+  border-radius: 3px !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: transform 0.2s ease, opacity 0.2s ease, background-color 0.2s ease, background 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, width 0.2s ease, height 0.2s ease, max-height 0.2s ease !important;
+  position: relative !important;
+}
+.form-checkbox:hover {
+  border-color: var(--client-brand-primary, #0c6434) !important;
+  box-shadow: 0 0 0 2px rgba(12, 100, 52, 0.15) !important;
+}
+.form-checkbox:checked {
+  background: var(--client-brand-dark, #11381b) !important;
+  border-color: var(--client-brand-dark, #11381b) !important;
+}
+.form-checkbox:checked::after {
+  content: "✓" !important;
+  color: var(--vintage-gold-bright, #f6d599) !important;
+  font-size: 13px !important;
+  font-weight: bold !important;
+  line-height: 1 !important;
+}
+.form-checkbox-text {
+  font-size: 13.5px !important;
+  color: #463016 !important;
+  line-height: 1.5 !important;
+}
+.form-checkbox-text a {
+  color: var(--client-brand-primary, #0c6434) !important;
+  font-weight: 700 !important;
+  text-decoration: underline !important;
+}
+.form-checkbox-text a:hover {
+  color: #8f3620 !important;
+}
 .form-actions {
   display: flex;
   flex-direction: column;
@@ -530,7 +585,7 @@ body.page-contact,
   text-decoration: none;
   position: relative;
   overflow: hidden;
-  transition: all 0.2s ease;
+  transition: transform 0.2s ease, opacity 0.2s ease, background-color 0.2s ease, background 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, width 0.2s ease, height 0.2s ease, max-height 0.2s ease;
   z-index: 1;
 }
 .social-pill::before {

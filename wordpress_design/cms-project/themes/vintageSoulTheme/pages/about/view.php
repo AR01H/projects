@@ -34,6 +34,7 @@ $milestone_items = (array) ( $milestones['items'] ?? array() );
 			'title' => (string) ( $hero['title'] ?? '' ),
 			'sub'   => (string) ( $hero['sub'] ?? '' ),
 			'image' => (string) ( $hero['image'] ?? '' ),
+			'video' => (string) ( $hero['video'] ?? '' ),
 		)
 	);
 	?>

@@ -1,6 +1,14 @@
 {
     "_source": "Home-page hero multi-image & live video carousel record with authentic local assets",
     "enabled": true,
+    "db_banner_defaults": {
+        "_note": "Used only when a banner comes from the CMS Home Banners admin (which has no secondary-button or icon fields of its own) - not used for the JSON slides below, which each have their own 'buttons'.",
+        "secondary_button": { "label": "Book Live Bar", "icon": "📅", "route": "contact", "style": "ghost" },
+        "no_button_text_fallback": [
+            { "label": "Visit Our Stall", "icon": "📍", "route": "contact" },
+            { "label": "Book Live Bar", "icon": "📅", "route": "contact", "style": "ghost" }
+        ]
+    },
     "settings": {
         "autoplay": true,
         "autoplay_delay": 5000,

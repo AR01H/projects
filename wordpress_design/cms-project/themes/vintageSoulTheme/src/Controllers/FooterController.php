@@ -12,20 +12,72 @@ defined( 'ABSPATH' ) || exit;
 final class FooterController {
 
 	public function prepare(): array {
-		$footer = JsonFileProvider::read( 'data/content/footer.json' );
-		$labels = (array) ( $footer['labels'] ?? array() );
+		$cms_footer = NavigationService::footer();
+		$fallback   = (array) ( JsonFileProvider::read( 'data/content/footer.json' ) ?? array() );
+		$labels     = (array) ( $fallback['labels'] ?? array() );
+
+		// Columns from CMS Plugin Navigation Editor or fallback
+		$columns = array();
+		if ( ! empty( $cms_footer['columns'] ) && is_array( $cms_footer['columns'] ) ) {
+			foreach ( $cms_footer['columns'] as $col ) {
+				$col_items = array();
+				foreach ( (array) ( $col['items'] ?? array() ) as $c_item ) {
+					$c_label = trim( (string) ( $c_item['label'] ?? '' ) );
+					$c_url   = (string) ( $c_item['url'] ?? '' );
+					if ( '' === $c_label || '' === $c_url ) {
+						continue;
+					}
+					$col_items[] = array(
+						'label'     => $c_label,
+						'url'       => UrlHelper::resolve( $c_url ),
+						'highlight' => ! empty( $c_item['highlight'] ),
+					);
+				}
+				if ( ! empty( $col_items ) || ! empty( $col['title'] ) ) {
+					$columns[] = array(
+						'title' => (string) ( $col['title'] ?? 'Links' ),
+						'items' => $col_items,
+					);
+				}
+			}
+		}
+
+		// Legal links from CMS Plugin Navigation Editor or fallback
+		$legal_links = array();
+		if ( ! empty( $cms_footer['legal_links'] ) && is_array( $cms_footer['legal_links'] ) ) {
+			foreach ( $cms_footer['legal_links'] as $l_item ) {
+				$l_label = trim( (string) ( $l_item['label'] ?? '' ) );
+				$l_url   = (string) ( $l_item['url'] ?? '' );
+				if ( '' === $l_label || '' === $l_url ) {
+					continue;
+				}
+				$legal_links[] = array(
+					'label' => $l_label,
+					'url'   => UrlHelper::resolve( $l_url ),
+				);
+			}
+		}
+
+		if ( empty( $legal_links ) ) {
+			$legal_links = $this->resolve_url_links( (array) ( $fallback['bottom_links'] ?? array() ) );
+		}
+
+		$tagline = ! empty( $cms_footer['brand_description'] )
+			? (string) $cms_footer['brand_description']
+			: (string) ( $fallback['brand']['tagline'] ?? SettingsService::tagline_fallback() );
 
 		return array(
-			'quick_links'  => NavigationService::menu( 'footer' ),
-			'items'        => $this->resolve_route_links( (array) ( $footer['items'] ?? array() ) ),
-			'bottom_links' => $this->resolve_url_links( (array) ( $footer['bottom_links'] ?? array() ) ),
-			'tagline'      => (string) ( $footer['brand']['tagline'] ?? SettingsService::tagline_fallback() ),
-			'brand_bg'     => (string) ( $footer['brand']['bg_image'] ?? '' ),
+			'columns'      => $columns,
+			'quick_links'  => ! empty( $columns ) ? ( $columns[0]['items'] ?? array() ) : $this->resolve_url_links( (array) ( $fallback['quick_links'] ?? array() ) ),
+			'legal_links'  => $legal_links,
+			'tagline'      => $tagline,
+			'brand_bg'     => (string) ( $fallback['brand']['bg_image'] ?? '' ),
+			'watermark'    => (string) ( $fallback['brand']['watermark'] ?? 'assets/images/backgrounds/pure_sugarcane_forest_trees_engraving.jpg' ),
+			'standards'    => (array) ( $fallback['standards'] ?? array() ),
 			'labels'       => array(
-				'quick_links' => (string) ( $labels['quick_links_heading'] ?? '' ),
-				'items'       => (string) ( $labels['items_heading'] ?? '' ),
-				'contact'     => (string) ( $labels['contact_heading'] ?? '' ),
-				'rights'      => (string) ( $labels['rights_text'] ?? '' ),
+				'quick_links' => (string) ( $labels['quick_links_heading'] ?? 'QUICK LINKS' ),
+				'contact'     => (string) ( $labels['contact_heading'] ?? 'CONTACT US' ),
+				'rights'      => (string) ( $labels['rights_text'] ?? 'All Rights Reserved.' ),
 			),
 			'phone'        => SettingsService::phone(),
 			'email'        => SettingsService::email(),

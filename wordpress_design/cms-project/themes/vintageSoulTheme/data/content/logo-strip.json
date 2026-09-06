@@ -1,16 +1,9 @@
 {
+    "_source": "Logos now come from the CMS Featured In admin (admin.php?page=ah-featured-in) - create a section there with Section ID matching \"cms_section_id\" below (or edit cms_section_id here to match whatever Section ID you use). \"items\" is intentionally empty; it's only a fallback for if that section doesn't exist yet. tag/title/sub stay here as the static section header text.",
     "tag": "In Good Company",
     "title": "AS FEATURED &amp; <em>Trusted By</em>",
     "sub": "Proudly recognized by leading culinary & cultural establishments across London.",
     "marquee": true,
-    "items": [
-        { "name": "LONDON BOROUGH OF SUTTON", "image": "assets/images/partners/lb-sutton-council.svg", "subtitle": "Local Authority", "url": "https://www.sutton.gov.uk" },
-        { "name": "FOOD HYGIENE RATING", "image": "assets/images/certifications/food-hygiene-rating-5.png", "subtitle": "5 Star Rating", "url": "https://ratings.food.gov.uk" },
-        { "name": "SOIL ASSOCIATION", "image": "assets/images/partners/soil-association.svg", "subtitle": "Organic Partner", "url": "https://www.soilassociation.org" },
-        { "name": "BBC GOOD FOOD", "image": "assets/images/partners/bbc-good-food.svg", "subtitle": "Featured Stalls", "url": "https://www.bbcgoodfood.com" },
-        { "name": "TIME OUT LONDON", "image": "assets/images/partners/timeout-london.svg", "subtitle": "Editor's Pick", "url": "https://www.timeout.com/london" },
-        { "name": "BOROUGH MARKET", "image": "assets/images/partners/borough-market.svg", "subtitle": "London", "url": "https://boroughmarket.org.uk" },
-        { "name": "SLOW FOOD UK", "image": "assets/images/partners/slow-food.svg", "subtitle": "Heritage Choice", "url": "https://www.slowfood.org.uk" },
-        { "name": "THE GROCER", "image": "assets/images/partners/the-grocer.svg", "subtitle": "UK Food & Drink", "url": "https://www.thegrocer.co.uk" }
-    ]
+    "cms_section_id": "partners",
+    "items": []
 }

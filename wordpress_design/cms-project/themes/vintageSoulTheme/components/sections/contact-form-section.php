@@ -40,58 +40,75 @@ $hours        = (string) ( $hours ?? ( $c_info['hours'] ?? SettingsService::open
 		<div class="contact-home-grid">
 			<!-- Left: Form -->
 			<div class="contact-home-form-card">
-				<form class="vintage-form" method="post" action="#">
-					<div class="form-row form-row--duo">
-						<div class="form-group">
-							<label class="form-label" for="home-contact-name">YOUR NAME <span class="required">*</span></label>
-							<input class="form-input" type="text" id="home-contact-name" name="name" placeholder="e.g. Ramesh Patel" required>
-						</div>
-						<div class="form-group">
-							<label class="form-label" for="home-contact-phone">PHONE NUMBER <span class="required">*</span></label>
-							<input class="form-input" type="tel" id="home-contact-phone" name="phone" placeholder="+44 7770 000 000" required>
-						</div>
-					</div>
+				<?php
+				$active_form_key      = (string) ( $form_key ?? 'contact' );
+				$rendered_plugin_form = \VintageSoul\Services\Plugins\FormBridgeService::render( $active_form_key );
+				$active_form_cfg      = \VintageSoul\Services\Plugins\FormBridgeService::get_form_config( $active_form_key );
+				$active_agr           = (array) ( $active_form_cfg['agreement'] ?? array() );
 
-					<div class="form-row form-row--duo">
+				if ( ! empty( $rendered_plugin_form ) ) :
+					echo $rendered_plugin_form; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				else :
+				?>
+					<form class="vintage-form" method="post" action="#">
+						<div class="form-row form-row--duo">
+							<div class="form-group">
+								<label class="form-label" for="home-contact-name">YOUR NAME <span class="required">*</span></label>
+								<input class="form-input" type="text" id="home-contact-name" name="name" placeholder="e.g. Ramesh Patel" required>
+							</div>
+							<div class="form-group">
+								<label class="form-label" for="home-contact-phone">PHONE NUMBER <span class="required">*</span></label>
+								<input class="form-input" type="tel" id="home-contact-phone" name="phone" placeholder="+44 7770 000 000" required>
+							</div>
+						</div>
+
+						<div class="form-row form-row--duo">
+							<div class="form-group">
+								<label class="form-label" for="home-contact-email">EMAIL <span class="required">*</span></label>
+								<input class="form-input" type="email" id="home-contact-email" name="email" placeholder="you@example.com" required>
+							</div>
+							<div class="form-group">
+								<label class="form-label" for="home-contact-type">ENQUIRY TYPE</label>
+								<select class="form-select" id="home-contact-type" name="enquiry_type">
+									<?php foreach ( (array) ( $contact_data['enquiry_types'] ?? array() ) as $eq ) : ?>
+										<option value="<?php echo esc_attr( (string) ( $eq['value'] ?? 'general' ) ); ?>"><?php echo esc_html( (string) ( $eq['label'] ?? '' ) ); ?></option>
+									<?php endforeach; ?>
+								</select>
+							</div>
+						</div>
+
 						<div class="form-group">
-							<label class="form-label" for="home-contact-email">EMAIL <span class="required">*</span></label>
-							<input class="form-input" type="email" id="home-contact-email" name="email" placeholder="you@example.com" required>
+							<label class="form-label" for="home-contact-message">YOUR MESSAGE <span class="required">*</span></label>
+							<textarea class="form-textarea" id="home-contact-message" name="message" rows="3" placeholder="Tell us about your event, question, or enquiry..." required></textarea>
 						</div>
-						<div class="form-group">
-							<label class="form-label" for="home-contact-type">ENQUIRY TYPE</label>
-							<select class="form-select" id="home-contact-type" name="enquiry_type">
-								<?php foreach ( (array) ( $contact_data['enquiry_types'] ?? array() ) as $eq ) : ?>
-									<option value="<?php echo esc_attr( (string) ( $eq['value'] ?? 'general' ) ); ?>"><?php echo esc_html( (string) ( $eq['label'] ?? '' ) ); ?></option>
-								<?php endforeach; ?>
-							</select>
+
+						<?php if ( ! empty( $active_agr['enabled'] ) ) : ?>
+							<div class="form-group form-group--agree">
+								<label class="form-checkbox-label" for="home-contact-agree">
+									<input type="checkbox" class="form-checkbox" id="home-contact-agree" name="agree" required checked>
+									<span class="form-checkbox-text">
+										<?php echo esc_html( (string) ( $active_agr['before'] ?? 'I agree to the' ) ); ?>
+										<a href="<?php echo esc_url( (string) ( $active_agr['url'] ?? '/privacy-policy' ) ); ?>" target="_blank" rel="noopener">
+											<?php echo esc_html( (string) ( $active_agr['link_text'] ?? 'Privacy Policy' ) ); ?>
+										</a>
+										<?php echo esc_html( (string) ( $active_agr['after'] ?? '' ) ); ?>
+									</span>
+								</label>
+							</div>
+						<?php endif; ?>
+
+						<div class="form-actions">
+							<button class="btn btn--submit-inquiry" type="submit">
+								<span class="btn__text">SEND YOUR MESSAGE</span>
+								<span class="btn__arrow" aria-hidden="true">→</span>
+							</button>
+							<div class="form-note">
+								<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#caa06d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+								<span>We never share your details. Zero spam.</span>
+							</div>
 						</div>
-					</div>
-
-					<div class="form-group">
-						<label class="form-label" for="home-contact-message">YOUR MESSAGE <span class="required">*</span></label>
-						<textarea class="form-textarea" id="home-contact-message" name="message" rows="3" placeholder="Tell us about your event, question, or enquiry..." required></textarea>
-					</div>
-
-					<div class="form-group form-group--agree">
-						<label class="form-checkbox-label" for="home-contact-agree">
-							<input type="checkbox" class="form-checkbox" id="home-contact-agree" name="agree" required checked>
-							<span class="form-checkbox-text">
-								I agree to the <a href="<?php echo esc_url( home_url( '/privacy' ) ); ?>" target="_blank" rel="noopener">Privacy Policy</a> &amp; consent to The Cane House contacting me regarding my enquiry.
-							</span>
-						</label>
-					</div>
-
-					<div class="form-actions">
-						<button class="btn btn--submit-inquiry" type="submit">
-							<span class="btn__text">SEND YOUR MESSAGE</span>
-							<span class="btn__arrow" aria-hidden="true">→</span>
-						</button>
-						<div class="form-note">
-							<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#caa06d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-							<span>We never share your details. Zero spam.</span>
-						</div>
-					</div>
-				</form>
+					</form>
+				<?php endif; ?>
 			</div>
 
 			<!-- Right: Quick Contact Info -->

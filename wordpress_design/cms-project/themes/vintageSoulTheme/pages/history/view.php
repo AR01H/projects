@@ -53,6 +53,7 @@ $deckled_edge_url    = UrlHelper::resolve( 'assets/images/textures/border/deckle
 				'title' => (string) ( $hero['title'] ?? '' ),
 				'sub'   => (string) ( $hero['sub'] ?? '' ),
 				'image' => (string) ( $hero['image'] ?? 'assets/images/backgrounds/pure_sugarcane_forest_trees_engraving.jpg' ),
+				'video' => (string) ( $hero['video'] ?? '' ),
 			)
 		);
 		?>
