@@ -1,159 +1,164 @@
 {
     "meta": {
-        "page_title": "How It Works — ADVAITH HOMES",
-        "meta_description": "Discover how ADVAITH HOMES guides you from your very first question to the right property result. A clear, human, pressure-free journey."
+        "page_title": "Your Journey With Us — ADVAITH HOMES",
+        "meta_description": "Discover how ADVAITH HOMES works with genuine buyers to find and secure the right UK property. Expert, independent guidance dedicated to serious homebuyers."
     },
     "breadcrumb": [
         { "label": "Home",         "url": "/" },
-        { "label": "How It Works", "url": null }
+        { "label": "Your Journey With Us", "url": null }
     ],
     "hero": {
         "title":       "Your Journey With Us",
-        "description": "From the first moment you think about moving, to the day you have exactly the right result — we are with you every step. Jargon-free, pressure-free, and genuinely on your side.",
+        "description": "From the moment you are ready to buy, to the day you secure your property — we work with genuine buyers every step of the way. Clear, independent, and dedicated to getting you results.",
         "bg_icon":     "🤝",
         "trust_items": [
-            { "icon": "✅", "label": "No Obligation",   "note": "Step away at any point, no pressure ever" },
-            { "icon": "🤝", "label": "Personalised",   "note": "Matched to your exact situation" },
+            { "icon": "🎯", "label": "Serious Buyers", "note": "Dedicated service for committed property buyers" },
+            { "icon": "🤝", "label": "Personalised",   "note": "Matched to your exact purchase criteria" },
             { "icon": "🛡️", "label": "Independent",    "note": "Never tied to one lender or agent" },
-            { "icon": "⚡", "label": "Fast Response",  "note": "We aim to reply the same day" }
+            { "icon": "⚡", "label": "Fast Response",  "note": "Priority assistance for active buyers" }
         ]
     },
     "stats": {
         "items": [
-            { "number": "5",     "label": "Clear Steps",         "sub": "From first message to the right result" },
-            { "number": "1",     "label": "Simple First Form",   "sub": "10 minutes is all it takes to start" },
-            { "number": "24hrs", "label": "Avg. First Response", "sub": "We move quickly when you reach out" },
+            { "number": "5",     "label": "Clear Steps",         "sub": "From initial brief to final completion" },
+            { "number": "1",     "label": "Direct Brief",        "sub": "Clear requirements so we act immediately" },
+            { "number": "24hrs", "label": "Fast Response",       "sub": "Quick action for serious buyers" },
             { "number": "100%",  "label": "Independent Advice",  "sub": "Never tied to any lender or agent" }
         ]
+    },
+    "commitment_notice": {
+        "icon":  "fa-solid fa-bullseye",
+        "badge": "For Serious Buyers",
+        "text":  "If you are a serious buyer, <b>talk to us to save time</b>. We cut out unnecessary delays and focus 100% on getting you straight to <b>holding your keys</b>."
     },
     "process": {
         "eyebrow":        "The Journey, Step by Step",
         "heading":        "From first contact to the right result",
-        "subheading":     "Here is exactly what happens when you reach out. No jargon, no pressure, no surprises — just a clear path forward.",
+        "subheading":     "A structured, transparent roadmap designed to make buying your UK property effortless, accurate, and stress-free.",
         "highlight_step": 3,
-        "trust_note":     "No obligation at any stage. You are always free to step away.",
+        "trust_note":     "Dedicated to genuine property buyers ready to find and secure their home.",
         "steps": [
             {
                 "number":      "01",
                 "icon":        "fa-regular fa-comment-dots",
                 "title":       "Reach Out",
-                "description": "One message is all it takes. Tell us a little about your situation — no long forms, no commitment.",
+                "description": "Tell us what you're looking for — your preferred location, budget, and ideal property style.",
                 "url":         "/contact/",
-                "cta_label":   "Send Us a Message",
+                "cta_label":   "Start Your Search",
                 "points": [
-                    "Contact us by form, phone or WhatsApp — whichever suits you best",
-                    "A few sentences about your situation or property goal is all you need",
-                    "100% confidential, personal, and zero obligation to continue"
+                    "Fast, direct contact via form, phone, or WhatsApp",
+                    "Share your key criteria, target timeline, and budget",
+                    "Strictly confidential with instant specialist attention"
                 ]
             },
             {
                 "number":      "02",
                 "icon":        "fa-regular fa-comments",
                 "title":       "We Listen First",
-                "description": "A friendly conversation with a real team member — not a sales pitch or script. We understand your goals before offering guidance."
-                
+                "description": "A focused 1-on-1 consultation to understand your exact preferences, financing position, and priorities."
             },
             {
                 "number":      "03",
                 "icon":        "fa-regular fa-file-lines",
                 "title":       "You Fill In the Form",
-                "description": "We send over a short requirement form so we have all the details in writing, ready to act on.",
+                "description": "A quick 5-minute requirement brief that puts your wishlist into writing so our team can act immediately.",
                 "points": [
-                    "A straightforward 5-minute requirement form tailored to your goals",
-                    "Captures your essential criteria, location priorities, and financing status",
-                    "Gives our research team the complete picture to begin immediate investigation"
+                    "Quick 5-minute brief capturing your must-haves and nice-to-haves",
+                    "Clarifies location boundaries, property types, and budget limits",
+                    "Gives our research team everything needed to start searching"
                 ]
             },
             {
                 "number":      "04",
                 "icon":        "fa-solid fa-magnifying-glass",
                 "title":       "We Investigate Your Requirement",
-                "description": "Our team researches and works through everything needed to match your requirement — properties, experts, paperwork, whatever it takes.",
-                "points": [
-                    "Tailored market research matching your exact property criteria and budget",
-                    "Direct coordination with vetted UK solicitors, lenders, and surveyors",
-                    "Complete paperwork and progress tracking handled on your behalf",
-                    "Regular, transparent, jargon-free updates at every key milestone"
+                "description": "We search the market, vet properties, and coordinate with trusted solicitors and lenders to find your perfect match.",
+                "cards": [
+                    {
+                        "icon":  "fa-solid fa-magnifying-glass",
+                        "title": "Bespoke Market Search",
+                        "text":  "In-depth research matching your exact lifestyle, budget, and location criteria."
+                    },
+                    {
+                        "icon":  "fa-regular fa-handshake",
+                        "title": "Vetted Professional Network",
+                        "text":  "Seamless coordination with trusted UK solicitors, mortgage brokers, and surveyors."
+                    },
+                    {
+                        "icon":  "fa-regular fa-clipboard",
+                        "title": "Paperwork & Legal Tracking",
+                        "text":  "Full document management and progress tracking handled from day one."
+                    },
+                    {
+                        "icon":  "fa-regular fa-bell",
+                        "title": "Milestone Updates",
+                        "text":  "Real-time, transparent updates so you always know where your purchase stands."
+                    }
                 ]
             },
             {
                 "number":      "05",
                 "icon":        "fa-regular fa-circle-check",
                 "title":       "You Get the Right Result",
-                "description": "Clear recommendations delivered on your terms, with continuous support from start through completion.",
+                "description": "From final negotiations and survey checks to receiving your keys — we guide you across the finish line.",
                 "points": [
-                    "Curated property options and clear, unbiased expert recommendations",
-                    "Full guidance through surveys, negotiations, and legal completion",
-                    "Ongoing dedicated support right up until you receive your keys"
+                    "Handpicked property options with unbiased expert evaluation",
+                    "Dedicated support through surveys, negotiations, and legal completion",
+                    "We stay beside you right up to key handover and move-in day"
                 ]
-            }
-        ],
-        "investigation_cards": [
-            {
-                "icon":  "fa-solid fa-magnifying-glass",
-                "title": "Bespoke Market Research",
-                "text":  "Deep search matching your exact criteria, budget, and local market trends."
-            },
-            {
-                "icon":  "fa-regular fa-handshake",
-                "title": "Vetted Professional Network",
-                "text":  "Direct coordination with trusted UK solicitors, lenders, and surveyors."
-            },
-            {
-                "icon":  "fa-regular fa-clipboard",
-                "title": "Paperwork & Progress Tracking",
-                "text":  "Complete legal documentation and progress tracked actively on your behalf."
-            },
-            {
-                "icon":  "fa-regular fa-bell",
-                "title": "Transparent Updates",
-                "text":  "Regular, jargon-free progress updates at every key milestone."
             }
         ]
     },
     "story": {
         "eyebrow": "A Story You Might Recognise",
-        "heading": "Every home journey starts with a moment like this",
-        "subheading": "You are not the first to feel this way. And you will not be the last to come out the other side.",
+        "heading": "How this 5-step journey feels in real life",
+        "subheading": "Behind every step of our structured roadmap is a real human experience. Here is how genuine buyers move from uncertainty to holding their keys.",
         "chapters": [
             {
                 "chapter_label": "The Wondering",
+                "step_ref": "Before Step 01 • The Spark",
                 "lede": "It started with a quiet thought, one afternoon.",
                 "body": "You were sitting at home — maybe with a cup of tea, maybe watching the rain on the window — and a thought crept in. \"Maybe it is time.\" Time to move. Time to buy. Time to do something. But what? And where? And how? The question was exciting and terrifying in equal measure.",
                 "mood": "contemplative"
             },
             {
                 "chapter_label": "The Confusion",
+                "step_ref": "Before Step 01 • The Search",
                 "lede": "Then came the searching. And the confusion.",
                 "body": "You typed questions into Google at 11pm. You read contradictory articles. You spoke to a mortgage broker who asked for documents you did not have. You visited estate agents who smiled too much and listened too little. The more you looked, the more overwhelming it felt. Everyone was selling something. No one was simply helping.",
                 "mood": "overwhelmed"
             },
             {
                 "chapter_label": "The Message",
+                "step_ref": "Step 01 in Action • Reach Out",
                 "lede": "Then you took one small, brave step.",
                 "body": "You sent a message. Not to a faceless form, not to a 0800 number, not to a chatbot. A real message to a real person. A few sentences about your situation. That was all. And within hours — not days — someone wrote back. Not with a brochure. With a question: \"Tell me more about what you need.\"",
                 "mood": "hopeful"
             },
             {
                 "chapter_label": "The Conversation",
+                "step_ref": "Step 02 in Action • We Listen First",
                 "lede": "Someone actually listened — properly.",
                 "body": "The call was nothing like what you expected. No pitch, no pressure, no tick-box questions. Just a real conversation. They asked about your life, your plans, what worried you. They did not pretend to have every answer. They just listened — and that, somehow, made all the difference. For the first time in weeks, you felt like you might actually be able to do this.",
                 "mood": "relief"
             },
             {
                 "chapter_label": "The Clarity",
+                "step_ref": "Steps 03 & 04 in Action • Direct Search & Legal Coordination",
                 "lede": "And suddenly, there was a path.",
                 "body": "Not a complicated plan full of jargon. A simple, clear next step. Then the one after that. The paperwork made sense. The professionals were vetted and recommended. The timeline was real. You did not have to chase anyone or juggle multiple conversations. One team. One point of contact. Everything handled.",
                 "mood": "clarity"
             },
             {
                 "chapter_label": "The Keys",
+                "step_ref": "Step 05 in Action • The Right Result",
                 "lede": "The right result arrived — on your terms.",
                 "body": "The moment it all came together felt quieter than you expected. Not dramatic — just right. The keys in your hand. The box on the doorstep. The feeling that every step of the journey, however uncertain, had led here. And you had not done it alone.",
                 "mood": "achievement"
             },
             {
                 "chapter_label": "Your Chapter",
+                "step_ref": "Your Turn • Step 01 Starts Here",
                 "lede": "Now it is your turn to begin.",
                 "body": "Your story starts exactly the same way every one of ours did — with a single message. No obligation. No pressure. No commitment. Just a conversation with a real person who is genuinely on your side. That first step is smaller than you think.",
                 "cta": { "label": "Write Your First Message", "url": "/contact/" },
@@ -211,9 +216,9 @@
         "heading": "You are always in control",
         "items": [
             {
-                "icon":  "fa-solid fa-compass",
-                "title": "You Set the Pace",
-                "body":  "Move at a speed that suits your life. Whether you are ready to act immediately or simply exploring your possibilities, we guide you on your terms with zero rush."
+                "icon":  "fa-solid fa-bullseye",
+                "title": "Action-Oriented Focus",
+                "body":  "We dedicate our full time and resources to clients who are actively looking to buy, ensuring fast responses, in-depth research, and tangible results."
             },
             {
                 "icon":  "fa-solid fa-lock",
@@ -227,21 +232,20 @@
             },
             {
                 "icon":  "fa-solid fa-users",
-                "title": "Real People, Real Answers",
-                "body":  "You speak to a real team member every time — not a bot, not a script, not a call centre. We treat every person and every situation as individual."
+                "title": "Real Experts, Direct Answers",
+                "body":  "You speak directly to experienced property specialists — no bots, no scripts, no runarounds. Every client receives direct, professional attention."
             }
         ]
     },
     "cta_banner": {
-        "eyebrow":  "Ready when you are",
-        "heading":  "Your journey starts with one message",
-        "body":     "Tell us a little about your situation and we will take it from there. No commitment, no pressure — just a real conversation with someone genuinely on your side.",
+        "eyebrow":  "Ready to Make Your Move?",
+        "heading":  "Let’s find and secure your next home",
+        "body":     "If you are actively looking to buy property in the UK, get in touch with our team. We provide dedicated research and expert representation to make your purchase successful.",
         "trust_items": [
+            { "icon": "fa-solid fa-bullseye",      "text": "Dedicated Buyer Service" },
             { "icon": "fa-solid fa-shield-halved", "text": "100% Independent Advice" },
-            { "icon": "fa-solid fa-lock",           "text": "Completely Confidential" },
-            { "icon": "fa-solid fa-bolt",           "text": "Fast, Friendly Response" }
+            { "icon": "fa-solid fa-bolt",           "text": "Fast Specialist Response" }
         ],
-        "cta_primary":   { "label": "Send Your First Message", "url": "/contact/" },
-        "cta_secondary": { "label": "Read Our FAQs",           "url": "/faqs/" }
+        "cta_primary":   { "label": "Start Your Property Search", "url": "/contact/" }
     }
 }

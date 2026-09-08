@@ -59,21 +59,22 @@ class HowItWorksContext {
 		}
 
 		$result = array(
-			'meta'            => isset( $data['meta'] )           ? (array) $data['meta']           : array(),
-			'breadcrumb'      => isset( $data['breadcrumb'] )     ? (array) $data['breadcrumb']     : array(),
-			'hero'            => isset( $data['hero'] )           ? (array) $data['hero']           : array(),
-			'stats'           => isset( $data['stats'] )          ? (array) $data['stats']          : array(),
-			'process'         => isset( $data['process'] )        ? (array) $data['process']        : array(),
-			'story'           => isset( $data['story'] )          ? (array) $data['story']          : array(),
-			'benefits'        => isset( $data['benefits'] )       ? (array) $data['benefits']       : array(),
-			'comparison'      => isset( $data['comparison'] )     ? (array) $data['comparison']     : array(),
-			'fit_check'       => isset( $data['fit_check'] )      ? (array) $data['fit_check']      : array(),
-			'why_choose'      => isset( $data['why_choose'] )     ? (array) $data['why_choose']     : array(),
-			'trust_callout'   => isset( $data['trust_callout'] )  ? (array) $data['trust_callout']  : array(),
-			'faq_teaser'      => isset( $data['faq_teaser'] )     ? (array) $data['faq_teaser']     : array(),
-			'cta_banner'      => isset( $data['cta_banner'] )     ? (array) $data['cta_banner']     : array(),
-			'contact_sidebar' => $contact_sidebar,
-			'chrome'          => $chrome,
+			'meta'              => isset( $data['meta'] )              ? (array) $data['meta']              : array(),
+			'breadcrumb'        => isset( $data['breadcrumb'] )        ? (array) $data['breadcrumb']        : array(),
+			'hero'              => isset( $data['hero'] )              ? (array) $data['hero']              : array(),
+			'stats'             => isset( $data['stats'] )             ? (array) $data['stats']             : array(),
+			'commitment_notice' => isset( $data['commitment_notice'] ) ? (array) $data['commitment_notice'] : array(),
+			'process'           => isset( $data['process'] )           ? (array) $data['process']           : array(),
+			'story'             => isset( $data['story'] )             ? (array) $data['story']             : array(),
+			'benefits'          => isset( $data['benefits'] )          ? (array) $data['benefits']          : array(),
+			'comparison'        => isset( $data['comparison'] )        ? (array) $data['comparison']        : array(),
+			'fit_check'         => isset( $data['fit_check'] )         ? (array) $data['fit_check']         : array(),
+			'why_choose'        => isset( $data['why_choose'] )        ? (array) $data['why_choose']        : array(),
+			'trust_callout'     => isset( $data['trust_callout'] )     ? (array) $data['trust_callout']     : array(),
+			'faq_teaser'        => isset( $data['faq_teaser'] )        ? (array) $data['faq_teaser']        : array(),
+			'cta_banner'        => isset( $data['cta_banner'] )        ? (array) $data['cta_banner']        : array(),
+			'contact_sidebar'   => $contact_sidebar,
+			'chrome'            => $chrome,
 		);
 
 		self::cacheSet( $cache_key, $result );

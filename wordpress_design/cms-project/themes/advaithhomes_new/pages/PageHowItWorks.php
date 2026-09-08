@@ -44,6 +44,15 @@ adn_page_open( $_open_ctx );
 	<?php adn_component( 'sections/animated_stat_strip', array( 'stats' => $ctx['stats'] ) ); ?>
 <?php endif; ?>
 
+<?php /* ============================== BUYER COMMITMENT NOTICE (STANDALONE) ============================== */ ?>
+<?php if ( ! empty( $ctx['commitment_notice']['text'] ) ) : ?>
+<section class="hiw-commitment-notice-section">
+	<div class="container">
+		<?php adn_component( 'parts/commitment_notice', array( 'notice' => $ctx['commitment_notice'] ) ); ?>
+	</div>
+</section>
+<?php endif; ?>
+
 <?php /* ============================== PROCESS — expandable step cards ============================== */ ?>
 <?php if ( ! empty( $ctx['process']['steps'] ) ) : ?>
 	<?php adn_component( 'sections/step_timeline', array( 'timeline' => $ctx['process'] ) ); ?>

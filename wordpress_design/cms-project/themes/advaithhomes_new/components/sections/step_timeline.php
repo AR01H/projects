@@ -62,17 +62,19 @@ $_anim_bg    = get_template_directory_uri() . '/assets/images/backgrounds/hiw-pr
                 $_dsc      = esc_html( isset( $_s['description'] ) ? (string) $_s['description'] : '' );
                 $_url      = isset( $_s['url'] ) ? (string) $_s['url'] : '';
                 $_cta_lbl  = esc_html( isset( $_s['cta_label'] ) ? (string) $_s['cta_label'] : 'Get started' );
-                $_points   = isset( $_s['points'] ) && is_array( $_s['points'] ) ? $_s['points'] : array();
-                $_feat_cards = isset( $_t['investigation_cards'] ) && is_array( $_t['investigation_cards'] ) ? $_t['investigation_cards'] : array();
-                $_is_investigate = ( 3 === $_i || '04' === $_num ) && ! empty( $_feat_cards );
-                $_side     = ( 0 === $_i % 2 ) ? 'hiw-step--left' : 'hiw-step--right';
-                $_last     = ( $_i === count( $_steps ) - 1 );
-                $_is_hi    = ( $_highlight >= 0 && $_i === $_highlight );
-                $_has_exp  = ! empty( $_points ) || $_is_investigate;
-                $_card_cls = 'hiw-step-card';
+                $_points     = isset( $_s['points'] ) && is_array( $_s['points'] ) ? $_s['points'] : array();
+                $_step_cards = isset( $_s['cards'] ) && is_array( $_s['cards'] ) 
+                    ? $_s['cards'] 
+                    : ( ( 3 === $_i || '04' === $_num ) && isset( $_t['investigation_cards'] ) && is_array( $_t['investigation_cards'] ) ? $_t['investigation_cards'] : array() );
+                $_has_cards  = ! empty( $_step_cards );
+                $_side       = ( 0 === $_i % 2 ) ? 'hiw-step--left' : 'hiw-step--right';
+                $_last       = ( $_i === count( $_steps ) - 1 );
+                $_is_hi      = ( $_highlight >= 0 && $_i === $_highlight );
+                $_has_exp    = ! empty( $_points ) || $_has_cards;
+                $_card_cls   = 'hiw-step-card';
                 if ( $_is_hi )   { $_card_cls .= ' hiw-step-card--highlight'; }
                 if ( $_has_exp ) { $_card_cls .= ' hiw-step-card--expandable'; }
-                $_exp_id   = $_uniq . '-exp-' . $_i;
+                $_exp_id     = $_uniq . '-exp-' . $_i;
             ?>
             <div class="hiw-step <?php echo esc_attr( $_side ); ?><?php echo $_last ? ' hiw-step--last' : ''; ?>">
                 <div class="hiw-step-node<?php echo $_is_hi ? ' hiw-step-node--highlight' : ''; ?>">
@@ -122,10 +124,10 @@ $_anim_bg    = get_template_directory_uri() . '/assets/images/backgrounds/hiw-pr
                              id="<?php echo esc_attr( $_exp_id ); ?>"
                              role="region"
                              aria-hidden="true">
-                            <?php if ( $_is_investigate ) : ?>
+                            <?php if ( $_has_cards ) : ?>
                             <div class="hiw-step-mini-grid">
                                 <?php
-                                foreach ( $_feat_cards as $_ci => $_fc ) :
+                                foreach ( $_step_cards as $_ci => $_fc ) :
                                     $_fc_ico = isset( $_fc['icon'] ) ? (string) $_fc['icon'] : 'fa-solid fa-check';
                                     $_fc_ttl = isset( $_fc['title'] ) ? (string) $_fc['title'] : '';
                                     $_fc_txt = isset( $_fc['text'] ) ? (string) $_fc['text'] : '';
@@ -139,7 +141,7 @@ $_anim_bg    = get_template_directory_uri() . '/assets/images/backgrounds/hiw-pr
                                 </div>
                                 <?php endforeach; ?>
                             </div>
-                            <?php else : ?>
+                            <?php elseif ( ! empty( $_points ) ) : ?>
                             <ul class="hiw-step-points">
                                 <?php foreach ( $_points as $_pt ) : ?>
                                 <li><?php echo esc_html( (string) $_pt ); ?></li>

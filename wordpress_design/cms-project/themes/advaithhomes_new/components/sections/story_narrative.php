@@ -98,13 +98,14 @@ $_uniq = 'sn-' . substr( md5( uniqid( '', true ) ), 0, 6 );
                 $_lede  = isset( $_ch['lede'] )          ? (string) $_ch['lede']          : '';
                 $_body  = isset( $_ch['body'] )           ? (string) $_ch['body']           : '';
                 $_cta   = isset( $_ch['cta'] ) && is_array( $_ch['cta'] ) ? $_ch['cta'] : array();
-                $_label = isset( $_ch['chapter_label'] )  ? (string) $_ch['chapter_label']  : '';
-                $_mood  = isset( $_ch['mood'] )            ? (string) $_ch['mood']            : '';
-                $_img   = isset( $_imgs[ $_i ] )           ? $_imgs[ $_i ]                    : '';
-                $_num   = str_pad( (string) ( $_i + 1 ), 2, '0', STR_PAD_LEFT );
-                $_last  = ( $_i === count( $_chapters ) - 1 );
-                $_flip  = ( 0 !== $_i % 2 ) ? ' sn-chapter--flip' : '';
-                $_mcls  = ( '' !== $_mood && isset( $_mood_class[ $_mood ] ) ) ? ' ' . $_mood_class[ $_mood ] : '';
+                $_label    = isset( $_ch['chapter_label'] ) ? (string) $_ch['chapter_label'] : '';
+                $_step_ref = isset( $_ch['step_ref'] )      ? (string) $_ch['step_ref']      : '';
+                $_mood     = isset( $_ch['mood'] )           ? (string) $_ch['mood']           : '';
+                $_img      = isset( $_imgs[ $_i ] )          ? $_imgs[ $_i ]                   : '';
+                $_num      = str_pad( (string) ( $_i + 1 ), 2, '0', STR_PAD_LEFT );
+                $_last     = ( $_i === count( $_chapters ) - 1 );
+                $_flip     = ( 0 !== $_i % 2 ) ? ' sn-chapter--flip' : '';
+                $_mcls     = ( '' !== $_mood && isset( $_mood_class[ $_mood ] ) ) ? ' ' . $_mood_class[ $_mood ] : '';
             ?>
             <article class="sn-chapter<?php echo $_flip . $_mcls . ( $_last ? ' sn-chapter--last' : '' ); ?>"
                      data-sn-idx="<?php echo (int) $_i; ?>">
@@ -141,6 +142,12 @@ $_uniq = 'sn-' . substr( md5( uniqid( '', true ) ), 0, 6 );
                 <?php /* ── Text panel ───────────────────────────────── */ ?>
                 <div class="sn-text-col">
                     <div class="sn-text-inner">
+                        <?php if ( '' !== $_step_ref ) : ?>
+                        <div class="sn-step-ref" aria-label="<?php echo esc_attr( $_step_ref ); ?>">
+                            <span class="sn-step-ref-icon" aria-hidden="true"><?php echo adn_icon( 'fa-solid fa-route' ); ?></span>
+                            <span class="sn-step-ref-text"><?php echo esc_html( $_step_ref ); ?></span>
+                        </div>
+                        <?php endif; ?>
                         <?php if ( '' !== $_label ) : ?>
                         <span class="sn-chapter-label"><?php echo esc_html( $_label ); ?></span>
                         <?php endif; ?>
