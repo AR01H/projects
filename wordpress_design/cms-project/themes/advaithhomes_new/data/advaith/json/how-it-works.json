@@ -201,7 +201,6 @@
                     "100% independent advice with zero tied agenda",
                     "Single dedicated contact from first step to keys",
                     "Jargon-free guidance and full coordination",
-                    "Pressure-free: pause or step away with no obligation",
                     "Fast, friendly response from experienced specialists"
                 ]
             }
@@ -244,10 +243,5 @@
         ],
         "cta_primary":   { "label": "Send Your First Message", "url": "/contact/" },
         "cta_secondary": { "label": "Read Our FAQs",           "url": "/faqs/" }
-    },
-    "contact_sidebar": {
-        "phone":    "+44 (0) 123 456 7890",
-        "email":    "hello@advaithhomes.co.uk",
-        "whatsapp": "+44 (0) 123 456 7890"
     }
 }
