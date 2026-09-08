@@ -25,6 +25,9 @@ class ADN_JSON_Reader extends ADN_Data_Reader {
 			return array();
 		}
 
+		// Strip UTF-8 Byte Order Mark (BOM) if present.
+		$content = preg_replace( '/^\xEF\xBB\xBF/', '', $content );
+
 		$decoded = json_decode( $content, true );
 		return ( JSON_ERROR_NONE === json_last_error() && is_array( $decoded ) )
 			? $decoded

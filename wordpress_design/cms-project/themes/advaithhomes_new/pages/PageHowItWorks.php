@@ -2,16 +2,14 @@
 /**
  * Template Name: How It Works
  *
- * pages/PageHowItWorks.php - "How It Works" process explainer page.
+ * pages/PageHowItWorks.php
  *
- * Architecture:
- *   data/json/how-it-works.json
- *     → apis/services.php  adn_service_how_it_works_data()
- *       → src/Feature/HowItWorks/Service/HowItWorksContext.php
- *         → THIS FILE (structure only)
+ * Sections (render order):
+ *   page_hero  →  animated_stat_strip  →  step_timeline (expandable cards)
+ *   →  story_narrative (cinematic)  →  two_column_compare (fit_check)
+ *   →  cta_banner  →  trust_callout  →  faqs_footer (CMS-backed)
  *
- * RULE: No hardcoded content or data reads here - only structure.
- * RULE: Header/footer come from header.php / footer.php via get_header() / get_footer().
+ * RULE: No hardcoded content here — structure only.
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -46,53 +44,24 @@ adn_page_open( $_open_ctx );
 	<?php adn_component( 'sections/animated_stat_strip', array( 'stats' => $ctx['stats'] ) ); ?>
 <?php endif; ?>
 
-<?php /* ============================== PROCESS (graphical step timeline) ============================== */ ?>
+<?php /* ============================== PROCESS — expandable step cards ============================== */ ?>
 <?php if ( ! empty( $ctx['process']['steps'] ) ) : ?>
 	<?php adn_component( 'sections/step_timeline', array( 'timeline' => $ctx['process'] ) ); ?>
 <?php endif; ?>
 
-<?php /* ============================== YOUR STORY (editorial narrative sequence) ============================== */ ?>
+<?php /* ============================== STORY — cinematic chapter sequence ============================== */ ?>
 <?php if ( ! empty( $ctx['story']['chapters'] ) ) : ?>
 	<?php adn_component( 'sections/story_narrative', array( 'story' => $ctx['story'] ) ); ?>
 <?php endif; ?>
 
-<?php /* ============================== WHAT YOU GET (benefits) ============================== */ ?>
-<?php if ( ! empty( $ctx['benefits']['items'] ) ) : ?>
-	<?php adn_component( 'sections/icon_feature_grid', array( 'grid' => $ctx['benefits'] ) ); ?>
-<?php endif; ?>
-
-<?php /* ============================== COMPARISON (alone vs with us) ============================== */ ?>
-<?php if ( ! empty( $ctx['comparison'] ) ) : ?>
-	<?php adn_component( 'sections/two_column_compare', array( 'compare' => $ctx['comparison'] ) ); ?>
-<?php endif; ?>
-
-<?php /* ============================== WHY CHOOSE US ============================== */ ?>
-<?php if ( ! empty( $ctx['why_choose'] ) ) : ?>
-	<?php adn_component( 'sections/icon_feature_grid', array( 'grid' => $ctx['why_choose'] ) ); ?>
-<?php endif; ?>
-
-<?php /* ============================== CLIENT REVIEWS (same source/model + markup as
-        the Home page carousel - kept out of the cached Context on purpose:
-        render_carousel_card() requires a real object, and ADN_Cache's JSON
-        round-trip would decode it back into a plain array on a cache hit) ============================== */ ?>
-<?php
-$_hiw_reviews = class_exists( 'AH_Reviews_Model' ) ? ( new AH_Reviews_Model() )->get_carousel_reviews( 50 ) : array();
-if ( ! empty( $_hiw_reviews ) ) :
-?>
-	<section class="reviews-carousel-section hiw-reviews-section">
-		<div class="container">
-			<?php adn_component( 'sections/reviews_carousel', array( 'reviews' => array(
-				'items'   => $_hiw_reviews,
-				'heading' => 'What Our Clients Say',
-			) ) ); ?>
-		</div>
-	</section>
-<?php endif; ?>
-
-<?php /* ============================== IS THIS FOR YOU? (final self-check before
-        the ask, so people only come to us once they're sure) ============================== */ ?>
+<?php /* ============================== IS THIS RIGHT FOR YOU? ============================== */ ?>
 <?php if ( ! empty( $ctx['fit_check'] ) ) : ?>
 	<?php adn_component( 'sections/two_column_compare', array( 'compare' => $ctx['fit_check'] ) ); ?>
+<?php endif; ?>
+
+<?php /* ============================== TRUST CALLOUT (animated "Why It's Safe to Start" info strip) ============================== */ ?>
+<?php if ( ! empty( $ctx['trust_callout']['items'] ) ) : ?>
+	<?php adn_component( 'sections/trust_callout', array( 'callout' => $ctx['trust_callout'] ) ); ?>
 <?php endif; ?>
 
 <?php /* ============================== CTA ============================== */ ?>
@@ -102,23 +71,22 @@ if ( ! empty( $_hiw_reviews ) ) :
 	</div>
 <?php endif; ?>
 
-<?php /* ============================== FAQ teaser -> /faqs/ ============================== */ ?>
-<?php if ( ! empty( $ctx['faq_teaser']['cta']['url'] ) ) : ?>
+<?php /* ============================== FAQs (CMS-backed: only ones attached to this page) ============================== */ ?>
+<?php
+$_hiw_faqs = function_exists( 'adn_get_page_faqs_grouped' ) ? adn_get_page_faqs_grouped( adn_get_cms_page_id( 'how-it-works' ), false ) : array();
+if ( ! empty( $_hiw_faqs ) ) :
+?>
+<div class="hiw-faqs-section-wrap">
 	<div class="container">
-		<div class="hiw-faq-teaser">
-			<span class="hiw-faq-teaser-icon" aria-hidden="true"><?php echo adn_icon( 'fa-solid fa-circle-question' ); ?></span>
-			<span class="hiw-faq-teaser-text"><?php echo esc_html( isset( $ctx['faq_teaser']['text'] ) ? (string) $ctx['faq_teaser']['text'] : '' ); ?></span>
-			<a href="<?php echo esc_url( adn_link( $ctx['faq_teaser']['cta']['url'] ) ); ?>" class="hiw-faq-teaser-link">
-				<?php echo esc_html( isset( $ctx['faq_teaser']['cta']['label'] ) ? (string) $ctx['faq_teaser']['cta']['label'] : '' ); ?> →
-			</a>
-		</div>
+		<?php adn_component( 'parts/section_headers/eyebrow_heading', array(
+			'eyebrow'       => 'Common Questions',
+			'heading'       => 'Frequently Asked Questions',
+			'wrapper_class' => 'hiw-faqs-header',
+		) ); ?>
+		<?php adn_component( 'sections/faqs_footer', array( 'groups' => $_hiw_faqs ) ); ?>
 	</div>
+</div>
 <?php endif; ?>
-
-<?php /* ============================== FAQs (only ones attached to this page) ============================== */ ?>
-<?php adn_component( 'sections/faqs_footer', array(
-	'groups' => adn_get_page_faqs_grouped( adn_get_cms_page_id( 'how-it-works' ), false ),
-) ); ?>
 
 <?php adn_page_close( $ctx ); ?>
 
