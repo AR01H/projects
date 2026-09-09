@@ -546,7 +546,7 @@
 
         var ctaHtml = '' +
             '<section class="adn-dynamic-cta-section hiw-mini-cta-section" style="opacity: 0; transition: opacity 0.4s ease;">' +
-                '<div class="container">' +
+                '<div>' +
                     '<aside class="ah-random-mini-cta ah-random-mini-cta--' + colorName + ' ah-random-mini-cta--' + id + '" style="--ah-cta-color: ' + color + ';" aria-label="' + (heading || 'Featured Guidance') + '">' +
                         '<div class="ah-mini-cta__bg" aria-hidden="true">' +
                             '<span class="ah-mini-cta__glow"></span>' +
