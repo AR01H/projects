@@ -88,13 +88,24 @@ h1, h2, h3, h4 {
 }
 
 /* Section h2 gold underline */
-.section-header-wrap h2::after {
+.section-header-wrap {
+    text-align: center !important;
+    max-width: 720px;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+.section-header-wrap h2,
+.section-header-wrap .contact-section-heading {
+    text-align: center !important;
+}
+.section-header-wrap h2::after,
+.section-header-wrap .contact-section-heading::after {
     content: '';
-    display: block;
-    width: 32px;
+    display: block !important;
+    width: 36px;
     height: 2px;
     background: var(--secondary-color);
-    margin-top: 8px;
+    margin: 8px auto 0 !important;
     border-radius: 2px;
 }
 
@@ -432,12 +443,15 @@ a.mini-card:hover .mini-card-title { color: var(--client-color) !important; }
 
 /* ─── 15a. Section header underline — shimmer gold + glow ────── */
 .section-header > h2::after,
-.section-header-wrap > h2::after {
+.section-header-wrap > h2::after,
+.section-header-wrap .contact-section-heading::after {
     width: 40px !important;
     height: 3px !important;
     background: linear-gradient(90deg, #c9a84c 0%, #f0d080 50%, #c9a84c 100%) !important;
     box-shadow: 0 0 10px rgba(201,168,76,.55) !important;
     border-radius: 3px !important;
+    margin: 8px auto 0 !important;
+    display: block !important;
 }
 .section-header--center > h2::after { margin: 6px auto 0 !important; }
 

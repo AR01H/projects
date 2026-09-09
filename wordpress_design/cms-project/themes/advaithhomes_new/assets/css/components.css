@@ -2,6 +2,36 @@
    Component styles (loaded site-wide)
    ============================================ */
 
+/* ── Section Header Component (.section-header-wrap) ── */
+.section-header-wrap {
+	text-align: center;
+	max-width: 720px;
+	margin: 0 auto 24px;
+	position: relative;
+	z-index: 1;
+}
+.section-header-wrap .contact-section-heading,
+.section-header-wrap > h2 {
+	text-align: center;
+	position: relative;
+	margin: 0 0 6px;
+}
+.section-header-wrap .contact-section-heading::after,
+.section-header-wrap > h2::after {
+	content: '';
+	display: block;
+	width: 44px;
+	height: 3px;
+	background: linear-gradient(90deg, #c9a84c 0%, #f0d080 50%, #c9a84c 100%);
+	border-radius: 2px;
+	margin: 8px auto 0;
+}
+.section-header-wrap .section-subheading {
+	text-align: center;
+	margin: 10px auto 0;
+	max-width: 680px;
+}
+
 /* ── Form Builder (.adn-form) ─────────────── */
 .adn-form {
 	max-width: 640px;
