@@ -435,6 +435,22 @@
 
     /* ---------- Dynamic Random Mini CTA Injector (Universal Sitewide) ---------- */
     function initRandomMiniCtaInjector() {
+        // Never inject inside iframes, embedded frames, or embed query modes
+        try {
+            if (window.self !== window.top || window.frameElement) {
+                return;
+            }
+        } catch (err) {
+            return; // Cross-origin iframe execution
+        }
+
+        if (window.location.search.indexOf('embed=') !== -1 || 
+            window.location.search.indexOf('preview_mode=') !== -1 || 
+            document.documentElement.classList.contains('is-embed') || 
+            document.body.classList.contains('is-embed')) {
+            return;
+        }
+
         var ctas = window.ADN_RANDOM_CTAS;
         if (!ctas || !Array.isArray(ctas) || ctas.length === 0) { return; }
 
@@ -478,26 +494,10 @@
             }
         }
 
-        // 3. Fallback for single blog posts / text pages with only .article-body
+        // 3. Strict Guard: If there are NO candidate content sections below hero/marquee, do NOT inject CTA
         if (candidates.length === 0) {
-            var articleBodies = document.querySelectorAll('.article-body, .entry-content, .single-article-content');
-            for (var b = 0; b < articleBodies.length; b++) {
-                var bodyEl = articleBodies[b];
-                var paragraphs = bodyEl.querySelectorAll('p, h2, h3, blockquote');
-                if (paragraphs.length >= 3) {
-                    var midIdx = Math.min(Math.floor(paragraphs.length / 2), 3);
-                    if (paragraphs[midIdx]) {
-                        candidates.push(paragraphs[midIdx]);
-                        break;
-                    }
-                } else if (bodyEl.offsetHeight > 60) {
-                    candidates.push(bodyEl);
-                    break;
-                }
-            }
+            return;
         }
-
-        if (candidates.length === 0) { return; }
 
         // 4. Intelligently pick an intermediate section at random
         var targetIndex = 0;

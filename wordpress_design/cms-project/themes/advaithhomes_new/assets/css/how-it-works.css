@@ -2251,14 +2251,7 @@
     .hiw-compare-col--highlighted { transform: none; }
 }
 
-/* ── Client Reviews Carousel on How It Works ────────────────────────── */
-.reviews-carousel-section {
-    background: linear-gradient(180deg, #f9f8f5 0%, #fefdfc 50%, #f9f8f5 100%);
-    border-top: 1px solid rgba(201, 168, 76, 0.20);
-    border-bottom: 1px solid rgba(201, 168, 76, 0.20);
-    position: relative;
-    overflow: hidden;
-}
+
 
 /* ── Luxury Centered CTA Banner on How It Works ─────────────────────── */
 .hiw-cta-wrap {

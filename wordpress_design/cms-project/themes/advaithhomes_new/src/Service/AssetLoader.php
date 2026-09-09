@@ -211,12 +211,16 @@ class AssetLoader {
 		);
 
 		// Localize random CTA messages for dynamic random placement (100% DB-driven)
+		// Skip entirely if in embed or preview mode
+		$is_embed = \is_embed() || ! empty( $_GET['embed'] ) || ! empty( $_GET['preview_mode'] );
 		$ctas_data = [];
-		if ( class_exists( 'ADN_Additionals_Handler' ) ) {
-			$ctas_data = \ADN_Additionals_Handler::get_active_ctas();
-		} else {
-			$saved = \get_option( 'ah_random_cta_messages', [] );
-			$ctas_data = \is_array( $saved ) ? $saved : [];
+		if ( ! $is_embed ) {
+			if ( class_exists( 'ADN_Additionals_Handler' ) ) {
+				$ctas_data = \ADN_Additionals_Handler::get_active_ctas();
+			} else {
+				$saved = \get_option( 'ah_random_cta_messages', [] );
+				$ctas_data = \is_array( $saved ) ? $saved : [];
+			}
 		}
 
 		\wp_add_inline_script(

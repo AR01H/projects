@@ -24,6 +24,11 @@ if ( class_exists( 'ADN_Additionals_Handler' ) && ! ADN_Additionals_Handler::is_
 	return;
 }
 
+// Never render inside iframe/embed modes
+if ( is_embed() || ! empty( $_GET['embed'] ) || ! empty( $_GET['preview_mode'] ) ) {
+	return;
+}
+
 // 1. Resolve CTA item (passed explicitly or randomly chosen from active pool)
 $_item = isset( $cta ) && is_array( $cta ) ? $cta : null;
 
