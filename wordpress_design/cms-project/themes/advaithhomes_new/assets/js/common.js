@@ -447,7 +447,9 @@
         if (window.location.search.indexOf('embed=') !== -1 || 
             window.location.search.indexOf('preview_mode=') !== -1 || 
             document.documentElement.classList.contains('is-embed') || 
-            document.body.classList.contains('is-embed')) {
+            document.body.classList.contains('is-embed') ||
+            document.body.classList.contains('error404') ||
+            document.querySelector('.adn-404-page, .error-404')) {
             return;
         }
 
@@ -465,15 +467,15 @@
         // Reference top boundary: latest top element
         var topBoundaryEl = marqueeEl || heroEl || headerEl;
 
-        // 2. Discover all candidate content sections on the page
-        var allSections = Array.prototype.slice.call(document.querySelectorAll('section, main > div, .page-wrapper > div, article > div, .guidance-main-layout, .faqs-page-layout, .guides-hub-layout'));
+        // 2. Discover all candidate content sections on the page (strictly sections / layout blocks)
+        var allSections = Array.prototype.slice.call(document.querySelectorAll('section, .guidance-main-layout, .faqs-page-layout, .guides-hub-layout'));
         var candidates = [];
 
         for (var i = 0; i < allSections.length; i++) {
             var el = allSections[i];
 
-            // Exclude header, footer, hero, marquee, newsletter, modal, or popups
-            if (el.closest('header, footer, .site-header, .site-footer, .main-footer, .newsletter-cta, .cta-banner, .modal, .cookie-consent-banner')) {
+            // Exclude header, footer, 404, hero, marquee, newsletter, modal, or popups
+            if (el.closest('.adn-404-page, .error-404, header, footer, .site-header, .site-footer, .main-footer, .newsletter-cta, .cta-banner, .modal, .cookie-consent-banner')) {
                 continue;
             }
             if (el.classList.contains('page-hero') || el.classList.contains('hero-home') || el.classList.contains('home-hero') || el.classList.contains('hero-banner') || el.classList.contains('hero-diagram-mobile') || el.classList.contains('newsletter-cta') || el.classList.contains('marquee-wrapper') || el.classList.contains('point-marque')) {

@@ -211,10 +211,10 @@ class AssetLoader {
 		);
 
 		// Localize random CTA messages for dynamic random placement (100% DB-driven)
-		// Skip entirely if in embed or preview mode
-		$is_embed = \is_embed() || ! empty( $_GET['embed'] ) || ! empty( $_GET['preview_mode'] );
+		// Skip entirely if in 404, search, embed, or preview mode
+		$is_disabled_context = \is_404() || \is_search() || \is_embed() || ! empty( $_GET['embed'] ) || ! empty( $_GET['preview_mode'] );
 		$ctas_data = [];
-		if ( ! $is_embed ) {
+		if ( ! $is_disabled_context ) {
 			if ( class_exists( 'ADN_Additionals_Handler' ) ) {
 				$ctas_data = \ADN_Additionals_Handler::get_active_ctas();
 			} else {
