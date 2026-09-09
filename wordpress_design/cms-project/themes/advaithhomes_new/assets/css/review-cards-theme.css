@@ -366,8 +366,6 @@
 /* Carousel wrapper & track */
 .rvc-carousel {
 	position: relative;
-	margin-top: 12px;
-	padding: 10px 4px 16px;
 	z-index: 1;
 }
 
