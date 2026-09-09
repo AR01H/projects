@@ -10,29 +10,680 @@
  */
 
 .ah-review-card {
-	--rv-accent: var(--client-color);
-	--rv-gold:   var(--secondary-color);
-	--rv-border: var(--color-border);
-	--rv-ink:    var(--text-primary);
-	--rv-muted:  var(--text-muted);
+	--rv-accent: var(--client-color, #1a3c5e);
+	--rv-gold:   var(--secondary-color, #c9a84c);
+	--rv-border: var(--color-border, #e6e2db);
+	--rv-ink:    var(--text-primary, #1c160f);
+	--rv-muted:  var(--text-muted, #716b64);
 }
 
-/* Client-color stars site-wide, in place of the plugin's generic amber -
-   every star sits on a white/light card face, so this is safe everywhere
-   (nothing currently puts a star rating on a dark gradient back face). */
-.ah-review-card .ah-rv-stars { color: var(--rv-accent); }
+/* Client-color / Gold stars site-wide */
+.ah-review-card .ah-rv-stars {
+	color: #e5a93b;
+	letter-spacing: 2px;
+}
 
-/* Quote glyphs pick up the gold accent instead of amber. */
+.ah-rv-star--filled {
+	color: #e5a93b;
+	text-shadow: 0 1px 3px rgba(229, 169, 59, 0.35);
+}
+.ah-rv-star--empty {
+	color: #d8d3cb;
+}
+
+/* Quote glyphs pick up the gold accent */
 .ah-review-card--big .ah-rv-text::before,
 .ah-review-card--with-photos .ah-rv-text::before,
-.ah-review-card--full-story .ah-rv-text::before,
-.ah-review-card--carousel .ah-rv-text::before {
+.ah-review-card--full-story .ah-rv-text::before {
 	color: var(--rv-gold);
 	opacity: .55;
 }
 
-/* Names in the two largest layouts pick up the site's display serif. */
+/* Names in the larger layouts pick up the site's display serif. */
 .ah-review-card--big .ah-rv-name,
-.ah-review-card--full-story .ah-rv-name {
-	font-family: var(--font-display);
+.ah-review-card--full-story .ah-rv-name,
+.ah-review-card--carousel .ah-rv-name {
+	font-family: var(--font-display, Georgia, serif);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   LUXURY CAROUSEL REVIEW CARD STYLING
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.ah-review-card--carousel {
+	position: relative;
+	width: 360px;
+	min-width: 340px;
+	max-width: 380px;
+	flex: 0 0 auto;
+	box-sizing: border-box;
+	background: linear-gradient(165deg, #ffffff 0%, #faf8f5 55%, #f5efe6 100%);
+	border-radius: 22px;
+	padding: 22px 20px 20px;
+	border: 1.5px solid rgba(201, 168, 76, 0.32);
+	box-shadow: 0 10px 30px -4px rgba(30, 58, 47, 0.07), 0 1px 3px rgba(0, 0, 0, 0.02), inset 0 1px 1px rgba(255, 255, 255, 0.95);
+	display: flex;
+	flex-direction: column;
+	text-align: left;
+	overflow: hidden;
+	transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.35s ease;
+}
+
+.ah-review-card--carousel:hover {
+	transform: translateY(-8px);
+	border-color: rgba(201, 168, 76, 0.70);
+	box-shadow: 0 20px 48px -8px rgba(30, 58, 47, 0.15), 0 0 0 1.5px rgba(201, 168, 76, 0.45), inset 0 1px 1px rgba(255, 255, 255, 1);
+}
+
+/* Ambient watermark quote mark */
+.ah-review-card--carousel .ah-rv-quote-mark {
+	position: absolute;
+	top: 14px;
+	right: 18px;
+	font-size: 4.8rem;
+	line-height: 0.8;
+	font-family: var(--font-display, Georgia, serif);
+	color: var(--secondary-color, #c9a84c);
+	opacity: 0.09;
+	pointer-events: none;
+	user-select: none;
+	transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.ah-review-card--carousel:hover .ah-rv-quote-mark {
+	opacity: 0.18;
+	transform: scale(1.08) translateY(-2px);
+}
+
+/* Card Header & Author Info */
+.ah-review-card--carousel .ah-rv-head {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 12px;
+	position: relative;
+	z-index: 2;
+}
+
+.ah-rv-author-left {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	min-width: 0;
+	flex: 1;
+}
+
+.ah-review-card--carousel .ah-rv-avatar {
+	width: 48px;
+	height: 48px;
+	border-radius: 50%;
+	object-fit: cover;
+	border: 2px solid #ffffff;
+	box-shadow: 0 3px 10px rgba(0, 0, 0, 0.10);
+	flex-shrink: 0;
+}
+
+.ah-review-card--carousel .ah-rv-avatar--initial {
+	width: 48px;
+	height: 48px;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: linear-gradient(135deg, #1e3a2f 0%, #2d5c42 100%);
+	color: #f6d899;
+	font-weight: 700;
+	font-size: 1.18rem;
+	font-family: var(--font-display, Georgia, serif);
+	border: 2px solid rgba(201, 168, 76, 0.45);
+	box-shadow: 0 3px 10px rgba(30, 58, 47, 0.15);
+	flex-shrink: 0;
+}
+
+.ah-review-card--carousel .ah-rv-author-info {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	min-width: 0;
+	flex: 1;
+}
+
+.ah-review-card--carousel .ah-rv-name {
+	margin: 0;
+	font-family: var(--font-display, Georgia, serif);
+	font-size: 1.02rem;
+	font-weight: 700;
+	color: #111827;
+	line-height: 1.25;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.ah-review-card--carousel .ah-rv-meta-row {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	flex-wrap: wrap;
+	margin-top: 1px;
+}
+
+.ah-review-card--carousel .ah-rv-title {
+	font-size: 0.80rem;
+	color: #6b7280;
+	font-weight: 500;
+	line-height: 1.2;
+}
+
+/* Top-Right Expand Icon Button */
+.ah-rv-expand-icon-btn {
+	width: 32px;
+	height: 32px;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: #ffffff;
+	border: 1.5px solid rgba(201, 168, 76, 0.38);
+	color: var(--client-color, #1e3a2f);
+	box-shadow: 0 2px 8px rgba(30, 58, 47, 0.06);
+	cursor: pointer;
+	transition: all 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+	flex-shrink: 0;
+	margin-left: 8px;
+	padding: 0;
+	position: relative;
+	z-index: 2;
+}
+
+.ah-rv-expand-icon-btn svg {
+	width: 13px;
+	height: 13px;
+	transition: transform 0.22s ease;
+}
+
+.ah-rv-expand-icon-btn:hover {
+	background: var(--client-color, #1e3a2f);
+	color: #ffffff;
+	border-color: var(--client-color, #1e3a2f);
+	transform: scale(1.12);
+	box-shadow: 0 4px 14px rgba(30, 58, 47, 0.25);
+}
+
+.ah-rv-expand-icon-btn:hover svg {
+	transform: scale(1.15);
+}
+
+/* Rating Strip (Stars + Score) */
+.ah-rv-rating-strip {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin-bottom: 10px;
+	position: relative;
+	z-index: 1;
+}
+
+.ah-rv-rating-strip .ah-rv-stars {
+	display: flex;
+	gap: 2.5px;
+	font-size: 0.98rem;
+}
+
+.ah-rv-rating-score {
+	font-size: 0.82rem;
+	font-weight: 700;
+	color: #92400e;
+	background: rgba(245, 158, 11, 0.12);
+	padding: 1px 7px;
+	border-radius: 10px;
+}
+
+/* Review Story Body */
+.ah-rv-body {
+	flex-grow: 1;
+	margin-bottom: 0;
+	position: relative;
+	z-index: 1;
+}
+
+.ah-review-card--carousel .ah-rv-text {
+	margin: 0;
+	font-size: 0.92rem;
+	line-height: 1.66;
+	color: #374151;
+	font-style: normal;
+	display: -webkit-box;
+	-webkit-line-clamp: 4;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+
+.ah-review-card--carousel .ah-rv-text::before {
+	display: none;
+}
+
+/* Inline Read More Link */
+.ah-rv-inline-more {
+	background: none;
+	border: none;
+	padding: 0;
+	margin-left: 5px;
+	font-size: 0.84rem;
+	font-weight: 700;
+	color: var(--secondary-color, #c9a84c);
+	cursor: pointer;
+	display: inline;
+	transition: color 0.18s ease;
+	font-family: inherit;
+}
+
+.ah-rv-inline-more:hover {
+	color: var(--client-color, #1e3a2f);
+	text-decoration: underline;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   REVIEWS CAROUSEL CONTAINER & CONTROLS
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.rvc-container-wrap {
+	position: relative;
+	width: 100%;
+	text-align: center;
+	padding: 10px 0;
+}
+
+/* Ambient glow effects */
+.rvc-bg {
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+	overflow: hidden;
+	z-index: 0;
+}
+
+.rvc-orb {
+	position: absolute;
+	border-radius: 50%;
+	filter: blur(75px);
+	opacity: 0.35;
+	animation: rvc-orb-pulse 10s ease-in-out infinite alternate;
+}
+
+.rvc-orb--1 {
+	width: 320px;
+	height: 320px;
+	top: -40px;
+	left: -40px;
+	background: radial-gradient(circle, rgba(201, 168, 76, 0.3) 0%, transparent 70%);
+}
+
+.rvc-orb--2 {
+	width: 360px;
+	height: 360px;
+	bottom: -40px;
+	right: -40px;
+	background: radial-gradient(circle, rgba(26, 60, 94, 0.22) 0%, transparent 70%);
+	animation-delay: 5s;
+}
+
+@keyframes rvc-orb-pulse {
+	0% { transform: scale(1) translate(0, 0); }
+	100% { transform: scale(1.18) translate(15px, -15px); }
+}
+
+/* Trust metric strip */
+.rvc-trust-strip {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	margin: 0 auto 24px;
+	padding: 7px 18px;
+	background: #ffffff;
+	border: 1px solid rgba(201, 168, 76, 0.35);
+	border-radius: 30px;
+	box-shadow: 0 4px 16px rgba(28, 22, 15, 0.05);
+	font-size: 0.85rem;
+	color: var(--text-primary, #1c160f);
+	position: relative;
+	z-index: 1;
+}
+
+.rvc-trust-stars {
+	color: #e5a93b;
+	font-size: 1.05rem;
+	letter-spacing: 2px;
+	text-shadow: 0 1px 2px rgba(229, 169, 59, 0.3);
+}
+
+.rvc-trust-text strong {
+	color: var(--client-color, #1a3c5e);
+	font-weight: 700;
+}
+
+/* Carousel wrapper & track */
+.rvc-carousel {
+	position: relative;
+	margin-top: 12px;
+	padding: 10px 4px 16px;
+	z-index: 1;
+}
+
+.rvc-carousel__track {
+	display: flex;
+	gap: 20px;
+	overflow-x: auto;
+	scroll-snap-type: x mandatory;
+	-webkit-overflow-scrolling: touch;
+	scrollbar-width: none;
+	padding: 8px 4px;
+}
+
+.rvc-carousel__track::-webkit-scrollbar {
+	display: none;
+}
+
+.rvc-carousel__track > * {
+	scroll-snap-align: start;
+}
+
+/* Carousel Prev/Next Buttons */
+.rvc-carousel__btn {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	z-index: 3;
+	width: 44px;
+	height: 44px;
+	border-radius: 50%;
+	border: 1.5px solid rgba(201, 168, 76, 0.35);
+	background: #ffffff;
+	box-shadow: 0 4px 18px rgba(0, 0, 0, 0.12);
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+	color: var(--client-color, #1a3c5e);
+}
+
+.rvc-carousel__btn:hover {
+	background: var(--client-color, #1a3c5e);
+	color: #ffffff;
+	border-color: var(--client-color, #1a3c5e);
+	box-shadow: 0 8px 24px rgba(26, 60, 94, 0.25);
+	transform: translateY(-50%) scale(1.08);
+}
+
+.rvc-carousel__btn svg {
+	width: 18px;
+	height: 18px;
+}
+
+.rvc-carousel__btn--prev { left: -14px; }
+.rvc-carousel__btn--next { right: -14px; }
+
+.rvc-carousel__btn[disabled],
+.rvc-carousel__btn.rvc-hidden {
+	opacity: 0;
+	pointer-events: none;
+}
+
+/* Carousel Dots */
+.rvc-carousel__dots {
+	display: none;
+	justify-content: center;
+	align-items: center;
+	gap: 8px;
+	margin-top: 16px;
+}
+
+.rvc-carousel__dot {
+	width: 8px;
+	height: 8px;
+	border-radius: 10px;
+	background: rgba(28, 22, 15, 0.18);
+	border: none;
+	cursor: pointer;
+	padding: 0;
+	transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.rvc-carousel__dot--active {
+	width: 26px;
+	background: var(--secondary-color, #c9a84c);
+}
+
+@media (max-width: 782px) {
+	.rvc-carousel__btn { display: none; }
+	.rvc-carousel__dots.is-available { display: flex; }
+	.ah-review-card--carousel {
+		width: 290px;
+		min-width: 280px;
+		padding: 20px 18px 18px;
+	}
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   FULL REVIEW STORY TEXT MODAL (POPUP)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.ah-rv-text-modal {
+	position: fixed;
+	inset: 0;
+	z-index: 999999 !important;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 24px 16px;
+	box-sizing: border-box;
+	opacity: 0;
+	visibility: hidden;
+	pointer-events: none;
+	transition: opacity 0.3s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.3s;
+}
+
+.ah-rv-text-modal.is-open {
+	opacity: 1;
+	visibility: visible;
+	pointer-events: auto;
+	z-index: 999999 !important;
+}
+
+/* Dark Frosted Glass Backdrop Overlay */
+.ah-rv-text-modal-backdrop {
+	position: fixed;
+	inset: 0;
+	background: rgba(15, 23, 20, 0.72);
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+	z-index: 1;
+}
+
+/* Modal Popup Card Panel */
+.ah-rv-text-modal-panel {
+	position: relative;
+	z-index: 2;
+	width: 100%;
+	max-width: 620px;
+	max-height: 86vh;
+	overflow-y: auto;
+	box-sizing: border-box;
+	background: #ffffff;
+	background: linear-gradient(160deg, #ffffff 0%, #faf8f5 100%);
+	border-radius: 24px;
+	padding: 36px 32px 32px;
+	border: 1.5px solid rgba(201, 168, 76, 0.40);
+	box-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.40), 0 0 0 1px rgba(255, 255, 255, 0.9) inset;
+	transform: scale(0.92) translateY(16px);
+	transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+	scrollbar-width: thin;
+	scrollbar-color: rgba(201, 168, 76, 0.4) transparent;
+}
+
+.ah-rv-text-modal.is-open .ah-rv-text-modal-panel {
+	transform: scale(1) translateY(0);
+}
+
+/* Close Button */
+.ah-rv-text-modal-close {
+	position: absolute;
+	top: 18px;
+	right: 18px;
+	width: 36px;
+	height: 36px;
+	border-radius: 50%;
+	background: #f4f1ea;
+	border: 1px solid rgba(28, 22, 15, 0.10);
+	color: var(--text-primary, #1c160f);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	transition: all 0.22s ease;
+	z-index: 10;
+	padding: 0;
+}
+
+.ah-rv-text-modal-close:hover {
+	background: var(--client-color, #1a3c5e);
+	color: #ffffff;
+	border-color: var(--client-color, #1a3c5e);
+	transform: rotate(90deg) scale(1.08);
+}
+
+.ah-rv-text-modal-close svg {
+	width: 18px;
+	height: 18px;
+}
+
+/* Modal Internal Elements */
+.ah-rv-text-modal-body {
+	position: relative;
+	text-align: left;
+}
+
+.ah-rv-modal-quote-mark {
+	position: absolute;
+	top: -12px;
+	right: 32px;
+	font-size: 6.5rem;
+	line-height: 0.8;
+	font-family: var(--font-display, Georgia, serif);
+	color: var(--secondary-color, #c9a84c);
+	opacity: 0.12;
+	pointer-events: none;
+	user-select: none;
+}
+
+.ah-rv-modal-head {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	margin-bottom: 16px;
+	padding-bottom: 16px;
+	border-bottom: 1px solid rgba(201, 168, 76, 0.22);
+	position: relative;
+	z-index: 1;
+}
+
+.ah-rv-modal-avatar {
+	width: 54px;
+	height: 54px;
+	border-radius: 50%;
+	object-fit: cover;
+	border: 2px solid #ffffff;
+	box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+	flex-shrink: 0;
+}
+
+.ah-rv-modal-avatar.ah-rv-avatar--initial {
+	width: 54px;
+	height: 54px;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: linear-gradient(135deg, #1e3a2f 0%, #2d5c42 100%);
+	color: #f6d899;
+	font-weight: 700;
+	font-size: 1.35rem;
+	font-family: var(--font-display, Georgia, serif);
+	border: 2px solid rgba(201, 168, 76, 0.45);
+	box-shadow: 0 3px 10px rgba(30, 58, 47, 0.15);
+	flex-shrink: 0;
+}
+
+.ah-rv-modal-author-info {
+	display: flex;
+	flex-direction: column;
+	gap: 3px;
+	min-width: 0;
+	flex: 1;
+}
+
+.ah-rv-modal-name {
+	margin: 0;
+	font-family: var(--font-display, Georgia, serif);
+	font-size: 1.25rem;
+	font-weight: 700;
+	color: #111827;
+	line-height: 1.25;
+}
+
+.ah-rv-modal-meta-row {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	flex-wrap: wrap;
+	margin-top: 2px;
+}
+
+.ah-rv-modal-title {
+	font-size: 0.86rem;
+	color: #6b7280;
+	font-weight: 500;
+	line-height: 1.2;
+}
+
+.ah-rv-modal-stars {
+	margin-bottom: 18px;
+	display: flex;
+	gap: 4px;
+	font-size: 1.15rem;
+	color: #e5a93b;
+	position: relative;
+	z-index: 1;
+}
+
+.ah-rv-modal-text {
+	font-size: 1rem;
+	line-height: 1.75;
+	color: var(--text-primary, #2b251e);
+	position: relative;
+	z-index: 1;
+}
+
+.ah-rv-modal-text p {
+	margin: 0 0 16px;
+}
+
+.ah-rv-modal-text p:last-child {
+	margin-bottom: 0;
+}
+
+@media (max-width: 600px) {
+	.ah-rv-text-modal-panel {
+		padding: 26px 20px 22px;
+		border-radius: 18px;
+	}
+	.ah-rv-modal-name {
+		font-size: 1.10rem;
+	}
+	.ah-rv-modal-text {
+		font-size: 0.94rem;
+		line-height: 1.65;
+	}
 }

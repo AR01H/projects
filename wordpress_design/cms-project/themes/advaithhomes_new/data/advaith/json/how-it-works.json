@@ -20,7 +20,7 @@
     },
     "stats": {
         "items": [
-            { "number": "5",     "label": "Clear Steps",         "sub": "From initial brief to final completion" },
+            { "number": "4",     "label": "Clear Steps",         "sub": "From initial brief to moving into your home" },
             { "number": "1",     "label": "Direct Brief",        "sub": "Clear requirements so we act immediately" },
             { "number": "24hrs", "label": "Fast Response",       "sub": "Quick action for serious buyers" },
             { "number": "100%",  "label": "Independent Advice",  "sub": "Never tied to any lender or agent" }
@@ -33,10 +33,11 @@
     },
     "process": {
         "eyebrow":        "The Journey, Step by Step",
-        "heading":        "From first contact to the right result",
+        "heading":        "From first contact to holding your keys & beyond",
         "subheading":     "A structured, transparent roadmap designed to make buying your UK property effortless, accurate, and stress-free.",
-        "highlight_step": 3,
-        "trust_note":     "Dedicated to genuine property buyers ready to find and secure their home.",
+        "auto_expand":    true,
+        "highlight_step": 2,
+        "trust_note":     "Dedicated to genuine property buyers ready to find, secure, and settle into their home.",
         "steps": [
             {
                 "number":      "01",
@@ -54,30 +55,29 @@
             {
                 "number":      "02",
                 "icon":        "fa-regular fa-comments",
-                "title":       "We Listen First",
-                "description": "A focused 1-on-1 consultation to understand your exact preferences, financing position, and priorities."
-            },
-            {
-                "number":      "03",
-                "icon":        "fa-regular fa-file-lines",
-                "title":       "You Fill In the Form",
-                "description": "A quick 5-minute requirement brief that puts your wishlist into writing so our team can act immediately.",
+                "title":       "Free 30-Min 1-on-1 Consultation",
+                "description": "We contact you back for a dedicated, free 30-minute consultation to understand your exact preferences, financing position, and priorities.",
                 "points": [
-                    "Quick 5-minute brief capturing your must-haves and nice-to-haves",
-                    "Clarifies location boundaries, property types, and budget limits",
-                    "Gives our research team everything needed to start searching"
+                    "Free 30-minute one-to-one consultation with a property specialist",
+                    "Discuss your budget, mortgage readiness, and preferred locations",
+                    "Zero sales pressure — just honest, expert advice tailored to your goals"
                 ]
             },
             {
-                "number":      "04",
+                "number":      "03",
                 "icon":        "fa-solid fa-magnifying-glass",
-                "title":       "We Investigate Your Requirement",
-                "description": "We search the market, vet properties, and coordinate with trusted solicitors and lenders to find your perfect match.",
+                "title":       "We Onboard & Investigate Your Requirement",
+                "description": "We onboard you into our dedicated buyer service, search the entire market, vet properties, and coordinate with trusted solicitors and lenders.",
                 "cards": [
+                    {
+                        "icon":  "fa-solid fa-user-check",
+                        "title": "Dedicated Buyer Onboarding",
+                        "text":  "Structured setup with a dedicated property specialist who manages your search from day one."
+                    },
                     {
                         "icon":  "fa-solid fa-magnifying-glass",
                         "title": "Bespoke Market Search",
-                        "text":  "In-depth research matching your exact lifestyle, budget, and location criteria."
+                        "text":  "In-depth research matching your exact lifestyle, budget, and location criteria across the entire market."
                     },
                     {
                         "icon":  "fa-regular fa-handshake",
@@ -97,14 +97,31 @@
                 ]
             },
             {
-                "number":      "05",
-                "icon":        "fa-regular fa-circle-check",
-                "title":       "You Get the Right Result",
-                "description": "From final negotiations and survey checks to receiving your keys — we guide you across the finish line.",
-                "points": [
-                    "Handpicked property options with unbiased expert evaluation",
-                    "Dedicated support through surveys, negotiations, and legal completion",
-                    "We stay beside you right up to key handover and move-in day"
+                "number":      "04",
+                "icon":        "fa-solid fa-key",
+                "title":       "The Right Result & Post-Buying Support",
+                "description": "From securing your home and receiving your keys to full post-purchase moving support, vetted packers & movers, and trusted repair contractors.",
+                "cards": [
+                    {
+                        "icon":  "fa-solid fa-key",
+                        "title": "Keys in Hand & Legal Completion",
+                        "text":  "Dedicated guidance through final surveys, price negotiations, and legal completion."
+                    },
+                    {
+                        "icon":  "fa-solid fa-truck-ramp-box",
+                        "title": "Packers & Movers Directory",
+                        "text":  "Access to our vetted network of reliable removal and moving professionals for a smooth relocation."
+                    },
+                    {
+                        "icon":  "fa-solid fa-screwdriver-wrench",
+                        "title": "Repairs & Home Setup",
+                        "text":  "Trusted contractors for repairs, renovations, interior decorating, and utility setup."
+                    },
+                    {
+                        "icon":  "fa-solid fa-headset",
+                        "title": "Ongoing Aftercare Support",
+                        "text":  "We stay by your side long after moving day for any advice, questions, or future property plans."
+                    }
                 ]
             }
         ]

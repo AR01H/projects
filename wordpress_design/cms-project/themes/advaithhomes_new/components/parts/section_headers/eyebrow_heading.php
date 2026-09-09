@@ -39,6 +39,6 @@ if ( ! empty( $wrapper_class ) ) {
 <div class="<?php echo esc_attr( $_wrap ); ?>">
 	<?php if ( '' !== $_eyb ) : ?><span class="section-eyebrow"><?php echo $_eyb; ?></span><?php endif; ?>
 	<?php if ( '' !== $_hdg ) : ?><<?php echo $_tag; ?> class="contact-section-heading"><?php echo $_hdg; ?></<?php echo $_tag; ?>><?php endif; ?>
-	<?php if ( '' !== $_sub ) : ?><p class="section-subheading hiw-process-sub"><?php echo $_sub; ?></p><?php endif; ?>
+	<?php if ( '' !== $_sub ) : ?><p class="section-subheading"><?php echo $_sub; ?></p><?php endif; ?>
 </div>
 

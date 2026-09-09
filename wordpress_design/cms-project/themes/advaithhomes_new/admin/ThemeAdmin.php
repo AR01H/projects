@@ -15,6 +15,7 @@ require_once __DIR__ . '/Handlers/HomeHandler.php';
 require_once __DIR__ . '/Handlers/CategoryHandler.php';
 require_once __DIR__ . '/Handlers/ExpertHandler.php';
 require_once __DIR__ . '/Handlers/AdminActionsHandler.php';
+require_once __DIR__ . '/Handlers/AdditionalsHandler.php';
 
 class ADN_Theme_Admin {
 
@@ -66,6 +67,14 @@ class ADN_Theme_Admin {
 		add_action( 'admin_post_adn_install_contact_rule', array( 'ADN_Admin_Actions_Handler', 'handle_install_contact_rule' ) );
 		add_action( 'admin_post_adn_clear_contact_inbox',  array( 'ADN_Admin_Actions_Handler', 'handle_clear_contact_inbox' ) );
 		add_action( 'admin_post_adn_clear_guidance_inbox', array( 'ADN_Admin_Actions_Handler', 'handle_clear_guidance_inbox' ) );
+
+		// Additionals (Random CTAs, etc.)
+		add_action( 'admin_post_adn_save_random_cta',     array( 'ADN_Additionals_Handler', 'handle_save_cta' ) );
+		add_action( 'admin_post_adn_delete_random_cta',   array( 'ADN_Additionals_Handler', 'handle_delete_cta' ) );
+		add_action( 'admin_post_adn_toggle_random_cta',   array( 'ADN_Additionals_Handler', 'handle_toggle_cta' ) );
+		add_action( 'admin_post_adn_toggle_cta_master',   array( 'ADN_Additionals_Handler', 'handle_toggle_master' ) );
+		add_action( 'admin_post_adn_reset_random_ctas',   array( 'ADN_Additionals_Handler', 'handle_reset_ctas' ) );
+		add_action( 'admin_post_adn_save_cta_settings',   array( 'ADN_Additionals_Handler', 'handle_save_settings' ) );
 	}
 
 	// ── Tab Registry ───────────────────────────────────────────────────────
@@ -124,6 +133,15 @@ class ADN_Theme_Admin {
 			'category-pages' => array(
 				'label'   => self::fa( 'fa-folder-open', __( 'Category Pages', ADN_TEXT_DOMAIN ) ),
 				'subtabs' => self::category_subtabs(),
+			),
+			'additionals' => array(
+				'label'   => self::fa( 'fa-cubes', __( 'Additionals', ADN_TEXT_DOMAIN ) ),
+				'subtabs' => array(
+					'random-ctas' => array(
+						'label' => self::fa( 'fa-shuffle', __( 'Random CTAs', ADN_TEXT_DOMAIN ) ),
+						'view'  => 'additionals/SubRandomCtas.php',
+					),
+				),
 			),
 			'admin-actions' => array(
 				'label'   => self::fa( 'fa-screwdriver-wrench', __( 'Admin Actions', ADN_TEXT_DOMAIN ) ),

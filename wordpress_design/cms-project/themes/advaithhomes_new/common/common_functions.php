@@ -41,6 +41,10 @@ function adn_render_form( $config ) {
 	\Adn\Theme\Helper\ComponentRenderer::renderForm( $config );
 }
 
+function adn_random_mini_cta( array $context = array() ) {
+	\Adn\Theme\Helper\ComponentRenderer::render( 'parts/random_mini_cta', $context );
+}
+
 // ── Media Helpers ─────────────────────────────────────────────────────────
 function adn_settings_media_url_type( $value ): array {
 	return \Adn\Theme\Helper\MediaHelper::resolveUrlType( $value );

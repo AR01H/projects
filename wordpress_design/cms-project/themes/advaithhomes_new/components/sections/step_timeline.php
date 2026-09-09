@@ -71,6 +71,7 @@ $_anim_bg    = get_template_directory_uri() . '/assets/images/backgrounds/hiw-pr
                 $_last       = ( $_i === count( $_steps ) - 1 );
                 $_is_hi      = ( $_highlight >= 0 && $_i === $_highlight );
                 $_has_exp    = ! empty( $_points ) || $_has_cards;
+                $_auto_exp   = ( ! empty( $_s['auto_expand'] ) || ! empty( $_t['auto_expand'] ) );
                 $_card_cls   = 'hiw-step-card';
                 if ( $_is_hi )   { $_card_cls .= ' hiw-step-card--highlight'; }
                 if ( $_has_exp ) { $_card_cls .= ' hiw-step-card--expandable'; }
@@ -96,7 +97,7 @@ $_anim_bg    = get_template_directory_uri() . '/assets/images/backgrounds/hiw-pr
                         <p><?php echo $_dsc; ?></p>
 
                         <?php /* Action buttons row */ ?>
-                        <?php if ( '' !== $_url || $_has_exp ) : ?>
+                        <?php if ( '' !== $_url || ( $_has_exp && ! $_auto_exp ) ) : ?>
                         <div class="hiw-step-actions">
                             <?php if ( '' !== $_url ) : ?>
                             <a href="<?php echo esc_url( adn_link( $_url ) ); ?>"
@@ -105,7 +106,7 @@ $_anim_bg    = get_template_directory_uri() . '/assets/images/backgrounds/hiw-pr
                             </a>
                             <?php endif; ?>
 
-                            <?php if ( $_has_exp ) : ?>
+                            <?php if ( $_has_exp && ! $_auto_exp ) : ?>
                             <button class="hiw-step-expand-btn"
                                     aria-expanded="false"
                                     aria-controls="<?php echo esc_attr( $_exp_id ); ?>">
@@ -118,12 +119,12 @@ $_anim_bg    = get_template_directory_uri() . '/assets/images/backgrounds/hiw-pr
                         </div>
                         <?php endif; ?>
 
-                        <?php /* Expandable details panel */ ?>
+                        <?php /* Expandable / open details panel */ ?>
                         <?php if ( $_has_exp ) : ?>
-                        <div class="hiw-step-details"
+                        <div class="hiw-step-details<?php echo $_auto_exp ? ' hiw-step-details--expanded' : ''; ?>"
                              id="<?php echo esc_attr( $_exp_id ); ?>"
                              role="region"
-                             aria-hidden="true">
+                             aria-hidden="<?php echo $_auto_exp ? 'false' : 'true'; ?>">
                             <?php if ( $_has_cards ) : ?>
                             <div class="hiw-step-mini-grid">
                                 <?php

@@ -58,14 +58,26 @@ adn_page_open( $_open_ctx );
 	<?php adn_component( 'sections/step_timeline', array( 'timeline' => $ctx['process'] ) ); ?>
 <?php endif; ?>
 
-<?php /* ============================== STORY — cinematic chapter sequence ============================== */ ?>
-<?php if ( ! empty( $ctx['story']['chapters'] ) ) : ?>
-	<?php adn_component( 'sections/story_narrative', array( 'story' => $ctx['story'] ) ); ?>
-<?php endif; ?>
-
 <?php /* ============================== IS THIS RIGHT FOR YOU? ============================== */ ?>
 <?php if ( ! empty( $ctx['fit_check'] ) ) : ?>
 	<?php adn_component( 'sections/two_column_compare', array( 'compare' => $ctx['fit_check'] ) ); ?>
+<?php endif; ?>
+
+<?php /* ============================== CLIENT REVIEWS ============================== */ ?>
+<?php
+$_hiw_reviews = class_exists( 'AH_Reviews_Model' ) ? ( new AH_Reviews_Model() )->get_carousel_reviews( 8 ) : array();
+if ( ! empty( $_hiw_reviews ) ) :
+?>
+<section class="reviews-carousel-section">
+	<div class="container">
+		<?php adn_component( 'sections/reviews_carousel', array(
+			'reviews' => array(
+				'items'   => $_hiw_reviews,
+				'heading' => 'What Genuine Homebuyers Say',
+			),
+		) ); ?>
+	</div>
+</section>
 <?php endif; ?>
 
 <?php /* ============================== TRUST CALLOUT (animated "Why It's Safe to Start" info strip) ============================== */ ?>

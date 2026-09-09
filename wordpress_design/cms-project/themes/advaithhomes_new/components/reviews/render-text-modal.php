@@ -25,8 +25,11 @@ function ah_review_render_text_modal_once(): string {
 	ob_start();
 	?>
 <div id="ah-rv-text-modal" class="ah-rv-text-modal" role="dialog" aria-modal="true" aria-label="<?php echo esc_attr__( 'Full review', 'ah-cms' ); ?>">
+	<div class="ah-rv-text-modal-backdrop"></div>
 	<div class="ah-rv-text-modal-panel">
-		<button type="button" class="ah-rv-text-modal-close" aria-label="<?php echo esc_attr__( 'Close', 'ah-cms' ); ?>">&times;</button>
+		<button type="button" class="ah-rv-text-modal-close" aria-label="<?php echo esc_attr__( 'Close', 'ah-cms' ); ?>">
+			<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+		</button>
 		<div class="ah-rv-text-modal-body"></div>
 	</div>
 </div>
@@ -34,18 +37,36 @@ function ah_review_render_text_modal_once(): string {
 (function () {
 	var box = document.getElementById('ah-rv-text-modal');
 	if (!box) return;
-	var body  = box.querySelector('.ah-rv-text-modal-body');
-	var close = box.querySelector('.ah-rv-text-modal-close');
+	var body     = box.querySelector('.ah-rv-text-modal-body');
+	var close    = box.querySelector('.ah-rv-text-modal-close');
+	var backdrop = box.querySelector('.ah-rv-text-modal-backdrop');
+
+	function ensureMounted() {
+		if (box.parentNode && box.parentNode !== document.body) {
+			document.body.appendChild(box);
+		}
+	}
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', ensureMounted);
+	} else {
+		ensureMounted();
+	}
 
 	function open(trigger) {
+		ensureMounted();
 		var scope = trigger.closest('.ah-review-card') || trigger.parentElement;
 		var tpl   = scope ? scope.querySelector('.ah-rv-text-modal-content') : null;
 		if (!tpl) return;
 		body.innerHTML = '';
 		body.appendChild(tpl.content.cloneNode(true));
 		box.classList.add('is-open');
+		document.body.style.overflow = 'hidden';
 	}
-	function shut() { box.classList.remove('is-open'); body.innerHTML = ''; }
+	function shut() {
+		box.classList.remove('is-open');
+		document.body.style.overflow = '';
+		setTimeout(function(){ if (!box.classList.contains('is-open')) body.innerHTML = ''; }, 300);
+	}
 
 	document.addEventListener('click', function (e) {
 		var trigger = e.target.closest ? e.target.closest('.ah-rv-text-modal-trigger') : null;
@@ -54,9 +75,10 @@ function ah_review_render_text_modal_once(): string {
 			open(trigger);
 			return;
 		}
-		if (e.target === box) { shut(); }
+		if (e.target === box || e.target === backdrop) { shut(); }
 	});
-	close.addEventListener('click', shut);
+	if (close) close.addEventListener('click', shut);
+	if (backdrop) backdrop.addEventListener('click', shut);
 	document.addEventListener('keydown', function (e) {
 		if (!box.classList.contains('is-open')) return;
 		if (e.key === 'Escape') shut();

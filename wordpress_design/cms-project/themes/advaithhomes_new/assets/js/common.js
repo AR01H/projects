@@ -32,6 +32,7 @@
         initScrollProgress();
         initScrollToTop();
         initActiveNavLink();
+        initRandomMiniCtaInjector();
     });
 
     /* ---------- Mobile menu ---------- */
@@ -430,5 +431,155 @@
             }
             if (linkPath && linkPath === path) { link.classList.add('active'); }
         });
+    }
+
+    /* ---------- Dynamic Random Mini CTA Injector (Universal Sitewide) ---------- */
+    function initRandomMiniCtaInjector() {
+        var ctas = window.ADN_RANDOM_CTAS;
+        if (!ctas || !Array.isArray(ctas) || ctas.length === 0) { return; }
+
+        // If a mini CTA is already rendered on the page, avoid duplicate injection
+        if (document.querySelector('.ah-random-mini-cta')) { return; }
+
+        // 1. Identify top hero and marquee boundary elements
+        var heroEl = document.querySelector('.page-hero, .hero-home, .hero-banner, .home-hero, .how-it-works-hero, .faqs-hero, .news-hero, .guidance-hero, .hero-diagram-mobile');
+        var marqueeEl = document.querySelector('.marquee-wrapper, .point-marque, .logo-marquee, .trust-marquee, .marquee');
+        var headerEl = document.getElementById('siteHeader') || document.querySelector('header, .site-header');
+
+        // Reference top boundary: latest top element
+        var topBoundaryEl = marqueeEl || heroEl || headerEl;
+
+        // 2. Discover all candidate content sections on the page
+        var allSections = Array.prototype.slice.call(document.querySelectorAll('section, main > div, .page-wrapper > div, article > div, .guidance-main-layout, .faqs-page-layout, .guides-hub-layout'));
+        var candidates = [];
+
+        for (var i = 0; i < allSections.length; i++) {
+            var el = allSections[i];
+
+            // Exclude header, footer, hero, marquee, newsletter, modal, or popups
+            if (el.closest('header, footer, .site-header, .site-footer, .main-footer, .newsletter-cta, .cta-banner, .modal, .cookie-consent-banner')) {
+                continue;
+            }
+            if (el.classList.contains('page-hero') || el.classList.contains('hero-home') || el.classList.contains('home-hero') || el.classList.contains('hero-banner') || el.classList.contains('hero-diagram-mobile') || el.classList.contains('newsletter-cta') || el.classList.contains('marquee-wrapper') || el.classList.contains('point-marque')) {
+                continue;
+            }
+
+            // Must be strictly positioned AFTER top boundary in DOM order
+            if (topBoundaryEl && topBoundaryEl !== el) {
+                var position = topBoundaryEl.compareDocumentPosition(el);
+                if (!(position & Node.DOCUMENT_POSITION_FOLLOWING)) {
+                    continue; // Skip any element that appears before or above hero/marquee
+                }
+            }
+
+            // Must have visible content height
+            if (el.offsetHeight > 40 && candidates.indexOf(el) === -1) {
+                candidates.push(el);
+            }
+        }
+
+        // 3. Fallback for single blog posts / text pages with only .article-body
+        if (candidates.length === 0) {
+            var articleBodies = document.querySelectorAll('.article-body, .entry-content, .single-article-content');
+            for (var b = 0; b < articleBodies.length; b++) {
+                var bodyEl = articleBodies[b];
+                var paragraphs = bodyEl.querySelectorAll('p, h2, h3, blockquote');
+                if (paragraphs.length >= 3) {
+                    var midIdx = Math.min(Math.floor(paragraphs.length / 2), 3);
+                    if (paragraphs[midIdx]) {
+                        candidates.push(paragraphs[midIdx]);
+                        break;
+                    }
+                } else if (bodyEl.offsetHeight > 60) {
+                    candidates.push(bodyEl);
+                    break;
+                }
+            }
+        }
+
+        if (candidates.length === 0) { return; }
+
+        // 4. Intelligently pick an intermediate section at random
+        var targetIndex = 0;
+        if (candidates.length >= 3) {
+            // Pick among early/middle sections so it sits nicely in content flow
+            targetIndex = Math.floor(Math.random() * (candidates.length - 1));
+        } else if (candidates.length === 2) {
+            targetIndex = Math.random() < 0.5 ? 0 : 1;
+        } else {
+            targetIndex = 0;
+        }
+
+        var targetEl = candidates[targetIndex];
+        if (!targetEl) { return; }
+
+        // 5. Filter CTA pool: avoid showing a CTA linking to the current page URL
+        var currentPath = window.location.pathname.replace(/^\/|\/$/g, '');
+        var available = ctas.filter(function (c) {
+            if (!c.button_url) { return true; }
+            var btnPath = '';
+            try {
+                var u = new URL(c.button_url, window.location.origin);
+                btnPath = u.pathname.replace(/^\/|\/$/g, '');
+            } catch (e) {
+                btnPath = c.button_url.replace(/^\/|\/$/g, '');
+            }
+            return !currentPath || btnPath !== currentPath;
+        });
+
+        if (available.length === 0) { available = ctas; }
+
+        // Pick random CTA item from pool
+        var item = available[Math.floor(Math.random() * available.length)];
+        if (!item) { return; }
+
+        var color     = item.color || '#1e3a2f';
+        var colorName = item.color_name || 'default';
+        var id        = item.id || 'cta';
+        var heading   = item.heading || '';
+        var message   = item.message || '';
+        var iconClass = item.icon || 'fa-solid fa-sparkles';
+        var btnName   = item.button_name || 'Learn More';
+        var btnUrl    = item.button_url || '#';
+
+        var ctaHtml = '' +
+            '<section class="adn-dynamic-cta-section hiw-mini-cta-section" style="opacity: 0; transition: opacity 0.4s ease;">' +
+                '<div class="container">' +
+                    '<aside class="ah-random-mini-cta ah-random-mini-cta--' + colorName + ' ah-random-mini-cta--' + id + '" style="--ah-cta-color: ' + color + ';" aria-label="' + (heading || 'Featured Guidance') + '">' +
+                        '<div class="ah-mini-cta__bg" aria-hidden="true">' +
+                            '<span class="ah-mini-cta__glow"></span>' +
+                            '<span class="ah-mini-cta__shimmer"></span>' +
+                        '</div>' +
+                        '<div class="ah-mini-cta__container">' +
+                            '<div class="ah-mini-cta__icon-badge" aria-hidden="true">' +
+                                '<span class="ah-mini-cta__icon"><i class="' + iconClass + '"></i></span>' +
+                            '</div>' +
+                            '<div class="ah-mini-cta__content">' +
+                                (heading ? '<h4 class="ah-mini-cta__heading">' + heading + '</h4>' : '') +
+                                '<p class="ah-mini-cta__message">' + message + '</p>' +
+                            '</div>' +
+                            '<div class="ah-mini-cta__action">' +
+                                '<a href="' + btnUrl + '" class="ah-mini-cta__btn">' +
+                                    '<span class="ah-mini-cta__btn-text">' + btnName + '</span>' +
+                                    '<span class="ah-mini-cta__btn-icon" aria-hidden="true">' +
+                                        '<svg width="15" height="15" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+                                            '<path d="M3.33337 8H12.6667M12.6667 8L8.00004 3.33334M12.6667 8L8.00004 12.6667" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>' +
+                                        '</svg>' +
+                                    '</span>' +
+                                '</a>' +
+                            '</div>' +
+                        '</div>' +
+                    '</aside>' +
+                '</div>' +
+            '</section>';
+
+        targetEl.insertAdjacentHTML('afterend', ctaHtml);
+
+        var inserted = targetEl.nextElementSibling;
+        if (inserted && inserted.classList.contains('adn-dynamic-cta-section')) {
+            requestAnimationFrame(function () {
+                inserted.style.opacity = '1';
+            });
+        }
     }
 })();
