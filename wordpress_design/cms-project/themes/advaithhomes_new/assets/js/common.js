@@ -467,16 +467,15 @@
         // Reference top boundary: latest top element
         var topBoundaryEl = marqueeEl || heroEl || headerEl;
 
-        // 2. Discover all candidate content sections on the page (strictly real <section> tags only)
+        // 2. Discover all candidate content blocks on the page — real semantic
         var allSections = Array.prototype.slice.call(document.querySelectorAll('section'));
         var candidates = [];
+        var validTags = { section: true, main: true, article: true };
 
         for (var i = 0; i < allSections.length; i++) {
             var el = allSections[i];
 
-            // Only inject next to an actual <section> element — never inside/after a
-            // div-based layout wrapper that merely carries a section-like class.
-            if (el.tagName.toLowerCase() !== 'section') {
+            if (!validTags[el.tagName.toLowerCase()]) {
                 continue;
             }
 
@@ -484,7 +483,7 @@
             if (el.closest('.adn-404-page, .error-404, header, footer, .site-header, .site-footer, .main-footer, .newsletter-cta, .cta-banner, .modal, .cookie-consent-banner')) {
                 continue;
             }
-            if (el.classList.contains('page-hero') || el.classList.contains('hero-home') || el.classList.contains('home-hero') || el.classList.contains('hero-banner') || el.classList.contains('hero-diagram-mobile') || el.classList.contains('newsletter-cta') || el.classList.contains('marquee-wrapper') || el.classList.contains('point-marque')) {
+            if ( el.classList.contains('hero-home') || el.classList.contains('home-hero') || el.classList.contains('hero-banner') || el.classList.contains('hero-diagram-mobile') || el.classList.contains('newsletter-cta') || el.classList.contains('marquee-wrapper') || el.classList.contains('point-marque')) {
                 continue;
             }
 

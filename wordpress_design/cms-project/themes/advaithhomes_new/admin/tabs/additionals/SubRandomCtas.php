@@ -68,17 +68,6 @@ $is_enabled = ! empty( $settings['enabled'] );
 						</button>
 					<?php endif; ?>
 				</form>
-
-				<!-- Reset Defaults Button -->
-				<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>"
-					onsubmit="return confirm('<?php echo esc_js( __( 'Reset all CTAs to the default 7 template items? Any custom changes will be overwritten.', ADN_TEXT_DOMAIN ) ); ?>');"
-					style="margin:0;">
-					<?php wp_nonce_field( 'adn_reset_random_ctas' ); ?>
-					<input type="hidden" name="action" value="adn_reset_random_ctas">
-					<button type="submit" class="button button-secondary" title="<?php esc_attr_e( 'Reset to default 7 items', ADN_TEXT_DOMAIN ); ?>" style="padding:4px 10px;">
-						<i class="fa-solid fa-rotate-left"></i> <?php esc_html_e( 'Reset Defaults', ADN_TEXT_DOMAIN ); ?>
-					</button>
-				</form>
 			</div>
 		</div>
 	</div>
@@ -91,7 +80,7 @@ $is_enabled = ! empty( $settings['enabled'] );
 
 		<?php if ( empty( $all_ctas ) ) : ?>
 			<div class="card" style="padding:24px;text-align:center;color:#6b7280;">
-				<p><?php esc_html_e( 'No Random CTAs in database. Click "Reset Defaults" or "+ Add New CTA Message".', ADN_TEXT_DOMAIN ); ?></p>
+				<p><?php esc_html_e( 'No Random CTAs in database. Click "+ Add New CTA Message" to create one.', ADN_TEXT_DOMAIN ); ?></p>
 			</div>
 		<?php else : ?>
 			<div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(360px, 1fr));gap:16px;">

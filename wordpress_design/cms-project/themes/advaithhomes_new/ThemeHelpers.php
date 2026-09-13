@@ -4,6 +4,8 @@ function ahn_include_files() {
     $files = array(
         '/common/common_functions.php',
         '/admin/SchemaInstaller.php', // ADN_Schema - needed at REST time too, not only wp-admin
+        '/admin/Handlers/BaseHandler.php',        // ADN_Base_Handler - static utility methods only, no admin-only side effects at load time
+        '/admin/Handlers/AdditionalsHandler.php', // ADN_Additionals_Handler - Random CTA enable/disable + per-message active/inactive logic lives here ONLY. MUST load on the frontend too (not just when is_admin()), otherwise AssetLoader::loadCoreJs() can't see this class and silently falls back to the raw, unfiltered ah_random_cta_messages option - showing disabled cards and ignoring the master toggle. DO NOT remove this line - see admin/Handlers/AdditionalsHandler.php and src/Service/AssetLoader.php.
         '/apis/services.php',          // data services (JSON today, real API later) + adn_link()
         '/apis/services_cms.php',      // read-only services backed by the CMS plugin DB (taxonomy tree + posts)
         '/calculators/calculators.php',// [ah_calculator] shortcode + isolated (iframe) calculator renderer

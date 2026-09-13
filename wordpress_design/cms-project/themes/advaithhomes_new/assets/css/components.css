@@ -170,7 +170,7 @@
 .ah-random-mini-cta {
     position: relative;
     overflow: hidden;
-    max-width: 100%;
+    max-width: 98%;
     margin: 0 auto;
     padding: 10px 20px;
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.96) 0%, rgba(254, 251, 242, 0.92) 50%, rgba(255, 255, 255, 0.96) 100%);
