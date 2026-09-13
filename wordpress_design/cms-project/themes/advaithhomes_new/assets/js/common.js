@@ -467,12 +467,18 @@
         // Reference top boundary: latest top element
         var topBoundaryEl = marqueeEl || heroEl || headerEl;
 
-        // 2. Discover all candidate content sections on the page (strictly sections / layout blocks)
-        var allSections = Array.prototype.slice.call(document.querySelectorAll('section, .guidance-main-layout, .faqs-page-layout, .guides-hub-layout'));
+        // 2. Discover all candidate content sections on the page (strictly real <section> tags only)
+        var allSections = Array.prototype.slice.call(document.querySelectorAll('section'));
         var candidates = [];
 
         for (var i = 0; i < allSections.length; i++) {
             var el = allSections[i];
+
+            // Only inject next to an actual <section> element — never inside/after a
+            // div-based layout wrapper that merely carries a section-like class.
+            if (el.tagName.toLowerCase() !== 'section') {
+                continue;
+            }
 
             // Exclude header, footer, 404, hero, marquee, newsletter, modal, or popups
             if (el.closest('.adn-404-page, .error-404, header, footer, .site-header, .site-footer, .main-footer, .newsletter-cta, .cta-banner, .modal, .cookie-consent-banner')) {
