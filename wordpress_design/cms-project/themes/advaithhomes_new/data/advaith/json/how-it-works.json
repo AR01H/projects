@@ -8,33 +8,33 @@
         { "label": "Your Journey With Us", "url": null }
     ],
     "hero": {
-        "title":       "Your Journey With Us",
+        "title":       "Your Buying Journey, With Us",
         "description": "From the moment you are ready to buy, to the day you secure your property — we work with genuine buyers every step of the way. Clear, independent, and dedicated to getting you results.",
         "bg_icon":     "🤝",
         "trust_items": [
-            { "icon": "🎯", "label": "Serious Buyers", "note": "Dedicated service for committed property buyers" },
-            { "icon": "🤝", "label": "Personalised",   "note": "Matched to your exact purchase criteria" },
-            { "icon": "🛡️", "label": "Independent",    "note": "Never tied to one lender or agent" },
-            { "icon": "⚡", "label": "Fast Response",  "note": "Priority assistance for active buyers" }
+            { "icon": "🎯", "label": "BESPOKE", "note": "Built around your requirements and buying position" },
+            { "icon": "🛡️", "label": "BUYER-SIDE",   "note": "Dedicated support working on your side" },
+            { "icon": "🤝", "label": "CONNECTED",    "note": "Coordinating the professionals involved in your purchase" },
+            { "icon": "🔑", "label": "END-TO-END",  "note": "From property search to keys and beyond" }
         ]
     },
     "stats": {
         "items": [
-            { "number": "4",     "label": "Clear Steps",         "sub": "From initial brief to moving into your home" },
-            { "number": "1",     "label": "Direct Brief",        "sub": "Clear requirements so we act immediately" },
-            { "number": "24hrs", "label": "Fast Response",       "sub": "Quick action for serious buyers" },
-            { "number": "100%",  "label": "Independent Advice",  "sub": "Never tied to any lender or agent" }
+            { "number": "TIME",     "label": "Save Time",         "sub": "Focused support throughout your search" },
+            { "number": "MONEY",     "label": "Avoid Costly Mistakes",        "sub": "Make better-informed buying decisions" },
+            { "number": "STRESS", "label": "Reduce Stress",       "sub": "One point of support throughout" },
+            { "number": "CONFIDENCE",  "label": "Buy With Confidence",  "sub": "On your side from search to keys & beyond" }
         ]
     },
     "commitment_notice": {
         "icon":  "fa-solid fa-bullseye",
-        "badge": "For Serious Buyers",
-        "text":  "If you are a serious buyer, <b>talk to us to save time</b>. We cut out unnecessary delays and focus 100% on getting you straight to <b>holding your keys</b>."
+        "badge": "For Active Buyers",
+        "text":  "If you are an active buyer, <b>talk to us to save time , potentially save money , reduce stress & avoid costly mistakes </b>. We cut out unnecessary delays and focus 100% on getting you straight to <b>holding your keys</b>."
     },
     "process": {
         "eyebrow":        "The Journey, Step by Step",
         "heading":        "From first contact to holding your keys & beyond",
-        "subheading":     "A structured, transparent roadmap designed to make buying your UK property effortless, accurate, and stress-free.",
+        "subheading":     "A structured, transparent roadmap designed to make your property purchase clearer, less stressful and more informed — while helping you avoid costly mistakes and potentially save thousands.",
         "auto_expand":    true,
         "highlight_step": 2,
         "trust_note":     "Dedicated to genuine property buyers ready to find, secure, and settle into their home.",
@@ -57,70 +57,78 @@
                 "icon":        "fa-regular fa-comments",
                 "title":       "Free 30-Min 1-on-1 Consultation",
                 "description": "We contact you back for a dedicated, free 30-minute consultation to understand your exact preferences, financing position, and priorities.",
+				"url":         "/contact/",
+                "cta_label":   "Book a time slot",
                 "points": [
                     "Free 30-minute one-to-one consultation with a property specialist",
-                    "Discuss your budget, mortgage readiness, and preferred locations",
-                    "Zero sales pressure — just honest, expert advice tailored to your goals"
+                    "Discuss your budget, mortgage readiness, your circumstances, and preferred locations",
+                    "Zero sales pressure — just honest, advice tailored to your goals"
                 ]
             },
             {
                 "number":      "03",
                 "icon":        "fa-solid fa-magnifying-glass",
-                "title":       "We Onboard & Investigate Your Requirement",
-                "description": "We onboard you into our dedicated buyer service, search the entire market, vet properties, and coordinate with trusted solicitors and lenders.",
+                "title":       "We Onboard & Understand Your Requirements",
+                "description": "We understand what you're looking for and build a bespoke buying approach around your requirements, priorities and circumstances",
+				"url":         "/find-my-home/",
+                "cta_label":   "Onboard me",
                 "cards": [
                     {
                         "icon":  "fa-solid fa-user-check",
                         "title": "Dedicated Buyer Onboarding",
-                        "text":  "Structured setup with a dedicated property specialist who manages your search from day one."
+                        "text":  "One dedicated point of support throughout your property journey"
                     },
                     {
                         "icon":  "fa-solid fa-magnifying-glass",
-                        "title": "Bespoke Market Search",
-                        "text":  "In-depth research matching your exact lifestyle, budget, and location criteria across the entire market."
+                        "title": "Bespoke Property Search",
+                        "text":  "In-depth research matching your exact lifestyle, budget, and location criteria across the market"
                     },
+					{
+                        "icon":  "fa-regular fa-bell",
+                        "title": "Property Assessment & Negotiation",
+                        "text":  "Helping you assess suitable properties and develop the right offer and negotiation strategy"
+                    },
+					
                     {
                         "icon":  "fa-regular fa-handshake",
                         "title": "Vetted Professional Network",
-                        "text":  "Seamless coordination with trusted UK solicitors, mortgage brokers, and surveyors."
+                        "text":  "Connects you with and coordinates trusted solicitors, mortgage advisers, RICS surveyors, insurance advisers and other property professionals"
                     },
                     {
                         "icon":  "fa-regular fa-clipboard",
                         "title": "Paperwork & Legal Tracking",
-                        "text":  "Full document management and progress tracking handled from day one."
+                        "text":  "Full document management and buying progress tracking handled from day one"
                     },
                     {
-                        "icon":  "fa-regular fa-bell",
-                        "title": "Milestone Updates",
-                        "text":  "Real-time, transparent updates so you always know where your purchase stands."
+                        "icon":  "fa-solid fa-key",
+                        "title": "From Search to Keys & Beyond",
+                        "text":  "Supporting your journey through purchase, completion and beyond"
                     }
                 ]
             },
             {
                 "number":      "04",
                 "icon":        "fa-solid fa-key",
-                "title":       "The Right Result & Post-Buying Support",
-                "description": "From securing your home and receiving your keys to full post-purchase moving support, vetted packers & movers, and trusted repair contractors.",
+                "title":       "Post-Buying Support",
+                "description": "Our support doesn't end when you receive the keys. We can help you settle into your new home and connect you with relevant property and moving professionals where needed.",
+				"url":         "/contact/",
+                "cta_label":   "Need Post-Buying Support",
                 "cards": [
-                    {
-                        "icon":  "fa-solid fa-key",
-                        "title": "Keys in Hand & Legal Completion",
-                        "text":  "Dedicated guidance through final surveys, price negotiations, and legal completion."
-                    },
+              
                     {
                         "icon":  "fa-solid fa-truck-ramp-box",
-                        "title": "Packers & Movers Directory",
-                        "text":  "Access to our vetted network of reliable removal and moving professionals for a smooth relocation."
+                        "title": "Moving & Home Services",
+                        "text":  "Connections to removal, cleaning and other services to help with your move"
                     },
                     {
                         "icon":  "fa-solid fa-screwdriver-wrench",
-                        "title": "Repairs & Home Setup",
-                        "text":  "Trusted contractors for repairs, renovations, interior decorating, and utility setup."
+                        "title": "Repairs & Home Improvements",
+                        "text":  "Connections to relevant professionals for repairs, renovations, home improvements and utilities"
                     },
                     {
                         "icon":  "fa-solid fa-headset",
-                        "title": "Ongoing Aftercare Support",
-                        "text":  "We stay by your side long after moving day for any advice, questions, or future property plans."
+                        "title": "Beyond Moving Day",
+                        "text":  "We remain a point of support as you settle into your new home and for your future property plans"
                     }
                 ]
             }
@@ -185,8 +193,8 @@
     },
     "fit_check": {
         "eyebrow": "Why Choose Us?",
-        "heading": "Going Solo vs. Other Agencies vs. ADVAITH HOMES",
-        "subheading": "See how our independent, personal service compares to going it alone or using traditional high-street alternatives.",
+        "heading": "The Seller Has an Estate Agent. Who Is Looking After Buyer?",
+        "subheading": "See the difference between navigating the purchase alone, dealing only with the seller's estate agent, and having dedicated support on your side",
         "columns": [
             {
                 "label": "Going Solo",
@@ -194,74 +202,83 @@
                 "tone": "con",
                 "icon": "fa-solid fa-user",
                 "items": [
-                    "Hours spent searching contradictory online advice",
+                    "Hours spent searching and comparing properties yourself",
                     "Stress of juggling lenders, solicitors, and agents",
-                    "Complex jargon and confusing paperwork",
-                    "Higher risk of missed deadlines or costly surprises"
+                    "Deciding whether the asking price is realistic",
+					"Working out what your opening offer should be",
+					"Chasing different parties as the purchase progresses",
+                    "Higher risk of missed deadlines or costly surprises",
+					"Trying to understand what to do when survey issues arise"
                 ]
             },
             {
-                "label": "Other Agencies",
-                "subtitle": "Traditional estate agents & brokers",
+                "label": "Seller's Estate Agent",
+                "subtitle": "Traditional Estate agents",
                 "tone": "con",
                 "icon": "fa-solid fa-building",
                 "items": [
-                    "Sales targets with tied products or lenders",
-                    "Generic call centres, chatbots, and phone trees",
-                    "You are left to chase multiple intermediaries",
-                    "Rigid working hours and slow response times"
+                    "Appointed by the seller to market and sell their property",
+                    "Works on behalf of the seller throughout the sale",
+                    "Isn't responsible for determining your buying strategy",
+                    "Negotiates on the seller's behalf",
+					"Isn't your buyer-side representative",
+					"Provides information about the property but does not independently assess the purchase for the buyer",
+					"Helps progress the transaction towards the seller's sale"
                 ]
             },
             {
                 "label": "With ADVAITH HOMES",
-                "subtitle": "Your independent personal guide",
+                "subtitle": "Working on your side as the buyer",
                 "tone": "pro",
                 "is_highlighted": true,
                 "badge": "The Clear Choice",
                 "icon": "fa-solid fa-shield-halved",
                 "items": [
-                    "100% independent advice with zero tied agenda",
-                    "Single dedicated contact from first step to keys",
-                    "Jargon-free guidance and full coordination",
-                    "Fast, friendly response from experienced specialists"
+                    "Appointed by the buyer to represent them in buying their property",
+					"Find on-market & off-market properties that match your needs",
+                    "One dedicated contact — from first step to keys and beyond",
+                    "Helps you assess the property beyond the asking price",
+					"Helps develop your offer and negotiation strategy",
+                    "Supports you through survey findings and potential renegotiation",
+					"Connects and coordinates with solicitors, RICS surveyors, mortgage advisers, builders and other trusted property professionals."
                 ]
             }
         ]
     },
     "trust_callout": {
-        "eyebrow": "Why It Is Safe to Start",
-        "heading": "You are always in control",
+        "eyebrow": "WHY BUYERS CHOOSE US",
+        "heading": "You Stay in Control",
         "items": [
             {
                 "icon":  "fa-solid fa-bullseye",
-                "title": "Action-Oriented Focus",
-                "body":  "We dedicate our full time and resources to clients who are actively looking to buy, ensuring fast responses, in-depth research, and tangible results."
+                "title": "Dedicated to Your Search",
+                "body":  "Your requirements, priorities and buying position shape the search — with dedicated support throughout your journey."
             },
             {
                 "icon":  "fa-solid fa-lock",
-                "title": "Completely Confidential",
-                "body":  "Everything you share with us is treated as strictly private. We never pass your personal details to third parties without your explicit permission."
+                "title": "Your Privacy Matters",
+                "body":  "Your personal information and property requirements are handled with care and confidentiality throughout your journey."
             },
             {
                 "icon":  "fa-solid fa-scale-balanced",
-                "title": "Genuinely Independent",
-                "body":  "We are not tied to any lender, estate agent, solicitor or developer. Every recommendation is made solely in your interest — full stop."
+                "title": "Independent Buyer-Side Support",
+                "body":  "We work on your side as the buyer, while coordinating with the estate agents and independent property professionals involved in your purchase."
             },
             {
                 "icon":  "fa-solid fa-users",
-                "title": "Real Experts, Direct Answers",
-                "body":  "You speak directly to experienced property specialists — no bots, no scripts, no runarounds. Every client receives direct, professional attention."
+                "title": "Clear & Transparent",
+                "body":  "Clear communication throughout your purchase, helping you understand where things stand and what comes next."
             }
         ]
     },
     "cta_banner": {
         "eyebrow":  "Ready to Make Your Move?",
-        "heading":  "Let’s find and secure your next home",
-        "body":     "If you are actively looking to buy property in the UK, get in touch with our team. We provide dedicated research and expert representation to make your purchase successful.",
+        "heading":  "Let’s find and secure the right home for you",
+        "body":     "If you’re considering buying a property in the UK, speak with us about what you’re looking for. Our bespoke buyer-side service supports you from property search and assessment through negotiation, purchase and beyond.",
         "trust_items": [
-            { "icon": "fa-solid fa-bullseye",      "text": "Dedicated Buyer Service" },
-            { "icon": "fa-solid fa-shield-halved", "text": "100% Independent Advice" },
-            { "icon": "fa-solid fa-bolt",           "text": "Fast Specialist Response" }
+            { "icon": "fa-solid fa-bullseye",      "text": "Bespoke Buyer-Side Support" },
+            { "icon": "fa-solid fa-shield-halved", "text": "Property Search & Negotiation" },
+            { "icon": "fa-solid fa-bolt",           "text": "From Search to Keys & Beyond" }
         ],
         "cta_primary":   { "label": "Start Your Property Search", "url": "/contact/" }
     }
